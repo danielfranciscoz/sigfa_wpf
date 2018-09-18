@@ -1,0 +1,36 @@
+﻿<UserControl x:Class="PruebaWPF.UserControls.Bar_Back"
+             xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:PruebaWPF.UserControls"
+             mc:Ignorable="d" 
+             d:DesignHeight="300" d:DesignWidth="350">
+    <Grid>
+        <DockPanel>
+            <StackPanel Background="{StaticResource Bar_BackgroundColor}" DockPanel.Dock="Top" HorizontalAlignment="Stretch" VerticalAlignment="Top" Height="auto">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="auto"></ColumnDefinition>
+                        <ColumnDefinition Width="*"></ColumnDefinition>
+                    </Grid.ColumnDefinitions>
+                    <DockPanel Grid.Column="0" HorizontalAlignment="Left">
+                        <Button  Style="{DynamicResource MaterialDesignFlatButton}"  Foreground="Black" Click="Button_Click">
+                            <Button.Content>
+                                <StackPanel Orientation="Horizontal">
+                                <materialDesign:PackIcon Kind="ArrowLeft" VerticalAlignment="Center" Width="20" Height="20" Margin="0 0 10 0"></materialDesign:PackIcon>
+                                    
+                                </StackPanel>
+                            </Button.Content>
+                        </Button>
+                    </DockPanel>
+                    <StackPanel Grid.Column="1" HorizontalAlignment="Left" VerticalAlignment="Center" x:Name="LayoutRoot">
+                        <!--<TextBlock FontWeight="Bold"  Text="Nombre de la aplicación que se está visualizando" x:Name="txtTituloOpened"></TextBlock>-->
+                        <TextBlock FontWeight="Bold" FontSize="14" Text="{Binding Path=ValueUpper}" x:Name="txtTituloOpened"></TextBlock>
+                    </StackPanel>
+                </Grid>
+            </StackPanel>
+        </DockPanel>
+    </Grid>
+</UserControl>

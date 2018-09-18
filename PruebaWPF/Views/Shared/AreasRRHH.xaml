@@ -1,0 +1,89 @@
+﻿<Window x:Class="PruebaWPF.Views.Shared.AreasRRHH"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:PruebaWPF.Views.Shared"
+        mc:Ignorable="d"
+        AllowsTransparency="True"
+        WindowStartupLocation="CenterScreen" 
+        WindowStyle="None" 
+        ResizeMode="NoResize"
+        Title="Seleccionar área" Height="645.784" Width="790.84"
+        Loaded="Window_Loaded">
+    <Window.Background>
+        <SolidColorBrush Opacity="0"/>
+    </Window.Background>
+    <materialDesign:Card Height="600" Width="750">
+
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="auto"/>
+                <RowDefinition Height="auto"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="auto"/>
+                <RowDefinition Height="auto"/>
+
+            </Grid.RowDefinitions>
+
+            <Grid Background="{StaticResource Search_Button}" >
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"></ColumnDefinition>
+                    <ColumnDefinition Width="auto"></ColumnDefinition>
+                </Grid.ColumnDefinitions>
+                <StackPanel MouseLeftButtonDown="Border_MouseLeftButtonDown" Margin="10 0 0 0" Grid.Column="0" HorizontalAlignment="Left" VerticalAlignment="Center">
+                    <TextBlock Width="320" FontWeight="Bold" Text="Seleccionar área."></TextBlock>
+                </StackPanel>
+                <StackPanel Grid.Column="1" HorizontalAlignment="Right">
+                    <Button x:Name="btnClose" Foreground="Black"  Width="30" BorderBrush="Transparent" Height="30" Background="Transparent" Padding="0" Click="Button_Click" MouseEnter="Button_MouseEnter" MouseLeave="Button_MouseLeave">
+                        <materialDesign:PackIcon Kind="WindowClose"></materialDesign:PackIcon>
+                    </Button>
+                </StackPanel>
+            </Grid>
+
+            <StackPanel Grid.Row="1" VerticalAlignment="Top">
+                <Grid  Width="auto">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+                    <TextBox Grid.Column="0" Margin="10" x:Name="txtFind" materialDesign:HintAssist.Hint="Búsqueda" materialDesign:HintAssist.IsFloating="True" FontSize="13" KeyUp="txtFind_KeyUp"/>
+                </Grid>
+                <StackPanel  Width="auto">
+                    <TextBlock Grid.Column="0" Margin="5" Foreground="{StaticResource DarkGray}" TextWrapping="Wrap">
+                        En esta ventana sólo se muestran las áreas que poseen aranceles de pago.
+                    </TextBlock>
+                </StackPanel>
+            </StackPanel>
+
+            <DockPanel x:Name="panelGrid" Grid.Row="2" Height="auto" VerticalAlignment="Stretch">
+                <DataGrid Name="tblAreasRRHH" CanUserDeleteRows="False" CanUserAddRows="False" AutoGenerateColumns="False" SelectionUnit="FullRow" SelectionMode="Single" MouseDoubleClick="tblAreasRRHH_MouseDoubleClick">
+
+                    <DataGrid.Columns>
+                        <DataGridTextColumn CanUserReorder="False" CanUserResize="False" IsReadOnly="True" Header="Código" Binding="{Binding codigo}"></DataGridTextColumn>
+                        <DataGridTextColumn CanUserReorder="False" CanUserResize="False" IsReadOnly="True" Header="Área" Binding="{Binding descripcion}"></DataGridTextColumn>
+                        <DataGridTextColumn CanUserReorder="False" CanUserResize="False" IsReadOnly="True" Header="Ubicación" Width="auto" Binding="{Binding nombre}"></DataGridTextColumn>
+                    </DataGrid.Columns>
+
+                </DataGrid>
+            </DockPanel>
+
+            <DockPanel Grid.Row="3" DockPanel.Dock="Bottom" HorizontalAlignment="Right">
+                <TextBlock FontWeight="Bold">Cantidad de registros:</TextBlock>
+                <TextBlock FontWeight="Bold" Margin="5 0 20 0" Name="lblCantidadRegitros"> 0</TextBlock>
+            </DockPanel>
+
+            <StackPanel Grid.Row="4" Height="auto" VerticalAlignment="Bottom" Background="{StaticResource Bar_BackgroundColor}">
+                <Grid>
+                    <StackPanel HorizontalAlignment="Right">
+                        <Button x:Name="btnSelect" Style="{DynamicResource MaterialDesignFlatButton}" Foreground="{StaticResource DarkGray_TextAccent}"  Margin="0 2 0 2" Click="btnSelect_Click" Content="{StaticResource Text_Seleccione}" FontWeight="Bold"></Button>
+                    </StackPanel>
+                    <StackPanel HorizontalAlignment="Left" VerticalAlignment="Center">
+                    </StackPanel>
+                </Grid>
+
+            </StackPanel>
+
+        </Grid>
+    </materialDesign:Card>
+</Window>

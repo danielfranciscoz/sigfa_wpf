@@ -1,0 +1,205 @@
+﻿<Page
+      xmlns:UserControl="clr-namespace:PruebaWPF.UserControls"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:local="clr-namespace:PruebaWPF.Views.Recibo"
+      xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+      xmlns:ViewModel="clr-namespace:PruebaWPF.ViewModel"
+    xmlns:l="clr-namespace:PruebaWPF.Clases"
+    x:Class="PruebaWPF.Views.Recibo.Recibo"
+      mc:Ignorable="d" 
+      d:DesignHeight="350" d:DesignWidth="800"
+      Loaded="Page_Loaded" Uid="Recibo"
+      Title="Visualización de Recibo"
+     >
+    <Page.Resources>
+        <l:BoolToStringConverter x:Key="convertidor" />
+    </Page.Resources>
+    
+    <Grid Background="White">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="auto"/>
+            <RowDefinition/>
+        </Grid.RowDefinitions>
+
+        <StackPanel Height="auto" Grid.Row="0" VerticalAlignment="Top">
+            <StackPanel  x:Name="layoutRoot">
+                <UserControl:Bar_Back/>
+            </StackPanel>
+        </StackPanel>
+
+        <Grid Grid.Row="1">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="auto"/>
+
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="auto"/>
+            </Grid.RowDefinitions>
+
+            <StackPanel Grid.Row="0">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="auto"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+                    <StackPanel Grid.Column="0" Orientation="Horizontal">
+                        <Button Tag="{StaticResource Permiso_Guardar}" BorderBrush="Transparent"  Background="{StaticResource Save_Button}" Margin="5 5 5 5" Click="Button_Click">NUEVO</Button>
+                        <Button Tag="{StaticResource Permiso_Imprimir}" BorderBrush="Transparent" Background="{StaticResource Print_Button}" Margin="5" Click="Button_Click_1" Height="Auto" Content="{StaticResource Text_Print_Button}"></Button>
+                        <Button Tag="{StaticResource Permiso_Eliminar}" BorderBrush="Transparent" Background="{StaticResource Delete_Button}" Margin="5" Click="Button_Click_2" Height="Auto" Content="{StaticResource Text_Anular_Button}"></Button>
+                        <Button Tag="{StaticResource Permiso_Exportar}" BorderBrush="Transparent" Background="{StaticResource Export_Button}" Margin="5" Click="btn_Exportar" Height="Auto" Content="{StaticResource Text_Export_Button}"></Button>
+                    </StackPanel>
+                    <StackPanel HorizontalAlignment="Right" Grid.Column="1" Orientation="Horizontal">
+                        <TextBox SpellCheck.IsEnabled="True" Language="es-419" Margin="0 0 20 0"  x:Name="txtFind" Width="250" materialDesign:HintAssist.Hint="Búsqueda (No.Recibo Serie)" materialDesign:HintAssist.IsFloating="True" FontSize="13" KeyUp="txtFindText" ToolTip="La busqueda se realiza de la siguiente manera [No.Recibo Serie] respetando el espacio entre campos."/>
+                    </StackPanel>
+                </Grid>
+
+            </StackPanel>
+
+            <DockPanel  Grid.Row="1" VerticalAlignment="Stretch">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="10"/>
+                        <ColumnDefinition Width="350"/>
+                    </Grid.ColumnDefinitions>
+                    <DockPanel Grid.Column="0" x:Name="panelGrid" >
+                        <DataGrid Name="tblRecibo" CanUserDeleteRows="False" CanUserAddRows="False" AutoGenerateColumns="False" SelectionUnit="FullRow" SelectionMode="Single" SelectionChanged="tblRecibo_SelectionChanged">
+                            <DataGrid.RowStyle>
+
+                                <Style TargetType="{x:Type DataGridRow}" BasedOn="{StaticResource MaterialDesignDataGridRow}">
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding regAnulado}" Value="True">
+                                            <Setter Property="Foreground" Value="Red"/>
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </DataGrid.RowStyle>
+                            
+                            <DataGrid.Columns>
+                                <DataGridTextColumn CanUserReorder="False" CanUserResize="False" IsReadOnly="True" Header="No.Recibo" Width="auto" Binding="{Binding IdRecibo}"></DataGridTextColumn>
+                                <DataGridTextColumn CanUserReorder="False" CanUserResize="False" IsReadOnly="True" Header="Serie" Width="auto" Binding="{Binding Serie}"></DataGridTextColumn>
+                                <DataGridTextColumn CanUserReorder="False" CanUserResize="False" IsReadOnly="True" Header="Caja" Width="auto" Binding="{Binding Caja.Nombre}"></DataGridTextColumn>
+                                <DataGridTextColumn CanUserReorder="False" CanUserResize="False" IsReadOnly="True" Header="Recinto" Width="auto" Binding="{Binding Recinto}"></DataGridTextColumn>
+                                <DataGridTextColumn CanUserReorder="False" CanUserResize="False" IsReadOnly="True" Header="Area" Width="auto" Binding="{Binding Area}"></DataGridTextColumn>
+                                <DataGridTextColumn CanUserReorder="False" CanUserResize="False" IsReadOnly="True" Header="Fuente" Width="auto" Binding="{Binding FuenteFinanciamiento.Nombre}"></DataGridTextColumn>
+                                <DataGridTextColumn CanUserReorder="False" CanUserResize="False" IsReadOnly="True" Header="Tipo de Depósito" Width="auto" Binding="{Binding TipoDeposito.Nombre}"></DataGridTextColumn>
+                                <DataGridTextColumn CanUserReorder="False" CanUserResize="False" IsReadOnly="True" Header="Orden de Pago" Width="auto" Binding="{Binding OrdenPago.NoOrdenPago}"></DataGridTextColumn>
+                                <DataGridTextColumn CanUserReorder="False" CanUserResize="False" IsReadOnly="True" Header="Creado por" Width="auto" Binding="{Binding UsuarioCreacion}"></DataGridTextColumn>
+                                <DataGridTextColumn CanUserReorder="False" CanUserResize="False" IsReadOnly="True" Header="Fecha de Creación" Width="auto" Binding="{Binding Fecha}"></DataGridTextColumn>
+                                <DataGridTextColumn CanUserReorder="False" CanUserResize="False" IsReadOnly="True" Header="Estado" Width="auto" Binding="{Binding regAnulado , Converter={StaticResource convertidor},ConverterParameter='Anulado;'}"></DataGridTextColumn>
+                                <DataGridTextColumn CanUserReorder="False" CanUserResize="False" CanUserSort="False" IsReadOnly="True" Header="Motivo"  Visibility="Collapsed" Binding="{Binding ReciboAnulado.Motivo}"></DataGridTextColumn>
+                            </DataGrid.Columns>
+                            <DataGrid.RowDetailsTemplate>
+                                <DataTemplate>
+                                    <TextBlock  Margin="20 10 10 10" >
+                                        <TextBlock.Inlines>
+                                            <Run Text="Motivo: "></Run>
+                                            <Run Text="&quot;"></Run>
+                                            <Run Text="{Binding ReciboAnulado.Motivo}" ></Run>
+                                            <Run Text="&quot;"></Run>
+                                        </TextBlock.Inlines>
+                                        <TextBlock.Style>
+                                            <Style TargetType="TextBlock">
+                                                <Style.Triggers>
+                                                    <DataTrigger Binding="{Binding regAnulado}" Value="False">
+                                                        <Setter Property="Visibility" Value="Collapsed"/>
+                                                    </DataTrigger>
+                                                </Style.Triggers>
+                                            </Style>
+                                        </TextBlock.Style>
+                                    </TextBlock>
+                                </DataTemplate>
+                            </DataGrid.RowDetailsTemplate>
+
+                        </DataGrid>
+                    </DockPanel>
+                    <Separator Grid.Column="1">
+                        <Separator.LayoutTransform>
+                            <RotateTransform Angle="90" />
+                        </Separator.LayoutTransform>
+                    </Separator>
+                    <DockPanel Grid.Column="2" >
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="*"/>
+                                <RowDefinition Height="10"/>
+                                <RowDefinition Height="*"/>
+                            </Grid.RowDefinitions>
+                            <Grid Grid.Row="0">
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="auto"/>
+                                    <RowDefinition Height="*"/>
+                                </Grid.RowDefinitions>
+
+                                <StackPanel Grid.Row="0" Orientation="Vertical">
+                                    <StackPanel Orientation="Horizontal">
+                                        <TextBlock VerticalAlignment="Center" FontWeight="Bold">Cobros realizados</TextBlock>
+                                        <TextBlock VerticalAlignment="Center" Margin="20 0 0 0" Foreground="Gray">
+
+                                        </TextBlock>
+                                    </StackPanel>
+                                    <Separator/>
+                                </StackPanel>
+                                <DockPanel Grid.Row="1" HorizontalAlignment="Stretch" x:Name="panelGridDet">
+                                    <DataGrid Name="tblReciboDet" CanUserDeleteRows="False" CanUserAddRows="False" AutoGenerateColumns="False" SelectionUnit="FullRow" SelectionMode="Single" >
+                                        <DataGrid.Columns>
+                                            <DataGridTextColumn CanUserReorder="False" CanUserResize="True" IsReadOnly="True" Header="Arancel" Width="auto" Binding="{Binding Arancel}"></DataGridTextColumn>
+                                            <DataGridTextColumn CanUserReorder="False" CanUserResize="True" IsReadOnly="True" Header="Concepto" Width="auto" Binding="{Binding Concepto}"></DataGridTextColumn>
+                                            <DataGridTextColumn CanUserReorder="False" CanUserResize="False" IsReadOnly="True" Header="" Width="auto" Binding="{Binding ArancelPrecio.Moneda.Simbolo}"></DataGridTextColumn>
+                                            <DataGridTextColumn CanUserReorder="False" CanUserResize="True" IsReadOnly="True" Header="Monto" Width="auto" Binding="{Binding MontoVirtual}"></DataGridTextColumn>
+                                            <DataGridTextColumn CanUserReorder="False" CanUserResize="True" IsReadOnly="True" Header="Descuento" Width="auto" Binding="{Binding Descuento}"></DataGridTextColumn>
+                                            <DataGridTextColumn CanUserReorder="False" CanUserResize="True" IsReadOnly="True" Header="Total" Width="auto" Binding="{Binding Total}"></DataGridTextColumn>
+                                        </DataGrid.Columns>
+
+                                    </DataGrid>
+                                </DockPanel>
+                            </Grid>
+                            <Separator Grid.Row="1">
+
+                            </Separator>
+                            <Grid Grid.Row="2">
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="auto"/>
+                                    <RowDefinition Height="*"/>
+                                </Grid.RowDefinitions>
+                                
+                                <StackPanel Grid.Row="0" Orientation="Vertical">
+                                    <StackPanel Orientation="Horizontal">
+                                        <TextBlock VerticalAlignment="Center" FontWeight="Bold">Detalle de pagos</TextBlock>
+                                        <TextBlock VerticalAlignment="Center" Margin="20 0 0 0" Foreground="Gray">
+
+                                        </TextBlock>
+                                    </StackPanel>
+                                    <Separator/>
+                                </StackPanel>
+                                <DockPanel Grid.Row="1" x:Name="panelGridPay">
+                                    <DataGrid Name="tblReciboPay" CanUserDeleteRows="False" CanUserAddRows="False" AutoGenerateColumns="False" SelectionUnit="FullRow" SelectionMode="Single" >
+                                    <DataGrid.Columns>
+                                        <DataGridTextColumn CanUserReorder="False" CanUserResize="True" IsReadOnly="True" Header="Forma de Pago" Width="auto" Binding="{Binding FormaPago.FormaPago1}"></DataGridTextColumn>
+                                        <DataGridTextColumn CanUserReorder="False" CanUserResize="False" IsReadOnly="True" Header="" Width="auto" Binding="{Binding Moneda.Simbolo}"></DataGridTextColumn>
+                                        <DataGridTextColumn CanUserReorder="False" CanUserResize="True" IsReadOnly="True" Header="Monto" Width="auto" Binding="{Binding Monto}"></DataGridTextColumn>
+                                    </DataGrid.Columns>
+
+                                </DataGrid>
+                                </DockPanel>
+                            </Grid>
+                        </Grid>
+                    </DockPanel>
+                </Grid>
+
+            </DockPanel>
+
+            <DockPanel Grid.Row="2" DockPanel.Dock="Bottom" HorizontalAlignment="Right">
+                <TextBlock FontWeight="Bold">Cantidad de registros:</TextBlock>
+                <TextBlock FontWeight="Bold" Margin="5 0 20 0" Name="lblCantidadRegitros"> 0</TextBlock>
+            </DockPanel>
+        </Grid>
+
+
+
+
+    </Grid>
+</Page>
+

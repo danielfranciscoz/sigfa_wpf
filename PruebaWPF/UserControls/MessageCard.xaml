@@ -1,0 +1,41 @@
+﻿<UserControl x:Class="PruebaWPF.UserControls.MessageCard"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"      
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:PruebaWPF.UserControls"
+             mc:Ignorable="d" Width="Auto" Height="auto">
+    <Grid>
+        <materialDesign:Card Width="Auto">
+            <StackPanel MinWidth="300" MaxWidth="900"  Width="auto">
+                <StackPanel  Margin="0 10 0 0"  VerticalAlignment="Center" HorizontalAlignment="Center">
+                    <materialDesign:PackIcon x:Name="icon" HorizontalAlignment="Center" Kind="Alert" VerticalAlignment="Bottom" Width="50" Height="50"/>
+                    <TextBlock Margin="15 0 15 10" Name="txtMensaje" TextWrapping="Wrap"  Text="{Binding Path=Mensaje}"></TextBlock>
+                </StackPanel>
+                <DockPanel DockPanel.Dock="Bottom">
+                    <Grid  Background="{StaticResource Bar_BackgroundColor}">
+                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
+
+                            <StackPanel HorizontalAlignment="Right">
+                                <Button x:Name="btnCancel" Style="{DynamicResource MaterialDesignFlatButton}"  Margin="0 2 0 2" Click="btnCancel_Click">Cancelar</Button>
+                            </StackPanel>
+                            <StackPanel HorizontalAlignment="Right">
+                                <Button x:Name="btnNo" Style="{DynamicResource MaterialDesignFlatButton}"  Margin="0 2 0 2" Click="btnNo_Click">No</Button>
+                            </StackPanel>
+                            <StackPanel HorizontalAlignment="Right">
+                                <Button  x:Name="btnYes" Style="{DynamicResource MaterialDesignFlatButton}"  Margin="0 2 0 2" Click="btnYes_Click">Si</Button>
+                            </StackPanel>
+                            <StackPanel HorizontalAlignment="Right">
+                                <Button x:Name="btnOk" Style="{DynamicResource MaterialDesignFlatButton}" Margin="0 2 0 2" Click="btnOk_Click">Aceptar</Button>
+                            </StackPanel>
+                            <StackPanel HorizontalAlignment="Left" VerticalAlignment="Center">
+                            </StackPanel>
+                        </StackPanel>
+                    </Grid>
+                </DockPanel>
+            </StackPanel>
+        </materialDesign:Card>
+
+    </Grid>
+</UserControl>

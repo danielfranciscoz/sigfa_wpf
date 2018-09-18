@@ -1,0 +1,167 @@
+﻿<Window x:Class="PruebaWPF.Views.VariacionCambiaria.GestionarVariacionCambiaria"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:PruebaWPF.Views.VariacionCambiaria"
+        mc:Ignorable="d"
+        WindowStartupLocation="CenterScreen"
+        WindowStyle="SingleBorderWindow"
+        ResizeMode="NoResize"
+        Title="Gestionar Variación Cambiaria"  Width="auto" Height="480" Loaded="Window_Loaded">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="40"/>
+        </Grid.RowDefinitions>
+
+        <Grid Grid.Row="0">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="auto"/>
+                <ColumnDefinition Width="2"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+            <Grid Grid.Column="0">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="auto"/>
+                    <RowDefinition Height="auto"/>
+                </Grid.RowDefinitions>
+                <StackPanel Grid.Row="1" Orientation="Vertical" Margin="10 10 10 0">
+                    <TextBlock VerticalAlignment="Center" FontWeight="Bold">Ingresar un día específico</TextBlock>
+                    <Separator/>
+                    <Grid Margin="5" >
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="30"/>
+                            <RowDefinition Height="30"/>
+                            <RowDefinition Height="30"/>
+                            <RowDefinition Height="40"/>
+                            <RowDefinition Height="40"/>
+                        </Grid.RowDefinitions>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="70"/>
+                            <ColumnDefinition Width="185"/>
+                        </Grid.ColumnDefinitions>
+
+                        <TextBlock VerticalAlignment="Center" Grid.Row="0" Grid.Column="0">Fecha:</TextBlock>
+                        <DatePicker x:Name="txtFecha" Grid.Row="0" Grid.Column="1" materialDesign:HintAssist.Hint="Seleccione" Language="es"></DatePicker>
+                        <TextBlock VerticalAlignment="Center" Grid.Row="1" Grid.Column="0">Monto:</TextBlock>
+                        <TextBox x:Name="txtMonto" Grid.Row="1" Grid.Column="1" TextAlignment="Right"></TextBox>
+                        <TextBlock VerticalAlignment="Center" Grid.Row="2" Grid.Column="0">Moneda:</TextBlock>
+                        <ComboBox DisplayMemberPath="Moneda1" SelectedValuePath="IdMoneda"  Grid.Row="2" Grid.Column="1" Width="185" x:Name="cboMonedaDia" materialDesign:HintAssist.Hint="Seleccione" VerticalAlignment="Center" HorizontalAlignment="Left">
+                        </ComboBox>
+                        <StackPanel Grid.Column="2" Grid.Row="3" VerticalAlignment="Center" Orientation="Horizontal" HorizontalAlignment="Right">
+                            <TextBlock Margin="0 0 20 0" Foreground="{StaticResource DarkGray}">Obtener de BCN</TextBlock>
+                            <ToggleButton x:Name="isBCN" IsChecked="True" Style="{DynamicResource MaterialDesignSwitchToggleButton}">
+                            </ToggleButton>
+                        </StackPanel>
+                        <Button x:Name="btnAddDay" Click="btnAddDay_Click" Grid.Column="2" Grid.Row="4" Background="{StaticResource Add_Button}" BorderBrush="Transparent"  HorizontalAlignment="Right"  Content="{StaticResource Text_Add_Button}"></Button>
+                    </Grid>
+                </StackPanel>
+                <StackPanel Grid.Row="0" Orientation="Vertical" Margin="10 10 10 10">
+                    <TextBlock VerticalAlignment="Center" FontWeight="Bold">Ingresar un mes completo</TextBlock>
+                    <Separator/>
+
+                    <Grid Margin="5" >
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="30"/>
+                            <RowDefinition Height="30"/>
+                            <RowDefinition Height="30"/>
+                            <RowDefinition Height="10"/>
+                            <RowDefinition Height="40"/>
+                        </Grid.RowDefinitions>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="70"/>
+                            <ColumnDefinition Width="185"/>
+                        </Grid.ColumnDefinitions>
+
+                        <TextBlock VerticalAlignment="Center" Grid.Row="0" Grid.Column="0">Año:</TextBlock>
+                        <TextBox  x:Name="txtAño" materialDesign:ValidationAssist.OnlyShowOnFocus="True" MaxLength="4" Grid.Row="0" Grid.Column="1"/>
+                        <TextBlock VerticalAlignment="Center" Grid.Row="1" Grid.Column="0">Mes:</TextBlock>
+                        <ComboBox SelectedValuePath="Tag" Grid.Row="1" Grid.Column="1" Width="185" x:Name="cboMesPeriodo" materialDesign:HintAssist.Hint="Seleccione" VerticalAlignment="Center" HorizontalAlignment="Left">
+                            <ComboBoxItem Tag="1"  Content="Enero"></ComboBoxItem>
+                            <ComboBoxItem Tag="2"  Content="Febrero"></ComboBoxItem>
+                            <ComboBoxItem Tag="3"  Content="Marzo"></ComboBoxItem>
+                            <ComboBoxItem Tag="4"  Content="Abril"></ComboBoxItem>
+                            <ComboBoxItem Tag="5"  Content="Mayo"></ComboBoxItem>
+                            <ComboBoxItem Tag="6"  Content="Junio"></ComboBoxItem>
+                            <ComboBoxItem Tag="7"  Content="Julio"></ComboBoxItem>
+                            <ComboBoxItem Tag="8"  Content="Agosto"></ComboBoxItem>
+                            <ComboBoxItem Tag="9"  Content="Septiembre"></ComboBoxItem>
+                            <ComboBoxItem Tag="10" Content="Octubre"></ComboBoxItem>
+                            <ComboBoxItem Tag="11" Content="Noviembre"></ComboBoxItem>
+                            <ComboBoxItem Tag="12" Content="Diciembre"></ComboBoxItem>
+                        </ComboBox>
+
+                        <TextBlock VerticalAlignment="Center" Grid.Row="2" Grid.Column="0">Moneda:</TextBlock>
+                        <ComboBox DisplayMemberPath="Moneda1" SelectedValuePath="IdMoneda" Grid.Row="2" Grid.Column="1" Width="185" x:Name="cboMonedaPeriodo" materialDesign:HintAssist.Hint="Seleccione" VerticalAlignment="Center" HorizontalAlignment="Left">
+                        </ComboBox>
+                        <Button x:Name="btnAddMonth" Click="btnAddMonth_Click" BorderBrush="Transparent" Background="{StaticResource Add_Button}"  Grid.Column="1" HorizontalAlignment="Right" Grid.Row="4"  Content="{StaticResource Text_Add_Button}"></Button>
+                    </Grid>
+                </StackPanel>
+            </Grid>
+            
+            <StackPanel Grid.Column="1" Orientation="Vertical" HorizontalAlignment="Center">
+                <Rectangle VerticalAlignment="Stretch" Height="390" Width="1" Stroke="Gray" Margin="0 5 0 5"/>
+            </StackPanel>
+            
+            <Grid Grid.Column="2">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="auto"/>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="auto"/>
+                </Grid.RowDefinitions>
+
+                <StackPanel Grid.Row="0" Margin="0 10 10 5" HorizontalAlignment="Right" Orientation="Horizontal">
+                    <TextBlock Foreground="{StaticResource DarkGray}">Se ha cargado la cantidad de:</TextBlock>
+                    <TextBlock Foreground="{StaticResource DarkGray}" Margin="3 0 3 0" x:Name="lblCantidadRegistros"> 0</TextBlock>
+                    <TextBlock Foreground="{StaticResource DarkGray}">Tipo(s) de Cambio</TextBlock>
+
+                </StackPanel>
+                <StackPanel x:Name="panel_contenedorTbl" Grid.Row="1">
+                    <DataGrid  VerticalAlignment="Stretch" HorizontalScrollBarVisibility="Auto" CanUserAddRows="False" VerticalScrollBarVisibility="Auto" Name="tblVariaciones" AutoGenerateColumns="False" SelectionUnit="FullRow" SelectionMode="Single" >
+                        <DataGrid.Columns>
+                            <DataGridTemplateColumn CanUserResize="False" Width="50" Header="">
+                                <DataGridTemplateColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <StackPanel>
+                                            <Button x:Name="btnDelete" Background="{StaticResource Delete_Button}" Height="20" Width="20" Style="{StaticResource MaterialDesignToolButton}" BorderBrush="Transparent" Click="btnDelete_Click">
+                                                <materialDesign:PackIcon Kind="Delete" HorizontalAlignment="Center"  VerticalAlignment="Center" Margin="0 0 0 0"></materialDesign:PackIcon>
+                                            </Button>
+                                        </StackPanel>
+                                    </DataTemplate>
+                                </DataGridTemplateColumn.CellTemplate>
+                            </DataGridTemplateColumn>
+                            <DataGridTextColumn CanUserReorder="False" CanUserResize="False" IsReadOnly="True" Header="Fecha" Width="120" Binding="{Binding Fecha,StringFormat={}{0:dd/MM/yyyy}}"></DataGridTextColumn>
+                            <DataGridTextColumn CanUserReorder="False" CanUserResize="False" IsReadOnly="True" Header="Moneda" Width="120" Binding="{Binding Moneda.Moneda1}"></DataGridTextColumn>
+                            <DataGridTextColumn CanUserReorder="False" CanUserResize="False" IsReadOnly="True" Header="Valor" Width="120" Binding="{Binding Valor, StringFormat={}{0:n4}}"></DataGridTextColumn>
+                        </DataGrid.Columns>
+                    </DataGrid>
+                </StackPanel>
+                <StackPanel Grid.Row="2" >
+                    <StackPanel x:Name="panelError" Background="{StaticResource ErrorAlert}" Height="80" Visibility="Collapsed">
+                        <Grid Margin="10">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="auto"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+                            <materialDesign:PackIcon Foreground="{StaticResource ErrorMsj}" Kind="AlertCircle" Width="30" Height="30" Grid.Column="0">
+                            </materialDesign:PackIcon>
+                            <TextBlock x:Name="txtError" Margin="10 0 0 0" Foreground="{StaticResource DarkGray}" Grid.Column="1" TextWrapping="Wrap" VerticalAlignment="Center"></TextBlock>
+                        </Grid>
+                    </StackPanel>
+                </StackPanel>
+            </Grid>
+
+        </Grid>
+        <StackPanel Orientation="Vertical"  Height="auto"  Background="{StaticResource Bar_BackgroundColor}" Grid.Row="1" >
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" >
+                <StackPanel >
+                    <Button Height="40" Foreground="{StaticResource DarkGray_TextAccent}" Width="150" x:Name="btnSave" Style="{StaticResource MaterialDesignFlatButton}" Click="btnSave_Click"  Content="{StaticResource Text_Save_Button}">
+                        
+                    </Button>
+                </StackPanel>
+            </StackPanel>
+        </StackPanel>
+    </Grid>
+</Window>
