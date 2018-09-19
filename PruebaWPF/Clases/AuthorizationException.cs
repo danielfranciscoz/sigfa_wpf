@@ -11,8 +11,8 @@ namespace PruebaWPF.Clases
     {
         public AuthorizationException() { }
 
-        public AuthorizationException(string PermisoName) : base("Se denegó el permiso "+PermisoName+" , no es posible realizar la acción soliticada.") { }
-        public AuthorizationException(string PermisoName,int IdRecinto) : base("Se denegó el permiso " + PermisoName + " para el recinto "+clsSessionHelper.recintosMemory.Where(w=>w.IdRecinto == IdRecinto).Select(s=>s.Siglas).FirstOrDefault()+", no es posible realizar la acción soliticada.") { }
+        public AuthorizationException(string PermisoName) : base(string.Format("Se denegó el permiso {0} , no es posible realizar la acción soliticada.",PermisoName)) { }
+        public AuthorizationException(string PermisoName,int IdRecinto) : base(string.Format("Se denegó el permiso {0} para el recinto {1}, no es posible realizar la acción soliticada.",PermisoName, clsSessionHelper.recintosMemory.Where(w => w.IdRecinto == IdRecinto).Select(s => s.Siglas).FirstOrDefault())) { }
 
     }
 }
