@@ -1260,7 +1260,6 @@ IIF(string.IsNullOrEmpty(Fields!Concepto.Value),Fields!Arancel.Value,Fields!Conc
                             <PaddingBottom>2pt</PaddingBottom>
                           </Style>
                         </Textbox>
-                        <rd:Selected>true</rd:Selected>
                       </CellContents>
                     </TablixCell>
                   </TablixCells>

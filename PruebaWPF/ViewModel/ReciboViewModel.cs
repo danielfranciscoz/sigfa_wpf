@@ -504,7 +504,7 @@ namespace PruebaWPF.ViewModel
             var r = db.Recibo1.Where(w => w.Serie.Equals(serieCajero.IdSerie.ToString()));
             int Idrecibo;
 
-            if (r.Count() > 1)
+            if (r.Count() > 0)
             {
                 Idrecibo = r.Max(s => s.IdRecibo);
             }
