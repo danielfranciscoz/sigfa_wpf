@@ -78,7 +78,7 @@ namespace PruebaWPF.Views.Shared
 
         private async void LoadTable()
         {
-            items = await FindAsync(true,null);
+            items = await FindAsync(true, null);
             AsignarItemSource(items);
         }
 
@@ -134,14 +134,18 @@ namespace PruebaWPF.Views.Shared
                 SelectedArea = (vw_Areas)tblAreasRRHH.SelectedItem;
                 this.Close();
             }
-            else {
+            else
+            {
                 clsutilidades.OpenMessage(new Operacion() { Mensaje = clsReferencias.MESSAGE_NoSelection, OperationType = clsReferencias.TYPE_MESSAGE_Advertencia });
             }
         }
 
         private void tblAreasRRHH_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
-            Seleccionar();
+            if (tblAreasRRHH.SelectedItem != null)
+            {
+                Seleccionar();
+            }
         }
 
         private void ContarRegistros()

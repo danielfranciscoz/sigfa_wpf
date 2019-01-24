@@ -19,6 +19,8 @@ namespace PruebaWPF.Referencias
         public const int TYPE_MESSAGE_Error = 1;
         public const int TYPE_MESSAGE_Advertencia = 2;
         public const int TYPE_MESSAGE_Question = 3;
+        public const int TYPE_MESSAGE_Information = 4;
+        public const int TYPE_MESSAGE_Wait_a_Moment = 5;
 
         //Información de mensajes 
         public const string MESSAGE_Exito_Export = "Se exportó la información con éxito.";

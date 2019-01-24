@@ -21,7 +21,7 @@
 
         <StackPanel Height="auto" Grid.Row="0" VerticalAlignment="Top">
             <StackPanel  x:Name="layoutRoot">
-                <UserControl:Bar_Back/>
+                <UserControl:Bar_Back x:Name="tittle_bar"/>
             </StackPanel>
         </StackPanel>
 

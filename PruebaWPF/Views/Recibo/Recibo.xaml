@@ -45,9 +45,8 @@
                         <ColumnDefinition Width="*"/>
                     </Grid.ColumnDefinitions>
                     <StackPanel Grid.Column="0" Orientation="Horizontal">
-                        <Button Tag="{StaticResource Permiso_Guardar}" BorderBrush="Transparent"  Background="{StaticResource Save_Button}" Margin="5 5 5 5" Click="Button_Click">NUEVO</Button>
-                        <Button Tag="{StaticResource Permiso_Imprimir}" BorderBrush="Transparent" Background="{StaticResource Print_Button}" Margin="5" Click="Button_Click_1" Height="Auto" Content="{StaticResource Text_Print_Button}"></Button>
-                        <Button Tag="{StaticResource Permiso_Eliminar}" BorderBrush="Transparent" Background="{StaticResource Delete_Button}" Margin="5" Click="Button_Click_2" Height="Auto" Content="{StaticResource Text_Anular_Button}"></Button>
+                        <Button Tag="{StaticResource Permiso_Imprimir}" BorderBrush="Transparent" Background="{StaticResource Print_Button}" x:Name="btn_Imprimir" Margin="5" Click="Button_Click_1" Height="Auto" Content="{StaticResource Text_Print_Button}"></Button>
+                        <Button Tag="{StaticResource Permiso_Eliminar}" BorderBrush="Transparent" Background="{StaticResource Delete_Button}" x:Name="btn_Anular" Margin="5" Click="Button_Click_2" Height="Auto" Content="{StaticResource Text_Anular_Button}"></Button>
                         <Button Tag="{StaticResource Permiso_Exportar}" BorderBrush="Transparent" Background="{StaticResource Export_Button}" Margin="5" Click="btn_Exportar" Height="Auto" Content="{StaticResource Text_Export_Button}"></Button>
                     </StackPanel>
                     <StackPanel HorizontalAlignment="Right" Grid.Column="1" Orientation="Horizontal">
@@ -149,7 +148,7 @@
                                             <DataGridTextColumn CanUserReorder="False" CanUserResize="True" IsReadOnly="True" Header="Concepto" Width="auto" Binding="{Binding Concepto}"></DataGridTextColumn>
                                             <DataGridTextColumn CanUserReorder="False" CanUserResize="False" IsReadOnly="True" Header="" Width="auto" Binding="{Binding ArancelPrecio.Moneda.Simbolo}"></DataGridTextColumn>
                                             <DataGridTextColumn CanUserReorder="False" CanUserResize="True" IsReadOnly="True" Header="Monto" Width="auto" Binding="{Binding MontoVirtual}"></DataGridTextColumn>
-                                            <DataGridTextColumn CanUserReorder="False" CanUserResize="True" IsReadOnly="True" Header="Descuento" Width="auto" Binding="{Binding Descuento}"></DataGridTextColumn>
+                                            <DataGridTextColumn CanUserReorder="False" CanUserResize="True" IsReadOnly="True" Header="Exonerado" Width="auto" Binding="{Binding Descuento}"></DataGridTextColumn>
                                             <DataGridTextColumn CanUserReorder="False" CanUserResize="True" IsReadOnly="True" Header="Total" Width="auto" Binding="{Binding Total}"></DataGridTextColumn>
                                         </DataGrid.Columns>
 
@@ -180,6 +179,7 @@
                                         <DataGridTextColumn CanUserReorder="False" CanUserResize="True" IsReadOnly="True" Header="Forma de Pago" Width="auto" Binding="{Binding FormaPago.FormaPago1}"></DataGridTextColumn>
                                         <DataGridTextColumn CanUserReorder="False" CanUserResize="False" IsReadOnly="True" Header="" Width="auto" Binding="{Binding Moneda.Simbolo}"></DataGridTextColumn>
                                         <DataGridTextColumn CanUserReorder="False" CanUserResize="True" IsReadOnly="True" Header="Monto" Width="auto" Binding="{Binding Monto}"></DataGridTextColumn>
+                                        <DataGridTextColumn CanUserReorder="False" CanUserResize="True" IsReadOnly="True" Header="" Width="auto" Binding="{Binding InfoAdicional}"></DataGridTextColumn>
                                     </DataGrid.Columns>
 
                                 </DataGrid>

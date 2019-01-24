@@ -5,49 +5,55 @@ using PruebaWPF.UserControls;
 using PruebaWPF.ViewModel;
 using PruebaWPF.Views.Shared;
 using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Linq;
+using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Data;
+using System.Windows.Documents;
 using System.Windows.Input;
+using System.Windows.Media;
+using System.Windows.Media.Imaging;
+using System.Windows.Navigation;
+using System.Windows.Shapes;
 
-namespace PruebaWPF.Views.VariacionCambiaria
+namespace PruebaWPF.Views.AgenteExterno
 {
     /// <summary>
-    /// Lógica de interacción para VariacionCambiaria.xaml
+    /// Lógica de interacción para AgenteExterno.xaml
     /// </summary>
-    public partial class VariacionCambiaria : Page
+    public partial class AgenteExterno : Page
     {
-        private VariacionCambiariaViewModel controller;
+        private AgenteExternoViewModel controller;
 
-        private ObservableCollection<Model.VariacionCambiaria> items;
+        private ObservableCollection<Model.AgenteExterno> items;
         private Operacion operacion;
         public static Boolean Cambios = false;
-
+        
         public Model.Pantalla pantalla;
 
-        public VariacionCambiaria()
+        public AgenteExterno()
         {
-            controller = new VariacionCambiariaViewModel();
-            operacion = new Operacion();
-
+            
             InitializeComponent();
-           
         }
-        public VariacionCambiaria(Pantalla pantalla)
+
+        public AgenteExterno(Pantalla pantalla)
         {
             this.pantalla = pantalla;
 
-            controller = new VariacionCambiariaViewModel();
+            controller = new AgenteExternoViewModel(pantalla);
             operacion = new Operacion();
-
-            InitializeComponent();
             
+            InitializeComponent();
         }
 
         private void ResizeGrid()
         {
-            tblVariacionCambiaria.Height = panelGrid.ActualHeight;
+            tblAgenteExterno.Height = panelGrid.ActualHeight;
 
         }
 
@@ -64,33 +70,33 @@ namespace PruebaWPF.Views.VariacionCambiaria
             }
         }
 
-        private Task<ObservableCollection<Model.VariacionCambiaria>> FindAsync(String text)
+        private Task<ObservableCollection<Model.AgenteExterno>> FindAsync(String text)
         {
             if (text.Equals(""))
             {
                 return Task.Run(() =>
                 {
-                    return new ObservableCollection<Model.VariacionCambiaria>(controller.FindAll());
+                    return new ObservableCollection<Model.AgenteExterno>(controller.FindAll());
                 });
             }
             else
             {
                 return Task.Run(() =>
                 {
-                    return new ObservableCollection<Model.VariacionCambiaria>(controller.FindByText(text)); ;
+                    return new ObservableCollection<Model.AgenteExterno>(controller.FindByText(text)); ;
                 });
             }
         }
 
         private void Load()
         {
-            tblVariacionCambiaria.ItemsSource = items;
+            tblAgenteExterno.ItemsSource = items;
             ContarRegistros();
         }
 
         private void ContarRegistros()
         {
-            lblCantidadRegitros.Text = "" + tblVariacionCambiaria.Items.Count;
+            lblCantidadRegitros.Text = "" + tblAgenteExterno.Items.Count;
         }
 
         private void LoadTitle()
@@ -101,15 +107,9 @@ namespace PruebaWPF.Views.VariacionCambiaria
             this.layoutRoot.DataContext = e;
         }
 
-        private void Button_Click(object sender, RoutedEventArgs e)
-        {
-            GestionarVariacionCambiaria gvc = new GestionarVariacionCambiaria();
-            gvc.ShowDialog();
-        }
-
         private void btn_Exportar(object sender, RoutedEventArgs e)
         {
-            Exportar export = new Exportar(GetDataTable.GetDataGridRows(tblVariacionCambiaria));
+            Exportar export = new Exportar(GetDataTable.GetDataGridRows(tblAgenteExterno));
             export.ShowDialog();
             operacion = Exportar.Operacion;
 
@@ -120,7 +120,7 @@ namespace PruebaWPF.Views.VariacionCambiaria
         {
             LoadTable(txtFind.Text);
         }
-      
+
 
         private void Page_Loaded(object sender, RoutedEventArgs e)
         {
@@ -148,7 +148,7 @@ namespace PruebaWPF.Views.VariacionCambiaria
             Operacion o = new Operacion();
             try
             {
-                controller.Eliminar((VariacionCambiariaSon)tblVariacionCambiaria.CurrentItem);
+                controller.Eliminar((Model.AgenteExterno)tblAgenteExterno.CurrentItem);
 
                 o.Mensaje = clsReferencias.MESSAGE_Exito_Delete;
                 o.OperationType = clsReferencias.TYPE_MESSAGE_Exito;
@@ -160,6 +160,27 @@ namespace PruebaWPF.Views.VariacionCambiaria
                 o.OperationType = clsReferencias.TYPE_MESSAGE_Error;
             }
             return o;
+
+        }
+
+        private void Button_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                if (controller.Autorice(((Button)sender).Tag.ToString()))
+                {
+                    GestionarAgenteExterno ga = new GestionarAgenteExterno(pantalla, btnSave.Tag.ToString());
+                    ga.ShowDialog();
+                }
+            }
+            catch (Exception ex)
+            {
+                clsutilidades.OpenMessage(new Operacion() { Mensaje = new clsException(ex).ErrorMessage(), OperationType = clsReferencias.TYPE_MESSAGE_Error });
+            }
+        }
+
+        private void Button_Click_1(object sender, RoutedEventArgs e)
+        {
 
         }
     }

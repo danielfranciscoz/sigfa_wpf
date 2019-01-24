@@ -1,5 +1,4 @@
-﻿using Confortex.Clases;
-using MaterialDesignThemes.Wpf;
+﻿using MaterialDesignThemes.Wpf;
 using PruebaWPF.Clases;
 using PruebaWPF.Helper;
 using PruebaWPF.Model;
@@ -25,7 +24,6 @@ namespace PruebaWPF.Views.Main
         private const String Namespace = "PruebaWPF.Views.";
         public static Window principal;
         public static frmMain frmmain;
-
 
         public frmMain()
         {
@@ -222,6 +220,7 @@ namespace PruebaWPF.Views.Main
 
         public static void AddNotification(frmMain valor, Operacion o)
         {
+            valor.Label_Exportando.Visibility = Visibility.Collapsed;
             valor.AddItemNotificacion(o);
         }
 
@@ -255,6 +254,11 @@ namespace PruebaWPF.Views.Main
             {
                 clsutilidades.OpenMessage(o);
             }
+        }
+
+        internal static void Exportando_Label(frmMain principal)
+        {
+            principal.Label_Exportando.Visibility = Visibility.Visible;
         }
 
         private void btnNotifications_Visibilidad()
@@ -297,8 +301,10 @@ namespace PruebaWPF.Views.Main
 
         public static void Refrescar()
         {
-            Contenedor.Refresh();
+            Contenedor.NavigationService.Refresh();
+            //Contenedor.Refresh();
         }
+
 
         private void btnNotificaciones_Click(object sender, RoutedEventArgs e)
         {
@@ -317,7 +323,7 @@ namespace PruebaWPF.Views.Main
         private void maximize_Click(object sender, RoutedEventArgs e)
         {
             this.WindowState = WindowState.Maximized;
-            btnswitch.IsChecked = true;      
+            btnswitch.IsChecked = true;
         }
 
         private void restore_Click(object sender, RoutedEventArgs e)
@@ -335,6 +341,12 @@ namespace PruebaWPF.Views.Main
         private void DockPanel_MouseLeftButtonDown(object sender, System.Windows.Input.MouseButtonEventArgs e)
         {
             DragMove();
+        }
+
+        private void MenuItem_Click_1(object sender, RoutedEventArgs e)
+        {
+            Views.Account.Configuracion cf = new Views.Account.Configuracion();
+            cf.ShowDialog();
         }
     }
 }

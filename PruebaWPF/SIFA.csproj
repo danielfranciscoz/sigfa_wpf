@@ -686,6 +686,15 @@
     <Compile Include="Model\ReciboPago.cs">
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
+    <Compile Include="Model\ReciboPagoBono.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Model\ReciboPagoCheque.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Model\ReciboPagoTarjeta.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
     <Compile Include="Model\ReciboTarjeta.cs">
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
@@ -1039,6 +1048,7 @@
       <DependentUpon>MessageCard.xaml</DependentUpon>
     </Compile>
     <Compile Include="ViewModel\AccountViewModel.cs" />
+    <Compile Include="ViewModel\AgenteExternoViewModel.cs" />
     <Compile Include="ViewModel\ExportaViewModel.cs" />
     <Compile Include="ViewModel\LoginViewModel.cs" />
     <Compile Include="ViewModel\OrdenPagoViewModel.cs" />
@@ -1049,6 +1059,15 @@
     <Compile Include="ViewModel\SharedViewModel.cs" />
     <Compile Include="ViewModel\TesoreriaViewModel.cs" />
     <Compile Include="ViewModel\VariacionCambiariaViewModel.cs" />
+    <Compile Include="Views\Account\Configuracion.xaml.cs">
+      <DependentUpon>Configuracion.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\AgenteExterno\AgenteExterno.xaml.cs">
+      <DependentUpon>AgenteExterno.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\AgenteExterno\GestionarAgenteExterno.xaml.cs">
+      <DependentUpon>GestionarAgenteExterno.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\Main\frmMain.xaml.cs">
       <DependentUpon>frmMain.xaml</DependentUpon>
     </Compile>
@@ -1136,6 +1155,18 @@
       <SubType>Code</SubType>
     </Compile>
     <Page Include="Resources\Temas.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\Account\Configuracion.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\AgenteExterno\AgenteExterno.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\AgenteExterno\GestionarAgenteExterno.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -1263,6 +1294,7 @@
     <None Include="Properties\DataSources\PruebaWPF.Model.clsResultObject.datasource" />
     <None Include="Properties\DataSources\PruebaWPF.Model.fn_ConsultarInfoExterna_Result.datasource" />
     <None Include="Properties\DataSources\PruebaWPF.Model.InfoRecibo.datasource" />
+    <None Include="Properties\DataSources\PruebaWPF.Model.OrdenPago.datasource" />
     <None Include="Properties\DataSources\PruebaWPF.ViewModel.DetReciboSon.datasource" />
     <None Include="Properties\DataSources\PruebaWPF.ViewModel.ReciboPagoSon.datasource" />
     <None Include="Properties\DataSources\PruebaWPF.ViewModel.VariacionCambiariaSon.datasource" />

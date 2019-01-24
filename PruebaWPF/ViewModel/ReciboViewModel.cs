@@ -35,7 +35,7 @@ namespace PruebaWPF.ViewModel
         public List<ReciboSon> FindAll()
         {
 
-            List<Recibo1> recibo = db.Recibo1.Take(clsConfiguration.RowCount()).ToList().Where(w => new SecurityViewModel().RecintosPermiso(pantalla).Any(a => w.Caja.IdRecinto == a.IdRecinto)).ToList();
+            List<Recibo1> recibo = db.Recibo1.Take(clsConfiguration.Actual().TopRow).ToList().Where(w => new SecurityViewModel().RecintosPermiso(pantalla).Any(a => w.Caja.IdRecinto == a.IdRecinto)).ToList();
 
             return UnirRecibos(recibo);
         }
@@ -90,7 +90,6 @@ namespace PruebaWPF.ViewModel
                 Serie = r.Serie,
                 IdCaja = r.IdCaja,
                 IdPeriodoEspecifico = r.IdPeriodoEspecifico,
-                IdImpresion = r.IdImpresion,
                 IdArea = r.OrdenPago.IdArea,
                 IdFuenteFinanciamiento = r.IdFuenteFinanciamiento,
                 IdTipoDeposito = r.OrdenPago.IdTipoDeposito,
@@ -118,7 +117,6 @@ namespace PruebaWPF.ViewModel
                 Serie = r.Serie,
                 IdCaja = r.IdCaja,
                 IdPeriodoEspecifico = r.IdPeriodoEspecifico,
-                IdImpresion = r.IdImpresion,
                 IdArea = r.IdArea,
                 IdFuenteFinanciamiento = r.IdFuenteFinanciamiento,
                 IdTipoDeposito = r.IdTipoDeposito,
@@ -147,7 +145,6 @@ namespace PruebaWPF.ViewModel
                 Serie = r.Serie,
                 IdCaja = r.IdCaja,
                 IdPeriodoEspecifico = r.IdPeriodoEspecifico,
-                IdImpresion = r.IdImpresion,
                 IdArea = r.ReciboAnulado.OrdenPago.IdArea,
                 IdFuenteFinanciamiento = r.IdFuenteFinanciamiento,
                 IdTipoDeposito = r.ReciboAnulado.OrdenPago.IdTipoDeposito,
@@ -176,7 +173,6 @@ namespace PruebaWPF.ViewModel
                 Serie = r.Serie,
                 IdCaja = r.IdCaja,
                 IdPeriodoEspecifico = r.IdPeriodoEspecifico,
-                IdImpresion = r.IdImpresion,
                 IdArea = r.IdArea,
                 IdFuenteFinanciamiento = r.IdFuenteFinanciamiento,
                 IdTipoDeposito = r.IdTipoDeposito,
@@ -251,63 +247,7 @@ namespace PruebaWPF.ViewModel
         public List<ReciboSon> FindRecibo(int Id, string Serie)
         {
 
-            List<ReciboSon> result = UnirRecibos(db.Recibo1.Where(w => w.IdRecibo == Id && w.Serie == Serie).ToList());
-
-            //if (recibo.IdOrdenPago != null) //Recibo generado con información manual
-            //{
-            //    var orden = recibo.OrdenPago;
-            //    result.Add(
-            //    new ReciboSon()
-            //    {
-            //        IdRecibo = recibo.IdRecibo,
-            //        Serie = recibo.Serie,
-            //        IdCaja = recibo.IdCaja,
-            //        IdPeriodoEspecifico = recibo.IdPeriodoEspecifico,
-            //        IdImpresion = recibo.IdImpresion,
-            //        IdArea = orden.IdArea,
-            //        IdFuenteFinanciamiento = recibo.IdFuenteFinanciamiento,
-            //        IdTipoDeposito = orden.IdTipoDeposito,
-            //        Identificador = orden.Identificador,
-            //        Recibimos = orden.Recibimos,
-            //        Fecha = recibo.Fecha,
-            //        IdOrdenPago = orden.IdOrdenPago,
-            //        UsuarioCreacion = recibo.UsuarioCreacion,
-            //        regAnulado = recibo.regAnulado,
-            //        IdInfoRecibo = recibo.IdInfoRecibo,
-            //        Recinto = db.vw_RecintosRH.Where(w => w.IdRecinto == recibo.Caja.IdRecinto).Select(s1 => s1.Siglas).FirstOrDefault().ToString(),
-            //        Area = db.vw_Areas.Where(w => w.codigo == orden.IdArea).Select(s1 => s1.descripcion).FirstOrDefault().ToString().ToUpper(),
-            //        InfoRecibo = recibo.InfoRecibo,
-            //        Caja = recibo.Caja,
-            //        OrdenPago = recibo.OrdenPago
-            //    });
-            //}
-            //else
-            //{ // Recibo generado con información de Orden de pago
-            //    result.Add(
-            //    new ReciboSon()
-            //    {
-            //        IdRecibo = recibo.IdRecibo,
-            //        Serie = recibo.Serie,
-            //        IdCaja = recibo.IdCaja,
-            //        IdPeriodoEspecifico = recibo.IdPeriodoEspecifico,
-            //        IdImpresion = recibo.IdImpresion,
-            //        IdArea = recibo.IdArea,
-            //        IdFuenteFinanciamiento = recibo.IdFuenteFinanciamiento,
-            //        IdTipoDeposito = recibo.IdTipoDeposito,
-            //        Identificador = recibo.Identificador,
-            //        Recibimos = recibo.Recibimos,
-            //        Fecha = recibo.Fecha,
-            //        IdOrdenPago = recibo.IdOrdenPago,
-            //        UsuarioCreacion = recibo.UsuarioCreacion,
-            //        regAnulado = recibo.regAnulado,
-            //        IdInfoRecibo = recibo.IdInfoRecibo,
-            //        Recinto = db.vw_RecintosRH.Where(w => w.IdRecinto == recibo.Caja.IdRecinto).Select(s1 => s1.Siglas).FirstOrDefault().ToString(),
-            //        Area = db.vw_Areas.Where(w => w.codigo == recibo.IdArea).Select(s1 => s1.descripcion).FirstOrDefault().ToString().ToUpper(),
-            //        InfoRecibo = recibo.InfoRecibo,
-            //        Caja = recibo.Caja,
-            //    });
-            //}
-
+            List<ReciboSon> result = UnirRecibos(db.Recibo1.Where(w => w.IdRecibo == Id && w.Serie == Serie).ToList());          
             return result;
         }
 
@@ -345,7 +285,9 @@ namespace PruebaWPF.ViewModel
         {
             return recibo.ReciboPago.Select(s => new ReciboPagoSon()
             {
-                IdReciboPago = s.IdReciboPago,
+                DetalleAdicional = ObtenerObjetoAdicional(s)[0],
+                InfoAdicional = ObtenerObjetoAdicional(s)[1].ToString(),
+                IdReciboPago =s.IdReciboPago,
                 IdRecibo = s.IdRecibo,
                 Serie = s.Serie,
                 IdFormaPago = s.IdFormaPago,
@@ -358,6 +300,39 @@ namespace PruebaWPF.ViewModel
                 Moneda = s.Moneda
 
             }).ToList();
+        }
+
+        private object[] ObtenerObjetoAdicional(ReciboPago r)
+        {
+            Object[] o = new Object[2];
+            switch (r.IdFormaPago)
+            {
+                case 2: //Cheque
+                    ReciboPagoCheque rc = r.ReciboPagoCheque;
+
+                    o[0] = rc;
+                    o[1] = string.Format("{0}, Cuenta {1}, Cheque No.{2}", rc.Banco.Nombre, rc.Cuenta, rc.NumeroCK);
+                    break;
+                case 3: //Tarjeta
+                    ReciboPagoTarjeta rt =r.ReciboPagoTarjeta;
+                   
+                    o[0] = rt;
+                    o[1] = string.Format("{0}, Autorización {1}", rt.CiaTarjetaCredito.Nombre, rt.Autorizacion);
+                    break;
+                case 4: //Bono
+                    ReciboPagoBono rb = r.ReciboPagoBono;
+
+                    o[0] = rb;
+                    o[1] = string.Format("Emitipo por {0}, Bono No.{1}", rb.Emisor, rb.Numero);
+                    break;
+                default:
+                    o[0] = null;
+                    o[1] = "";
+                    break;
+                    //Efectivo
+            }
+
+            return o;
         }
 
         public void Guardar(ReciboSon Obj)
@@ -380,7 +355,6 @@ namespace PruebaWPF.ViewModel
                     roc.Serie = recibo.Serie;
                     roc.IdCaja = recibo.IdCaja;
                     roc.IdPeriodoEspecifico = recibo.IdPeriodoEspecifico;
-                    roc.IdImpresion = 0;
                     roc.IdFuenteFinanciamiento = recibo.IdFuenteFinanciamiento;
                     roc.Fecha = System.DateTime.Now;
                     roc.UsuarioCreacion = clsSessionHelper.usuario.Login;
@@ -416,24 +390,56 @@ namespace PruebaWPF.ViewModel
                         db.Entry(orden).State = System.Data.Entity.EntityState.Modified;
                     }
 
-                    List<ReciboPago> pagos = new List<ReciboPago>(detallePago.Select(s => new ReciboPago()
-                    {
-                        IdRecibo = roc.IdRecibo,
-                        Serie = roc.Serie,
-                        IdFormaPago = s.IdFormaPago,
-                        Monto = s.Monto,
-                        IdMoneda = s.IdMoneda,
-                        FechaCreacion = System.DateTime.Now,
-                        UsuarioCreacion = clsSessionHelper.usuario.Login
-
-                    }));
-
                     db.Recibo1.Add(roc);
                     if (detalles != null)
                     {
                         db.ReciboDet.AddRange(detalles);
                     }
-                    db.ReciboPago.AddRange(pagos);
+
+                    foreach (ReciboPagoSon item in detallePago)
+                    {
+                       ReciboPago pago = new ReciboPago()
+                        {
+                            IdRecibo = roc.IdRecibo,
+                            Serie = roc.Serie,
+                            IdFormaPago = item.IdFormaPago,
+                            Monto = item.Monto,
+                            IdMoneda = item.IdMoneda,
+                            FechaCreacion = System.DateTime.Now,
+                            UsuarioCreacion = clsSessionHelper.usuario.Login
+                        };
+
+                        db.ReciboPago.Add(pago);
+                        db.SaveChanges();
+
+                        switch (item.IdFormaPago)
+                        {
+                            case 2: //Cheque
+                                ReciboPagoCheque rc = (ReciboPagoCheque)item.DetalleAdicional;
+                                rc.IdReciboPago = pago.IdReciboPago;
+
+                                db.ReciboPagoCheque.Add(rc);
+                                break;
+                            case 3: //Tarjeta
+                                ReciboPagoTarjeta rt = (ReciboPagoTarjeta)item.DetalleAdicional;
+                                rt.IdReciboPago = pago.IdReciboPago;
+
+                                db.ReciboPagoTarjeta.Add(rt);
+                                break;
+                            case 4: //Bono
+                                ReciboPagoBono rb = (ReciboPagoBono)item.DetalleAdicional;
+                                rb.IdReciboPago = pago.IdReciboPago;
+
+                                db.ReciboPagoBono.Add(rb);
+                                break;
+                            default:
+                                
+                                break;
+                                //Efectivo
+                        }
+
+                    }
+                    //db.ReciboPago.AddRange(pagos);
 
                     db.SaveChanges();
                     transaction.Commit();
@@ -540,7 +546,17 @@ namespace PruebaWPF.ViewModel
 
         public List<FuenteFinanciamiento> ObtenerFuentesFinanciamiento()
         {
-            return db.FuenteFinanciamiento.Where(w => w.RegAnulado == false).OrderBy(w => w.Nombre).ToList();
+            return db.FuenteFinanciamiento.Where(w => w.RegAnulado == false && w.Tiene_Ingreso).OrderBy(w => w.Nombre).ToList();
+        }
+
+        public List<Banco> ObtenerBancos()
+        {
+            return db.Banco.Where(w => w.RegAnulado == false).OrderBy(o=>o.Nombre).ToList();
+        }
+
+        public List<CiaTarjetaCredito> ObtenerTarjetas()
+        {
+            return db.CiaTarjetaCredito.Where(w => w.RegAnulado == false).OrderBy(o => o.Nombre).ToList();
         }
 
         public List<TipoDeposito> ObtenerTipoCuenta()
@@ -628,6 +644,8 @@ namespace PruebaWPF.ViewModel
 
         public decimal MontoVirtual => ArancelPrecio.Arancel.isPrecioVariable == true ? PrecioVariable : ArancelPrecio.Precio;
         public decimal Total => MontoVirtual - Descuento;
+
+
     }
 
 
@@ -639,6 +657,8 @@ namespace PruebaWPF.ViewModel
         //Estos campos son creados para el reporte
         public string FormaPagoRecibo => FormaPago.FormaPago1;
         public string SimboloMoneda => Moneda.Simbolo;
+        public String InfoAdicional { get; set; }
+        public Object DetalleAdicional { get; set; }
     }
 }
 

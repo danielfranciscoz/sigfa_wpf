@@ -18,6 +18,7 @@ namespace PruebaWPF.Model
         public Banco()
         {
             this.ReciboCheque = new HashSet<ReciboCheque>();
+            this.ReciboPagoCheque = new HashSet<ReciboPagoCheque>();
         }
     
         public byte IdBanco { get; set; }
@@ -29,5 +30,7 @@ namespace PruebaWPF.Model
         public virtual Usuario Usuario { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<ReciboCheque> ReciboCheque { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<ReciboPagoCheque> ReciboPagoCheque { get; set; }
     }
 }

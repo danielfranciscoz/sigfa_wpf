@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 
-namespace Confortex.Clases
+namespace PruebaWPF.Clases
 {
     public class clsException
     {

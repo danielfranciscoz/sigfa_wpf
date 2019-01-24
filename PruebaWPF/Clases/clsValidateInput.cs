@@ -65,7 +65,7 @@ namespace PruebaWPF.Clases
                 {
                     txt = (TextBox)campos[i];
                     txt.GotFocus += (sender, e) =>
-                    {
+                   {
                         txt.BorderBrush = c;
                     };
                 }

@@ -176,7 +176,7 @@
                                 <materialDesign:PackIcon Kind="Store" ></materialDesign:PackIcon>
                             </MenuItem.Icon>
                         </MenuItem>
-                        <MenuItem  Header="Configuración" >
+                        <MenuItem  Header="Configuración" Click="MenuItem_Click_1">
                             <MenuItem.Icon >
                                 <materialDesign:PackIcon Kind="Settings" ></materialDesign:PackIcon>
                             </MenuItem.Icon>
@@ -204,6 +204,7 @@
                                 <ColumnDefinition Width="20" />
                                 <ColumnDefinition Width="Auto" />
                                 <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="Auto" />
                             </Grid.ColumnDefinitions>
                         </Grid>
                     </ItemsPanelTemplate>
@@ -224,6 +225,7 @@
                     <TextBlock Name="lblTipoCambio" Text="T/C: 0.00" />
                 </StatusBarItem>
 
+                
                 <StatusBarItem Grid.Column="5" Padding="0.8" HorizontalAlignment="Right" x:Name="layoutRoot">
                     <Button x:Name="btnNotificaciones" Visibility="Hidden" Padding="42 2 42 2" BorderBrush="Transparent"  Background="Transparent" FontSize="13" FontWeight="Regular" Height="auto" ContextMenuService.IsEnabled="False" Click="btnNotificaciones_Click">
                         <Button.Content>
@@ -249,6 +251,10 @@
                             </ContextMenu>
                         </Button.ContextMenu>
                     </Button>
+                </StatusBarItem>
+
+                <StatusBarItem x:Name="Label_Exportando" Grid.Column="6" Visibility="Collapsed">
+                <TextBlock  x:Name="txtExporting" Text="Exportando datos a Excel..." VerticalAlignment="Center" Margin="0 0 10 0" Foreground="White" ToolTip="Estamos exportando información, le avisaremos cuando hayamos terminado"/>
                 </StatusBarItem>
 
             </StatusBar>

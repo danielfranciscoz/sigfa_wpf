@@ -1,5 +1,4 @@
-﻿using Confortex.Clases;
-using PruebaWPF.Clases;
+﻿using PruebaWPF.Clases;
 using PruebaWPF.Model;
 using PruebaWPF.Referencias;
 using PruebaWPF.UserControls;
@@ -33,7 +32,7 @@ namespace PruebaWPF.Views.Recibo
         public ObservableCollection<ReciboSon> items;
         private Pantalla pantalla;
         private Operacion operacion;
-        private Boolean isOpening = true;
+        public static Boolean isOpening = true;
 
         public Recibo()
         {
@@ -47,7 +46,7 @@ namespace PruebaWPF.Views.Recibo
             operacion = new Operacion();
 
             InitializeComponent();
-            LoadTitle();
+
         }
 
         private ReciboViewModel controller()
@@ -59,6 +58,7 @@ namespace PruebaWPF.Views.Recibo
         {
             Bar_Back e = new Bar_Back();
             e.Value = pantalla.Titulo;
+            e.AutoReload = true;
             this.layoutRoot.DataContext = e;
         }
 
@@ -66,18 +66,19 @@ namespace PruebaWPF.Views.Recibo
         {
             try
             {
+                LoadTitle();
                 ResizeGrid();
-                LoadTable(txtFind.Text);
+
+                if (items == null || isOpening)
+                {
+                    isOpening = false;
+                    LoadTable(txtFind.Text);
+                }
             }
             catch (Exception ex)
             {
                 clsutilidades.OpenMessage(new Operacion() { Mensaje = new clsException(ex).ErrorMessage(), OperationType = clsReferencias.TYPE_MESSAGE_Error });
             }
-        }
-
-        private void Button_Click(object sender, RoutedEventArgs e)
-        {
-
         }
 
         private void btn_Exportar(object sender, RoutedEventArgs e)
@@ -112,16 +113,24 @@ namespace PruebaWPF.Views.Recibo
         {
             try
             {
-                items = await FindAsync(text);
-                Load();
-                if (isOpening)
+                //if (isOpening)
+                //{
+                
+                if (clsConfiguration.Actual().AutoLoad)
                 {
-                    isOpening = false;
-                    if (clsConfiguration.AutomaticReload())
-                    {
-                        AutomaticReloadTask();
-                    }
+                    AutomaticReloadTask();
                 }
+                else
+                {
+                    items = await FindAsync(text);
+                    Load();
+                }
+                //}
+                //else
+                //{
+                //    //items = await FindAsync(text);
+                //    //Load();
+                //}
             }
             catch (Exception ex)
             {
@@ -149,14 +158,14 @@ namespace PruebaWPF.Views.Recibo
 
         private async void AutomaticReloadTask()
         {
-            while (true)
+            while (this.IsVisible && clsConfiguration.Actual().AutoLoad)
             {
                 Boolean data = await Reload(txtFind.Text);
-                await Dormir();
                 if (data)
                 {
                     Load();
                 }
+                await Dormir();
             }
         }
 
@@ -166,8 +175,15 @@ namespace PruebaWPF.Views.Recibo
             await Task.Run(() =>
             {
                 IEnumerable<ReciboSon> colection = (IEnumerable<ReciboSon>)items;
-                List<ReciboSon> item2 = new List<ReciboSon>(colection);
-
+                List<ReciboSon> item2;
+                if (items == null)
+                {
+                    item2 = null;
+                }
+                else
+                {
+                    item2 = new List<ReciboSon>(colection);
+                }
                 List<ReciboSon> item3;
 
                 if (texto.Equals(""))
@@ -193,7 +209,7 @@ namespace PruebaWPF.Views.Recibo
         {
             await Task.Run(() =>
             {
-                System.Threading.Thread.Sleep(clsConfiguration.ThreadSpeep());
+                System.Threading.Thread.Sleep(clsConfiguration.MiliSecondSleep());
             });
         }
 
@@ -218,7 +234,8 @@ namespace PruebaWPF.Views.Recibo
         {
             ReciboSon selected = (ReciboSon)tblRecibo.SelectedItem;
             tblReciboDet.ItemsSource = controller().DetallesRecibo(selected);
-            tblReciboPay.ItemsSource = selected.ReciboPago;
+            tblReciboPay.ItemsSource = controller().ReciboFormaPago(selected);
+            btn_Anular.IsEnabled = !selected.regAnulado;
         }
 
         private void tblRecibo_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -237,7 +254,7 @@ namespace PruebaWPF.Views.Recibo
                 {
                     if (tblRecibo.SelectedItem != null)
                     {
-                        rptRecibo boucher = new rptRecibo((ReciboSon)tblRecibo.SelectedItem);
+                        rptRecibo boucher = new rptRecibo((ReciboSon)tblRecibo.SelectedItem, false);
                         boucher.ShowDialog();
                     }
                     else

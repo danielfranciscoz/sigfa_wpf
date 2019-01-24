@@ -62,7 +62,7 @@ namespace PruebaWPF.ViewModel
                 Area = db.vw_Areas.Where(w => w.codigo == a.IdArea).Select(s => s.descripcion).FirstOrDefault().ToString().ToUpper(),
                 Recinto = db.vw_RecintosRH.Where(w => w.IdRecinto == a.IdRecinto).Select(s => s.Siglas).FirstOrDefault().ToString()
             }
-            ).Where(w => string.IsNullOrEmpty(w.CodRecibo) && w.regAnulado == false).OrderByDescending(o => o.IdOrdenPago).Take(clsConfiguration.RowCount()).ToList().Where(b => new SecurityViewModel().RecintosPermiso(pantalla).Any(a => b.IdRecinto == a.IdRecinto)).ToList();
+            ).Where(w => string.IsNullOrEmpty(w.CodRecibo) && w.regAnulado == false).OrderByDescending(o => o.IdOrdenPago).Take(clsConfiguration.Actual().TopRow).ToList().Where(b => new SecurityViewModel().RecintosPermiso(pantalla).Any(a => b.IdRecinto == a.IdRecinto)).ToList();
 
             
 
@@ -78,8 +78,6 @@ namespace PruebaWPF.ViewModel
 
         public List<OrdenPagoSon> FindByText(string text)
         {
-
-
             if (!text.Equals(""))
             {
                 string[] busqueda = text.Trim().Split(' ');
@@ -105,7 +103,7 @@ namespace PruebaWPF.ViewModel
                     Recinto = db.vw_RecintosRH.Where(w => w.IdRecinto == a.IdRecinto).Select(s => s.Siglas).FirstOrDefault().ToString()
                 }).Where(
                    w => busqueda.All(a => w.Recibimos.Contains(a))
-                && (w.regAnulado == false)).ToList().Where(b => new SecurityViewModel().RecintosPermiso(pantalla).Any(a => b.IdRecinto == a.IdRecinto)).ToList();
+                && (w.regAnulado == false && string.IsNullOrEmpty(w.CodRecibo))).ToList().Where(b => new SecurityViewModel().RecintosPermiso(pantalla).Any(a => b.IdRecinto == a.IdRecinto)).ToList();
             }
             else
             {

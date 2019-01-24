@@ -1,27 +1,18 @@
-﻿using Confortex.Clases;
-using PruebaWPF.Clases;
+﻿using PruebaWPF.Clases;
 using PruebaWPF.Model;
 using PruebaWPF.Referencias;
 using PruebaWPF.ViewModel;
 using PruebaWPF.Views.Shared;
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
 using System.Collections.Specialized;
-using PruebaWPF.Views.Main;
 using PruebaWPF.Helper;
+using PruebaWPF.Views.Main;
 
 namespace PruebaWPF.Views.Recibo
 {
@@ -38,6 +29,7 @@ namespace PruebaWPF.Views.Recibo
         private ObservableCollection<ReciboPagoSon> formaPago;
         private clsValidateInput validate;
         private ReciboSon recibo;
+        List<MonedaMonto> aPagar;
 
         private bool isOrdenPago = false;
         public CrearRecibo()
@@ -56,6 +48,7 @@ namespace PruebaWPF.Views.Recibo
             this.orden = new OrdenPagoSon();
             DataContext = orden;
             Diseñar();
+
         }
 
         public CrearRecibo(OrdenPagoSon op)
@@ -108,7 +101,7 @@ namespace PruebaWPF.Views.Recibo
 
         private void Diseñar()
         {
-            clsutilidades.Dialog_Perfomance(this);
+            clsutilidades.Dialog_ModalDesign(this);
         }
         private void CargarAranceles(string idarea, int idtipodeposito)
         {
@@ -118,11 +111,15 @@ namespace PruebaWPF.Views.Recibo
             }
         }
 
+
         private void ActivarValidadorCampos()
         {
             clsValidateInput.Validate(txtMontoPago, clsValidateInput.DecimalNumber);
             clsValidateInput.Validate(txtMonto, clsValidateInput.DecimalNumber);
-            validate.AsignarBorderNormal(new Control[] { txtArea, cboTipoDeposito, txtIdentificador, txtPorCuenta, txtRecibimos, cboFuenteFinanciamiento, cboArancel, txtMonto, cboMonedaDeuda, cboFormaPago, txtMontoPago, cboMonedaPago });
+            clsValidateInput.Validate(txtNumeroCK, clsValidateInput.OnlyNumber);
+            clsValidateInput.Validate(txtAutorizacion, clsValidateInput.OnlyNumber);
+
+            validate.AsignarBorderNormal(new Control[] { txtArea, cboTipoDeposito, txtIdentificador, txtPorCuenta, txtRecibimos, cboFuenteFinanciamiento, cboArancel, txtMonto, cboMonedaDeuda, cboFormaPago, txtMontoPago, cboMonedaPago, txtEmisor, txtBono, cboBanco, txtCuenta, txtNumeroCK, cboTarjeta, txtAutorizacion });
 
         }
 
@@ -205,6 +202,17 @@ namespace PruebaWPF.Views.Recibo
             cboTipoDeposito.ItemsSource = controller.ObtenerTipoCuenta();
         }
 
+
+        private void CargarBancos()
+        {
+            cboBanco.ItemsSource = controller.ObtenerBancos();
+        }
+
+        private void CargarTarjetas()
+        {
+            cboTarjeta.ItemsSource = controller.ObtenerTarjetas();
+        }
+
         private void CargarFormasPago()
         {
             cboFormaPago.ItemsSource = controller.ObtenerFormasPago();
@@ -283,9 +291,12 @@ namespace PruebaWPF.Views.Recibo
             }
 
             var SumETotal = Totales.GroupBy(a => new { a.IdMoneda, a.Moneda }).Select(b => new { Moneda = b.Key.Moneda, IdMoneda = b.Key.IdMoneda, Monto = b.Sum(c => c.Valor) }).OrderBy(o => o.IdMoneda).ToList();
+            aPagar = new List<MonedaMonto>();
+
             foreach (var item in SumETotal)
             {
                 lstEquivalenciaTotal.Items.Add("Total en " + item.Moneda + " " + string.Format("{0:N}", item.Monto));
+                aPagar.Add(new MonedaMonto() { Moneda = item.Moneda, Valor = item.Monto });
             }
 
             InabilitarListas(false);
@@ -295,6 +306,7 @@ namespace PruebaWPF.Views.Recibo
         {
             lstSumatoriaPay.Items.Clear();
             lstEquivalenciaTotalPay.Items.Clear();
+            lstPendiente.Items.Clear();
 
             var SumTotal = formaPago.GroupBy(a => new { a.Moneda }).Select(b => new { Moneda = b.Key.Moneda.Simbolo, IdMoneda = b.Key.Moneda.IdMoneda, Monto = b.Sum(c => c.Monto) }).OrderBy(o => o.IdMoneda).ToList();
 
@@ -322,11 +334,14 @@ namespace PruebaWPF.Views.Recibo
             }
 
             var SumETotal = Totales.GroupBy(a => new { a.IdMoneda, a.Moneda }).Select(b => new { Moneda = b.Key.Moneda, IdMoneda = b.Key.IdMoneda, Monto = b.Sum(c => c.Valor) }).OrderBy(o => o.IdMoneda).ToList();
+           
             foreach (var item in SumETotal)
             {
                 lstEquivalenciaTotalPay.Items.Add("Total en " + item.Moneda + " " + string.Format("{0:N}", item.Monto));
-            }
 
+                MonedaMonto a = aPagar.Where(w => w.Moneda == item.Moneda).First();
+                lstPendiente.Items.Add("Saldo en " + item.Moneda + " " + string.Format("{0:N}", (a.Valor - item.Monto)));
+            }
             InabilitarListas(true);
         }
 
@@ -338,7 +353,7 @@ namespace PruebaWPF.Views.Recibo
                 {
                     lstSumatoriaPay.IsHitTestVisible = false;
                     lstEquivalenciaTotalPay.IsHitTestVisible = false;
-                }
+                }                
             }
             else
             if (lstSumatoria.IsHitTestVisible)
@@ -367,17 +382,23 @@ namespace PruebaWPF.Views.Recibo
 
         private void btnAddPay_Click(object sender, RoutedEventArgs e)
         {
-            if (ValidarFormaPago())
+            if (clsValidateInput.ValidarSeleccion(cboFormaPago))
             {
-                Dictionary<TextBox, int> c = new Dictionary<TextBox, int>();
-                c.Add(txtMontoPago, clsValidateInput.DecimalNumber);
-
-                if (ValidarNumericos(c))
+                int formapago = int.Parse(cboFormaPago.SelectedValue.ToString());
+                if (ValidarFormaPago(formapago))
                 {
-                    AddFormaPago();
+                    Dictionary<TextBox, int> c = new Dictionary<TextBox, int>();
+                    c.Add(txtMontoPago, clsValidateInput.DecimalNumber);
+                    AgregarValidacionAdicional(c, formapago);
+
+                    if (ValidarNumericos(c))
+                    {
+                        AddFormaPago();
+                    }
                 }
             }
         }
+
 
         private void btnBack_Click(object sender, RoutedEventArgs e)
         {
@@ -389,14 +410,11 @@ namespace PruebaWPF.Views.Recibo
         private void btnDelete_Click(object sender, RoutedEventArgs e)
         {
             items.Remove((DetOrdenPagoSon)tblDetalles.CurrentItem);
-
-
         }
 
         private void btnSelectArea_Click(object sender, RoutedEventArgs e)
         {
             SeleccionarArea();
-
         }
 
         private void SeleccionarArea()
@@ -433,8 +451,24 @@ namespace PruebaWPF.Views.Recibo
         {
             FormaPago fp = (FormaPago)cboFormaPago.SelectedItem;
             Moneda m = (Moneda)cboMonedaPago.SelectedItem;
-            formaPago.Add(new ReciboPagoSon { IdFormaPago = fp.IdFormaPago, FormaPago = fp, Moneda = m, IdMoneda = m.IdMoneda, Monto = Decimal.Parse(txtMontoPago.Text) });
-            LimpiarCampos(new Control[] { cboFormaPago, txtMontoPago, cboMonedaPago });
+            Object[] o = ObtenerObjetoAdicional(fp.IdFormaPago);
+
+            formaPago.Add(new ReciboPagoSon
+            {
+                IdFormaPago = fp.IdFormaPago,
+                FormaPago = fp,
+                Moneda = m,
+                IdMoneda = m.IdMoneda,
+                Monto = Decimal.Parse(txtMontoPago.Text),
+                DetalleAdicional = o[0],
+                InfoAdicional = o[1].ToString()
+            });
+
+
+            LimpiarCampos(new Control[] { cboFormaPago });
+            LimpiarCampos(CamposAValidar(fp.IdFormaPago));
+
+            VerCamposAdicionales(0); //Ocultará los campos adicionales al enviarle un id que no existe
         }
 
 
@@ -447,18 +481,144 @@ namespace PruebaWPF.Views.Recibo
                 Descuento = Decimal.Parse(txtExonerado.Text.Equals("") ? "0.00" : txtExonerado.Text),
                 ArancelPrecio = (ArancelPrecio)cboArancel.SelectedItem
             });
+
             LimpiarCampos(new Control[] { cboArancel, txtMonto, cboMonedaDeuda, txtConcepto, txtExonerado });
             txtMonto.IsEnabled = true;
         }
+
+        #region Esta region contiene las validaciones y cargas en dependencia de la forma de pago seleccionada
+
+
+        private void VerCamposAdicionales(int formapago)
+        {
+            switch (formapago)
+            {
+                case 2: //Cheque
+                    CargarBancos();
+                    OcultarVerAdicionales(Cheque, new Panel[] { Tarjeta, Bono, EspacioVacio });
+                    break;
+                case 3: //Tarjeta
+                    CargarTarjetas();
+                    OcultarVerAdicionales(Tarjeta, new Panel[] { Cheque, Bono, EspacioVacio });
+                    break;
+                case 4: //Bono
+                    OcultarVerAdicionales(Bono, new Panel[] { Tarjeta, Cheque, EspacioVacio });
+                    break;
+                default:
+                    OcultarVerAdicionales(EspacioVacio, new Panel[] { Tarjeta, Bono, Cheque });
+                    break;
+                    //Efectivo
+            }
+        }
+
+        private object[] ObtenerObjetoAdicional(int formapago)
+        {
+            Object[] o = new Object[2];
+            switch (formapago)
+            {
+                case 2: //Cheque
+                    ReciboPagoCheque rc = new ReciboPagoCheque()
+                    {
+                        Banco = (Banco)cboBanco.SelectedItem,
+                        IdBanco = Byte.Parse(cboBanco.SelectedValue.ToString()),
+                        NumeroCK = int.Parse(txtNumeroCK.Text.ToString()),
+                        Cuenta = txtCuenta.Text
+                    };
+
+                    o[0] = rc;
+                    o[1] = string.Format("{0}, Cuenta {1}, Cheque No.{2}", rc.Banco.Nombre, rc.Cuenta, rc.NumeroCK);
+                    break;
+                case 3: //Tarjeta
+                    ReciboPagoTarjeta rt = new ReciboPagoTarjeta()
+                    {
+                        CiaTarjetaCredito = (CiaTarjetaCredito)cboTarjeta.SelectedItem,
+                        IdTarjeta = Byte.Parse(cboTarjeta.SelectedValue.ToString()),
+                        //Numero = txtTarjeta.Text,
+                        Autorizacion = int.Parse(txtAutorizacion.Text.ToString())
+                    };
+
+                    o[0] = rt;
+                    o[1] = string.Format("{0}, Autorización {1}", rt.CiaTarjetaCredito.Nombre, rt.Autorizacion);
+                    break;
+                case 4: //Bono
+                    ReciboPagoBono rb = new ReciboPagoBono()
+                    {
+                        Emisor = txtEmisor.Text,
+                        Numero = txtBono.Text
+                    };
+
+                    o[0] = rb;
+                    o[1] = string.Format("Emitipo por {0}, Bono No.{1}", rb.Emisor, rb.Numero);
+                    break;
+                default:
+                    o[0] = null;
+                    o[1] = "";
+                    break;
+                    //Efectivo
+            }
+
+            return o;
+        }
+
+        private Control[] CamposAValidar(int formapago)
+        {
+            Control[] campos = new Control[5];
+
+            campos[0] = txtMontoPago;
+            campos[1] = cboMonedaPago;
+
+            switch (formapago)
+            {
+                case 2: //Cheque
+                    campos[2] = cboBanco;
+                    campos[3] = txtCuenta;
+                    campos[4] = txtNumeroCK;
+                    break;
+                case 3: //Tarjeta
+                    campos[2] = cboTarjeta;
+                    //campos[3] = txtTarjeta;
+                    campos[3] = txtAutorizacion;
+                    break;
+                case 4: //Bono
+                    campos[2] = txtEmisor;
+                    campos[3] = txtBono;
+                    break;
+                default:
+                    break;
+                    //Efectivo
+            }
+
+            return campos;
+
+        }
+
+        private void AgregarValidacionAdicional(Dictionary<TextBox, int> c, int formapago)
+        {
+            switch (formapago)
+            {
+                case 2: //Cheque
+                    c.Add(txtNumeroCK, clsValidateInput.OnlyNumber);
+                    break;
+                case 3: //Tarjeta
+                    c.Add(txtAutorizacion, clsValidateInput.OnlyNumber);
+                    break;
+                default:
+                    break;
+                    //Efectivo
+            }
+
+        }
+
+        #endregion
 
         private void LimpiarCampos(Control[] control)
         {
             clsValidateInput.CleanALL(control);
         }
 
-        private bool ValidarFormaPago()
+        private bool ValidarFormaPago(int formapago)
         {
-            return clsValidateInput.ValidateALL(new Control[] { cboFormaPago, txtMontoPago, cboMonedaPago });
+            return clsValidateInput.ValidateALL(CamposAValidar(formapago));
         }
 
         private bool ValidarNumericos(Dictionary<TextBox, int> campos)
@@ -478,6 +638,7 @@ namespace PruebaWPF.Views.Recibo
         private void SeleccionarTipoDeposito()
         {
             searchTipoDeposito search = new searchTipoDeposito(int.Parse(cboTipoDeposito.SelectedValue.ToString()), cboTipoDeposito.Text);
+            search.Owner = this;
             search.ShowDialog();
 
             if (search.SelectedResult != null)
@@ -494,15 +655,17 @@ namespace PruebaWPF.Views.Recibo
             orden.Identificador = selectedResult.Id;
             orden.PorCuenta = selectedResult.Nombre;
 
-            if (string.IsNullOrEmpty(orden.Recibimos))
-            {
-                orden.Recibimos = selectedResult.Nombre;
-            }
+            //if (string.IsNullOrEmpty(orden.Recibimos)) //Esta validación era para cuando el campo "Recibimos de" era visible
+            //{
+            orden.Recibimos = selectedResult.Nombre;
+            //}
 
             ActualizarCampo(new TextBox[] { txtIdentificador, txtPorCuenta, txtRecibimos });
 
+            //Si los campos estan rojos entonces les paso el foco para que cambien a azul
+            txtIdentificador.Focus();
             txtPorCuenta.Focus();
-            txtRecibimos.Focus();
+            //txtRecibimos.Focus(); //Este campo pasa a ser dejado de usar visualmente
         }
 
         private void cboTipoDeposito_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -610,9 +773,19 @@ namespace PruebaWPF.Views.Recibo
         private void GenerarRecibo()
         {
             recibo = controller.GenerarRecibo(recibo, orden, items.ToList(), formaPago.ToList());
-            rptRecibo boucher = new rptRecibo(recibo);
-            Close();
+            rptRecibo boucher = new rptRecibo(recibo, true);
+            Finalizar();
             boucher.ShowDialog();
+        }
+
+        private void Finalizar()
+        {
+            if (orden != null)
+            {
+                OrdenPago.OrdenPago.isOpening = true;
+            }
+            frmMain.Refrescar();
+            Close();
         }
 
         private void btnDeletePay_Click(object sender, RoutedEventArgs e)
@@ -644,7 +817,7 @@ namespace PruebaWPF.Views.Recibo
                 txtMonto.IsEnabled = arancel.Arancel.isPrecioVariable;
 
                 //Las 3 lineas anteriores son necesarias para borrar el borde de error en caso de que el campo lo haya estado marcando
-                cboMonedaDeuda.IsEnabled = arancel.Arancel.isPrecioVariable;
+                cboMonedaDeuda.IsEnabled = false;
             }
         }
 
@@ -657,8 +830,26 @@ namespace PruebaWPF.Views.Recibo
         {
             recibo.IdFuenteFinanciamiento = byte.Parse(cboFuenteFinanciamiento.SelectedValue.ToString());
         }
-    }
 
+        private void cboFormaPago_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            VerCamposAdicionales(int.Parse(cboFormaPago.SelectedValue.ToString()));
+        }
+
+        private void OcultarVerAdicionales(Panel visible, Panel[] ocultos)
+        {
+            visible.Visibility = Visibility.Visible;
+            for (int i = 0; i < ocultos.Length; i++)
+            {
+                ocultos[i].Visibility = Visibility.Collapsed;
+            }
+        }
+
+        private void btnClose_Click(object sender, RoutedEventArgs e)
+        {
+            Close();
+        }
+    }
 
     class MonedaMonto
     {

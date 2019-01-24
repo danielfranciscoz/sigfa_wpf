@@ -1,4 +1,5 @@
-﻿using PruebaWPF.Model;
+﻿using PruebaWPF.Clases;
+using PruebaWPF.Model;
 using PruebaWPF.Referencias;
 using System;
 using System.Collections.Generic;
@@ -12,6 +13,18 @@ namespace PruebaWPF.ViewModel
     {
         private SIFOPEntities db = new SIFOPEntities();
         public SearchTipoDepositoViewModel() { }
+        
+        public bool AutoricePantallaIncrustada(Pantalla pantalla, string PermisoName)
+        {
+            if (new SecurityViewModel().Autorize(pantalla, PermisoName))
+            {
+                return true;
+            }
+            else
+            {
+                throw new AuthorizationException(PermisoName);
+            }
+        }
 
         public List<fn_ConsultarInfoExterna_Result> ObtenerTipoDeposito(int tipodeposito, string criterio, bool busquedainterna, string texto, int top)
         {

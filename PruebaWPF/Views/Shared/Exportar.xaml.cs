@@ -1,5 +1,4 @@
-﻿using Confortex.Clases;
-using Microsoft.Win32;
+﻿using Microsoft.Win32;
 using PruebaWPF.Clases;
 using PruebaWPF.Model;
 using PruebaWPF.Referencias;
@@ -8,8 +7,6 @@ using PruebaWPF.Views.Main;
 using System;
 using System.Collections.ObjectModel;
 using System.Data;
-using System.IO;
-using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
@@ -228,6 +225,7 @@ namespace PruebaWPF.Views.Shared
         {
 
             this.Visibility = Visibility.Collapsed;
+            frmMain.Exportando_Label((frmMain)frmMain.principal);
             await Task.Run(() =>
             {
                 ExportToExcel(FileName);

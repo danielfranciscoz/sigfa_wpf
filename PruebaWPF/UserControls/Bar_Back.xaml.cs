@@ -1,4 +1,6 @@
-﻿using PruebaWPF.Views.Main;
+﻿using PruebaWPF.Clases;
+using PruebaWPF.Referencias;
+using PruebaWPF.Views.Main;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -21,32 +23,45 @@ namespace PruebaWPF.UserControls
     /// </summary>
     public partial class Bar_Back : UserControl
     {
+        private Boolean ReloadActive;
         public string Value
         {
-            get;
-            set;
+            get; set;
         }
+        public Boolean AutoReload
+        {
+            get; set;
+        }
+
         public string ValueUpper => Value.ToUpper();
+        public Visibility CanAutoReload => AutoReload ? Visibility.Visible : Visibility.Hidden;
 
-        //public object Value
-        //{
-        //    get { return (object)GetValue(ValueProperty); }
-        //    set { SetValue(ValueProperty, value); }
-        //}
-
-        //public static readonly DependencyProperty ValueProperty =
-        //    DependencyProperty.Register("Value", typeof(object),
-        //    typeof(Bar_Back), new PropertyMetadata(null));
+        public Visibility SyncOn => ReloadActive ? Visibility.Visible : Visibility.Collapsed;
+        public Visibility SyncOff => ReloadActive ? Visibility.Collapsed : Visibility.Visible;
 
         public Bar_Back()
         {
+            this.ReloadActive = clsConfiguration.Actual().AutoLoad;
             InitializeComponent();
-            //LayoutRoot.DataContext = this;
         }
+
+
 
         private void Button_Click(object sender, RoutedEventArgs e)
         {
             frmMain.GoBack();
+        }
+
+        private void btnActiveAutoLoad_Click(object sender, RoutedEventArgs e)
+        {
+            if (clsConfiguration.Actual().AutoLoad) //En esta parte no funcionó el uso de la variable ReloadActive
+            {
+                clsutilidades.OpenMessage(new Operacion() { Mensaje = "La carga automatica se encuentra ACTIVADA.\n\nLa información en esta ventana se actualiza automáticamente cuando se detectan cambios en la base de datos.\nPara modificar esta y otras opciones del sistema, deberá hacer uso de la funcionalidad CONFIGURACIÓN incluida en el menú de usuario", OperationType = clsReferencias.TYPE_MESSAGE_Information });
+            }
+            else
+            {
+                clsutilidades.OpenMessage(new Operacion() { Mensaje = "La carga automatica se encuentra DESACTIVADA.\n\nLa información en esta ventana no se está actualizando automáticamente al existir cambios en la base de datos.\nPara modificar esta y otras opciones del sistema, deberá hacer uso de la funcionalidad CONFIGURACIÓN incluida en el menú de usuario", OperationType = clsReferencias.TYPE_MESSAGE_Information });
+            }
         }
     }
 }

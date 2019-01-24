@@ -25,9 +25,18 @@
                             </Button.Content>
                         </Button>
                     </DockPanel>
-                    <StackPanel Grid.Column="1" HorizontalAlignment="Left" VerticalAlignment="Center" x:Name="LayoutRoot">
+                    <StackPanel Grid.Column="1"  VerticalAlignment="Center" x:Name="LayoutRoot" Orientation="Horizontal">
                         <!--<TextBlock FontWeight="Bold"  Text="Nombre de la aplicación que se está visualizando" x:Name="txtTituloOpened"></TextBlock>-->
-                        <TextBlock FontWeight="Bold" FontSize="14" Text="{Binding Path=ValueUpper}" x:Name="txtTituloOpened"></TextBlock>
+                        <TextBlock VerticalAlignment="Center" FontWeight="Bold" FontSize="12" Foreground="{StaticResource OkMsj}" Text="VISTA PRINCIPAL DE " ></TextBlock>
+                        <TextBlock VerticalAlignment="Center" FontWeight="Bold" FontSize="12" Foreground="{StaticResource OkMsj}" Text="{Binding Path=ValueUpper}" x:Name="txtTituloOpened"></TextBlock>
+                        <Button VerticalAlignment="Center" Style="{DynamicResource MaterialDesignFlatButton}"  Foreground="Black" x:Name="btnActiveAutoLoad" Click="btnActiveAutoLoad_Click"  Visibility="{Binding Path=CanAutoReload}" ToolTip="Esta ventana incorpora la funcionalidad de carga automatizada de datos">
+                            <Button.Content>
+                                <StackPanel Orientation="Horizontal">
+                                    <materialDesign:PackIcon Kind="Sync" Foreground="{StaticResource OkMsj}" x:Name="sincro"  VerticalAlignment="Center"  Height="18" Visibility="{Binding Path=SyncOn}" ></materialDesign:PackIcon>
+                                    <materialDesign:PackIcon Kind="SyncOff" Foreground="{StaticResource OkMsj}" x:Name="sincroff"  VerticalAlignment="Center"  Height="18" Visibility="{Binding Path=SyncOff}" ></materialDesign:PackIcon>
+                                </StackPanel>
+                            </Button.Content>
+                        </Button>
                     </StackPanel>
                 </Grid>
             </StackPanel>

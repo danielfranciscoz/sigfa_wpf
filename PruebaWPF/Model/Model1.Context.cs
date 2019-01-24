@@ -162,7 +162,6 @@ namespace PruebaWPF.Model
         public virtual DbSet<Caja> Caja { get; set; }
         public virtual DbSet<FormaPago> FormaPago { get; set; }
         public virtual DbSet<InfoRecibo> InfoRecibo { get; set; }
-        public virtual DbSet<Recibo1> Recibo1 { get; set; }
         public virtual DbSet<ReciboDet> ReciboDet { get; set; }
         public virtual DbSet<ReciboPago> ReciboPago { get; set; }
         public virtual DbSet<SerieRecibo> SerieRecibo { get; set; }
@@ -253,6 +252,10 @@ namespace PruebaWPF.Model
         public virtual DbSet<w_LibroMayorAcumulado_VEP> w_LibroMayorAcumulado_VEP { get; set; }
         public virtual DbSet<w_LibroMayorAcumulado_Vlast> w_LibroMayorAcumulado_Vlast { get; set; }
         public virtual DbSet<ReciboAnulado> ReciboAnulado { get; set; }
+        public virtual DbSet<ReciboPagoBono> ReciboPagoBono { get; set; }
+        public virtual DbSet<ReciboPagoCheque> ReciboPagoCheque { get; set; }
+        public virtual DbSet<Recibo1> Recibo1 { get; set; }
+        public virtual DbSet<ReciboPagoTarjeta> ReciboPagoTarjeta { get; set; }
     
         [DbFunction("SIFOPEntities", "fn_ConsultarInfoExterna")]
         public virtual IQueryable<fn_ConsultarInfoExterna_Result> fn_ConsultarInfoExterna(Nullable<int> tipoDeposito, string criterio, Nullable<bool> criterioInterno, string texto, Nullable<int> top)

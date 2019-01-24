@@ -39,7 +39,7 @@ namespace PruebaWPF.ViewModel
                 Usuario = s.Usuario,
                 RegAnulado = s.RegAnulado
             })
-            .Where(w => w.RegAnulado == false).OrderByDescending(a => a.Fecha).Take(clsConfiguration.RowCount()).ToList();
+            .Where(w => w.RegAnulado == false).OrderByDescending(a => a.Fecha).Take(clsConfiguration.Actual().TopRow).ToList();
         }
 
         public VariacionCambiariaSon FindById(int Id)

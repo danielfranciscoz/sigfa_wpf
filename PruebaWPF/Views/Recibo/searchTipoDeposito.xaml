@@ -9,7 +9,8 @@
         WindowStartupLocation="CenterScreen" 
         WindowStyle="None" 
         ResizeMode="NoResize"
-        Title="Búsqueda" Height="700" Width="790.84"
+        Title="Búsqueda" Height="603" Width="790.84"
+        ShowInTaskbar="False"
         >
     <Window.Background>
         <SolidColorBrush Opacity="0"/>
@@ -142,16 +143,16 @@
                                     <TextBox Grid.Column="2" Grid.Row="1" x:Name="txtNombre"  materialDesign:HintAssist.Hint="Especifique el Nombre del Agente Externo"  KeyDown="txtNombre_KeyDown" />
                                 </Grid>
                             </StackPanel>
-                            <StackPanel Height="auto">
-                                <Grid  Width="auto">
-                                    <Grid.ColumnDefinitions>
-                                        <ColumnDefinition Width="*"/>
-                                        <ColumnDefinition Width="auto"/>
-                                    </Grid.ColumnDefinitions>
-                                    <TextBlock Grid.Column="0" Margin="5" Foreground="{StaticResource DarkGray}">
-                                        Buscaremos al Agente Externo en la Base de datos del sistema de Finanzas, en caso de no encontrar el registro favor contactar con DTIC.
+                            <StackPanel Height="auto" Orientation="Horizontal">
+
+
+                                <TextBlock  Margin="5" Foreground="{StaticResource DarkGray}"  VerticalAlignment="Center">
+                                        Buscaremos al Agente Externo en la Base de datos del sistema de Finanzas, en caso de no encontrar el registro presiona
                                     </TextBlock>
-                                </Grid>
+                                <Button x:Name="btnAddAgente" Tag="{StaticResource Permiso_Guardar}" Click="btnAddAgente_Click" FontWeight="Bold" ToolTip="Agregar un nuevo agente externo" Style="{DynamicResource MaterialDesignToolButton}" FontSize="10">
+                                            AGREGAR
+                                        </Button>
+                                   
                             </StackPanel>
                         </StackPanel>
                     </TabItem>

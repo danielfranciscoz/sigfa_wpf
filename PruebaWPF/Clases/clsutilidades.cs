@@ -9,6 +9,7 @@ using System.Windows.Media;
 using PruebaWPF.Model;
 using System.Windows;
 using System.Drawing;
+using System.Windows.Controls.Primitives;
 
 namespace PruebaWPF.Clases
 {
@@ -79,7 +80,19 @@ namespace PruebaWPF.Clases
 
         public static void UpdateControl(Control control)
         {
-            BindingOperations.GetBindingExpression(control, TextBox.TextProperty).UpdateTarget();
+           
+            if (control is TextBox)
+            {
+                BindingOperations.GetBindingExpression(control, TextBox.TextProperty).UpdateTarget();
+            }
+            else if (control is ToggleButton)
+            {
+                BindingOperations.GetBindingExpression(control, ToggleButton.IsCheckedProperty).UpdateTarget();
+            }
+            else if (control is Slider)
+            {
+                BindingOperations.GetBindingExpression(control, Slider.ValueProperty).UpdateTarget();
+            }
         }
 
         public static void Dialog_Perfomance(Window frame)

@@ -1,22 +1,14 @@
-﻿using Confortex.Clases;
-using PruebaWPF.Clases;
+﻿using PruebaWPF.Clases;
 using PruebaWPF.Model;
 using PruebaWPF.Referencias;
 using PruebaWPF.ViewModel;
+using PruebaWPF.Views.AgenteExterno;
 using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
 
 namespace PruebaWPF.Views.Recibo
 {
@@ -31,18 +23,14 @@ namespace PruebaWPF.Views.Recibo
         private SearchTipoDepositoViewModel controller;
 
         public fn_ConsultarInfoExterna_Result SelectedResult = null;
+        private bool Busqueda = false;
 
         public searchTipoDeposito()
         {
             InitializeComponent();
             Inicializar();
-            Diseñar();
         }
 
-        private void Diseñar()
-        {
-            clsutilidades.Dialog_Perfomance(this);
-        }
 
         public searchTipoDeposito(int TipoDeposito, string Tipo)
         {
@@ -94,7 +82,10 @@ namespace PruebaWPF.Views.Recibo
 
         private void tblData_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
-            Seleccionar();
+            if (tblData.SelectedItem != null)
+            {
+                Seleccionar();
+            }
         }
 
         private void Border_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
@@ -202,24 +193,55 @@ namespace PruebaWPF.Views.Recibo
         {
             switch (TipoDeposito)
             {
-                case 1:
-                    BuscarInformacion(txtCarnet.Text, txtApellidos.Text);
+                case 1://Estudiante
+                    if (ValidarCampos(new TextBox[] { txtCarnet, txtApellidos }))
+                    {
+                        BuscarInformacion(txtCarnet.Text, txtApellidos.Text);
+                    }
                     break;
-                case 2:
-                    BuscarInformacion(txtNoInterno.Text, txtTrabajador.Text);
+                case 2://Trabajador
+                    if (ValidarCampos(new TextBox[] { txtNoInterno, txtTrabajador }))
+                    {
+                        BuscarInformacion(txtNoInterno.Text, txtTrabajador.Text);
+                    }
+                    break;
+                case 3://Agente Externo
+                    if (ValidarCampos(new TextBox[] { txtCedula, txtNombre }))
+                    {
+                        BuscarInformacion(txtCedula.Text, txtNombre.Text);
+                        Busqueda = true;
+                    }
+                    break;
 
-                    break;
-                case 3:
-                    BuscarInformacion(txtCedula.Text, txtNombre.Text);
-                    break;
-
-                case 4:
-                    BuscarInformacion(txtRUC.Text, txtProveedor.Text);
+                case 4://Proveedor
+                    if (ValidarCampos(new TextBox[] { txtRUC, txtProveedor }))
+                    {
+                        BuscarInformacion(txtRUC.Text, txtProveedor.Text);
+                    }
                     break;
 
             }
 
         }
+
+        private bool ValidarCampos(TextBox[] campos)
+        {
+            bool flag = true;
+            int contador = 0;
+            for (int i = 0; i < campos.Length; i++)
+            {
+                if (string.IsNullOrWhiteSpace(campos[i].Text))
+                {
+                    contador++;                    
+                }
+            }
+            if (contador == campos.Length)
+            {
+                flag = false;
+            }
+            return flag;
+        }
+
         private void CambiarHeaderTabla(String[] headers)
         {
             for (int i = 0; i < headers.Length; i++)
@@ -233,7 +255,7 @@ namespace PruebaWPF.Views.Recibo
             try
             {
                 string texto = Texto.Length > 0 ? "%" + Texto.Replace(' ', '%') + "%" : "";
-                items = new ObservableCollection<fn_ConsultarInfoExterna_Result>(controller.ObtenerTipoDeposito(TipoDeposito, Criterio, false, texto, 1000));
+                items = new ObservableCollection<fn_ConsultarInfoExterna_Result>(controller.ObtenerTipoDeposito(TipoDeposito, Criterio, false, texto, clsConfiguration.Actual().TopRow));
 
                 if (panelError.Visibility == Visibility.Visible)
                 {
@@ -265,7 +287,7 @@ namespace PruebaWPF.Views.Recibo
             }
             else
             {
-                clsutilidades.OpenMessage(new Operacion() { Mensaje = clsReferencias.MESSAGE_NoSelection, OperationType = clsReferencias.TYPE_MESSAGE_Advertencia });
+                clsutilidades.OpenMessage(new Operacion() { Mensaje = clsReferencias.MESSAGE_NoSelection, OperationType = clsReferencias.TYPE_MESSAGE_Advertencia },this);
             }
         }
 
@@ -332,6 +354,31 @@ namespace PruebaWPF.Views.Recibo
         private void rbRazonSocial_Checked(object sender, RoutedEventArgs e)
         {
             setChecked(false, txtProveedor, txtRUC);
+        }
+
+        private void btnAddAgente_Click(object sender, RoutedEventArgs e)
+        {
+            if (Busqueda)
+            {
+                try
+                {
+                    Pantalla pantalla = new PantallaViewModel().FindById(new AgenteExterno.AgenteExterno().Uid);
+
+                    if (controller.AutoricePantallaIncrustada(pantalla,((Button)sender).Tag.ToString()))
+                    {
+                        GestionarAgenteExterno ga = new GestionarAgenteExterno(pantalla, btnAddAgente.Tag.ToString());
+                        ga.ShowDialog();
+                    }
+                }
+                catch (Exception ex)
+                {
+                    clsutilidades.OpenMessage(new Operacion() { Mensaje = new clsException(ex).ErrorMessage(), OperationType = clsReferencias.TYPE_MESSAGE_Error }, this);
+                }
+            }
+            else
+            {
+                clsutilidades.OpenMessage(new Operacion() { Mensaje = "¡Espera un momento!\n\nAntes de agregar un nuevo registro, por favor asegúrate que este no existe mediante una breve búsqueda.\nLos registros duplicados no permiten obtener información adecuada para análisis.", OperationType = clsReferencias.TYPE_MESSAGE_Wait_a_Moment }, this);
+            }
         }
     }
 }

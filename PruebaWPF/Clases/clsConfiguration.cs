@@ -9,49 +9,61 @@ namespace PruebaWPF.Clases
 {
     class clsConfiguration
     {
-        public enum Llaves 
+
+        public int Sleep { get ; set; }
+        public bool AutoLoad { get; set; }
+        public int TopRow { get; set; }
+
+
+        public static clsConfiguration Actual()
+        {
+            return new clsConfiguration();
+        }
+
+        public static int MiliSecondSleep()
+        {
+            return new clsConfiguration().Sleep * 1000;
+        }
+        public static clsConfiguration Default()
+        {
+            return new clsConfiguration()
+            {
+                Sleep = 3,
+                AutoLoad = true,
+                TopRow = 1000
+            };
+        }
+
+        public clsConfiguration()
+        {
+            Properties.Settings settings = Properties.Settings.Default;
+            Sleep = settings.ThreadSleep;
+            AutoLoad = settings.AutomaticReload;
+            TopRow = settings.TopRow;
+        }
+
+
+        public enum Llaves
         {
             Consecutivo_Recibo
         };
 
-        public static int RowCount()
+
+
+        //public static int[] IdMonedaWebService()
+        //{
+        //    return Array.ConvertAll(Properties.Settings.Default.IdMonedaWS.Split(char.Parse(",")), int.Parse);
+        //}
+
+        public void Save()
         {
-            return Properties.Settings.Default.TopRow;
+            Properties.Settings settings = Properties.Settings.Default;
+            settings.AutomaticReload = AutoLoad;
+            settings.TopRow = TopRow;
+            settings.ThreadSleep = Sleep;
+
+            settings.Save();
         }
 
-        /// <summary>
-        /// Representa el tiempo entre consultas a la base de datos mientras se encuentre activa la opción de recarga automática
-        /// </summary>
-        /// <returns>Integer en milisegundos</returns>
-        public static int ThreadSpeep()
-        {
-            return Properties.Settings.Default.ThreadSleep;
-        }
-
-        /// <summary>
-        /// Configuración que permitirá determinar si se realizara el recargado automático de la información
-        /// </summary>
-        /// <returns>Boolean</returns>
-        public static bool AutomaticReload()
-        {
-            return Properties.Settings.Default.AutomaticReload;
-        }
-
-        public static int[] IdMonedaWebService()
-        {
-            return Array.ConvertAll(Properties.Settings.Default.IdMonedaWS.Split(char.Parse(",")), int.Parse);
-        }
-
-        public static void SaveTop(int Top)
-        {
-            Properties.Settings.Default.TopRow = Top;
-            Properties.Settings.Default.Save();
-        }
-
-        public static void SaveAutomaticReload(Boolean AutomaticReload)
-        {
-            Properties.Settings.Default.AutomaticReload = AutomaticReload;
-            Properties.Settings.Default.Save();
-        }
     }
 }

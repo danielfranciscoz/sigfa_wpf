@@ -1,5 +1,5 @@
 ﻿
-using Confortex.Clases;
+using PruebaWPF.Clases;
 using PruebaWPF.Model;
 using PruebaWPF.Referencias;
 using PruebaWPF.ViewModel;

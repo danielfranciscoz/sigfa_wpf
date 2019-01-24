@@ -1,13 +1,10 @@
-﻿using Confortex.Clases;
-using Microsoft.Reporting.WinForms;
+﻿using Microsoft.Reporting.WinForms;
 using PruebaWPF.Clases;
 using PruebaWPF.Model;
 using PruebaWPF.Referencias;
 using PruebaWPF.ViewModel;
 using System;
 using System.Collections.Generic;
-using System.Drawing;
-using System.IO;
 using System.Linq;
 
 using System.Windows;
@@ -22,16 +19,18 @@ namespace PruebaWPF.Views.Recibo
     public partial class rptRecibo : Window
     {
         private ReciboSon recibo;
+        private bool isFirtTime;
         public rptRecibo()
         {
             InitializeComponent();
         }
 
-        public rptRecibo(ReciboSon recibo)
+        public rptRecibo(ReciboSon recibo,Boolean isFirstTime)
         {
             this.recibo = recibo;
             InitializeComponent();
             this.Title = "Recibo Oficial de Caja Número " + recibo.IdRecibo + "-" + recibo.Serie;
+            this.isFirtTime = isFirstTime;
         }
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
@@ -57,6 +56,9 @@ namespace PruebaWPF.Views.Recibo
 
             var recibo = recibos.FirstOrDefault();
 
+            List<Model.OrdenPago> ordenPago = new List<Model.OrdenPago>();
+            ordenPago.Add(recibo.OrdenPago);
+
             List<InfoRecibo> info = new List<InfoRecibo>();
             info.Add(recibo.InfoRecibo);
 
@@ -71,6 +73,7 @@ namespace PruebaWPF.Views.Recibo
             List<VariacionCambiariaSon> variacionCambiarias = modeloRecibo.FindTipoCambio(recibo);
 
             ReportDataSource ReciboDataSource = new ReportDataSource("Recibo", recibos);
+            ReportDataSource OrdenPagoDataSource = new ReportDataSource("OrdenPago", ordenPago);
             ReportDataSource BarcodeDataSource = new ReportDataSource("Barcode", barcode);
             ReportDataSource InfoReciboDataSource = new ReportDataSource("InfoRecibo", info);
             ReportDataSource PorCuentaDataSource = new ReportDataSource("CuentaDe", cuenta);
@@ -81,8 +84,9 @@ namespace PruebaWPF.Views.Recibo
 
             reporteDemo.Reset();
             reporteDemo.LocalReport.ReportEmbeddedResource = "PruebaWPF.Reportes.Recibo.Recibo.rdlc";
-
+            reporteDemo.LocalReport.SetParameters(new ReportParameter("isFirstTime", isFirtTime.ToString()));
             reporteDemo.LocalReport.DataSources.Add(ReciboDataSource);
+            reporteDemo.LocalReport.DataSources.Add(OrdenPagoDataSource);
             reporteDemo.LocalReport.DataSources.Add(InfoReciboDataSource);
             reporteDemo.LocalReport.DataSources.Add(BarcodeDataSource);
             reporteDemo.LocalReport.DataSources.Add(PorCuentaDataSource);

@@ -1,15 +1,15 @@
-﻿<Page x:Class="PruebaWPF.Views.VariacionCambiaria.VariacionCambiaria"
+﻿<Page x:Class="PruebaWPF.Views.AgenteExterno.AgenteExterno"
       xmlns:UserControl="clr-namespace:PruebaWPF.UserControls"
       xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
       xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"  
-      xmlns:local="clr-namespace:PruebaWPF.Views.VariacionCambiaria"
+      xmlns:local="clr-namespace:PruebaWPF.Views.AgenteExterno"
       mc:Ignorable="d" 
       d:DesignHeight="600" d:DesignWidth="900"
-      Title="VariacionCambiaria" Loaded="Page_Loaded"
-      Uid="VariacionCambiaria">
+      Title="Agente Externo" Loaded="Page_Loaded"
+      Uid="AgenteExterno">
 
     <Grid Background="White">
         <Grid.RowDefinitions>
@@ -21,7 +21,7 @@
                 <UserControl:Bar_Back/>
             </StackPanel>
         </StackPanel>
-        
+
         <Grid Grid.Row="1">
             <Grid.RowDefinitions>
                 <RowDefinition Height="auto"/>
@@ -36,18 +36,19 @@
                         <ColumnDefinition Width="*"/>
                     </Grid.ColumnDefinitions>
                     <StackPanel Grid.Column="0" Orientation="Horizontal">
-                        <Button BorderBrush="Transparent" Tag="{StaticResource Permiso_Guardar}" Background="{StaticResource Save_Button}" Margin="5 5 5 5" Click="Button_Click" Content="{StaticResource Text_New_Button}"></Button>
-                        <Button BorderBrush="Transparent" Tag="{StaticResource Permiso_Exportar}" Background="{StaticResource Export_Button}" Margin="5" Click="btn_Exportar" Height="Auto" Content="{StaticResource Text_Export_Button}"></Button>
+                        <Button x:Name="btnSave" Tag="{StaticResource Permiso_Guardar}" BorderBrush="Transparent"  Background="{StaticResource Save_Button}" Margin="5 5 5 5" Click="Button_Click" Content="{StaticResource Text_New_Button}"></Button>
+                        <Button x:Name="btnEdit" Tag="{StaticResource Permiso_Editar}" BorderBrush="Transparent" Background="{StaticResource Edit_Button}" Margin="5" Click="Button_Click_1" Height="Auto" Content="{StaticResource Text_Edit_Button}"></Button>
+                        <Button x:Name="btnExport" Tag="{StaticResource Permiso_Exportar}" BorderBrush="Transparent" Background="{StaticResource Export_Button}" Margin="5" Click="btn_Exportar" Height="Auto" Content="{StaticResource Text_Export_Button}"></Button>
                     </StackPanel>
                     <StackPanel HorizontalAlignment="Right" Grid.Column="1" Orientation="Horizontal">
-                        <TextBox Margin="0 0 20 0"  x:Name="txtFind" Width="200" materialDesign:HintAssist.Hint="Búsqueda (yyyy/MM)" materialDesign:HintAssist.IsFloating="True" FontSize="13" KeyUp="txtFindText" />
+                        <TextBox Margin="0 0 20 0"  x:Name="txtFind" Width="200" materialDesign:HintAssist.Hint="Búsqueda (Agente Externo)" materialDesign:HintAssist.IsFloating="True" FontSize="13" KeyUp="txtFindText" />
                     </StackPanel>
                 </Grid>
             </StackPanel>
 
             <DockPanel Grid.Row="1" x:Name="panelGrid" VerticalAlignment="Stretch">
                 <!--<StackPanel VerticalAlignment="top" HorizontalAlignment="Center" Margin="0 30 0 0">-->
-                <DataGrid VerticalAlignment="Stretch" Name="tblVariacionCambiaria" CanUserDeleteRows="False" CanUserAddRows="False" AutoGenerateColumns="False" SelectionUnit="FullRow" SelectionMode="Single" >
+                <DataGrid VerticalAlignment="Stretch" Name="tblAgenteExterno" CanUserDeleteRows="False" CanUserAddRows="False" AutoGenerateColumns="False" SelectionUnit="FullRow" SelectionMode="Single" >
                     <DataGrid.Columns>
                         <DataGridTemplateColumn CanUserResize="False" Width="50" Header="">
                             <DataGridTemplateColumn.CellTemplate>
@@ -62,9 +63,11 @@
                         </DataGridTemplateColumn>
                         <!--<DataGridTextColumn CanUserReorder="False" CanUserResize="False" IsReadOnly="True" Header="Año" Width="150" Binding="{Binding Fecha, StringFormat={}{0:yyyy}}"></DataGridTextColumn>
                         <DataGridTextColumn CanUserReorder="False" CanUserResize="False" IsReadOnly="True" Header="Mes" Width="150" Binding="{Binding Fecha,StringFormat={}{0:MM}}"></DataGridTextColumn>-->
-                        <DataGridTextColumn CanUserReorder="False" CanUserResize="False" IsReadOnly="True" Header="Fecha" Width="150" Binding="{Binding Fecha,StringFormat={}{0:dd/MM/yyyy}}"></DataGridTextColumn>
-                        <DataGridTextColumn CanUserReorder="False" CanUserResize="False" IsReadOnly="True" Header="Moneda" Width="150" Binding="{Binding Moneda.Simbolo}"></DataGridTextColumn>
-                        <DataGridTextColumn CanUserReorder="False" CanUserResize="False" IsReadOnly="True" Header="Valor" Width="150"  Binding="{Binding Valor, StringFormat={}{0:n4}}"></DataGridTextColumn>
+                        <DataGridTextColumn CanUserReorder="False" CanUserResize="False" IsReadOnly="True" Header="No." Width="auto" Binding="{Binding IdAgenteExterno}"></DataGridTextColumn>
+                        <DataGridTextColumn CanUserReorder="False" CanUserResize="False" IsReadOnly="True" Header="Agente Externo" Width="350" Binding="{Binding Nombre}"></DataGridTextColumn>
+                        <DataGridTextColumn CanUserReorder="False" CanUserResize="False" IsReadOnly="True" Header="RUC" Width="150"  Binding="{Binding RUC}"></DataGridTextColumn>
+                        <DataGridTextColumn CanUserReorder="False" CanUserResize="False" IsReadOnly="True" Header="Cédula" Width="150"  Binding="{Binding Cedula}"></DataGridTextColumn>
+                        <DataGridTextColumn CanUserReorder="False" CanUserResize="False" IsReadOnly="True" Header="Creado por" Width="150"  Binding="{Binding LoginCreacion}"></DataGridTextColumn>
                     </DataGrid.Columns>
 
                 </DataGrid>

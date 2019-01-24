@@ -1,0 +1,104 @@
+﻿<Window x:Class="PruebaWPF.Views.Account.Configuracion"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:PruebaWPF.Views.Account"
+        mc:Ignorable="d"
+        WindowStyle="None" 
+        Title="Configuracion" Height="450" Width="800">
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="auto"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+
+        <materialDesign:Card  Grid.Column="1" Grid.Row="1" Height="auto" Width="400">
+            <Grid >
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="auto"/>
+                    <RowDefinition Height="auto"/>
+                    <RowDefinition Height="auto"/>
+
+                </Grid.RowDefinitions>
+
+                <Grid Grid.Row="0" Margin="20 15 20 15">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"></ColumnDefinition>
+                        <ColumnDefinition Width="auto"></ColumnDefinition>
+                    </Grid.ColumnDefinitions>
+                    <StackPanel  Grid.Column="0" HorizontalAlignment="Left" VerticalAlignment="Center">
+                        <TextBlock Width="320" FontSize="18" FontWeight="Bold" Text="Configuración"></TextBlock>
+                    </StackPanel>
+                    <StackPanel Grid.Column="1" HorizontalAlignment="Right">
+                        <Button x:Name="btnClose" Foreground="Black" Style="{DynamicResource MaterialDesignToolButton}"  Width="auto" BorderBrush="Transparent"  Background="Transparent" Padding="0" Click="btnClose_Click">
+                            <materialDesign:PackIcon Width="25" Height="25" Kind="WindowClose"></materialDesign:PackIcon>
+                        </Button>
+                    </StackPanel>
+                </Grid>
+
+                <StackPanel Grid.Row="1" VerticalAlignment="Top" Margin="20 0 20 15">
+                    
+                    <DockPanel Margin="0 15 0 10">
+                        <Grid >
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="auto"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+                            <TextBlock Grid.Column="0" Margin="0 0 20 0"  TextWrapping="Wrap" VerticalAlignment="Center" Text="Cantidad de Filas a retornar" />
+                            <TextBox Grid.Column="1" Margin="0 0 0 0" x:Name="txtTopRow" Text="{Binding TopRow,Mode=TwoWay}"  FontSize="12" TextAlignment="Right"/>
+                        </Grid>
+                    </DockPanel>
+                    <TextBlock TextWrapping="Wrap" VerticalAlignment="Center" FontSize="10" Text="Entre mayor cantidad de filas, mayor será el tiempo de respuesta, se recomienda mantener valores entre 1 a 1000, para no afectar el rendimiento del equipo." Foreground="{StaticResource DarkGray}"/>
+
+                    <StackPanel Orientation="Horizontal" Margin="0 15 0 10">
+                        <TextBlock  Margin="0 0 15 0"  TextWrapping="Wrap" VerticalAlignment="Center" Text="Activar/Desactivar carga automatizada" />
+                        <ToggleButton x:Name="Autoload" Style="{DynamicResource MaterialDesignSwitchToggleButton}" IsChecked="{Binding AutoLoad,Mode=TwoWay}">
+                        </ToggleButton>
+                    </StackPanel>
+                    <TextBlock TextWrapping="Wrap" VerticalAlignment="Center" FontSize="10" Text="En equipos con pocos recursos de memoria RAM y procesamiento, es probable que cause sensación de lentitud, se recomienda hacer uso de esta función para equipos con Memoria RAM mayor o igual que 4GB y Procesador superior o igual a Corei3." Foreground="{StaticResource DarkGray}"/>
+
+                    <DockPanel  Margin="0 15 0 10">
+                        <Grid >
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="120"/>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="30"/>
+                            </Grid.ColumnDefinitions>
+                            
+                            <TextBlock   Grid.Column="0" TextWrapping="Wrap" VerticalAlignment="Center" Text="Verificación (seg)" />
+                            <Slider Grid.Column="1" x:Name="sldSleep" TickFrequency="1" IsSnapToTickEnabled="True" Minimum="3" Maximum="10" Value="{Binding Sleep}" Width="auto" AutoToolTipPlacement="BottomRight" TickPlacement="BottomRight"></Slider>
+                            <TextBlock HorizontalAlignment="Right"  Grid.Column="3" VerticalAlignment="Center">
+                                <TextBlock.Inlines>
+                                    <Run Text="/"></Run>
+                                    <Run Text="{Binding Path=Value,Mode=TwoWay,ElementName=sldSleep}"></Run>
+                                </TextBlock.Inlines>
+                            </TextBlock>
+                        </Grid>
+                </DockPanel>
+                <TextBlock TextWrapping="Wrap" VerticalAlignment="Center" FontSize="10" Text="La verificación corresponde al tiempo en segundos que el sistema deberá esperar para comprobar la existencia de cambios en la Base de Datos y proceder a realizar la carga automatizada (en caso de estar activada)." Foreground="{StaticResource DarkGray}"/>
+
+
+                </StackPanel>
+
+                <StackPanel Grid.Row="2" Height="auto" Margin="20 0 20 10">
+                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
+                        <Button  x:Name="btnRestablecer" Style="{DynamicResource MaterialDesignFlatButton}" Foreground="{StaticResource Save_Button}"  Margin="0 2 0 2" Click="btnRestablecer_Click" Content="RESTABLECER"></Button>
+                        <Button x:Name="btnCancel" Style="{DynamicResource MaterialDesignFlatButton}" Foreground="{StaticResource Save_Button}"  Margin="0 2 0 2" Click="btnClose_Click" Content="{StaticResource Text_Cancel_Button}"></Button>
+                        <Button  x:Name="btnSave" Style="{DynamicResource MaterialDesignFlatButton}" Foreground="{StaticResource Save_Button}"  Margin="0 2 0 2" Click="btnSave_Click" Content="{StaticResource Text_Save_Button}"></Button>
+                    </StackPanel>
+                </StackPanel>
+
+            </Grid>
+        </materialDesign:Card>
+
+    </Grid>
+</Window>

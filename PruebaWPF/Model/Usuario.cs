@@ -58,7 +58,6 @@ namespace PruebaWPF.Model
             this.FormaPago = new HashSet<FormaPago>();
             this.InfoRecibo = new HashSet<InfoRecibo>();
             this.Permiso = new HashSet<Permiso>();
-            this.Recibo1 = new HashSet<Recibo1>();
             this.ReciboDet = new HashSet<ReciboDet>();
             this.ReciboPago = new HashSet<ReciboPago>();
             this.TipoDeposito = new HashSet<TipoDeposito>();
@@ -67,6 +66,7 @@ namespace PruebaWPF.Model
             this.UsuarioPrograma = new HashSet<UsuarioPrograma>();
             this.VariacionCambiaria = new HashSet<VariacionCambiaria>();
             this.ReciboAnulado = new HashSet<ReciboAnulado>();
+            this.Recibo1 = new HashSet<Recibo1>();
         }
     
         public string Login { get; set; }
@@ -174,8 +174,6 @@ namespace PruebaWPF.Model
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Permiso> Permiso { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Recibo1> Recibo1 { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<ReciboDet> ReciboDet { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<ReciboPago> ReciboPago { get; set; }
@@ -191,5 +189,7 @@ namespace PruebaWPF.Model
         public virtual ICollection<VariacionCambiaria> VariacionCambiaria { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<ReciboAnulado> ReciboAnulado { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Recibo1> Recibo1 { get; set; }
     }
 }

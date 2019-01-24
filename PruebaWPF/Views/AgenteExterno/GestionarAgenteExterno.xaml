@@ -1,13 +1,13 @@
-﻿<Window x:Class="PruebaWPF.Views.Tesoreria.AddSerie"
+﻿<Window x:Class="PruebaWPF.Views.AgenteExterno.GestionarAgenteExterno"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:PruebaWPF.Views.Tesoreria"
+        xmlns:local="clr-namespace:PruebaWPF.Views.AgenteExterno"
         mc:Ignorable="d"
-        WindowStyle="None" 
-        Title="AddSerie" >
+        WindowStyle="None"
+        Title="GestionarAgenteExterno" >
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="*"/>
@@ -36,7 +36,7 @@
                         <ColumnDefinition Width="auto"></ColumnDefinition>
                     </Grid.ColumnDefinitions>
                     <StackPanel  Grid.Column="0" HorizontalAlignment="Left" VerticalAlignment="Center">
-                        <TextBlock x:Name="txtTitle" Width="320" FontSize="18" FontWeight="Bold" Text="Crear Serie de Recibo"></TextBlock>
+                        <TextBlock x:Name="txtTitle" Width="320" FontSize="18" FontWeight="Bold" Text="Crear Agente Externo"></TextBlock>
                     </StackPanel>
                     <StackPanel Grid.Column="1" HorizontalAlignment="Right">
                         <Button x:Name="btnClose" Foreground="Black" Style="{DynamicResource MaterialDesignToolButton}"  Width="auto" BorderBrush="Transparent"  Background="Transparent" Padding="0" Click="btnClose_Click">
@@ -45,28 +45,28 @@
                     </StackPanel>
                 </Grid>
 
-                <StackPanel Grid.Row="1" VerticalAlignment="Top" Margin="20 0 20 15">
+                <StackPanel Grid.Row="1" VerticalAlignment="Top" Height="300" Margin="20 0 20 15">
                     <Grid>
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="*"/>
                         </Grid.ColumnDefinitions>
                     </Grid>
 
-                    <TextBox Margin="0 15 0 10" x:Name="txtSerie" materialDesign:HintAssist.Hint="* Serie" materialDesign:HintAssist.IsFloating="True" FontSize="12" MaxLength="1" CharacterCasing="Upper"/>
-                    <TextBlock TextWrapping="Wrap" VerticalAlignment="Center" FontSize="10" Text="No se podrá agregar una serie repetida, independientemente si esta se encuentra inactiva." Foreground="{StaticResource DarkGray}"/>
+                    <!--<TextBox Margin="0 15 0 10" x:Name="txtSerie" materialDesign:HintAssist.Hint="* Serie" materialDesign:HintAssist.IsFloating="True" FontSize="12" MaxLength="1" CharacterCasing="Upper"/>
+                    <TextBlock TextWrapping="Wrap" VerticalAlignment="Center" FontSize="10" Text="No se podrá agregar una serie repetida, independientemente si esta se encuentra inactiva." Foreground="{StaticResource DarkGray}"/>-->
 
                 </StackPanel>
 
                 <StackPanel Grid.Row="2" Height="auto" Margin="20 0 20 10">
                     <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
                         <Button x:Name="btnCancel" Style="{DynamicResource MaterialDesignFlatButton}" Foreground="{StaticResource Save_Button}"  Margin="0 2 0 2" Click="btnClose_Click" Content="{StaticResource Text_Cancel_Button}"></Button>
+                        <Button Tag="{StaticResource Permiso_Editar}" x:Name="btnEdit" Visibility="Collapsed" Style="{DynamicResource MaterialDesignFlatButton}" Foreground="{StaticResource Save_Button}"  Margin="0 2 0 2" Click="btnSave_Click" Content="{StaticResource Text_Edit_Button}"></Button>
                         <Button Tag="{StaticResource Permiso_Guardar}" x:Name="btnSave" Style="{DynamicResource MaterialDesignFlatButton}" Foreground="{StaticResource Save_Button}"  Margin="0 2 0 2" Click="btnSave_Click" Content="{StaticResource Text_Save_Button}"></Button>
                     </StackPanel>
                 </StackPanel>
 
             </Grid>
         </materialDesign:Card>
-  
-    </Grid>
 
+    </Grid>
 </Window>

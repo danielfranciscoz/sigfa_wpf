@@ -4,7 +4,7 @@
   <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
-      <Diagram DiagramId="4407a999ee4e43989d91b0aed48cc140" Name="Diagram1">
+      <Diagram DiagramId="4407a999ee4e43989d91b0aed48cc140" Name="Diagram1" ZoomLevel="44">
         <EntityTypeShape EntityType="SIFOPModel.Moneda" Width="1.5" PointX="6.75" PointY="106.5" IsExpanded="true" />
         <EntityTypeShape EntityType="SIFOPModel.Actividad" Width="1.5" PointX="6" PointY="118.625" IsExpanded="true" />
         <EntityTypeShape EntityType="SIFOPModel.AgenteExterno" Width="1.5" PointX="5.75" PointY="0.75" IsExpanded="true" />
@@ -140,7 +140,6 @@
         <EntityTypeShape EntityType="SIFOPModel.Caja" Width="1.5" PointX="3" PointY="126.125" IsExpanded="true" />
         <EntityTypeShape EntityType="SIFOPModel.FormaPago" Width="1.5" PointX="3" PointY="176.375" IsExpanded="true" />
         <EntityTypeShape EntityType="SIFOPModel.InfoRecibo" Width="1.5" PointX="3" PointY="179.375" IsExpanded="true" />
-        <EntityTypeShape EntityType="SIFOPModel.Recibo1" Width="1.5" PointX="10.5" PointY="147.25" IsExpanded="true" />
         <EntityTypeShape EntityType="SIFOPModel.ReciboDet" Width="1.5" PointX="27.375" PointY="134.625" IsExpanded="true" />
         <EntityTypeShape EntityType="SIFOPModel.ReciboPago" Width="1.5" PointX="12.75" PointY="147.25" IsExpanded="true" />
         <EntityTypeShape EntityType="SIFOPModel.SerieRecibo" Width="1.5" PointX="0.75" PointY="129.5" IsExpanded="true" />
@@ -323,7 +322,6 @@
         <AssociationConnector Association="SIFOPModel.FK_Facultad_Usuario" ManuallyRouted="false" />
         <AssociationConnector Association="SIFOPModel.FK_Programa_Facultad" ManuallyRouted="false" />
         <AssociationConnector Association="SIFOPModel.FK_Recibo_FuenteFinanciamiento" ManuallyRouted="false" />
-        <AssociationConnector Association="SIFOPModel.FK_Recibo_FuenteFinanciamiento1" ManuallyRouted="false" />
         <AssociationConnector Association="SIFOPModel.FK_SolicitudCheque_FuenteFinanciamiento" ManuallyRouted="false" />
         <AssociationConnector Association="SIFOPModel.FK_PerfilContenido_Menu" ManuallyRouted="false" />
         <AssociationConnector Association="SIFOPModel.FK_Municipio_Usuario" ManuallyRouted="false" />
@@ -335,7 +333,6 @@
         <AssociationConnector Association="SIFOPModel.FK_Periodo_Usuario" ManuallyRouted="false" />
         <AssociationConnector Association="SIFOPModel.FK_Presupuesto_PeriodoEspecifico" ManuallyRouted="false" />
         <AssociationConnector Association="SIFOPModel.FK_Recibo_PeriodoEspecifico" ManuallyRouted="false" />
-        <AssociationConnector Association="SIFOPModel.FK_Recibo_PeriodoEspecifico1" ManuallyRouted="false" />
         <AssociationConnector Association="SIFOPModel.FK_SolicitudCheque_PeriodoEspecifico" ManuallyRouted="false" />
         <AssociationConnector Association="SIFOPModel.FK_PeriodoContable_Usuario" ManuallyRouted="false" />
         <AssociationConnector Association="SIFOPModel.FK_Proveedor_Personas" ManuallyRouted="false" />
@@ -375,7 +372,6 @@
         <AssociationConnector Association="SIFOPModel.FK_FormaPago_FormaPago" ManuallyRouted="false" />
         <AssociationConnector Association="SIFOPModel.FK_InfoRecibo_Usuario" ManuallyRouted="false" />
         <AssociationConnector Association="SIFOPModel.FK_Permiso_Usuario" ManuallyRouted="false" />
-        <AssociationConnector Association="SIFOPModel.FK_Recibo_Usuario" ManuallyRouted="false" />
         <AssociationConnector Association="SIFOPModel.FK_ReciboDet_Usuario" ManuallyRouted="false" />
         <AssociationConnector Association="SIFOPModel.FK_ReciboPago_Usuario" ManuallyRouted="false" />
         <AssociationConnector Association="SIFOPModel.FK_TipoDeposito_Usuario" ManuallyRouted="false" />
@@ -391,15 +387,8 @@
         <AssociationConnector Association="SIFOPModel.FK_ArancelTipoDeposito_TipoDeposito" ManuallyRouted="false" />
         <AssociationConnector Association="SIFOPModel.FK_DetOrdenPagoArancel_OrdenPago" ManuallyRouted="false" />
         <AssociationConnector Association="SIFOPModel.FK_OrdenPago_TipoDeposito" ManuallyRouted="false" />
-        <AssociationConnector Association="SIFOPModel.FK_Recibo_OrdenPago" ManuallyRouted="false" />
         <AssociationConnector Association="SIFOPModel.FK_Caja_SerieRecibo" ManuallyRouted="false" />
-        <AssociationConnector Association="SIFOPModel.FK_Recibo_Caja" ManuallyRouted="false" />
         <AssociationConnector Association="SIFOPModel.FK_ReciboPago_FormaPago" ManuallyRouted="false" />
-        <AssociationConnector Association="SIFOPModel.FK_Recibo_InfoRecibo" ManuallyRouted="false" />
-        <AssociationConnector Association="SIFOPModel.FK_Recibo_SerieRecibo" ManuallyRouted="false" />
-        <AssociationConnector Association="SIFOPModel.FK_Recibo_TipoDeposito" ManuallyRouted="false" />
-        <AssociationConnector Association="SIFOPModel.FK_ReciboDet_Recibo" ManuallyRouted="false" />
-        <AssociationConnector Association="SIFOPModel.FK_ReciboPago_Recibo" ManuallyRouted="false" />
         <AssociationConnector Association="SIFOPModel.FK_AccesoDirectoPerfil_Pantalla" ManuallyRouted="false" />
         <AssociationConnector Association="SIFOPModel.FK_AccesoDirectoUsuario_Pantalla" ManuallyRouted="false" />
         <AssociationConnector Association="SIFOPModel.FK_Permiso_Pantalla" ManuallyRouted="false" />
@@ -407,8 +396,27 @@
         <EntityTypeShape EntityType="SIFOPModel.ReciboAnulado" Width="1.5" PointX="15.75" PointY="153.875" />
         <AssociationConnector Association="SIFOPModel.FK_ReciboAnulado_Usuario" />
         <AssociationConnector Association="SIFOPModel.FK_ReciboAnulado_OrdenPago" />
+        <EntityTypeShape EntityType="SIFOPModel.ReciboPagoBono" Width="1.5" PointX="15" PointY="157.375" />
+        <EntityTypeShape EntityType="SIFOPModel.ReciboPagoCheque" Width="1.5" PointX="21" PointY="139" />
+        <AssociationConnector Association="SIFOPModel.FK_ReciboPagoCheque_Banco" />
+        <AssociationConnector Association="SIFOPModel.FK_ReciboPagoBono_ReciboPago" />
+        <AssociationConnector Association="SIFOPModel.FK_ReciboPagoCheque_ReciboPago" />
+        <EntityTypeShape EntityType="SIFOPModel.Recibo1" Width="1.5" PointX="19.5" PointY="150.625" />
+        <AssociationConnector Association="SIFOPModel.FK_Recibo_FuenteFinanciamiento1" />
+        <AssociationConnector Association="SIFOPModel.FK_Recibo_PeriodoEspecifico1" />
+        <AssociationConnector Association="SIFOPModel.FK_Recibo_Usuario" />
+        <AssociationConnector Association="SIFOPModel.FK_Recibo_OrdenPago" />
+        <AssociationConnector Association="SIFOPModel.FK_Recibo_Caja" />
+        <AssociationConnector Association="SIFOPModel.FK_Recibo_InfoRecibo" />
+        <AssociationConnector Association="SIFOPModel.FK_Recibo_SerieRecibo" />
+        <AssociationConnector Association="SIFOPModel.FK_Recibo_TipoDeposito" />
         <AssociationConnector Association="SIFOPModel.FK_ReciboAnulado_Recibo" />
-      </Diagram>
+        <AssociationConnector Association="SIFOPModel.FK_ReciboDet_Recibo" />
+        <AssociationConnector Association="SIFOPModel.FK_ReciboPago_Recibo" />
+        <EntityTypeShape EntityType="SIFOPModel.ReciboPagoTarjeta" Width="1.5" PointX="24" PointY="141.125" />
+        <AssociationConnector Association="SIFOPModel.FK_RecPagoTarjeta_CiaTarjetaCredito" />
+        <AssociationConnector Association="SIFOPModel.FK_RecPagoTarjeta_ReciboPago" />
+        </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>
 </edmx:Edmx>

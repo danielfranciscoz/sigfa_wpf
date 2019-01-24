@@ -1,22 +1,11 @@
-﻿using Confortex.Clases;
-using PruebaWPF.Clases;
+﻿using PruebaWPF.Clases;
 using PruebaWPF.Model;
 using PruebaWPF.Referencias;
 using PruebaWPF.ViewModel;
 using PruebaWPF.Views.Main;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
 
 namespace PruebaWPF.Views.Recibo
 {
@@ -79,6 +68,7 @@ namespace PruebaWPF.Views.Recibo
 
         private void Finalizar()
         {
+            Recibo.isOpening = true;
             frmMain.Refrescar();
             Close();
         }

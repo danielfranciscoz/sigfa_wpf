@@ -41,7 +41,7 @@
             <StackPanel Background="{StaticResource Bar_BackgroundColor}" Grid.Row="1">
                 <Grid>
                     <StackPanel HorizontalAlignment="Left" Margin="10 10 10 10">
-                        <TextBlock TextWrapping="Wrap" FontStyle="Italic" Foreground="{StaticResource WarningMsj}">
+                        <TextBlock TextWrapping="Wrap"  Foreground="{StaticResource DarkGray}">
                             Vamos a exportar la información en segundo plano, por lo tanto, podrás seguir trabajando y te informaremos cuando se haya terminado el proceso, además intetaremos abrir el documento para ti.
                         </TextBlock>
                     </StackPanel>

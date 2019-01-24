@@ -15,11 +15,6 @@ using System.Collections.Specialized;
 using System.Threading.Tasks;
 using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
-using System.IO;
-using System.Runtime.Serialization.Json;
-using System.Text;
-using Confortex.Clases;
 
 namespace PruebaWPF.Views.OrdenPago
 {
@@ -32,7 +27,7 @@ namespace PruebaWPF.Views.OrdenPago
         public ObservableCollection<OrdenPagoSon> items;
         private Pantalla pantalla;
         private Operacion operacion;
-        private Boolean isOpening = true;
+        public static Boolean isOpening = true;
         public OrdenPago()
         {
 
@@ -47,7 +42,7 @@ namespace PruebaWPF.Views.OrdenPago
             operacion = new Operacion();
 
             InitializeComponent();
-            LoadTitle();
+
         }
 
 
@@ -61,16 +56,25 @@ namespace PruebaWPF.Views.OrdenPago
         {
             try
             {
-                items = await FindAsync(text);
-                Load();
-                if (isOpening)
-                {
-                    isOpening = false;
-                    if (clsConfiguration.AutomaticReload())
+                //if (isOpening)
+                //{
+                //    isOpening = false;
+                    if (clsConfiguration.Actual().AutoLoad)
                     {
                         AutomaticReloadTask();
                     }
-                }
+                    else
+                    {
+                        items = await FindAsync(text);
+                        Load();
+                    }
+                //}
+                //else
+                //{
+                //    //Esto funciona usando la palabra reservada Async en el metodo y hace que se recargue todo cuando la pantalla es redimencionada
+                //    //items = await FindAsync(text);
+                //    //Load();
+                //}
             }
             catch (Exception ex)
             {
@@ -110,7 +114,8 @@ namespace PruebaWPF.Views.OrdenPago
         {
             Bar_Back e = new Bar_Back();
             e.Value = pantalla.Titulo;
-            this.layoutRoot.DataContext = e;
+            e.AutoReload = true;
+            this.tittle_bar.DataContext = e;
         }
 
         private void txtFindText(object sender, KeyEventArgs e)
@@ -178,8 +183,14 @@ namespace PruebaWPF.Views.OrdenPago
         {
             try
             {
+                LoadTitle();
                 ResizeGrid();
-                LoadTable(txtFind.Text);
+
+                if (items==null || isOpening)
+                {
+                    isOpening = false;
+                    LoadTable(txtFind.Text);
+                }
             }
             catch (Exception ex)
             {
@@ -194,14 +205,14 @@ namespace PruebaWPF.Views.OrdenPago
 
         private async void AutomaticReloadTask()
         {
-            while (true)
+            while (this.IsVisible && clsConfiguration.Actual().AutoLoad)
             {
                 Boolean data = await Reload(txtFind.Text);
-                await Dormir();
                 if (data)
                 {
                     Load();
                 }
+                await Dormir();
             }
         }
 
@@ -211,7 +222,15 @@ namespace PruebaWPF.Views.OrdenPago
             await Task.Run(() =>
             {
                 IEnumerable<OrdenPagoSon> colection = (IEnumerable<OrdenPagoSon>)items;
-                List<OrdenPagoSon> item2 = new List<OrdenPagoSon>(colection);
+                List<OrdenPagoSon> item2;
+                if (items == null)
+                {
+                    item2 = null;
+                }
+                else
+                {
+                    item2 = new List<OrdenPagoSon>(colection);
+                }
 
                 List<OrdenPagoSon> item3;
 
@@ -238,9 +257,10 @@ namespace PruebaWPF.Views.OrdenPago
         {
             await Task.Run(() =>
              {
-                 System.Threading.Thread.Sleep(clsConfiguration.ThreadSpeep());
+                 System.Threading.Thread.Sleep(clsConfiguration.MiliSecondSleep());
              });
         }
+
     }
 
 }

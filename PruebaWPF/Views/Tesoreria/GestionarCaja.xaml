@@ -63,14 +63,20 @@
                                 <ColumnDefinition Width="auto"/>
                             </Grid.ColumnDefinitions>
                             <TextBox Grid.Column="0" x:Name="txtMAC" MaxLength="17" Text="{Binding MAC,Mode=TwoWay}" materialDesign:HintAssist.Hint="* Dirección MAC" materialDesign:HintAssist.IsFloating="True" FontSize="12" CharacterCasing="Upper"/>
-                            <TextBlock x:Name="lblCount" Grid.Column="1" Foreground="{StaticResource DarkGray}" VerticalAlignment="Bottom" Text="{Binding ElementName=txtMAC,Path=Text.Length}"></TextBlock>
-                            <TextBlock  Grid.Column="2" Foreground="{StaticResource DarkGray}" VerticalAlignment="Bottom">/17</TextBlock>
+                            <TextBlock x:Name="lblCount" Margin="5 0 0 0" Grid.Column="1" Foreground="{StaticResource DarkGray}" VerticalAlignment="Bottom" Text="{Binding ElementName=txtMAC,Path=Text.Length}"></TextBlock>
+                            <TextBlock  Grid.Column="2" Foreground="{StaticResource DarkGray}" VerticalAlignment="Bottom">
+                                <TextBlock.Inlines>
+                                    <Run Text=" /"></Run>
+                                    <Run Text="{Binding ElementName=txtMAC,Path=MaxLength}"></Run>
+                                </TextBlock.Inlines>
+                            </TextBlock>
+                            
                         </Grid>
                     </StackPanel>
                     <StackPanel Margin="0 0 0 0" Orientation="Horizontal">
                         <TextBlock VerticalAlignment="Center" FontSize="10" Text="La dirección MAC de este ordenador es: " Foreground="{StaticResource DarkGray}"/>
                         <TextBlock VerticalAlignment="Center" x:Name="lblMac" FontSize="10"  Foreground="{StaticResource DarkGray}" />
-                        <Button x:Name="btnEstablecer" Click="btnEstablecer_Click" ToolTip="Establer la dirección actual en el campo Dirección MAC" Style="{DynamicResource MaterialDesignToolButton}" FontSize="10">
+                        <Button x:Name="btnEstablecer" Click="btnEstablecer_Click" FontWeight="Bold" ToolTip="Establer la dirección actual en el campo Dirección MAC" Style="{DynamicResource MaterialDesignToolButton}" FontSize="10">
                             Establecer
                         </Button>
                     </StackPanel>

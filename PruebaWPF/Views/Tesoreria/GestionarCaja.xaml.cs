@@ -1,22 +1,11 @@
-﻿using Confortex.Clases;
-using PruebaWPF.Clases;
+﻿using PruebaWPF.Clases;
 using PruebaWPF.Model;
 using PruebaWPF.Referencias;
 using PruebaWPF.ViewModel;
 using PruebaWPF.Views.Main;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
 
 namespace PruebaWPF.Views.Tesoreria
 {
@@ -43,7 +32,7 @@ namespace PruebaWPF.Views.Tesoreria
             InitializeComponent();
 
             Inicializar(PermisoName);
-
+            
         }
 
         public GestionarCaja(CajaSon caja, Pantalla pantalla, String PermisoName)
@@ -140,6 +129,7 @@ namespace PruebaWPF.Views.Tesoreria
 
         private void Finalizar()
         {
+            Tesoreria.Cambios = true;
             frmMain.Refrescar();
             Close();
         }

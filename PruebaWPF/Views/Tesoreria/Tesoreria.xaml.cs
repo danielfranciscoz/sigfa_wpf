@@ -1,24 +1,15 @@
-﻿using Confortex.Clases;
-using PruebaWPF.Clases;
+﻿using PruebaWPF.Clases;
 using PruebaWPF.Model;
 using PruebaWPF.Referencias;
 using PruebaWPF.UserControls;
 using PruebaWPF.ViewModel;
+using PruebaWPF.Views.Main;
 using PruebaWPF.Views.Shared;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 
 namespace PruebaWPF.Views.Tesoreria
 {
@@ -30,7 +21,7 @@ namespace PruebaWPF.Views.Tesoreria
         private Pantalla pantalla;
         private List<CajaSon> cajas;
         private List<SerieRecibo> series;
-
+        public static Boolean Cambios = false;
         public Tesoreria()
         {
             InitializeComponent();
@@ -42,13 +33,14 @@ namespace PruebaWPF.Views.Tesoreria
             this.pantalla = pantalla;
             InitializeComponent();
 
-            LoadTitle();
+
         }
 
         private void LoadTitle()
         {
             Bar_Back e = new Bar_Back();
             e.Value = pantalla.Titulo;
+            e.AutoReload = false;
             this.layoutRoot.DataContext = e;
         }
 
@@ -89,8 +81,14 @@ namespace PruebaWPF.Views.Tesoreria
 
         private void Page_Loaded(object sender, RoutedEventArgs e)
         {
+            LoadTitle();
             ResizeGrid();
-            LoadTables();
+
+            if (cajas == null || series == null || Cambios)
+            {
+                LoadTables();
+                Cambios = false;
+            }
         }
         private void ResizeGrid()
         {
@@ -110,7 +108,6 @@ namespace PruebaWPF.Views.Tesoreria
             {
                 series = await FindAsyncSeires();
                 tblSerie.ItemsSource = series;
-                removeDeleteButton();
             }
             catch (Exception ex)
             {
@@ -119,16 +116,6 @@ namespace PruebaWPF.Views.Tesoreria
 
         }
 
-        private void removeDeleteButton()
-        {
-            //foreach ( SerieRecibo fila in tblSerie.Items)
-            //{
-            //    if (fila.regAnulado)
-            //    {
-            //        tblSerie.Columns[0].Visibility = Visibility.Hidden;
-            //    }
-            //}
-        }
 
         private void btn_Exportar(object sender, RoutedEventArgs e)
         {
