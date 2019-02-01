@@ -30,6 +30,9 @@ namespace PruebaWPF.Views.Recibo
         private clsValidateInput validate;
         private ReciboSon recibo;
         List<MonedaMonto> aPagar;
+        List<MonedaMonto> pendiente;
+
+        //TODO Cambiar la forma de los recibos, ya no serán series sino recintos
 
         private bool isOrdenPago = false;
         public CrearRecibo()
@@ -118,8 +121,9 @@ namespace PruebaWPF.Views.Recibo
             clsValidateInput.Validate(txtMonto, clsValidateInput.DecimalNumber);
             clsValidateInput.Validate(txtNumeroCK, clsValidateInput.OnlyNumber);
             clsValidateInput.Validate(txtAutorizacion, clsValidateInput.OnlyNumber);
+            clsValidateInput.Validate(txtTarjeta, clsValidateInput.OnlyNumber);
 
-            validate.AsignarBorderNormal(new Control[] { txtArea, cboTipoDeposito, txtIdentificador, txtPorCuenta, txtRecibimos, cboFuenteFinanciamiento, cboArancel, txtMonto, cboMonedaDeuda, cboFormaPago, txtMontoPago, cboMonedaPago, txtEmisor, txtBono, cboBanco, txtCuenta, txtNumeroCK, cboTarjeta, txtAutorizacion });
+            validate.AsignarBorderNormal(new Control[] { txtArea, cboTipoDeposito, txtIdentificador, txtPorCuenta, txtRecibimos, cboFuenteFinanciamiento, cboArancel, txtMonto, cboMonedaDeuda, cboFormaPago, txtMontoPago, cboMonedaPago, txtEmisor, txtBono, cboBanco, txtCuenta, txtNumeroCK, cboTarjeta, txtAutorizacion, txtTarjeta, cboTipo, txtTransaccion });
 
         }
 
@@ -136,9 +140,15 @@ namespace PruebaWPF.Views.Recibo
         {
             if (e.Action == System.Collections.Specialized.NotifyCollectionChangedAction.Remove)
             {
-
             }
-            CalcularMontosPago();
+                if (tblDetallesPay.Items.Count == 0)
+                {
+                    CalcularMontosDeuda();
+                }
+                else
+                {
+                    CalcularMontosPago();
+                }
             ContarRegistrosPay();
 
         }
@@ -264,6 +274,8 @@ namespace PruebaWPF.Views.Recibo
         {
             lstSumatoria.Items.Clear();
             lstEquivalenciaTotal.Items.Clear();
+            lstSumatoriaPay.Items.Clear();
+            lstEquivalenciaTotalPay.Items.Clear();
 
             var SumTotal = items.GroupBy(a => new { a.ArancelPrecio.Moneda }).Select(b => new { Moneda = b.Key.Moneda.Simbolo, IdMoneda = b.Key.Moneda.IdMoneda, Monto = b.Sum(c => c.Total) }).OrderBy(o => o.IdMoneda).ToList();
 
@@ -292,11 +304,21 @@ namespace PruebaWPF.Views.Recibo
 
             var SumETotal = Totales.GroupBy(a => new { a.IdMoneda, a.Moneda }).Select(b => new { Moneda = b.Key.Moneda, IdMoneda = b.Key.IdMoneda, Monto = b.Sum(c => c.Valor) }).OrderBy(o => o.IdMoneda).ToList();
             aPagar = new List<MonedaMonto>();
-
+            pendiente = new List<MonedaMonto>();
+            if (lstEquivalenciaTotalPay.Items.Count == 0)
+            {
+                lstPendiente.Items.Clear();
+            }
             foreach (var item in SumETotal)
             {
                 lstEquivalenciaTotal.Items.Add("Total en " + item.Moneda + " " + string.Format("{0:N}", item.Monto));
                 aPagar.Add(new MonedaMonto() { Moneda = item.Moneda, Valor = item.Monto });
+
+                if (lstEquivalenciaTotalPay.Items.Count == 0)
+                {
+                    lstPendiente.Items.Add("Saldo en " + item.Moneda + " " + string.Format("{0:N}", item.Monto));
+                    pendiente.Add(new MonedaMonto() { Moneda = item.Moneda, Valor = Math.Round(item.Monto,2) });
+                }
             }
 
             InabilitarListas(false);
@@ -304,11 +326,15 @@ namespace PruebaWPF.Views.Recibo
 
         private void CalcularMontosPago()
         {
+            var SumTotal = formaPago.GroupBy(a => new { a.Moneda }).Select(b => new { Moneda = b.Key.Moneda.Simbolo, IdMoneda = b.Key.Moneda.IdMoneda, Monto = b.Sum(c => c.Monto) }).OrderBy(o => o.IdMoneda).ToList();
+           
+            if (lstEquivalenciaTotalPay.Items.Count > 0 || SumTotal.Count > 0)
+            {
+                lstPendiente.Items.Clear();
+            }
             lstSumatoriaPay.Items.Clear();
             lstEquivalenciaTotalPay.Items.Clear();
-            lstPendiente.Items.Clear();
 
-            var SumTotal = formaPago.GroupBy(a => new { a.Moneda }).Select(b => new { Moneda = b.Key.Moneda.Simbolo, IdMoneda = b.Key.Moneda.IdMoneda, Monto = b.Sum(c => c.Monto) }).OrderBy(o => o.IdMoneda).ToList();
 
             List<MonedaMonto> Totales = new List<MonedaMonto>();
             foreach (var item in SumTotal)
@@ -334,14 +360,20 @@ namespace PruebaWPF.Views.Recibo
             }
 
             var SumETotal = Totales.GroupBy(a => new { a.IdMoneda, a.Moneda }).Select(b => new { Moneda = b.Key.Moneda, IdMoneda = b.Key.IdMoneda, Monto = b.Sum(c => c.Valor) }).OrderBy(o => o.IdMoneda).ToList();
-           
-            foreach (var item in SumETotal)
+            pendiente = new List<MonedaMonto>();
+            if (SumETotal.Count > 0)
             {
-                lstEquivalenciaTotalPay.Items.Add("Total en " + item.Moneda + " " + string.Format("{0:N}", item.Monto));
+                foreach (var item in SumETotal)
+                {
+                    lstEquivalenciaTotalPay.Items.Add("Total en " + item.Moneda + " " + string.Format("{0:N}", item.Monto));
 
-                MonedaMonto a = aPagar.Where(w => w.Moneda == item.Moneda).First();
-                lstPendiente.Items.Add("Saldo en " + item.Moneda + " " + string.Format("{0:N}", (a.Valor - item.Monto)));
+                    MonedaMonto a = aPagar.Where(w => w.Moneda == item.Moneda).First();
+
+                    lstPendiente.Items.Add("Saldo en " + item.Moneda + " " + string.Format("{0:N}", (a.Valor - item.Monto)));
+                    pendiente.Add(new MonedaMonto() { Moneda = item.Moneda, Valor = Math.Round(a.Valor - item.Monto, 2) });
+                }
             }
+
             InabilitarListas(true);
         }
 
@@ -353,7 +385,7 @@ namespace PruebaWPF.Views.Recibo
                 {
                     lstSumatoriaPay.IsHitTestVisible = false;
                     lstEquivalenciaTotalPay.IsHitTestVisible = false;
-                }                
+                }
             }
             else
             if (lstSumatoria.IsHitTestVisible)
@@ -459,7 +491,7 @@ namespace PruebaWPF.Views.Recibo
                 FormaPago = fp,
                 Moneda = m,
                 IdMoneda = m.IdMoneda,
-                Monto = Decimal.Parse(txtMontoPago.Text),
+                Monto =Math.Round(Decimal.Parse(txtMontoPago.Text),2),
                 DetalleAdicional = o[0],
                 InfoAdicional = o[1].ToString()
             });
@@ -469,6 +501,7 @@ namespace PruebaWPF.Views.Recibo
             LimpiarCampos(CamposAValidar(fp.IdFormaPago));
 
             VerCamposAdicionales(0); //Ocultará los campos adicionales al enviarle un id que no existe
+            cboFormaPago.Focus();
         }
 
 
@@ -495,17 +528,20 @@ namespace PruebaWPF.Views.Recibo
             {
                 case 2: //Cheque
                     CargarBancos();
-                    OcultarVerAdicionales(Cheque, new Panel[] { Tarjeta, Bono, EspacioVacio });
+                    OcultarVerAdicionales(Cheque, new Panel[] { Tarjeta, Bono, EspacioVacio, Deposito });
                     break;
                 case 3: //Tarjeta
                     CargarTarjetas();
-                    OcultarVerAdicionales(Tarjeta, new Panel[] { Cheque, Bono, EspacioVacio });
+                    OcultarVerAdicionales(Tarjeta, new Panel[] { Cheque, Bono, EspacioVacio, Deposito });
                     break;
                 case 4: //Bono
-                    OcultarVerAdicionales(Bono, new Panel[] { Tarjeta, Cheque, EspacioVacio });
+                    OcultarVerAdicionales(Bono, new Panel[] { Tarjeta, Cheque, EspacioVacio, Deposito });
+                    break;
+                case 5: //Deposito
+                    OcultarVerAdicionales(Deposito, new Panel[] { Tarjeta, Cheque, EspacioVacio, Bono });
                     break;
                 default:
-                    OcultarVerAdicionales(EspacioVacio, new Panel[] { Tarjeta, Bono, Cheque });
+                    OcultarVerAdicionales(EspacioVacio, new Panel[] { Tarjeta, Bono, Cheque, Deposito });
                     break;
                     //Efectivo
             }
@@ -533,12 +569,12 @@ namespace PruebaWPF.Views.Recibo
                     {
                         CiaTarjetaCredito = (CiaTarjetaCredito)cboTarjeta.SelectedItem,
                         IdTarjeta = Byte.Parse(cboTarjeta.SelectedValue.ToString()),
-                        //Numero = txtTarjeta.Text,
+                        Tarjeta = txtTarjeta.Text,
                         Autorizacion = int.Parse(txtAutorizacion.Text.ToString())
                     };
 
                     o[0] = rt;
-                    o[1] = string.Format("{0}, Autorización {1}", rt.CiaTarjetaCredito.Nombre, rt.Autorizacion);
+                    o[1] = string.Format("{0}, Tarjeta ****{1} Autorización {2}", rt.CiaTarjetaCredito.Nombre, rt.Tarjeta, rt.Autorizacion);
                     break;
                 case 4: //Bono
                     ReciboPagoBono rb = new ReciboPagoBono()
@@ -549,6 +585,17 @@ namespace PruebaWPF.Views.Recibo
 
                     o[0] = rb;
                     o[1] = string.Format("Emitipo por {0}, Bono No.{1}", rb.Emisor, rb.Numero);
+                    break;
+                case 5: //Deposito
+                    ReciboPagoDeposito rd = new ReciboPagoDeposito()
+                    {
+                        Tipo = cboTipo.SelectedIndex == 0 ? false : true,
+                        Transaccion = txtTransaccion.Text,
+                        Observacion = txtObservación.Text
+                    };
+
+                    o[0] = rd;
+                    o[1] = string.Format("{0}, Transacción No.{1}, Obs. {2}", rd.Tipo ? "Transferencia" : "Minuta", rd.Transaccion, rd.Observacion);
                     break;
                 default:
                     o[0] = null;
@@ -576,12 +623,16 @@ namespace PruebaWPF.Views.Recibo
                     break;
                 case 3: //Tarjeta
                     campos[2] = cboTarjeta;
-                    //campos[3] = txtTarjeta;
-                    campos[3] = txtAutorizacion;
+                    campos[3] = txtTarjeta;
+                    campos[4] = txtAutorizacion;
                     break;
                 case 4: //Bono
                     campos[2] = txtEmisor;
                     campos[3] = txtBono;
+                    break;
+                case 5: //Deposito
+                    campos[2] = cboTipo;
+                    campos[3] = txtTransaccion;
                     break;
                 default:
                     break;
@@ -600,7 +651,11 @@ namespace PruebaWPF.Views.Recibo
                     c.Add(txtNumeroCK, clsValidateInput.OnlyNumber);
                     break;
                 case 3: //Tarjeta
+                    c.Add(txtTarjeta, clsValidateInput.OnlyNumber);
                     c.Add(txtAutorizacion, clsValidateInput.OnlyNumber);
+                    break;
+                case 5: //Deposito
+                    c.Add(txtTransaccion, clsValidateInput.OnlyNumber);
                     break;
                 default:
                     break;
@@ -743,7 +798,23 @@ namespace PruebaWPF.Views.Recibo
                         {
                             if (tabControl.SelectedIndex == 1)
                             {
+                                var a = pendiente.Where(w => w.Valor != 0).ToList();
+
+                                if (a.Count() >0)
+                                {
+                                    string info="";
+                                    foreach (var item in a)
+                                    {
+                                        info = item.Moneda+"\t"+item.Valor +"\t"+ (item.Valor < 0?"(Debe restar esta cantidad a alguna forma de pago)":"El usuario aún debe entregar esta cantidad a la caja") +"\n"+info;
+                                    }
+                                    clsutilidades.OpenMessage(new Operacion() {
+                                        Mensaje = "\nPara generar el recibo se requiere que los saldos de la columna PENDIENTE sean iguales a cero (0.00).\nPor favor corrija la siguiente información: \n\n"+info+"\nEn algunas ocasiones, habrán decimales de mas o de menos, esto se debe a que la conversión\nde moneda genera ciertos variaciones por la cantidad de decimales que se usan en las operaciones." ,
+                                        OperationType = clsReferencias.TYPE_MESSAGE_Advertencia });
+                                }
+                                else
+                                {
                                 GenerarRecibo();
+                                }
                             }
                             else
                             {
@@ -751,6 +822,7 @@ namespace PruebaWPF.Views.Recibo
                                 btnBack.Visibility = Visibility.Visible;
                                 btnNext.Content = "GENERAR RECIBO";
                                 CalcularMontosDeuda();
+                                CalcularMontosPago();
                             }
                         }
                         else

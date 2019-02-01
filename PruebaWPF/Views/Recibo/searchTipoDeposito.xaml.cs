@@ -180,7 +180,7 @@ namespace PruebaWPF.Views.Recibo
                     CambiarHeaderTabla(new String[] { "No.Interno", "Trabajador", "Código", "Área" });
                     break;
                 case 3:
-                    CambiarHeaderTabla(new String[] { "No.Registro", "Agente Externo", "RUC / Cédula", "Dirección" });
+                    CambiarHeaderTabla(new String[] { "No. de Documento", "Agente Externo", "Tipo de Identificación", "Procedencia" });
                     break;
                 case 4:
                     CambiarHeaderTabla(new String[] { "RUC", "Razón Social", "Nombre Comercial", "Dirección" });

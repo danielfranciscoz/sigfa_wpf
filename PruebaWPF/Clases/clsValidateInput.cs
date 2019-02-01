@@ -66,8 +66,8 @@ namespace PruebaWPF.Clases
                     txt = (TextBox)campos[i];
                     txt.GotFocus += (sender, e) =>
                    {
-                        txt.BorderBrush = c;
-                    };
+                       txt.BorderBrush = c;
+                   };
                 }
                 else
                 if (campos[i] is ComboBox)
@@ -125,6 +125,25 @@ namespace PruebaWPF.Clases
                         flag = false;
                     }
                 }
+            }
+
+            return flag;
+        }
+
+
+        public static bool ValidateLength(TextBox campo, int MaxLength, bool isMaxMin)
+        {
+            bool flag = true;
+
+            if (campo.Text.Length > MaxLength)
+            {
+                flag = false;
+                campo.BorderBrush = clsutilidades.BorderError();
+            }
+            else if (campo.Text.Length < MaxLength && isMaxMin)
+            {
+                flag = false;
+                campo.BorderBrush = clsutilidades.BorderError();
             }
 
             return flag;

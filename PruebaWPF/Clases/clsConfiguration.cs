@@ -10,7 +10,7 @@ namespace PruebaWPF.Clases
     class clsConfiguration
     {
 
-        public int Sleep { get ; set; }
+        public int Sleep { get; set; }
         public bool AutoLoad { get; set; }
         public int TopRow { get; set; }
 
@@ -45,7 +45,8 @@ namespace PruebaWPF.Clases
 
         public enum Llaves
         {
-            Consecutivo_Recibo
+            Consecutivo_Recibo,
+            Saldo_Inicial_Cajas
         };
 
 

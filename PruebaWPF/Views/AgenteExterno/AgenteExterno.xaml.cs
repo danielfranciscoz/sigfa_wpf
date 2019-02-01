@@ -5,20 +5,11 @@ using PruebaWPF.UserControls;
 using PruebaWPF.ViewModel;
 using PruebaWPF.Views.Shared;
 using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 
 namespace PruebaWPF.Views.AgenteExterno
 {
@@ -27,17 +18,17 @@ namespace PruebaWPF.Views.AgenteExterno
     /// </summary>
     public partial class AgenteExterno : Page
     {
-        private AgenteExternoViewModel controller;
+        
 
-        private ObservableCollection<Model.AgenteExterno> items;
+        private ObservableCollection<AgenteExternoCat> items;
         private Operacion operacion;
         public static Boolean Cambios = false;
-        
+
         public Model.Pantalla pantalla;
 
         public AgenteExterno()
         {
-            
+
             InitializeComponent();
         }
 
@@ -45,9 +36,9 @@ namespace PruebaWPF.Views.AgenteExterno
         {
             this.pantalla = pantalla;
 
-            controller = new AgenteExternoViewModel(pantalla);
+            //controller = new AgenteExternoViewModel(pantalla);
             operacion = new Operacion();
-            
+
             InitializeComponent();
         }
 
@@ -57,11 +48,17 @@ namespace PruebaWPF.Views.AgenteExterno
 
         }
 
+        private AgenteExternoViewModel controller()
+        {
+            return new AgenteExternoViewModel(pantalla);
+        }
+
         private async void LoadTable(string text)
         {
             try
             {
                 items = await FindAsync(text);
+                tblAgenteExterno.ItemsSource = items;
                 Load();
             }
             catch (Exception ex)
@@ -70,27 +67,27 @@ namespace PruebaWPF.Views.AgenteExterno
             }
         }
 
-        private Task<ObservableCollection<Model.AgenteExterno>> FindAsync(String text)
+        private Task<ObservableCollection<AgenteExternoCat>> FindAsync(String text)
         {
             if (text.Equals(""))
             {
                 return Task.Run(() =>
                 {
-                    return new ObservableCollection<Model.AgenteExterno>(controller.FindAll());
+                    return new ObservableCollection<AgenteExternoCat>(controller().FindAll());
                 });
             }
             else
             {
                 return Task.Run(() =>
                 {
-                    return new ObservableCollection<Model.AgenteExterno>(controller.FindByText(text)); ;
+                    return new ObservableCollection<AgenteExternoCat>(controller().FindByText(text)); ;
                 });
             }
         }
 
         private void Load()
         {
-            tblAgenteExterno.ItemsSource = items;
+            
             ContarRegistros();
         }
 
@@ -136,9 +133,19 @@ namespace PruebaWPF.Views.AgenteExterno
 
         private void btnDelete_Click(object sender, RoutedEventArgs e)
         {
-            if (clsutilidades.OpenDeleteQuestionMessage())
+            try
             {
-                clsutilidades.OpenMessage(Eliminar());
+                if (controller().Autorice(((Button)sender).Tag.ToString()))
+                {
+                    if (clsutilidades.OpenDeleteQuestionMessage())
+                    {
+                        clsutilidades.OpenMessage(Eliminar());
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                clsutilidades.OpenMessage(new Operacion() { Mensaje = new clsException(ex).ErrorMessage(), OperationType = clsReferencias.TYPE_MESSAGE_Error });
             }
         }
 
@@ -148,7 +155,7 @@ namespace PruebaWPF.Views.AgenteExterno
             Operacion o = new Operacion();
             try
             {
-                controller.Eliminar((Model.AgenteExterno)tblAgenteExterno.CurrentItem);
+                controller().Eliminar((AgenteExternoCat)tblAgenteExterno.CurrentItem);
 
                 o.Mensaje = clsReferencias.MESSAGE_Exito_Delete;
                 o.OperationType = clsReferencias.TYPE_MESSAGE_Exito;
@@ -167,7 +174,7 @@ namespace PruebaWPF.Views.AgenteExterno
         {
             try
             {
-                if (controller.Autorice(((Button)sender).Tag.ToString()))
+                if (controller().Autorice(((Button)sender).Tag.ToString()))
                 {
                     GestionarAgenteExterno ga = new GestionarAgenteExterno(pantalla, btnSave.Tag.ToString());
                     ga.ShowDialog();
@@ -179,9 +186,37 @@ namespace PruebaWPF.Views.AgenteExterno
             }
         }
 
-        private void Button_Click_1(object sender, RoutedEventArgs e)
+        private void btnEdit_Click(object sender, RoutedEventArgs e)
         {
+            try
+            {
+                if (controller().Autorice(((Button)sender).Tag.ToString()))
+                {
+                    AgenteExternoCat item = (AgenteExternoCat)tblAgenteExterno.CurrentItem;
+                    //AgenteExternoCat Objeto = (AgenteExternoCat)item.Clone();
+                    //Para no crear el clon, voy a crear un objeto a partir de este otro, parametro por parametro
+                    //Esto es porque para crear el clon se debe crear la clase hijo que herede de AgenteExterno e implemente IClonneable, y es muy largo el cambio
 
+                    Model.AgenteExternoCat objeto = new AgenteExternoCat() {
+                        IdAgenteExterno=item.IdAgenteExterno,
+                        Nombre=item.Nombre,
+                        IdIdentificacion=item.IdIdentificacion,
+                        Identificacion=item.Identificacion,
+                        FechaCreacion=item.FechaCreacion,
+                        Usuario=item.Usuario,
+                        UsuarioCreacion=item.UsuarioCreacion,
+                        IdentificacionAgenteExterno=item.IdentificacionAgenteExterno,
+                        Procedencia=item.Procedencia,
+                        regAnulado=item.regAnulado
+                    };
+                    GestionarAgenteExterno ga = new GestionarAgenteExterno(objeto, pantalla, ((Button)sender).Tag.ToString());
+                    ga.ShowDialog();
+                }
+            }
+            catch (Exception ex)
+            {
+                clsutilidades.OpenMessage(new Operacion() { Mensaje = new clsException(ex).ErrorMessage(), OperationType = clsReferencias.TYPE_MESSAGE_Error });
+            }
         }
     }
 }

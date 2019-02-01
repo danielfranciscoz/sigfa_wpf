@@ -17,9 +17,7 @@ namespace PruebaWPF.Model
         public Nullable<int> IdPadre { get; set; }
         public string Titulo { get; set; }
         public Nullable<bool> isMenu { get; set; }
-        public Nullable<bool> isDialog { get; set; }
-        public Nullable<bool> isPage { get; set; }
-        public Nullable<bool> isSeparator { get; set; }
+        public string Tipo { get; set; }
         public string URL { get; set; }
         public Nullable<byte> Orden { get; set; }
         public string Icon { get; set; }

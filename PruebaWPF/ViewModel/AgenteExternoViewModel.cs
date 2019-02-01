@@ -1,4 +1,5 @@
 ﻿using PruebaWPF.Clases;
+using PruebaWPF.Helper;
 using PruebaWPF.Interface;
 using PruebaWPF.Model;
 using System;
@@ -9,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace PruebaWPF.ViewModel
 {
-    class AgenteExternoViewModel : IGestiones<AgenteExterno>
+    class AgenteExternoViewModel : IGestiones<AgenteExternoCat>
     {
         private SIFOPEntities db = new SIFOPEntities();
         private Pantalla pantalla;
@@ -33,7 +34,7 @@ namespace PruebaWPF.ViewModel
                 throw new AuthorizationException(PermisoName);
             }
         }
-        
+
         public bool Autorice_Recinto(string PermisoName, int IdRecinto)
         {
             if (new SecurityViewModel().Autorize(pantalla, PermisoName, IdRecinto))
@@ -46,35 +47,35 @@ namespace PruebaWPF.ViewModel
             }
         }
 
-        public void Eliminar(AgenteExterno Obj)
+        public void Eliminar(AgenteExternoCat Obj)
         {
-            AgenteExterno a = db.AgenteExterno.Find(Obj.IdAgenteExterno);
-            a.RegAnulado = true;
+            AgenteExternoCat a = db.AgenteExternoCat.Find(Obj.IdAgenteExterno);
+            a.regAnulado = true;
 
             db.Entry(a).State = System.Data.Entity.EntityState.Modified;
             db.SaveChanges();
         }
 
-        public List<AgenteExterno> FindAll()
+        public List<AgenteExternoCat> FindAll()
         {
-            return db.AgenteExterno.Where(w => w.RegAnulado == false).Take(clsConfiguration.Actual().TopRow).OrderBy(a => a.Nombre).ToList();
+            return db.AgenteExternoCat.Where(w => w.regAnulado == false).Take(clsConfiguration.Actual().TopRow).OrderBy(a => a.Nombre).ToList();
         }
 
-        public AgenteExterno FindById(int Id)
+        public AgenteExternoCat FindById(int Id)
         {
             throw new NotImplementedException();
         }
 
-        public List<AgenteExterno> FindByText(string text)
+        public List<AgenteExternoCat> FindByText(string text)
         {
             if (!text.Equals(""))
             {
                 string[] busqueda = text.Trim().Split(' ');
 
                 //Este método retorna un error cuando se realiza la búsqueda demasiado rápido, todo es culpa de entity y los métodos asíncronos
-                return db.AgenteExterno.Where(
+                return db.AgenteExternoCat.Where(
                    w => busqueda.All(a => w.Nombre.Contains(a))
-                && w.RegAnulado == false).OrderBy(a => a.Nombre).ToList();
+                && w.regAnulado == false).OrderBy(a => a.Nombre).ToList();
 
             }
             else
@@ -83,14 +84,46 @@ namespace PruebaWPF.ViewModel
             }
         }
 
-        public void Guardar(AgenteExterno Obj)
+        public List<IdentificacionAgenteExterno> FindIdentificaciones(int? idInclude)
         {
-            throw new NotImplementedException();
+            if (idInclude == null)
+            {
+                return db.IdentificacionAgenteExterno.Where(w => w.regAnulado == false).ToList();
+            }
+            else
+            {
+                //incluye el tipo de identificacion que usa el registro, esto es para el update
+                return db.IdentificacionAgenteExterno.Where(w => w.regAnulado == false || w.IdIdentificacion == idInclude).ToList();
+            }
         }
 
-        public void Modificar(AgenteExterno Obj)
+        public void Guardar(AgenteExternoCat Obj)
         {
-            throw new NotImplementedException();
+            AgenteExternoCat agente = new AgenteExternoCat();
+            AtributosAgente(agente, Obj);
+            agente.UsuarioCreacion = clsSessionHelper.usuario.Login;
+            agente.FechaCreacion = System.DateTime.Now;
+
+            db.AgenteExternoCat.Add(agente);
+            db.SaveChanges();
         }
+
+        public void Modificar(AgenteExternoCat Obj)
+        {
+            AgenteExternoCat agente = db.AgenteExternoCat.Find(Obj.IdAgenteExterno);
+            AtributosAgente(agente, Obj);
+
+            db.Entry(agente).State = System.Data.Entity.EntityState.Modified;
+            db.SaveChanges();
+        }
+
+        private void AtributosAgente(AgenteExternoCat agente, AgenteExternoCat obj)
+        {
+            agente.Nombre = obj.Nombre;
+            agente.IdIdentificacion = obj.IdIdentificacion;
+            agente.Identificacion = obj.Identificacion;
+            agente.Procedencia = obj.Procedencia;
+        }
+
     }
 }

@@ -28,9 +28,7 @@ namespace PruebaWPF.Model
         public string Uid { get; set; }
         public string Descripcion { get; set; }
         public bool isMenu { get; set; }
-        public bool isPage { get; set; }
-        public bool isDialog { get; set; }
-        public bool isSeparator { get; set; }
+        public string Tipo { get; set; }
         public string URL { get; set; }
         public byte Orden { get; set; }
         public string Abreviacion { get; set; }

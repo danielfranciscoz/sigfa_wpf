@@ -20,8 +20,7 @@
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
 
-
-        <materialDesign:Card  Grid.Column="1" Grid.Row="1" Height="auto" Width="400">
+        <materialDesign:Card  Grid.Column="1" Grid.Row="1" Height="auto" Width="350">
             <Grid >
                 <Grid.RowDefinitions>
                     <RowDefinition Height="auto"/>
@@ -45,15 +44,29 @@
                     </StackPanel>
                 </Grid>
 
-                <StackPanel Grid.Row="1" VerticalAlignment="Top" Height="300" Margin="20 0 20 15">
-                    <Grid>
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="*"/>
-                        </Grid.ColumnDefinitions>
-                    </Grid>
+                <StackPanel Grid.Row="1" VerticalAlignment="Top" Height="auto" Margin="20 0 20 15">
+                    <TextBox Margin="0 15 0 15" x:Name="txtNombre" Text="{Binding Nombre,Mode=TwoWay}" materialDesign:HintAssist.Hint="* Nombre o Razón Social" materialDesign:HintAssist.IsFloating="True" FontSize="12" />
 
-                    <!--<TextBox Margin="0 15 0 10" x:Name="txtSerie" materialDesign:HintAssist.Hint="* Serie" materialDesign:HintAssist.IsFloating="True" FontSize="12" MaxLength="1" CharacterCasing="Upper"/>
-                    <TextBlock TextWrapping="Wrap" VerticalAlignment="Center" FontSize="10" Text="No se podrá agregar una serie repetida, independientemente si esta se encuentra inactiva." Foreground="{StaticResource DarkGray}"/>-->
+                    <StackPanel Margin="0 15 0 15">
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="140"/>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="auto"/>
+                                <ColumnDefinition Width="auto"/>
+                            </Grid.ColumnDefinitions>
+                            <ComboBox Grid.Column="0"  x:Name="cboIdentificacion" materialDesign:HintAssist.Hint="* Tipo de Identificación" materialDesign:HintAssist.IsFloating="True" FontSize="12" SelectedValuePath="IdIdentificacion" DisplayMemberPath="Identificacion"></ComboBox>
+                            <TextBox x:Name="txtIdentificacion" Margin="5 0 0 0" Grid.Column="1" VerticalAlignment="Bottom" Text="{Binding Identificacion,Mode=TwoWay}" MaxLength="{Binding ElementName=cboIdentificacion,Path=SelectedItem.MaxCaracteres}"></TextBox>
+                            <TextBlock x:Name="lblCount" Margin="5 0 0 0" Grid.Column="2" Foreground="{StaticResource DarkGray}" VerticalAlignment="Bottom" Text="{Binding ElementName=txtIdentificacion,Path=Text.Length}"></TextBlock>
+                            <TextBlock  Grid.Column="3" Foreground="{StaticResource DarkGray}" VerticalAlignment="Bottom">
+                                <TextBlock.Inlines>
+                                    <Run Text=" /"></Run>
+                                    <Run Text="{Binding ElementName=cboIdentificacion,Path=SelectedItem.MaxCaracteres}"></Run>
+                                </TextBlock.Inlines>
+                            </TextBlock>
+                        </Grid>
+                    </StackPanel>
+                    <TextBox Margin="0 15 0 15" x:Name="txtProcedencia" Text="{Binding Procedencia,Mode=TwoWay}" materialDesign:HintAssist.Hint="* Procedencia (Departamento)" materialDesign:HintAssist.IsFloating="True" FontSize="12" />
 
                 </StackPanel>
 

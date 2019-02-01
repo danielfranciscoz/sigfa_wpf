@@ -136,11 +136,11 @@
                                         <ColumnDefinition Width="120"/>
                                         <ColumnDefinition Width="*"/>
                                     </Grid.ColumnDefinitions>
-                                    <RadioButton GroupName="radios" x:Name="rbCedula" Grid.Column="0" Grid.Row="0" VerticalAlignment="Center" HorizontalAlignment="Left" IsChecked="True" Checked="rbCedula_Checked" >Cédula / RUC:</RadioButton>
-                                    <TextBox Grid.Column="2" Grid.Row="0"  x:Name="txtCedula" materialDesign:HintAssist.Hint="Especifique el Número RUC o cédula" KeyDown="txtCedula_KeyDown"/>
+                                    <RadioButton GroupName="radios" x:Name="rbCedula" Grid.Column="0" Grid.Row="0" VerticalAlignment="Center" HorizontalAlignment="Left" IsChecked="True" Checked="rbCedula_Checked" >No. Documento:</RadioButton>
+                                    <TextBox Grid.Column="2" Grid.Row="0"  x:Name="txtCedula" materialDesign:HintAssist.Hint="Especifique el No. de documento de identificación" KeyDown="txtCedula_KeyDown"/>
 
                                     <RadioButton GroupName="radios" x:Name="rbNombre" Grid.Column="0" Grid.Row="1" VerticalAlignment="Center" HorizontalAlignment="Left" Checked="rbNombre_Checked">Nombres:</RadioButton>
-                                    <TextBox Grid.Column="2" Grid.Row="1" x:Name="txtNombre"  materialDesign:HintAssist.Hint="Especifique el Nombre del Agente Externo"  KeyDown="txtNombre_KeyDown" />
+                                    <TextBox Grid.Column="2" Grid.Row="1" x:Name="txtNombre"  materialDesign:HintAssist.Hint="Especifique el Nombre o Razón Social del Agente Externo"  KeyDown="txtNombre_KeyDown" />
                                 </Grid>
                             </StackPanel>
                             <StackPanel Height="auto" Orientation="Horizontal">

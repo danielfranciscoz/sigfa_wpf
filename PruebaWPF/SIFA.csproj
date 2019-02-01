@@ -147,6 +147,12 @@
     <Compile Include="Model\AgenteExterno.cs">
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
+    <Compile Include="Model\AgenteExternoCat.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Model\AperturaCaja.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
     <Compile Include="Model\Arancel.cs">
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
@@ -157,6 +163,12 @@
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
     <Compile Include="Model\ArancelTipoDeposito.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Model\Arqueo.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Model\ArqueoRecibo.cs">
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
     <Compile Include="Model\ASD.cs">
@@ -247,6 +259,9 @@
     <Compile Include="Model\Departamento.cs">
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
+    <Compile Include="Model\DetAperturaCaja.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
     <Compile Include="Model\DetOrdenPagoArancel.cs">
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
@@ -299,6 +314,9 @@
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
     <Compile Include="Model\Estudiantes.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Model\Exoneracion.cs">
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
     <Compile Include="Model\Facultad.cs">
@@ -470,6 +488,9 @@
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
     <Compile Include="Model\FuenteFinanciamiento.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Model\IdentificacionAgenteExterno.cs">
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
     <Compile Include="Model\InfoRecibo.cs">
@@ -692,6 +713,9 @@
     <Compile Include="Model\ReciboPagoCheque.cs">
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
+    <Compile Include="Model\ReciboPagoDeposito.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
     <Compile Include="Model\ReciboPagoTarjeta.cs">
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
@@ -744,6 +768,9 @@
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
     <Compile Include="Model\tblAuditoria.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Model\TipoArancel.cs">
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
     <Compile Include="Model\TipoComprobante.cs">
@@ -950,6 +977,9 @@
     <Compile Include="Model\vw_Facultad.cs">
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
+    <Compile Include="Model\vw_FuentesSIPPSI.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
     <Compile Include="Model\vw_MatriculaPagada.cs">
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
@@ -1049,6 +1079,7 @@
     </Compile>
     <Compile Include="ViewModel\AccountViewModel.cs" />
     <Compile Include="ViewModel\AgenteExternoViewModel.cs" />
+    <Compile Include="ViewModel\AperturaCajaViewModel.cs" />
     <Compile Include="ViewModel\ExportaViewModel.cs" />
     <Compile Include="ViewModel\LoginViewModel.cs" />
     <Compile Include="ViewModel\OrdenPagoViewModel.cs" />
@@ -1067,6 +1098,9 @@
     </Compile>
     <Compile Include="Views\AgenteExterno\GestionarAgenteExterno.xaml.cs">
       <DependentUpon>GestionarAgenteExterno.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\AperturaCaja\AperturaCaja.xaml.cs">
+      <DependentUpon>AperturaCaja.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\Main\frmMain.xaml.cs">
       <DependentUpon>frmMain.xaml</DependentUpon>
@@ -1109,6 +1143,9 @@
     </Compile>
     <Compile Include="Views\Tesoreria\GestionarCaja.xaml.cs">
       <DependentUpon>GestionarCaja.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Tesoreria\GestionarT_B_FP.xaml.cs">
+      <DependentUpon>GestionarT_B_FP.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\Tesoreria\Tesoreria.xaml.cs">
       <DependentUpon>Tesoreria.xaml</DependentUpon>
@@ -1170,6 +1207,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Views\AperturaCaja\AperturaCaja.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Views\Main\frmMain.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -1223,6 +1264,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\Tesoreria\GestionarCaja.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\Tesoreria\GestionarT_B_FP.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

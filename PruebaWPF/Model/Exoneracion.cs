@@ -12,32 +12,29 @@ namespace PruebaWPF.Model
     using System;
     using System.Collections.Generic;
     
-    public partial class Caja
+    public partial class Exoneracion
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-        public Caja()
+        public Exoneracion()
         {
-            this.Recibo1 = new HashSet<Recibo1>();
-            this.Arqueo = new HashSet<Arqueo>();
-            this.DetAperturaCaja = new HashSet<DetAperturaCaja>();
+            this.DetOrdenPagoArancel = new HashSet<DetOrdenPagoArancel>();
         }
     
-        public int IdCaja { get; set; }
-        public string Nombre { get; set; }
-        public string MAC { get; set; }
-        public string IdSerie { get; set; }
-        public int IdRecinto { get; set; }
-        public string UsuarioCreacion { get; set; }
+        public int IdExoneracion { get; set; }
+        public string Identificador { get; set; }
+        public int IdTipoDeposito { get; set; }
+        public int IdArancel { get; set; }
+        public decimal Exonerado { get; set; }
         public System.DateTime FechaCreacion { get; set; }
+        public string UsuarioCreacion { get; set; }
         public bool regAnulado { get; set; }
+        public string Autorizadopor { get; set; }
     
         public virtual Usuario Usuario { get; set; }
-        public virtual SerieRecibo SerieRecibo { get; set; }
+        public virtual Usuario Usuario1 { get; set; }
+        public virtual Arancel Arancel { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Recibo1> Recibo1 { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Arqueo> Arqueo { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<DetAperturaCaja> DetAperturaCaja { get; set; }
+        public virtual ICollection<DetOrdenPagoArancel> DetOrdenPagoArancel { get; set; }
+        public virtual TipoDeposito TipoDeposito { get; set; }
     }
 }

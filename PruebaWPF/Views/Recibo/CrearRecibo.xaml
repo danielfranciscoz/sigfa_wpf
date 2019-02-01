@@ -417,6 +417,7 @@
 
                                         <!--Efectivo-->
                                         <StackPanel x:Name="EspacioVacio" Height="30"></StackPanel>
+                                        
                                         <!--Bono-->
                                         <Grid x:Name="Bono" Visibility="Collapsed">
                                             <Grid.ColumnDefinitions>
@@ -474,7 +475,7 @@
                                                     <Run Text="Banco:"></Run>
                                                 </TextBlock.Inlines>
                                             </TextBlock>
-                                            <ComboBox x:Name="cboBanco" DisplayMemberPath="Nombre" SelectedValuePath="IdBanco"  Grid.Row="0" Grid.Column="1" IsTextSearchEnabled="True" IsEditable="True" IsTextSearchCaseSensitive="False" Width="230" materialDesign:HintAssist.Hint="Seleccione" VerticalAlignment="Center" HorizontalAlignment="Left">
+                                            <ComboBox x:Name="cboBanco" DisplayMemberPath="Nombre" SelectedValuePath="IdBanco"  Grid.Row="0" Grid.Column="1" Width="230" materialDesign:HintAssist.Hint="Seleccione" VerticalAlignment="Center" HorizontalAlignment="Left">
 
                                             </ComboBox>
 
@@ -533,10 +534,59 @@
                                             </TextBlock>
                                             <TextBox x:Name="txtAutorizacion" Grid.Row="0" Grid.Column="4"  VerticalAlignment="Center"  TextAlignment="Right"></TextBox>
 
+                                            <TextBlock Grid.Row="0" Grid.Column="6"  VerticalAlignment="Center">
+                                                <TextBlock.Inlines>
+                                                    <Run Foreground="{StaticResource ErrorMsj}" Text="*"></Run>
+                                                    <Run Text="Tarjeta:"></Run>
+                                                </TextBlock.Inlines>
+                                            </TextBlock>
+                                            <TextBox x:Name="txtTarjeta" materialDesign:HintAssist.Hint="últimos 4 dígitos" Grid.Row="0" Grid.Column="7"  VerticalAlignment="Center"  TextAlignment="Right" MaxLength="4"></TextBox>
 
                                         </Grid>
 
+                                        <!--Deposito-->
+                                        <Grid x:Name="Deposito" Visibility="Collapsed">
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="110"/>
+                                                <ColumnDefinition Width="230"/>
+                                                <ColumnDefinition Width="10"/>
+                                                <ColumnDefinition Width="70"/>
+                                                <ColumnDefinition Width="120"/>
+                                                <ColumnDefinition Width="10"/>
+                                                <ColumnDefinition Width="70"/>
+                                                <ColumnDefinition Width="*"/>
+                                                <ColumnDefinition Width="70"/>
+                                            </Grid.ColumnDefinitions>
 
+                                            <Grid.RowDefinitions>
+                                                <RowDefinition Height="30"/>
+                                            </Grid.RowDefinitions>
+
+                                            <TextBlock  Grid.Row="0" Grid.Column="0" VerticalAlignment="Center">
+                                                <TextBlock.Inlines>
+                                                    <Run Foreground="{StaticResource ErrorMsj}" Text="*"></Run>
+                                                    <Run Text="Tipo:"></Run>
+                                                </TextBlock.Inlines>
+                                            </TextBlock>
+                                            <ComboBox x:Name="cboTipo"  Grid.Row="0" Grid.Column="1" Width="230" materialDesign:HintAssist.Hint="Seleccione" VerticalAlignment="Center" HorizontalAlignment="Left">
+                                                <ComboBoxItem>Minuta</ComboBoxItem>
+                                                <ComboBoxItem>Transferencia</ComboBoxItem>
+                                            </ComboBox>
+
+                                            <TextBlock ToolTip="{Binding ElementName=txtTransaccion,Path=ToolTip}" Grid.Row="0" Grid.Column="3"  VerticalAlignment="Center">
+                                                <TextBlock.Inlines>
+                                                    <Run Foreground="{StaticResource ErrorMsj}" Text="*"></Run>
+                                                    <Run Text="No. TRX:"></Run>
+                                                </TextBlock.Inlines>
+                                            </TextBlock>
+                                            <TextBox x:Name="txtTransaccion" ToolTip="Número de Transacción" Grid.Row="0" Grid.Column="4"  VerticalAlignment="Center"  TextAlignment="Right"></TextBox>
+
+                                            <TextBlock Grid.Row="0" Grid.Column="6"  VerticalAlignment="Center" Text="Observación:">
+                                            </TextBlock>
+                                            <TextBox x:Name="txtObservación"  Grid.Row="0" Grid.Column="7"  VerticalAlignment="Center" ></TextBox>
+
+
+                                        </Grid>
 
                                     </StackPanel>
 
@@ -671,7 +721,7 @@
                                                     </StackPanel>
 
                                                     <StackPanel Grid.Row="1" VerticalAlignment="Top">
-                                                        <ListBox x:Name="lstPendiente" FontWeight="Bold">
+                                                        <ListBox x:Name="lstPendiente" FontWeight="Bold" IsHitTestVisible="False">
                                                         </ListBox>
                                                     </StackPanel>
                                                 </Grid>

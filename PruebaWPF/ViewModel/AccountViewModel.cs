@@ -17,7 +17,7 @@ namespace PruebaWPF.ViewModel
 
         public List<Pantalla> ObtenerMenu()
         {
-            return db.fn_ObtenerMenu(clsSessionHelper.usuario.Login,false).ToList().Select(a => new Pantalla { IdPantalla = a.IdPantalla.Value, IdPadre = a.IdPadre.Value, Titulo = a.Titulo, isMenu = a.isMenu.Value, isDialog = a.isDialog.Value, isPage = a.isPage.Value, URL = a.URL, Orden = a.Orden.Value, isSeparator = a.isSeparator.Value, Icon = a.Icon, Uid = a.UId }).OrderBy(a => a.Orden).ToList();
+            return db.fn_ObtenerMenu(clsSessionHelper.usuario.Login,false).ToList().Select(a => new Pantalla { IdPantalla = a.IdPantalla.Value, IdPadre = a.IdPadre.Value, Titulo = a.Titulo, isMenu = a.isMenu.Value, URL = a.URL, Orden = a.Orden.Value, Tipo = a.Tipo, Icon = a.Icon, Uid = a.UId }).OrderBy(a => a.Orden).ToList();
         }
 
         public String ObtenerTipoCambio()

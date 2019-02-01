@@ -37,8 +37,7 @@
                     </Grid.ColumnDefinitions>
                     <StackPanel Grid.Column="0" Orientation="Horizontal">
                         <Button x:Name="btnSave" Tag="{StaticResource Permiso_Guardar}" BorderBrush="Transparent"  Background="{StaticResource Save_Button}" Margin="5 5 5 5" Click="Button_Click" Content="{StaticResource Text_New_Button}"></Button>
-                        <Button x:Name="btnEdit" Tag="{StaticResource Permiso_Editar}" BorderBrush="Transparent" Background="{StaticResource Edit_Button}" Margin="5" Click="Button_Click_1" Height="Auto" Content="{StaticResource Text_Edit_Button}"></Button>
-                        <Button x:Name="btnExport" Tag="{StaticResource Permiso_Exportar}" BorderBrush="Transparent" Background="{StaticResource Export_Button}" Margin="5" Click="btn_Exportar" Height="Auto" Content="{StaticResource Text_Export_Button}"></Button>
+                       <Button x:Name="btnExport" Tag="{StaticResource Permiso_Exportar}" BorderBrush="Transparent" Background="{StaticResource Export_Button}" Margin="5" Click="btn_Exportar" Height="Auto" Content="{StaticResource Text_Export_Button}"></Button>
                     </StackPanel>
                     <StackPanel HorizontalAlignment="Right" Grid.Column="1" Orientation="Horizontal">
                         <TextBox Margin="0 0 20 0"  x:Name="txtFind" Width="200" materialDesign:HintAssist.Hint="Búsqueda (Agente Externo)" materialDesign:HintAssist.IsFloating="True" FontSize="13" KeyUp="txtFindText" />
@@ -50,24 +49,36 @@
                 <!--<StackPanel VerticalAlignment="top" HorizontalAlignment="Center" Margin="0 30 0 0">-->
                 <DataGrid VerticalAlignment="Stretch" Name="tblAgenteExterno" CanUserDeleteRows="False" CanUserAddRows="False" AutoGenerateColumns="False" SelectionUnit="FullRow" SelectionMode="Single" >
                     <DataGrid.Columns>
+
                         <DataGridTemplateColumn CanUserResize="False" Width="50" Header="">
                             <DataGridTemplateColumn.CellTemplate>
                                 <DataTemplate>
                                     <StackPanel>
-                                        <Button x:Name="btnDelete" Background="{StaticResource Delete_Button}" Height="20" Width="20" Style="{StaticResource MaterialDesignToolButton}" BorderBrush="Transparent" Click="btnDelete_Click">
+                                        <Button x:Name="btnDelete" Tag="{StaticResource Permiso_Eliminar}" Background="{StaticResource Delete_Button}" Height="20" Width="20" Style="{StaticResource MaterialDesignToolButton}" BorderBrush="Transparent" Click="btnDelete_Click">
                                             <materialDesign:PackIcon Kind="Delete" HorizontalAlignment="Center"  VerticalAlignment="Center" Margin="0 0 0 0"></materialDesign:PackIcon>
                                         </Button>
                                     </StackPanel>
                                 </DataTemplate>
                             </DataGridTemplateColumn.CellTemplate>
                         </DataGridTemplateColumn>
-                        <!--<DataGridTextColumn CanUserReorder="False" CanUserResize="False" IsReadOnly="True" Header="Año" Width="150" Binding="{Binding Fecha, StringFormat={}{0:yyyy}}"></DataGridTextColumn>
-                        <DataGridTextColumn CanUserReorder="False" CanUserResize="False" IsReadOnly="True" Header="Mes" Width="150" Binding="{Binding Fecha,StringFormat={}{0:MM}}"></DataGridTextColumn>-->
-                        <DataGridTextColumn CanUserReorder="False" CanUserResize="False" IsReadOnly="True" Header="No." Width="auto" Binding="{Binding IdAgenteExterno}"></DataGridTextColumn>
-                        <DataGridTextColumn CanUserReorder="False" CanUserResize="False" IsReadOnly="True" Header="Agente Externo" Width="350" Binding="{Binding Nombre}"></DataGridTextColumn>
-                        <DataGridTextColumn CanUserReorder="False" CanUserResize="False" IsReadOnly="True" Header="RUC" Width="150"  Binding="{Binding RUC}"></DataGridTextColumn>
-                        <DataGridTextColumn CanUserReorder="False" CanUserResize="False" IsReadOnly="True" Header="Cédula" Width="150"  Binding="{Binding Cedula}"></DataGridTextColumn>
-                        <DataGridTextColumn CanUserReorder="False" CanUserResize="False" IsReadOnly="True" Header="Creado por" Width="150"  Binding="{Binding LoginCreacion}"></DataGridTextColumn>
+
+                        <DataGridTemplateColumn CanUserResize="False" Width="50" Header="">
+                            <DataGridTemplateColumn.CellTemplate>
+                                <DataTemplate>
+                                    <StackPanel>
+                                        <Button x:Name="btnEdit" Tag="{StaticResource Permiso_Editar}" Background="{StaticResource Delete_Button}" Height="20" Width="20" Style="{StaticResource MaterialDesignToolButton}" BorderBrush="Transparent" Click="btnEdit_Click">
+                                            <materialDesign:PackIcon Kind="Pencil" HorizontalAlignment="Center"  VerticalAlignment="Center" Margin="0 0 0 0"></materialDesign:PackIcon>
+                                        </Button>
+                                    </StackPanel>
+                                </DataTemplate>
+                            </DataGridTemplateColumn.CellTemplate>
+                        </DataGridTemplateColumn>
+                        <DataGridTextColumn CanUserReorder="False" CanUserResize="False" IsReadOnly="True" Header="Agente Externo" Width="auto" Binding="{Binding Nombre}"></DataGridTextColumn>
+                        <DataGridTextColumn CanUserReorder="False" CanUserResize="False" IsReadOnly="True" Header="Identificación" Width="auto"  Binding="{Binding IdentificacionAgenteExterno.Identificacion}"></DataGridTextColumn>
+                        <DataGridTextColumn CanUserReorder="False" CanUserResize="False" IsReadOnly="True" Header="No. de documento" Width="auto"  Binding="{Binding Identificacion}"></DataGridTextColumn>
+                        <DataGridTextColumn CanUserReorder="False" CanUserResize="False" IsReadOnly="True" Header="Procedencia" Width="auto"  Binding="{Binding Procedencia}"></DataGridTextColumn>
+                        <DataGridTextColumn CanUserReorder="False" CanUserResize="False" IsReadOnly="True" Header="Creado por" Width="auto"  Binding="{Binding UsuarioCreacion}"></DataGridTextColumn>
+                        <DataGridTextColumn CanUserReorder="False" CanUserResize="False" IsReadOnly="True" Header="Fecha de Creación" Width="auto"  Binding="{Binding FechaCreacion}"></DataGridTextColumn>
                     </DataGrid.Columns>
 
                 </DataGrid>

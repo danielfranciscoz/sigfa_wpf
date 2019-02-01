@@ -1,14 +1,13 @@
 ﻿using Microsoft.Reporting.WinForms;
 using PruebaWPF.Clases;
+using PruebaWPF.Helper;
 using PruebaWPF.Model;
 using PruebaWPF.Referencias;
 using PruebaWPF.ViewModel;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-
 using System.Windows;
-
 
 
 namespace PruebaWPF.Views.Recibo
@@ -19,13 +18,14 @@ namespace PruebaWPF.Views.Recibo
     public partial class rptRecibo : Window
     {
         private ReciboSon recibo;
+        private InfoRecibo info;
         private bool isFirtTime;
         public rptRecibo()
         {
             InitializeComponent();
         }
 
-        public rptRecibo(ReciboSon recibo,Boolean isFirstTime)
+        public rptRecibo(ReciboSon recibo, Boolean isFirstTime)
         {
             this.recibo = recibo;
             InitializeComponent();
@@ -33,11 +33,26 @@ namespace PruebaWPF.Views.Recibo
             this.isFirtTime = isFirstTime;
         }
 
+        public rptRecibo(InfoRecibo info, Boolean isFirstTime)
+        {
+            this.info = info;
+            InitializeComponent();
+            this.Title = "Previsualización de Encabezado y Pie de Recibo";
+            this.isFirtTime = isFirstTime;
+        }
+
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
             try
             {
-                VerReporte();
+                if (recibo != null)
+                {
+                    VerRecibo();
+                }
+                else
+                {
+                    VerPreview();
+                }
             }
             catch (Exception ex)
             {
@@ -46,7 +61,36 @@ namespace PruebaWPF.Views.Recibo
             }
         }
 
-        private void VerReporte()
+        private void VerPreview()
+        {
+            List<ReciboSon> recibos = new List<ReciboSon>();
+            recibos.Add(new ReciboSon() { UsuarioCreacion=clsSessionHelper.usuario.Login,Serie="VISTA PREVIA",Recibimos="XXXXXXXX"});
+
+            List<Model.OrdenPago> ordenPago = new List<Model.OrdenPago>();
+            ordenPago.Add(new Model.OrdenPago());
+
+            List<InfoRecibo> infos = new List<InfoRecibo>();
+            infos.Add(info);
+
+            List<clsBarCode> barcode = new List<clsBarCode>();
+            barcode.Add(new clsBarCode() { texto = "CBR-0000" });
+
+            List<fn_ConsultarInfoExterna_Result> cuenta = new List<fn_ConsultarInfoExterna_Result>();
+            cuenta.Add(new fn_ConsultarInfoExterna_Result() { Id="ESTO NO ES UN RECIBO OFICIAL DE CAJA"});
+
+            List<DetReciboSon> detrecibo = new List<DetReciboSon>();
+            detrecibo.Add(new DetReciboSon() { Concepto="",Descuento=0,Monto=0,ArancelPrecio= new ArancelPrecio() { Arancel=new Arancel(),Moneda=new Moneda()} });
+
+            List<ReciboPagoSon> formaPago = new List<ReciboPagoSon>();
+            formaPago.Add(new ReciboPagoSon() {Monto=0,InfoAdicional="",DetalleAdicional="",Moneda=new Moneda(),FormaPago=new FormaPago()});
+
+            List<VariacionCambiariaSon> variacionCambiarias = new List<VariacionCambiariaSon>();
+            variacionCambiarias.Add(new VariacionCambiariaSon() { Valor=0,Moneda=new Moneda()});
+
+            CargarVisor(recibos, ordenPago, barcode, infos, cuenta, detrecibo, formaPago, variacionCambiarias);
+        }
+ 
+        private void VerRecibo()
         {
             //   SqlServerTypes.Utilities.LoadNativeAssemblies(AppDomain.CurrentDomain.BaseDirectory);
             ReciboViewModel modeloRecibo = new ReciboViewModel();
@@ -59,8 +103,8 @@ namespace PruebaWPF.Views.Recibo
             List<Model.OrdenPago> ordenPago = new List<Model.OrdenPago>();
             ordenPago.Add(recibo.OrdenPago);
 
-            List<InfoRecibo> info = new List<InfoRecibo>();
-            info.Add(recibo.InfoRecibo);
+            List<InfoRecibo> infos = new List<InfoRecibo>();
+            infos.Add(recibo.InfoRecibo);
 
             List<clsBarCode> barcode = new List<clsBarCode>();
             barcode.Add(new clsBarCode() { texto = "CBR-" + recibo.IdRecibo + "-" + recibo.Serie });
@@ -72,19 +116,23 @@ namespace PruebaWPF.Views.Recibo
 
             List<VariacionCambiariaSon> variacionCambiarias = modeloRecibo.FindTipoCambio(recibo);
 
+            CargarVisor(recibos, ordenPago, barcode, infos, cuenta, detrecibo, formaPago, variacionCambiarias);
+        }
+
+        private void CargarVisor(List<ReciboSon> recibos, List<Model.OrdenPago> ordenPago, List<clsBarCode> barcode, List<InfoRecibo> infos, List<fn_ConsultarInfoExterna_Result> cuenta, List<DetReciboSon> detrecibo, List<ReciboPagoSon> formaPago, List<VariacionCambiariaSon> variacionCambiarias)
+        {
             ReportDataSource ReciboDataSource = new ReportDataSource("Recibo", recibos);
             ReportDataSource OrdenPagoDataSource = new ReportDataSource("OrdenPago", ordenPago);
             ReportDataSource BarcodeDataSource = new ReportDataSource("Barcode", barcode);
-            ReportDataSource InfoReciboDataSource = new ReportDataSource("InfoRecibo", info);
+            ReportDataSource InfoReciboDataSource = new ReportDataSource("InfoRecibo", infos);
             ReportDataSource PorCuentaDataSource = new ReportDataSource("CuentaDe", cuenta);
             ReportDataSource DetReciboDataSource = new ReportDataSource("DetalleRecibo", detrecibo);
             ReportDataSource FormaPagoDataSource = new ReportDataSource("FormaPago", formaPago);
             ReportDataSource TipoCambioDataSource = new ReportDataSource("TipoCambio", variacionCambiarias);
 
-
             reporteDemo.Reset();
             reporteDemo.LocalReport.ReportEmbeddedResource = "PruebaWPF.Reportes.Recibo.Recibo.rdlc";
-            reporteDemo.LocalReport.SetParameters(new ReportParameter("isFirstTime", isFirtTime.ToString()));
+            reporteDemo.LocalReport.SetParameters(new ReportParameter("isFirstTime", "True"));
             reporteDemo.LocalReport.DataSources.Add(ReciboDataSource);
             reporteDemo.LocalReport.DataSources.Add(OrdenPagoDataSource);
             reporteDemo.LocalReport.DataSources.Add(InfoReciboDataSource);
@@ -97,7 +145,6 @@ namespace PruebaWPF.Views.Recibo
             reporteDemo.SetDisplayMode(Microsoft.Reporting.WinForms.DisplayMode.PrintLayout);
             reporteDemo.LocalReport.Refresh();
         }
-
 
     }
 }

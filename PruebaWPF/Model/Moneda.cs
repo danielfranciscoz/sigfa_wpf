@@ -27,6 +27,8 @@ namespace PruebaWPF.Model
         public string Simbolo { get; set; }
         public System.DateTime FechaCreacion { get; set; }
         public bool WebService { get; set; }
+        public bool regAnulado { get; set; }
+        public string UsuarioCreacion { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<ArancelPrecio> ArancelPrecio { get; set; }
@@ -34,5 +36,6 @@ namespace PruebaWPF.Model
         public virtual ICollection<ReciboPago> ReciboPago { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<VariacionCambiaria> VariacionCambiaria { get; set; }
+        public virtual Usuario Usuario { get; set; }
     }
 }

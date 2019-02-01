@@ -20,6 +20,7 @@ namespace PruebaWPF.Model
             this.ArancelArea = new HashSet<ArancelArea>();
             this.ArancelPrecio = new HashSet<ArancelPrecio>();
             this.ArancelTipoDeposito = new HashSet<ArancelTipoDeposito>();
+            this.Exoneracion = new HashSet<Exoneracion>();
         }
     
         public int IdArancel { get; set; }
@@ -30,6 +31,7 @@ namespace PruebaWPF.Model
         public System.DateTime FechaCreacion { get; set; }
         public string UsuarioCreacion { get; set; }
         public bool regAnulado { get; set; }
+        public int IdTipoArancel { get; set; }
     
         public virtual CuentaContable CuentaContable { get; set; }
         public virtual Usuario Usuario { get; set; }
@@ -39,5 +41,7 @@ namespace PruebaWPF.Model
         public virtual ICollection<ArancelPrecio> ArancelPrecio { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<ArancelTipoDeposito> ArancelTipoDeposito { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Exoneracion> Exoneracion { get; set; }
     }
 }

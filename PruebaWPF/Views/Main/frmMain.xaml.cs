@@ -79,7 +79,7 @@ namespace PruebaWPF.Views.Main
             {
                 subMi = new MenuItem();
 
-                if (!item.isSeparator)
+                if (!item.Tipo.Equals("Separador"))
                 {
                     subMi.Header = item.Titulo;
                     subMi.Icon = getIcon(item.Icon);
@@ -176,7 +176,7 @@ namespace PruebaWPF.Views.Main
 
         public static void AddWindowOrPage(Pantalla p)
         {
-            if (p.isPage)
+            if (p.Tipo.Equals("Pagina"))
             {
                 AddPage(p);
             }
@@ -194,7 +194,7 @@ namespace PruebaWPF.Views.Main
             //Window window = (Window)System.Windows.Application.LoadComponent(url);
             Window window = (Window)System.Activator.CreateInstance(tipo, p);
             window.Title = p.Titulo;
-            if (p.isDialog)
+            if (p.Tipo.Equals("Dialogo"))
             {
                 window.Owner = Window.GetWindow(principal);
                 window.ShowDialog();

@@ -12,14 +12,14 @@ namespace PruebaWPF.Model
     using System;
     using System.Collections.Generic;
     
-    public partial class ReciboPagoTarjeta
+    public partial class TipoArancel
     {
-        public int IdReciboPago { get; set; }
-        public byte IdTarjeta { get; set; }
-        public string Tarjeta { get; set; }
-        public int Autorizacion { get; set; }
+        public int IdTipoArancel { get; set; }
+        public string TipoArancel1 { get; set; }
+        public string UsuarioCreacion { get; set; }
+        public System.DateTime FechaCreacion { get; set; }
+        public bool regAnulado { get; set; }
     
-        public virtual CiaTarjetaCredito CiaTarjetaCredito { get; set; }
-        public virtual ReciboPago ReciboPago { get; set; }
+        public virtual Usuario Usuario { get; set; }
     }
 }

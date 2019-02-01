@@ -27,6 +27,8 @@ namespace PruebaWPF.Model
             throw new UnintentionalCodeFirstException();
         }
     
+        public virtual DbSet<AgenteExternoCat> AgenteExternoCat { get; set; }
+        public virtual DbSet<IdentificacionAgenteExterno> IdentificacionAgenteExterno { get; set; }
         public virtual DbSet<Moneda> Moneda { get; set; }
         public virtual DbSet<Actividad> Actividad { get; set; }
         public virtual DbSet<AgenteExterno> AgenteExterno { get; set; }
@@ -158,12 +160,19 @@ namespace PruebaWPF.Model
         public virtual DbSet<ArancelPrecio> ArancelPrecio { get; set; }
         public virtual DbSet<ArancelTipoDeposito> ArancelTipoDeposito { get; set; }
         public virtual DbSet<DetOrdenPagoArancel> DetOrdenPagoArancel { get; set; }
+        public virtual DbSet<Exoneracion> Exoneracion { get; set; }
         public virtual DbSet<OrdenPago> OrdenPago { get; set; }
         public virtual DbSet<Caja> Caja { get; set; }
         public virtual DbSet<FormaPago> FormaPago { get; set; }
         public virtual DbSet<InfoRecibo> InfoRecibo { get; set; }
+        public virtual DbSet<Recibo1> Recibo1 { get; set; }
+        public virtual DbSet<ReciboAnulado> ReciboAnulado { get; set; }
         public virtual DbSet<ReciboDet> ReciboDet { get; set; }
         public virtual DbSet<ReciboPago> ReciboPago { get; set; }
+        public virtual DbSet<ReciboPagoBono> ReciboPagoBono { get; set; }
+        public virtual DbSet<ReciboPagoCheque> ReciboPagoCheque { get; set; }
+        public virtual DbSet<ReciboPagoDeposito> ReciboPagoDeposito { get; set; }
+        public virtual DbSet<ReciboPagoTarjeta> ReciboPagoTarjeta { get; set; }
         public virtual DbSet<SerieRecibo> SerieRecibo { get; set; }
         public virtual DbSet<TipoDeposito> TipoDeposito { get; set; }
         public virtual DbSet<AccesoDirectoPerfil> AccesoDirectoPerfil { get; set; }
@@ -251,11 +260,12 @@ namespace PruebaWPF.Model
         public virtual DbSet<w_LibroMayorAcumulado_VA> w_LibroMayorAcumulado_VA { get; set; }
         public virtual DbSet<w_LibroMayorAcumulado_VEP> w_LibroMayorAcumulado_VEP { get; set; }
         public virtual DbSet<w_LibroMayorAcumulado_Vlast> w_LibroMayorAcumulado_Vlast { get; set; }
-        public virtual DbSet<ReciboAnulado> ReciboAnulado { get; set; }
-        public virtual DbSet<ReciboPagoBono> ReciboPagoBono { get; set; }
-        public virtual DbSet<ReciboPagoCheque> ReciboPagoCheque { get; set; }
-        public virtual DbSet<Recibo1> Recibo1 { get; set; }
-        public virtual DbSet<ReciboPagoTarjeta> ReciboPagoTarjeta { get; set; }
+        public virtual DbSet<vw_FuentesSIPPSI> vw_FuentesSIPPSI { get; set; }
+        public virtual DbSet<TipoArancel> TipoArancel { get; set; }
+        public virtual DbSet<AperturaCaja> AperturaCaja { get; set; }
+        public virtual DbSet<Arqueo> Arqueo { get; set; }
+        public virtual DbSet<ArqueoRecibo> ArqueoRecibo { get; set; }
+        public virtual DbSet<DetAperturaCaja> DetAperturaCaja { get; set; }
     
         [DbFunction("SIFOPEntities", "fn_ConsultarInfoExterna")]
         public virtual IQueryable<fn_ConsultarInfoExterna_Result> fn_ConsultarInfoExterna(Nullable<int> tipoDeposito, string criterio, Nullable<bool> criterioInterno, string texto, Nullable<int> top)

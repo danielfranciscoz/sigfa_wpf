@@ -12,22 +12,26 @@ namespace PruebaWPF.Model
     using System;
     using System.Collections.Generic;
     
-    public partial class FormaPago
+    public partial class Arqueo
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-        public FormaPago()
+        public Arqueo()
         {
-            this.ReciboPago = new HashSet<ReciboPago>();
+            this.ArqueoRecibo = new HashSet<ArqueoRecibo>();
         }
     
-        public int IdFormaPago { get; set; }
-        public string FormaPago1 { get; set; }
-        public System.DateTime FechaCreacion { get; set; }
-        public string UsuarioCreacion { get; set; }
-        public bool regAnulado { get; set; }
+        public int IdArqueo { get; set; }
+        public int IdCaja { get; set; }
+        public System.DateTime FechaArqueo { get; set; }
+        public string UsuarioArqueador { get; set; }
+        public string Observaciones { get; set; }
+        public string CajeroEntrega { get; set; }
+        public string JefeCajero { get; set; }
+        public bool isFinalizado { get; set; }
     
         public virtual Usuario Usuario { get; set; }
+        public virtual Caja Caja { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<ReciboPago> ReciboPago { get; set; }
+        public virtual ICollection<ArqueoRecibo> ArqueoRecibo { get; set; }
     }
 }

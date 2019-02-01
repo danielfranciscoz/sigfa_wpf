@@ -247,7 +247,7 @@ namespace PruebaWPF.ViewModel
         public List<ReciboSon> FindRecibo(int Id, string Serie)
         {
 
-            List<ReciboSon> result = UnirRecibos(db.Recibo1.Where(w => w.IdRecibo == Id && w.Serie == Serie).ToList());          
+            List<ReciboSon> result = UnirRecibos(db.Recibo1.Where(w => w.IdRecibo == Id && w.Serie == Serie).ToList());
             return result;
         }
 
@@ -287,7 +287,7 @@ namespace PruebaWPF.ViewModel
             {
                 DetalleAdicional = ObtenerObjetoAdicional(s)[0],
                 InfoAdicional = ObtenerObjetoAdicional(s)[1].ToString(),
-                IdReciboPago =s.IdReciboPago,
+                IdReciboPago = s.IdReciboPago,
                 IdRecibo = s.IdRecibo,
                 Serie = s.Serie,
                 IdFormaPago = s.IdFormaPago,
@@ -310,20 +310,60 @@ namespace PruebaWPF.ViewModel
                 case 2: //Cheque
                     ReciboPagoCheque rc = r.ReciboPagoCheque;
 
-                    o[0] = rc;
-                    o[1] = string.Format("{0}, Cuenta {1}, Cheque No.{2}", rc.Banco.Nombre, rc.Cuenta, rc.NumeroCK);
+                    if (rc != null)
+                    {
+                        o[0] = rc;
+                        o[1] = string.Format("{0}, Cuenta {1}, Cheque No.{2}", rc.Banco.Nombre, rc.Cuenta, rc.NumeroCK);
+                    }
+                    else
+                    {
+                        o[0] = null;
+                        o[1] = "";
+                    }
                     break;
                 case 3: //Tarjeta
-                    ReciboPagoTarjeta rt =r.ReciboPagoTarjeta;
-                   
-                    o[0] = rt;
-                    o[1] = string.Format("{0}, Autorización {1}", rt.CiaTarjetaCredito.Nombre, rt.Autorizacion);
+                    ReciboPagoTarjeta rt = r.ReciboPagoTarjeta;
+
+                    if (rt != null)
+                    {
+                        o[0] = rt;
+                        o[1] = string.Format("{0}, Tarjeta ****{1} Autorización {2}", rt.CiaTarjetaCredito.Nombre, rt.Tarjeta, rt.Autorizacion);
+                    }
+                    else
+                    {
+                        o[0] = null;
+                        o[1] = "";
+                    }
                     break;
                 case 4: //Bono
                     ReciboPagoBono rb = r.ReciboPagoBono;
 
-                    o[0] = rb;
-                    o[1] = string.Format("Emitipo por {0}, Bono No.{1}", rb.Emisor, rb.Numero);
+                    if (rb != null)
+                    {
+                        o[0] = rb;
+                        o[1] = string.Format("Emitipo por {0}, Bono No.{1}", rb.Emisor, rb.Numero);
+                    }
+                    else
+                    {
+                        o[0] = null;
+                        o[1] = "";
+                    }
+
+                    break;
+                case 5: //Deposito
+                    ReciboPagoDeposito rd = r.ReciboPagoDeposito;
+
+                    if (rd != null)
+                    {
+                        o[0] = rd;
+                        o[1] = string.Format("{0}, Transacción No.{1}, Obs. {2}", rd.Tipo ? "Transferencia" : "Minuta", rd.Transaccion, rd.Observacion);
+                    }
+                    else
+                    {
+                        o[0] = null;
+                        o[1] = "";
+                    }
+
                     break;
                 default:
                     o[0] = null;
@@ -398,7 +438,7 @@ namespace PruebaWPF.ViewModel
 
                     foreach (ReciboPagoSon item in detallePago)
                     {
-                       ReciboPago pago = new ReciboPago()
+                        ReciboPago pago = new ReciboPago()
                         {
                             IdRecibo = roc.IdRecibo,
                             Serie = roc.Serie,
@@ -432,8 +472,14 @@ namespace PruebaWPF.ViewModel
 
                                 db.ReciboPagoBono.Add(rb);
                                 break;
+                            case 5: //Deposito
+                                ReciboPagoDeposito rd = (ReciboPagoDeposito)item.DetalleAdicional;
+                                rd.IdReciboPago = pago.IdReciboPago;
+
+                                db.ReciboPagoDeposito.Add(rd);
+                                break;
                             default:
-                                
+
                                 break;
                                 //Efectivo
                         }
@@ -514,7 +560,8 @@ namespace PruebaWPF.ViewModel
             {
                 Idrecibo = r.Max(s => s.IdRecibo);
             }
-            else {
+            else
+            {
                 Idrecibo = 0;
             }
 
@@ -551,7 +598,7 @@ namespace PruebaWPF.ViewModel
 
         public List<Banco> ObtenerBancos()
         {
-            return db.Banco.Where(w => w.RegAnulado == false).OrderBy(o=>o.Nombre).ToList();
+            return db.Banco.Where(w => w.RegAnulado == false).OrderBy(o => o.Nombre).ToList();
         }
 
         public List<CiaTarjetaCredito> ObtenerTarjetas()
@@ -571,7 +618,7 @@ namespace PruebaWPF.ViewModel
 
         public List<FormaPago> ObtenerFormasPago()
         {
-            return db.FormaPago.ToList();
+            return db.FormaPago.Where(w => w.regAnulado == false).OrderBy(o => o.FormaPago1).ToList();
         }
 
         /// <summary>

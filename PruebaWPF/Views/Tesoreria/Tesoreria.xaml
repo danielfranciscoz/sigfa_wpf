@@ -18,6 +18,7 @@
     <Grid Background="White">
         <Grid.RowDefinitions>
             <RowDefinition Height="auto"/>
+            <RowDefinition Height="auto"/>
             <RowDefinition/>
         </Grid.RowDefinitions>
 
@@ -26,139 +27,498 @@
                 <UserControl:Bar_Back/>
             </StackPanel>
         </StackPanel>
-        <Grid Grid.Row="1">
-            
-            <DockPanel Grid.Row="1">
-                <Grid>
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="*"/>
-                        <ColumnDefinition Width="10"/>
-                        <ColumnDefinition Width="auto"/>
-                    </Grid.ColumnDefinitions>
-                    <Grid Grid.Row="0">
-                        <Grid.RowDefinitions>
-                            <RowDefinition Height="auto"/>
-                            <RowDefinition Height="*"/>
-                            <RowDefinition Height="auto"/>
-                            <RowDefinition Height="auto"/>
-                        </Grid.RowDefinitions>
 
-                        <StackPanel Grid.Column="0" Orientation="Horizontal">
+        <StackPanel Height="auto" Margin="10" Grid.Row="1" VerticalAlignment="Top" Orientation="Horizontal">
+            <!--<TextBlock Margin="0 0 20 0" VerticalAlignment="Center">Navegar hacia:</TextBlock>-->
+            <ComboBox Visibility="Collapsed" x:Name="cboAcciones" Width="250">
+                <ComboBoxItem x:Name="opcion1" IsSelected="True">CAJA Y SERIE DE RECIBO</ComboBoxItem>
+                <ComboBoxItem x:Name="opcion2">TARJETA, BANCO Y FORMA DE PAGO</ComboBoxItem>
+                <ComboBoxItem x:Name="opcion3">FUENTES DE FINANC., MONEDAS Y DOC. DE IDENTIFICACIÓN</ComboBoxItem>
+                <ComboBoxItem x:Name="opcion4">ENCABEZADO Y PIE DE RECIBOS</ComboBoxItem>
+            </ComboBox>
+        </StackPanel>
 
-                            <Button x:Name="btnNew" Tag="{StaticResource Permiso_Guardar}" BorderBrush="Transparent"  Background="{StaticResource Save_Button}" Margin="5 5 5 5" Click="btnNew_Click" Content="{StaticResource Text_New_Button}"></Button>
-                            <Button Tag="{StaticResource Permiso_Exportar}" BorderBrush="Transparent" Background="{StaticResource Export_Button}" Margin="5" Click="btn_Exportar" Height="Auto" Content="{StaticResource Text_Export_Button}"></Button>
-                        </StackPanel>
 
-                        <DockPanel  Grid.Row="1" x:Name="panelGrid" VerticalAlignment="Stretch">
-                            <DataGrid Name="tblCajas" CanUserDeleteRows="False" CanUserAddRows="False" AutoGenerateColumns="False" SelectionUnit="FullRow" SelectionMode="Single" >
+        <Grid Grid.Row="2">
+            <TabControl SelectionChanged="tabControl_SelectionChanged" Height="auto" x:Name="tabControl" BorderThickness="1" >
 
-                                <DataGrid.Columns>
-                                    <DataGridTemplateColumn CanUserResize="False" Width="50" Header="">
-                                        <DataGridTemplateColumn.CellTemplate>
-                                            <DataTemplate>
-                                                <StackPanel>
-                                                    <Button x:Name="btnDelete" Tag="{StaticResource Permiso_Eliminar}" Background="{StaticResource Delete_Button}" Height="20" Width="20" Style="{StaticResource MaterialDesignToolButton}" BorderBrush="Transparent" Click="btnDelete_Click">
-                                                        <materialDesign:PackIcon Kind="Delete" HorizontalAlignment="Center"  VerticalAlignment="Center" Margin="0 0 0 0"></materialDesign:PackIcon>
-                                                    </Button>
-                                                </StackPanel>
-                                            </DataTemplate>
-                                        </DataGridTemplateColumn.CellTemplate>
-                                    </DataGridTemplateColumn>
+                <!--Cajas y serie de Recbio-->
+                <TabItem Header="{Binding ElementName=opcion1,Path=Content}">
+                    <DockPanel>
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="10"/>
+                                <ColumnDefinition Width="auto"/>
+                            </Grid.ColumnDefinitions>
+                            <Grid Grid.Row="0">
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="auto"/>
+                                    <RowDefinition Height="*"/>
+                                    <RowDefinition Height="auto"/>
+                                    <RowDefinition Height="auto"/>
+                                </Grid.RowDefinitions>
 
-                                    <DataGridTemplateColumn CanUserResize="False" Width="50" Header="">
-                                        <DataGridTemplateColumn.CellTemplate>
-                                            <DataTemplate>
-                                                <StackPanel>
-                                                    <Button x:Name="btnEdit" Tag="{StaticResource Permiso_Editar}" Background="{StaticResource Delete_Button}" Height="20" Width="20" Style="{StaticResource MaterialDesignToolButton}" BorderBrush="Transparent" Click="btnEdit_Click">
-                                                        <materialDesign:PackIcon Kind="Pencil" HorizontalAlignment="Center"  VerticalAlignment="Center" Margin="0 0 0 0"></materialDesign:PackIcon>
-                                                    </Button>
-                                                </StackPanel>
-                                            </DataTemplate>
-                                        </DataGridTemplateColumn.CellTemplate>
-                                    </DataGridTemplateColumn>
+                                <StackPanel Grid.Column="0" Orientation="Horizontal">
 
-                                    <DataGridTextColumn CanUserReorder="False" CanUserResize="False" IsReadOnly="True" Header="Nombre de la Caja" Width="auto" Binding="{Binding Nombre}"></DataGridTextColumn>
-                                    <DataGridTextColumn CanUserReorder="False" CanUserResize="False" IsReadOnly="True" Header="Dirección MAC" Width="auto" Binding="{Binding MAC}"></DataGridTextColumn>
-                                    <DataGridTextColumn CanUserReorder="False" CanUserResize="False" IsReadOnly="True" Header="Serie" Width="100" Binding="{Binding IdSerie}"></DataGridTextColumn>
-                                    <DataGridTextColumn CanUserReorder="False" CanUserResize="False" IsReadOnly="True" Header="Recinto" Width="100" Binding="{Binding Recinto}"></DataGridTextColumn>
-                                    <DataGridTextColumn CanUserReorder="False" CanUserResize="False" IsReadOnly="True" Header="Recibos Generados" Width="auto" Binding="{Binding cantidadRecibos}"></DataGridTextColumn>
-                                    <DataGridTextColumn CanUserReorder="False" CanUserResize="False" IsReadOnly="True" Header="Creado por" Width="auto" Binding="{Binding UsuarioCreacion}"></DataGridTextColumn>
-                                    <DataGridTextColumn CanUserReorder="False" CanUserResize="False" IsReadOnly="True" Header="Fecha de Creación" Width="auto" Binding="{Binding FechaCreacion}"></DataGridTextColumn>
-                                </DataGrid.Columns>
+                                    <Button x:Name="btnNew" Tag="{StaticResource Permiso_Guardar}" BorderBrush="Transparent"  Background="{StaticResource Save_Button}" Margin="5 5 5 5" Click="btnNew_Click" Content="{StaticResource Text_New_Button}"></Button>
+                                    <Button Tag="{StaticResource Permiso_Exportar}" BorderBrush="Transparent" Background="{StaticResource Export_Button}" Margin="5" Click="btn_Exportar" Height="Auto" Content="{StaticResource Text_Export_Button}"></Button>
+                                </StackPanel>
 
-                            </DataGrid>
-                        </DockPanel>
+                                <DockPanel  Grid.Row="1" x:Name="panelGrid" VerticalAlignment="Stretch">
+                                    <DataGrid Name="tblCajas" CanUserDeleteRows="False" CanUserAddRows="False" AutoGenerateColumns="False" SelectionUnit="FullRow" SelectionMode="Single" >
 
-                        <DockPanel Grid.Row="2" DockPanel.Dock="Bottom" HorizontalAlignment="Right">
-                            <TextBlock FontWeight="Bold">Cantidad de registros:</TextBlock>
-                            <TextBlock FontWeight="Bold" Margin="5 0 20 0" Name="lblCantidadRegitrosCaja"> 0</TextBlock>
-                        </DockPanel>
-                    </Grid>
-                    <Separator Grid.Column="1">
-                        <Separator.LayoutTransform>
-                            <RotateTransform Angle="90" />
-                        </Separator.LayoutTransform>
-                    </Separator>
+                                        <DataGrid.Columns>
+                                            <DataGridTemplateColumn CanUserResize="False" Width="50" Header="">
+                                                <DataGridTemplateColumn.CellTemplate>
+                                                    <DataTemplate>
+                                                        <StackPanel>
+                                                            <Button x:Name="btnDelete" Tag="{StaticResource Permiso_Eliminar}" Background="{StaticResource Delete_Button}" Height="20" Width="20" Style="{StaticResource MaterialDesignToolButton}" BorderBrush="Transparent" Click="btnDelete_Click">
+                                                                <materialDesign:PackIcon Kind="Delete" HorizontalAlignment="Center"  VerticalAlignment="Center" Margin="0 0 0 0"></materialDesign:PackIcon>
+                                                            </Button>
+                                                        </StackPanel>
+                                                    </DataTemplate>
+                                                </DataGridTemplateColumn.CellTemplate>
+                                            </DataGridTemplateColumn>
 
-                    <Grid Grid.Column="2" Width="300">
-                        <Grid.RowDefinitions>
-                            <RowDefinition Height="auto"/>
-                            <RowDefinition Height="auto"/>
-                            <RowDefinition Height="*"/>
-                            <RowDefinition Height="auto"/>
-                        </Grid.RowDefinitions>
+                                            <DataGridTemplateColumn CanUserResize="False" Width="50" Header="">
+                                                <DataGridTemplateColumn.CellTemplate>
+                                                    <DataTemplate>
+                                                        <StackPanel>
+                                                            <Button x:Name="btnEdit" Tag="{StaticResource Permiso_Editar}" Background="{StaticResource Delete_Button}" Height="20" Width="20" Style="{StaticResource MaterialDesignToolButton}" BorderBrush="Transparent" Click="btnEdit_Click">
+                                                                <materialDesign:PackIcon Kind="Pencil" HorizontalAlignment="Center"  VerticalAlignment="Center" Margin="0 0 0 0"></materialDesign:PackIcon>
+                                                            </Button>
+                                                        </StackPanel>
+                                                    </DataTemplate>
+                                                </DataGridTemplateColumn.CellTemplate>
+                                            </DataGridTemplateColumn>
 
-                        <StackPanel Grid.Row="0" Orientation="Horizontal" >
-                            <Grid>
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="50"/>
-                                    <ColumnDefinition Width="*"/>
-                                </Grid.ColumnDefinitions>
+                                            <DataGridTextColumn CanUserReorder="False" CanUserResize="False" IsReadOnly="True" Header="Nombre de la Caja" Width="auto" Binding="{Binding Nombre}"></DataGridTextColumn>
+                                            <DataGridTextColumn CanUserReorder="False" CanUserResize="False" IsReadOnly="True" Header="Dirección MAC" Width="auto" Binding="{Binding MAC}"></DataGridTextColumn>
+                                            <DataGridTextColumn CanUserReorder="False" CanUserResize="False" IsReadOnly="True" Header="Serie" Width="100" Binding="{Binding IdSerie}"></DataGridTextColumn>
+                                            <DataGridTextColumn CanUserReorder="False" CanUserResize="False" IsReadOnly="True" Header="Recinto" Width="100" Binding="{Binding Recinto}"></DataGridTextColumn>
+                                            <DataGridTextColumn CanUserReorder="False" CanUserResize="False" IsReadOnly="True" Header="Recibos Generados" Width="auto" Binding="{Binding cantidadRecibos}"></DataGridTextColumn>
+                                            <DataGridTextColumn CanUserReorder="False" CanUserResize="False" IsReadOnly="True" Header="Creado por" Width="auto" Binding="{Binding UsuarioCreacion}"></DataGridTextColumn>
+                                            <DataGridTextColumn CanUserReorder="False" CanUserResize="False" IsReadOnly="True" Header="Fecha de Creación" Width="auto" Binding="{Binding FechaCreacion}"></DataGridTextColumn>
+                                        </DataGrid.Columns>
 
-                                <Button Grid.Column="0" x:Name="btnNewSerie" Tag="{StaticResource Permiso_Guardar}" ToolTip="Crear una nueva serie"  BorderBrush="Transparent"  Style="{StaticResource MaterialDesignFloatingActionButton}" Width="25" Height="25" Margin="5 5 5 5" Click="btnNewSerie_Click">
-                                    <materialDesign:PackIcon Kind="Plus"  VerticalAlignment="Center" Margin="0 0 0 0"></materialDesign:PackIcon>
-                                </Button>
-                                <TextBlock Grid.Column="1" VerticalAlignment="Center" FontWeight="Bold">Registro de Series de Recibo</TextBlock>
+                                    </DataGrid>
+                                </DockPanel>
+
+                                <DockPanel Grid.Row="2" DockPanel.Dock="Bottom" HorizontalAlignment="Right">
+                                    <TextBlock FontWeight="Bold">Cantidad de registros:</TextBlock>
+                                    <TextBlock FontWeight="Bold" Margin="5 0 20 0" Name="lblCantidadRegitrosCaja"> 0</TextBlock>
+                                </DockPanel>
                             </Grid>
-                        </StackPanel>
-                        <DockPanel x:Name="panelGridSerie"  Grid.Row="2" VerticalAlignment="Stretch">
-                            <DataGrid Name="tblSerie" CanUserDeleteRows="False" CanUserAddRows="False" AutoGenerateColumns="False" SelectionUnit="FullRow" SelectionMode="Single" >
+                            <Separator Grid.Column="1">
+                                <Separator.LayoutTransform>
+                                    <RotateTransform Angle="90" />
+                                </Separator.LayoutTransform>
+                            </Separator>
 
-                                <DataGrid.Columns>
-                                    <DataGridTemplateColumn CanUserResize="False" Width="50" Header="">
-                                        <DataGridTemplateColumn.CellTemplate>
-                                            <DataTemplate>
-                                                <StackPanel>
-                                                    <Button x:Name="btnDeleteSerie" Tag="{StaticResource Permiso_Eliminar}" Background="{StaticResource Delete_Button}" Height="20" Width="20" BorderBrush="Transparent" Click="btnDeleteSerie_Click">
-                                                        <materialDesign:PackIcon Kind="Delete" HorizontalAlignment="Center"  VerticalAlignment="Center" Margin="0 0 0 0"></materialDesign:PackIcon>
-                                                        <Button.Style>
-                                                            <Style TargetType="{x:Type Button}" BasedOn="{StaticResource MaterialDesignToolButton}">
-                                                                <Style.Triggers>
-                                                                    <DataTrigger Binding="{Binding regAnulado}" Value="True">
-                                                                        <Setter Property="Button.Visibility" Value="Collapsed"/>
-                                                                    </DataTrigger>
-                                                                    <DataTrigger Binding="{Binding regAnulado}" Value="False">
-                                                                        <Setter Property="Button.Visibility" Value="Visible"/>
-                                                                    </DataTrigger>
-                                                                </Style.Triggers>
-                                                            </Style>
-                                                        </Button.Style>
-                                                    </Button>
-                                                </StackPanel>
-                                            </DataTemplate>
-                                        </DataGridTemplateColumn.CellTemplate>
-                                    </DataGridTemplateColumn>
-                                    <DataGridTextColumn CanUserReorder="False" CanUserResize="False" IsReadOnly="True" Header="Serie" Width="80" Binding="{Binding IdSerie}"></DataGridTextColumn>
-                                    <DataGridTextColumn CanUserReorder="False" CanUserResize="False" IsReadOnly="True" Header="Estado" Width="80" 
+                            <Grid Grid.Column="2" Width="300">
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="auto"/>
+                                    <RowDefinition Height="auto"/>
+                                    <RowDefinition Height="*"/>
+                                    <RowDefinition Height="auto"/>
+                                </Grid.RowDefinitions>
+
+                                <StackPanel Grid.Row="0" Orientation="Horizontal" >
+                                    <Grid>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="50"/>
+                                            <ColumnDefinition Width="*"/>
+                                        </Grid.ColumnDefinitions>
+
+                                        <Button Grid.Column="0" x:Name="btnNewSerie" Tag="{StaticResource Permiso_Guardar}" ToolTip="Crear una nueva serie"  BorderBrush="Transparent"  Style="{StaticResource MaterialDesignFloatingActionButton}" Width="25" Height="25" Margin="5 5 5 5" Click="btnNewSerie_Click">
+                                            <materialDesign:PackIcon Kind="Plus"  VerticalAlignment="Center" Margin="0 0 0 0"></materialDesign:PackIcon>
+                                        </Button>
+                                        <TextBlock Grid.Column="1" VerticalAlignment="Center" FontWeight="Bold">Registro de Series de Recibo</TextBlock>
+                                    </Grid>
+                                </StackPanel>
+                                <DockPanel x:Name="panelGridSerie"  Grid.Row="2" VerticalAlignment="Stretch">
+                                    <DataGrid Name="tblSerie" CanUserDeleteRows="False" CanUserAddRows="False" AutoGenerateColumns="False" SelectionUnit="FullRow" SelectionMode="Single" >
+
+                                        <DataGrid.Columns>
+                                            <DataGridTemplateColumn CanUserResize="False" Width="50" Header="">
+                                                <DataGridTemplateColumn.CellTemplate>
+                                                    <DataTemplate>
+                                                        <StackPanel>
+                                                            <Button x:Name="btnDeleteSerie" Tag="{StaticResource Permiso_Eliminar}" Background="{StaticResource Delete_Button}" Height="20" Width="20" BorderBrush="Transparent" Click="btnDeleteSerie_Click">
+                                                                <materialDesign:PackIcon Kind="Delete" HorizontalAlignment="Center"  VerticalAlignment="Center" Margin="0 0 0 0"></materialDesign:PackIcon>
+                                                                <Button.Style>
+                                                                    <Style TargetType="{x:Type Button}" BasedOn="{StaticResource MaterialDesignToolButton}">
+                                                                        <Style.Triggers>
+                                                                            <DataTrigger Binding="{Binding regAnulado}" Value="True">
+                                                                                <Setter Property="Button.Visibility" Value="Collapsed"/>
+                                                                            </DataTrigger>
+                                                                            <DataTrigger Binding="{Binding regAnulado}" Value="False">
+                                                                                <Setter Property="Button.Visibility" Value="Visible"/>
+                                                                            </DataTrigger>
+                                                                        </Style.Triggers>
+                                                                    </Style>
+                                                                </Button.Style>
+                                                            </Button>
+                                                        </StackPanel>
+                                                    </DataTemplate>
+                                                </DataGridTemplateColumn.CellTemplate>
+                                            </DataGridTemplateColumn>
+                                            <DataGridTextColumn CanUserReorder="False" CanUserResize="False" IsReadOnly="True" Header="Serie" Width="80" Binding="{Binding IdSerie}"></DataGridTextColumn>
+                                            <DataGridTextColumn CanUserReorder="False" CanUserResize="False" IsReadOnly="True" Header="Estado" Width="80" 
                                                                 Binding="{Binding regAnulado , Converter={StaticResource convertidor},ConverterParameter='Inactivo;Activo'}"></DataGridTextColumn>
-                                </DataGrid.Columns>
+                                        </DataGrid.Columns>
 
-                            </DataGrid>
+                                    </DataGrid>
+                                </DockPanel>
+
+                            </Grid>
+                        </Grid>
+                    </DockPanel>
+                </TabItem>
+
+                <!--Tarjeta,Banco y Forma de Pago-->
+                <TabItem Header="{Binding ElementName=opcion2,Path=Content}">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="3"/>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="3"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+
+                        <DockPanel Grid.Column="0">
+                            <StackPanel DockPanel.Dock="Top" Margin="0 10 0 0" Orientation="Vertical">
+                                <StackPanel Orientation="Horizontal">
+                                    <materialDesign:PackIcon Kind="Cards" HorizontalAlignment="Center"  VerticalAlignment="Center" Margin="10 0 10 0"></materialDesign:PackIcon>
+                                    <TextBlock VerticalAlignment="Center" FontWeight="Bold">Registro de Tarjetas</TextBlock>
+                                </StackPanel>
+                                <Separator/>
+                                <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
+                                    <Button Padding="0" x:Name="btnNewCard" Height="25" Width="30" Foreground="{StaticResource DarkGray}" Tag="{StaticResource Permiso_Guardar}"  Style="{StaticResource MaterialDesignFlatButton}" BorderBrush="Transparent" Click="btnNewCard_Click" ToolTip="Agregar una nueva tarjeta">
+                                        <materialDesign:PackIcon Kind="Plus" HorizontalAlignment="Center"  VerticalAlignment="Center" ></materialDesign:PackIcon>
+                                    </Button>
+                                    <Button Padding="0" x:Name="btnEditCad" Height="25" Width="30" Foreground="{StaticResource DarkGray}" Tag="{StaticResource Permiso_Editar}"  Style="{StaticResource MaterialDesignFlatButton}" BorderBrush="Transparent" Click="btnEditCad_Click" ToolTip="Editar la tarjeta seleccionada">
+                                        <materialDesign:PackIcon Kind="Pencil" HorizontalAlignment="Center"  VerticalAlignment="Center" ></materialDesign:PackIcon>
+                                    </Button>
+                                    <Button Padding="0" x:Name="btnDeleteCard" Height="25" Width="30" Foreground="{StaticResource DarkGray}" Tag="{StaticResource Permiso_Eliminar}"  Style="{StaticResource MaterialDesignFlatButton}" BorderBrush="Transparent" Click="btnDeleteCard_Click" ToolTip="Eliminar la tarjeta seleccionada">
+                                        <materialDesign:PackIcon Kind="Delete" HorizontalAlignment="Center"  VerticalAlignment="Center" ></materialDesign:PackIcon>
+                                    </Button>
+                                </StackPanel>
+                                <Separator/>
+                            </StackPanel>
+
+                            <DockPanel x:Name="panelGridTarjeta" VerticalAlignment="Stretch">
+                                <ListView x:Name="lstTarjeta" SelectionMode="Single">
+                                    <ListView.View>
+                                        <GridView>
+                                            <GridViewColumn Width="auto" Header="Tarjeta" DisplayMemberBinding="{Binding Nombre}"  />
+                                            <GridViewColumn Width="auto" Header="Siglas" DisplayMemberBinding="{Binding Siglas}" />
+                                        </GridView>
+                                    </ListView.View>
+                                </ListView>
+                            </DockPanel>
+                        </DockPanel>
+                        <Separator Grid.Column="1">
+                            <Separator.LayoutTransform>
+                                <RotateTransform Angle="90" />
+                            </Separator.LayoutTransform>
+                        </Separator>
+
+                        <DockPanel Grid.Column="2">
+                            <StackPanel DockPanel.Dock="Top" Margin="0 10 0 0" Orientation="Vertical">
+                                <StackPanel Orientation="Horizontal">
+                                    <materialDesign:PackIcon Kind="Bank" HorizontalAlignment="Center"  VerticalAlignment="Center" Margin="10 0 10 0"></materialDesign:PackIcon>
+                                    <TextBlock VerticalAlignment="Center" FontWeight="Bold">Registro de Bancos</TextBlock>
+                                </StackPanel>
+                                <Separator/>
+                                <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
+                                    <Button Padding="0" x:Name="btnNewBanco" Height="25" Width="30" Foreground="{StaticResource DarkGray}" Tag="{StaticResource Permiso_Guardar}"  Style="{StaticResource MaterialDesignFlatButton}" BorderBrush="Transparent" Click="btnNewBanco_Click" ToolTip="Agregar un nuevo banco">
+                                        <materialDesign:PackIcon Kind="Plus" HorizontalAlignment="Center"  VerticalAlignment="Center" ></materialDesign:PackIcon>
+                                    </Button>
+                                    <Button Padding="0" x:Name="btnEditBanco" Height="25" Width="30" Foreground="{StaticResource DarkGray}" Tag="{StaticResource Permiso_Editar}"  Style="{StaticResource MaterialDesignFlatButton}" BorderBrush="Transparent" Click="btnEditBanco_Click" ToolTip="Editar el banco seleccionado">
+                                        <materialDesign:PackIcon Kind="Pencil" HorizontalAlignment="Center"  VerticalAlignment="Center" ></materialDesign:PackIcon>
+                                    </Button>
+                                    <Button Padding="0" x:Name="btnDeleteBanco" Height="25" Width="30" Foreground="{StaticResource DarkGray}" Tag="{StaticResource Permiso_Eliminar}"  Style="{StaticResource MaterialDesignFlatButton}" BorderBrush="Transparent" Click="btnDeleteBanco_Click" ToolTip="Eliminar el banco seleccionado">
+                                        <materialDesign:PackIcon Kind="Delete" HorizontalAlignment="Center"  VerticalAlignment="Center" ></materialDesign:PackIcon>
+                                    </Button>
+                                </StackPanel>
+                                <Separator/>
+                            </StackPanel>
+
+                            <DockPanel  x:Name="panelGridBanco" VerticalAlignment="Stretch">
+                                <ListView x:Name="lstBanco" SelectionMode="Single">
+                                    <ListView.View>
+                                        <GridView>
+                                            <GridViewColumn Width="auto" Header="Banco" DisplayMemberBinding="{Binding Nombre}"  />
+                                            <GridViewColumn Width="auto" Header="Siglas" DisplayMemberBinding="{Binding Siglas}" />
+                                        </GridView>
+                                    </ListView.View>
+                                </ListView>
+                            </DockPanel>
                         </DockPanel>
 
+                        <Separator Grid.Column="3">
+                            <Separator.LayoutTransform>
+                                <RotateTransform Angle="90" />
+                            </Separator.LayoutTransform>
+                        </Separator>
+
+                        <DockPanel Grid.Column="4">
+                            <StackPanel DockPanel.Dock="Top" Margin="0 10 0 0" Orientation="Vertical">
+                                <StackPanel Orientation="Horizontal">
+                                    <materialDesign:PackIcon Kind="CashMultiple" HorizontalAlignment="Center"  VerticalAlignment="Center" Margin="10 0 10 0"></materialDesign:PackIcon>
+                                    <TextBlock VerticalAlignment="Center" FontWeight="Bold">Registro de Formas de Pago</TextBlock>
+                                </StackPanel>
+                                <Separator/>
+                                <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
+                                    <Button Padding="0" x:Name="btnNewFormaPago" Height="25" Width="30" Foreground="{StaticResource DarkGray}" Tag="{StaticResource Permiso_Guardar}"  Style="{StaticResource MaterialDesignFlatButton}" BorderBrush="Transparent" Click="btnNewFormaPago_Click" ToolTip="Agregar una nueva forma de pago">
+                                        <materialDesign:PackIcon Kind="Plus" HorizontalAlignment="Center"  VerticalAlignment="Center" ></materialDesign:PackIcon>
+                                    </Button>
+                                    <Button Padding="0" x:Name="btnEditFormaPago" Height="25" Width="30" Foreground="{StaticResource DarkGray}" Tag="{StaticResource Permiso_Editar}"  Style="{StaticResource MaterialDesignFlatButton}" BorderBrush="Transparent" Click="btnEditFormaPago_Click" ToolTip="Editar la forma de pago seleccionada">
+                                        <materialDesign:PackIcon Kind="Pencil" HorizontalAlignment="Center"  VerticalAlignment="Center" ></materialDesign:PackIcon>
+                                    </Button>
+                                    <Button Padding="0" x:Name="btnDeleteFormaPago" Height="25" Width="30" Foreground="{StaticResource DarkGray}" Tag="{StaticResource Permiso_Eliminar}"  Style="{StaticResource MaterialDesignFlatButton}" BorderBrush="Transparent" Click="btnDeleteFormaPago_Click" ToolTip="Eliminar la forma de pago seleccionada">
+                                        <materialDesign:PackIcon Kind="Delete" HorizontalAlignment="Center"  VerticalAlignment="Center" ></materialDesign:PackIcon>
+                                    </Button>
+                                </StackPanel>
+                                <Separator/>
+                            </StackPanel>
+
+                            <DockPanel  x:Name="panelGridFormaPago" VerticalAlignment="Stretch">
+                                <ListView x:Name="lstFormaPago" SelectionMode="Single">
+                                    <ListView.View>
+                                        <GridView>
+                                            <GridViewColumn Width="auto" Header="Forma de Pago" DisplayMemberBinding="{Binding FormaPago1}"  />
+                                        </GridView>
+                                    </ListView.View>
+                                </ListView>
+                            </DockPanel>
+                        </DockPanel>
                     </Grid>
-                </Grid>
-            </DockPanel>
+                </TabItem>
+
+
+                <!--Fuente de Financiamiento,Monedas e Identificacion -->
+                <TabItem Header="{Binding ElementName=opcion3,Path=Content}">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="3"/>
+                            <ColumnDefinition Width="*"/>
+
+                        </Grid.ColumnDefinitions>
+
+                        <DockPanel Grid.Column="0">
+                            <StackPanel DockPanel.Dock="Top" Margin="0 10 0 0" Orientation="Vertical">
+                                <StackPanel Orientation="Horizontal">
+                                    <materialDesign:PackIcon Kind="Finance" HorizontalAlignment="Center"  VerticalAlignment="Center" Margin="10 0 10 0"></materialDesign:PackIcon>
+                                    <TextBlock VerticalAlignment="Center" FontWeight="Bold">Registro de Fuentes de Financiamiento</TextBlock>
+                                </StackPanel>
+                                <Separator/>
+                                <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
+                                    <Button Padding="0" x:Name="btnNewFF" Height="25" Width="30" Foreground="{StaticResource DarkGray}" Tag="{StaticResource Permiso_Guardar}"  Style="{StaticResource MaterialDesignFlatButton}" BorderBrush="Transparent" Click="btnNewFF_Click" ToolTip="Agregar una nueva tarjeta">
+                                        <materialDesign:PackIcon Kind="Plus" HorizontalAlignment="Center"  VerticalAlignment="Center" ></materialDesign:PackIcon>
+                                    </Button>
+                                    <Button Padding="0" x:Name="btnEditFF" Height="25" Width="30" Foreground="{StaticResource DarkGray}" Tag="{StaticResource Permiso_Editar}"  Style="{StaticResource MaterialDesignFlatButton}" BorderBrush="Transparent" Click="btnEditFF_Click" ToolTip="Editar la tarjeta seleccionada">
+                                        <materialDesign:PackIcon Kind="Pencil" HorizontalAlignment="Center"  VerticalAlignment="Center" ></materialDesign:PackIcon>
+                                    </Button>
+                                    <Button Padding="0" x:Name="btnDeleteFF" Height="25" Width="30" Foreground="{StaticResource DarkGray}" Tag="{StaticResource Permiso_Eliminar}"  Style="{StaticResource MaterialDesignFlatButton}" BorderBrush="Transparent" Click="btnDeleteFF_Click" ToolTip="Eliminar la tarjeta seleccionada">
+                                        <materialDesign:PackIcon Kind="Delete" HorizontalAlignment="Center"  VerticalAlignment="Center" ></materialDesign:PackIcon>
+                                    </Button>
+                                </StackPanel>
+                                <Separator/>
+                            </StackPanel>
+
+                            <DockPanel x:Name="panelGridFF" VerticalAlignment="Stretch">
+                                <ListView x:Name="lstFF" SelectionMode="Single">
+                                    <ListView.View>
+                                        <GridView>
+                                            <GridViewColumn Width="auto" Header="Fuente" DisplayMemberBinding="{Binding Nombre}"  />
+                                            <GridViewColumn Width="auto" Header="Siglas" DisplayMemberBinding="{Binding Siglas}" />
+                                            <GridViewColumn Width="auto" Header="Percibe Ingresos" DisplayMemberBinding="{Binding Tiene_Ingreso, Converter={StaticResource convertidor},ConverterParameter='Si;No'}" />
+                                            <GridViewColumn Width="auto" Header="Genera Gastos" DisplayMemberBinding="{Binding Tiene_Egreso, Converter={StaticResource convertidor},ConverterParameter='Si;No'}" />
+                                            <GridViewColumn Width="110" Header="SIPPSI" DisplayMemberBinding="{Binding FuenteSIPPSI}" />
+                                        </GridView>
+                                    </ListView.View>
+                                </ListView>
+                            </DockPanel>
+                        </DockPanel>
+
+                        <Separator Grid.Column="1">
+                            <Separator.LayoutTransform>
+                                <RotateTransform Angle="90" />
+                            </Separator.LayoutTransform>
+                        </Separator>
+
+                        <Grid Grid.Column="2">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="*"/>
+                                <RowDefinition Height="3"/>
+                                <RowDefinition Height="*"/>
+                            </Grid.RowDefinitions>
+                            <DockPanel Grid.Row="0">
+                                <StackPanel DockPanel.Dock="Top" Margin="0 10 0 0" Orientation="Vertical">
+                                    <StackPanel Orientation="Horizontal">
+                                        <materialDesign:PackIcon Kind="Coin" HorizontalAlignment="Center"  VerticalAlignment="Center" Margin="10 0 10 0"></materialDesign:PackIcon>
+                                        <TextBlock VerticalAlignment="Center" FontWeight="Bold">Registro de Monedas</TextBlock>
+                                    </StackPanel>
+                                    <Separator/>
+                                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
+                                        <Button Padding="0" x:Name="btnNewMoneda" Height="25" Width="30" Foreground="{StaticResource DarkGray}" Tag="{StaticResource Permiso_Guardar}"  Style="{StaticResource MaterialDesignFlatButton}" BorderBrush="Transparent" Click="btnNewMoneda_Click" ToolTip="Agregar un nuevo banco">
+                                            <materialDesign:PackIcon Kind="Plus" HorizontalAlignment="Center"  VerticalAlignment="Center" ></materialDesign:PackIcon>
+                                        </Button>
+                                        <Button Padding="0" x:Name="btnEditMoneda" Height="25" Width="30" Foreground="{StaticResource DarkGray}" Tag="{StaticResource Permiso_Editar}"  Style="{StaticResource MaterialDesignFlatButton}" BorderBrush="Transparent" Click="btnEditMoneda_Click" ToolTip="Editar el banco seleccionado">
+                                            <materialDesign:PackIcon Kind="Pencil" HorizontalAlignment="Center"  VerticalAlignment="Center" ></materialDesign:PackIcon>
+                                        </Button>
+                                        <Button Padding="0" x:Name="btnDeleteMoneda" Height="25" Width="30" Foreground="{StaticResource DarkGray}" Tag="{StaticResource Permiso_Eliminar}"  Style="{StaticResource MaterialDesignFlatButton}" BorderBrush="Transparent" Click="btnDeleteMoneda_Click" ToolTip="Eliminar el banco seleccionado">
+                                            <materialDesign:PackIcon Kind="Delete" HorizontalAlignment="Center"  VerticalAlignment="Center" ></materialDesign:PackIcon>
+                                        </Button>
+                                    </StackPanel>
+                                    <Separator/>
+                                </StackPanel>
+
+                                <DockPanel  x:Name="panelGridMoneda" VerticalAlignment="Stretch">
+                                    <ListView x:Name="lstMoneda" SelectionMode="Single">
+                                        <ListView.View>
+                                            <GridView>
+                                                <GridViewColumn Width="auto" Header="Moneda" DisplayMemberBinding="{Binding Moneda1}"  />
+                                                <GridViewColumn Width="auto" Header="Simbolo" DisplayMemberBinding="{Binding Simbolo}" />
+                                                <GridViewColumn Width="auto" Header="Dispone Servicio Web" DisplayMemberBinding="{Binding WebService, Converter={StaticResource convertidor},ConverterParameter='Si;No'}"/>
+                                            </GridView>
+                                        </ListView.View>
+                                    </ListView>
+                                </DockPanel>
+                            </DockPanel>
+
+                            <Separator Grid.Row="1">
+                                <Separator.LayoutTransform>
+                                    <RotateTransform Angle="90" />
+                                </Separator.LayoutTransform>
+                            </Separator>
+
+                            <DockPanel Grid.Row="2">
+                                <StackPanel DockPanel.Dock="Top" Margin="0 10 0 0" Orientation="Vertical">
+                                    <StackPanel Orientation="Horizontal">
+                                        <materialDesign:PackIcon Kind="AccountCardDetails" HorizontalAlignment="Center"  VerticalAlignment="Center" Margin="10 0 10 0"></materialDesign:PackIcon>
+                                        <TextBlock VerticalAlignment="Center" FontWeight="Bold">Registro de Documentos de Identificación</TextBlock>
+                                    </StackPanel>
+                                    <Separator/>
+                                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
+                                        <Button Padding="0" x:Name="btnNewIdentificacion" Height="25" Width="30" Foreground="{StaticResource DarkGray}" Tag="{StaticResource Permiso_Guardar}"  Style="{StaticResource MaterialDesignFlatButton}" BorderBrush="Transparent" Click="btnNewIdentificacion_Click" ToolTip="Agregar una nueva forma de pago">
+                                            <materialDesign:PackIcon Kind="Plus" HorizontalAlignment="Center"  VerticalAlignment="Center" ></materialDesign:PackIcon>
+                                        </Button>
+                                        <Button Padding="0" x:Name="btnEditIdentificacion" Height="25" Width="30" Foreground="{StaticResource DarkGray}" Tag="{StaticResource Permiso_Editar}"  Style="{StaticResource MaterialDesignFlatButton}" BorderBrush="Transparent" Click="btnEditIdentificacion_Click" ToolTip="Editar la forma de pago seleccionada">
+                                            <materialDesign:PackIcon Kind="Pencil" HorizontalAlignment="Center"  VerticalAlignment="Center" ></materialDesign:PackIcon>
+                                        </Button>
+                                        <Button Padding="0" x:Name="btnDeleteIdentificacion" Height="25" Width="30" Foreground="{StaticResource DarkGray}" Tag="{StaticResource Permiso_Eliminar}"  Style="{StaticResource MaterialDesignFlatButton}" BorderBrush="Transparent" Click="btnDeleteIdentificacion_Click" ToolTip="Eliminar la forma de pago seleccionada">
+                                            <materialDesign:PackIcon Kind="Delete" HorizontalAlignment="Center"  VerticalAlignment="Center" ></materialDesign:PackIcon>
+                                        </Button>
+                                    </StackPanel>
+                                    <Separator/>
+                                </StackPanel>
+
+                                <DockPanel  x:Name="panelGridIdentificacion" VerticalAlignment="Stretch">
+                                    <ListView x:Name="lstIdentificacion" SelectionMode="Single">
+                                        <ListView.View>
+                                            <GridView>
+                                                <GridViewColumn Width="auto" Header="Documento" DisplayMemberBinding="{Binding Identificacion}"  />
+                                                <GridViewColumn Width="auto" Header="Caracteres" DisplayMemberBinding="{Binding MaxCaracteres}"  />
+                                                <GridViewColumn Width="300" Header="Validación" DisplayMemberBinding="{Binding isMaxMin, Converter={StaticResource convertidor},ConverterParameter='Ingresar todos los caracteres;Ingresar todos los caracteres o menos'}"  />
+                                            </GridView>
+                                        </ListView.View>
+                                    </ListView>
+                                </DockPanel>
+                            </DockPanel>
+                        </Grid>
+                    </Grid>
+                </TabItem>
+
+                <!--Encabezado y pie de recibo-->
+                <TabItem Header="{Binding ElementName=opcion4,Path=Content}">
+                    <DockPanel>
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+                            <Grid Grid.Row="0">
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="auto"/>
+                                    <RowDefinition Height="*"/>
+                                    <RowDefinition Height="auto"/>
+                                    <RowDefinition Height="auto"/>
+                                </Grid.RowDefinitions>
+
+                                <StackPanel Grid.Column="0" Orientation="Horizontal">
+
+                                    <Button x:Name="btnNewInfoRecibo" Tag="{StaticResource Permiso_Guardar}" BorderBrush="Transparent"  Background="{StaticResource Save_Button}" Margin="5 5 5 5" Click="btnNewInfoRecibo_Click" Content="{StaticResource Text_New_Button}"></Button>
+                                </StackPanel>
+
+                                <DockPanel  Grid.Row="1" x:Name="panelGridInfoRecibo" VerticalAlignment="Stretch">
+                                    <DataGrid Name="tblInfoRecibo" CanUserDeleteRows="False" CanUserAddRows="False" AutoGenerateColumns="False" SelectionUnit="FullRow" SelectionMode="Single" >
+
+                                        <DataGrid.Columns>
+                                            <DataGridTemplateColumn CanUserResize="False" Width="50" Header="">
+                                                <DataGridTemplateColumn.CellTemplate>
+                                                    <DataTemplate>
+                                                        <StackPanel VerticalAlignment="Center">
+                                                            <Button x:Name="btnEditInfoRecibo" Tag="{StaticResource Permiso_Editar}" Background="{StaticResource Delete_Button}" Height="20" Width="20" Style="{StaticResource MaterialDesignToolButton}" BorderBrush="Transparent" Click="btnEditInfoRecibo_Click">
+                                                                <materialDesign:PackIcon Kind="Pencil" HorizontalAlignment="Center"  VerticalAlignment="Center" Margin="0 0 0 0"></materialDesign:PackIcon>
+                                                            </Button>
+                                                        </StackPanel>
+                                                    </DataTemplate>
+                                                </DataGridTemplateColumn.CellTemplate>
+                                            </DataGridTemplateColumn>
+
+                                            <DataGridTextColumn CanUserReorder="False" CanUserResize="False" IsReadOnly="True" Header="Recinto" Width="100" Binding="{Binding Recinto}">
+                                                <DataGridTextColumn.ElementStyle>
+                                                    <Style TargetType="TextBlock">
+                                                        <Setter Property="VerticalAlignment" Value="Center" />
+                                                    </Style>
+                                                </DataGridTextColumn.ElementStyle>
+                                            </DataGridTextColumn>
+                                            <DataGridTextColumn CanUserReorder="False" CanUserResize="False" IsReadOnly="True"  Header="Encabezado de recibo" Width="auto" Binding="{Binding Encabezado}">
+                                                <DataGridTextColumn.ElementStyle>
+                                                    <Style TargetType="TextBlock">
+                                                        <Setter Property="TextAlignment" Value="Center" />
+                                                    </Style>
+                                                </DataGridTextColumn.ElementStyle>
+                                            </DataGridTextColumn>
+                                            <DataGridTextColumn CanUserReorder="False" CanUserResize="False" IsReadOnly="True" Header="Pie de recibo" Width="auto" Binding="{Binding Pie}">
+                                                <DataGridTextColumn.ElementStyle>
+                                                    <Style TargetType="TextBlock">
+                                                        <Setter Property="TextAlignment" Value="Center" />
+                                                    </Style>
+                                                </DataGridTextColumn.ElementStyle>
+                                            </DataGridTextColumn>
+                                            <DataGridTextColumn CanUserReorder="False" CanUserResize="False" IsReadOnly="True" Header="Editado por" Width="auto" Binding="{Binding UsuarioCreacion}">
+                                                <DataGridTextColumn.ElementStyle>
+                                                    <Style TargetType="TextBlock">
+                                                        <Setter Property="VerticalAlignment" Value="Center" />
+                                                    </Style>
+                                                </DataGridTextColumn.ElementStyle>
+                                            </DataGridTextColumn>
+                                            <DataGridTextColumn CanUserReorder="False" CanUserResize="False" IsReadOnly="True" Header="Última edición" Width="auto" Binding="{Binding FechaCreacion}">
+                                                <DataGridTextColumn.ElementStyle>
+                                                    <Style TargetType="TextBlock">
+                                                        <Setter Property="VerticalAlignment" Value="Center" />
+                                                    </Style>
+                                                </DataGridTextColumn.ElementStyle>
+                                            </DataGridTextColumn>
+                                        </DataGrid.Columns>
+
+                                    </DataGrid>
+                                </DockPanel>
+
+                            </Grid>
+
+                        </Grid>
+                    </DockPanel>
+                </TabItem>
+
+            </TabControl>
+
         </Grid>
 
     </Grid>
