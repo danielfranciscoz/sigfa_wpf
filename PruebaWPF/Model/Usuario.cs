@@ -62,7 +62,6 @@ namespace PruebaWPF.Model
             this.FormaPago = new HashSet<FormaPago>();
             this.InfoRecibo = new HashSet<InfoRecibo>();
             this.Permiso = new HashSet<Permiso>();
-            this.Recibo1 = new HashSet<Recibo1>();
             this.ReciboAnulado = new HashSet<ReciboAnulado>();
             this.ReciboDet = new HashSet<ReciboDet>();
             this.ReciboPago = new HashSet<ReciboPago>();
@@ -72,10 +71,11 @@ namespace PruebaWPF.Model
             this.UsuarioPrograma = new HashSet<UsuarioPrograma>();
             this.VariacionCambiaria = new HashSet<VariacionCambiaria>();
             this.Moneda = new HashSet<Moneda>();
-            this.AperturaCaja = new HashSet<AperturaCaja>();
             this.Arqueo = new HashSet<Arqueo>();
             this.DetAperturaCaja = new HashSet<DetAperturaCaja>();
             this.TipoArancel = new HashSet<TipoArancel>();
+            this.AperturaCaja = new HashSet<AperturaCaja>();
+            this.Recibo1 = new HashSet<Recibo1>();
         }
     
         public string Login { get; set; }
@@ -191,8 +191,6 @@ namespace PruebaWPF.Model
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Permiso> Permiso { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Recibo1> Recibo1 { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<ReciboAnulado> ReciboAnulado { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<ReciboDet> ReciboDet { get; set; }
@@ -211,12 +209,14 @@ namespace PruebaWPF.Model
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Moneda> Moneda { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<AperturaCaja> AperturaCaja { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Arqueo> Arqueo { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<DetAperturaCaja> DetAperturaCaja { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<TipoArancel> TipoArancel { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<AperturaCaja> AperturaCaja { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Recibo1> Recibo1 { get; set; }
     }
 }

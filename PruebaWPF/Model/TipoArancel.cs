@@ -14,6 +14,12 @@ namespace PruebaWPF.Model
     
     public partial class TipoArancel
     {
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
+        public TipoArancel()
+        {
+            this.Arancel = new HashSet<Arancel>();
+        }
+    
         public int IdTipoArancel { get; set; }
         public string TipoArancel1 { get; set; }
         public string UsuarioCreacion { get; set; }
@@ -21,5 +27,7 @@ namespace PruebaWPF.Model
         public bool regAnulado { get; set; }
     
         public virtual Usuario Usuario { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Arancel> Arancel { get; set; }
     }
 }

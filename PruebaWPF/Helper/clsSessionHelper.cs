@@ -14,6 +14,7 @@ namespace PruebaWPF.Helper
         public static vw_ObtenerPeriodosEspecificos periodoEspecifico;
         public static Programa programa;
         public static List<vw_RecintosRH> recintosMemory;
+        public static List<vw_Areas> areasMemory;
 
     }
 }

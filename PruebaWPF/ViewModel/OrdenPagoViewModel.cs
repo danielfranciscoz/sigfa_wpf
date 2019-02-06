@@ -42,7 +42,7 @@ namespace PruebaWPF.ViewModel
         public List<OrdenPagoSon> FindAll()
         {
             //Recuerda igualar las columnas de este select en el FindBytEXT
-            var data = db.OrdenPago.Select(a => new OrdenPagoSon
+            var data = db.OrdenPago.Where(w => string.IsNullOrEmpty(w.CodRecibo) && w.regAnulado == false).OrderByDescending(o => o.IdOrdenPago).Take(clsConfiguration.Actual().TopRow).ToList().Select(a => new OrdenPagoSon
             {
                 IdOrdenPago = a.IdOrdenPago,
                 NoOrdenPago = a.NoOrdenPago,
@@ -59,10 +59,10 @@ namespace PruebaWPF.ViewModel
                 IdArea = a.IdArea,
                 DetOrdenPagoArancel = a.DetOrdenPagoArancel,
                 CantidadPagos = a.DetOrdenPagoArancel.Where(w => w.IdOrdenPago == a.IdOrdenPago && w.regAnulado == false).Count(),
-                Area = db.vw_Areas.Where(w => w.codigo == a.IdArea).Select(s => s.descripcion).FirstOrDefault().ToString().ToUpper(),
-                Recinto = db.vw_RecintosRH.Where(w => w.IdRecinto == a.IdRecinto).Select(s => s.Siglas).FirstOrDefault().ToString()
+                Area = clsSessionHelper.areasMemory.Where(w => w.codigo == a.IdArea).Select(s => s.descripcion).FirstOrDefault().ToString().ToUpper(),
+                Recinto = clsSessionHelper.recintosMemory.Where(w => w.IdRecinto == a.IdRecinto).Select(s => s.Siglas).FirstOrDefault().ToString()
             }
-            ).Where(w => string.IsNullOrEmpty(w.CodRecibo) && w.regAnulado == false).OrderByDescending(o => o.IdOrdenPago).Take(clsConfiguration.Actual().TopRow).ToList().Where(b => new SecurityViewModel().RecintosPermiso(pantalla).Any(a => b.IdRecinto == a.IdRecinto)).ToList();
+            ).Where(b => new SecurityViewModel().RecintosPermiso(pantalla).Any(a => b.IdRecinto == a.IdRecinto)).ToList();
 
             
 
@@ -99,8 +99,8 @@ namespace PruebaWPF.ViewModel
                     IdArea = a.IdArea,
                     DetOrdenPagoArancel = a.DetOrdenPagoArancel,
                     CantidadPagos= db.DetOrdenPagoArancel.Where(w => w.IdOrdenPago == a.IdOrdenPago && w.regAnulado == false).Count(),
-                    Area = db.vw_Areas.Where(w => w.codigo == a.IdArea).Select(s => s.descripcion).FirstOrDefault().ToString().ToUpper(),
-                    Recinto = db.vw_RecintosRH.Where(w => w.IdRecinto == a.IdRecinto).Select(s => s.Siglas).FirstOrDefault().ToString()
+                    Area = clsSessionHelper.areasMemory.Where(w => w.codigo == a.IdArea).Select(s => s.descripcion).FirstOrDefault().ToString().ToUpper(),
+                    Recinto = clsSessionHelper.recintosMemory.Where(w => w.IdRecinto == a.IdRecinto).Select(s => s.Siglas).FirstOrDefault().ToString()
                 }).Where(
                    w => busqueda.All(a => w.Recibimos.Contains(a))
                 && (w.regAnulado == false && string.IsNullOrEmpty(w.CodRecibo))).ToList().Where(b => new SecurityViewModel().RecintosPermiso(pantalla).Any(a => b.IdRecinto == a.IdRecinto)).ToList();

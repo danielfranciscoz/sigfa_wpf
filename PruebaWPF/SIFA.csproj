@@ -126,6 +126,7 @@
     <Compile Include="Clases\clsutilidades.cs" />
     <Compile Include="Clases\clsValidateInput.cs" />
     <Compile Include="Clases\GetDataTable.cs" />
+    <Compile Include="Clases\IsNullConverter.cs" />
     <Compile Include="Clases\Operacion.cs" />
     <Compile Include="Connected Services\wsTipoCambio\Reference.cs">
       <AutoGen>True</AutoGen>
@@ -1066,6 +1067,7 @@
     </Compile>
     <Compile Include="Referencias\clsReferencias.cs" />
     <Compile Include="Referencias\GlobalReference.cs" />
+    <Compile Include="Model\vista_RecibosPago.cs" />
     <Compile Include="Settings.cs" />
     <Compile Include="SqlServerTypes\Loader.cs" />
     <Compile Include="UserControls\Bar_Back.xaml.cs">
@@ -1102,6 +1104,9 @@
     <Compile Include="Views\AperturaCaja\AperturaCaja.xaml.cs">
       <DependentUpon>AperturaCaja.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Views\AperturaCaja\AperturarCajas.xaml.cs">
+      <DependentUpon>AperturarCajas.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\Main\frmMain.xaml.cs">
       <DependentUpon>frmMain.xaml</DependentUpon>
     </Compile>
@@ -1137,6 +1142,9 @@
     </Compile>
     <Compile Include="Views\Shared\Loading.xaml.cs">
       <DependentUpon>Loading.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Shared\rptInforme.xaml.cs">
+      <DependentUpon>rptInforme.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\Tesoreria\AddSerie.xaml.cs">
       <DependentUpon>AddSerie.xaml</DependentUpon>
@@ -1211,6 +1219,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Views\AperturaCaja\AperturarCajas.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Views\Main\frmMain.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -1259,6 +1271,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Views\Shared\rptInforme.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Views\Tesoreria\AddSerie.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -1302,6 +1318,7 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
+    <EmbeddedResource Include="Reportes\AperturaCaja\InformeCierre.rdlc" />
     <EmbeddedResource Include="Reportes\Recibo\Recibo.rdlc">
       <SubType>Designer</SubType>
     </EmbeddedResource>
@@ -1334,14 +1351,21 @@
       <DependentUpon>Model1.edmx</DependentUpon>
     </None>
     <None Include="packages.config" />
+    <None Include="Properties\DataSources\PruebaWPF.Model.AperturaCaja.datasource" />
     <None Include="Properties\DataSources\PruebaWPF.Model.Arancel.datasource" />
+    <None Include="Properties\DataSources\PruebaWPF.Model.Caja.datasource" />
     <None Include="Properties\DataSources\PruebaWPF.Model.clsBarCode.datasource" />
     <None Include="Properties\DataSources\PruebaWPF.Model.clsResultObject.datasource" />
     <None Include="Properties\DataSources\PruebaWPF.Model.fn_ConsultarInfoExterna_Result.datasource" />
+    <None Include="Properties\DataSources\PruebaWPF.Model.FormaPago.datasource" />
     <None Include="Properties\DataSources\PruebaWPF.Model.InfoRecibo.datasource" />
     <None Include="Properties\DataSources\PruebaWPF.Model.OrdenPago.datasource" />
+    <None Include="Properties\DataSources\PruebaWPF.Model.ReciboAnulado.datasource" />
+    <None Include="Properties\DataSources\PruebaWPF.Model.vista_RecibosPago.datasource" />
+    <None Include="Properties\DataSources\PruebaWPF.ViewModel.DetAperturaCajaSon.datasource" />
     <None Include="Properties\DataSources\PruebaWPF.ViewModel.DetReciboSon.datasource" />
     <None Include="Properties\DataSources\PruebaWPF.ViewModel.ReciboPagoSon.datasource" />
+    <None Include="Properties\DataSources\PruebaWPF.ViewModel.ReciboSon.datasource" />
     <None Include="Properties\DataSources\PruebaWPF.ViewModel.VariacionCambiariaSon.datasource" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>

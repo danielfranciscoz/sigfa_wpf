@@ -31,7 +31,7 @@ namespace PruebaWPF.ViewModel
         public List<CajaSon> FindAllCajas()
         {
 
-            return db.Caja.Select(s => new CajaSon()
+            return db.Caja.Where(w => w.regAnulado == false).OrderByDescending(o => o.IdCaja).Take(clsConfiguration.Actual().TopRow).ToList().Select(s => new CajaSon()
             {
                 IdCaja = s.IdCaja,
                 Nombre = s.Nombre,
@@ -41,9 +41,8 @@ namespace PruebaWPF.ViewModel
                 IdSerie = s.IdSerie,
                 regAnulado = s.regAnulado,
                 FechaCreacion = s.FechaCreacion,
-                Recinto = db.vw_RecintosRH.Where(w => w.IdRecinto == s.IdRecinto).Select(a => a.Siglas).FirstOrDefault().ToString(),
-                cantidadRecibos = db.Recibo1.Where(w => w.IdCaja == s.IdCaja).Count()
-            }).Where(w => w.regAnulado == false).ToList().Where(b => new SecurityViewModel().RecintosPermiso(pantalla).Any(a => b.IdRecinto == a.IdRecinto)).ToList();
+                Recinto = clsSessionHelper.recintosMemory.Where(w => w.IdRecinto == s.IdRecinto).Select(a => a.Siglas).FirstOrDefault().ToString(),                
+            }).Where(b => new SecurityViewModel().RecintosPermiso(pantalla).Any(a => b.IdRecinto == a.IdRecinto)).ToList();
         }
 
         public string FindMacActual()
@@ -310,7 +309,7 @@ namespace PruebaWPF.ViewModel
 
         public List<FuenteFinanciamientoSon> FindAllFuentesFinanciamiento()
         {
-            return db.FuenteFinanciamiento.Select(s => new FuenteFinanciamientoSon()
+            return db.FuenteFinanciamiento.Where(w => w.RegAnulado == false).OrderBy(o => o.Nombre).Select(s => new FuenteFinanciamientoSon()
             {
                 IdFuenteFinanciamiento = s.IdFuenteFinanciamiento,
                 Nombre = s.Nombre,
@@ -321,7 +320,7 @@ namespace PruebaWPF.ViewModel
                 LoginCreacion = s.LoginCreacion,
                 RegAnulado = s.RegAnulado,
                 FuenteSIPPSI = db.vw_FuentesSIPPSI.Where(a => a.IdFuenteFinanciamiento == s.IdFuente_SIPPSI).FirstOrDefault().Nombre
-            }).Where(w => w.RegAnulado == false).OrderBy(o => o.Nombre).ToList();
+            }).ToList();
         }
 
         public List<vw_FuentesSIPPSI> FindAllFuentesSIPSSI()
@@ -480,7 +479,7 @@ namespace PruebaWPF.ViewModel
 
         public List<InfoReciboSon> FindAllInfoRecibos()
         {
-            return db.InfoRecibo.Select(s => new InfoReciboSon()
+            return db.InfoRecibo.Where(w => w.regAnulado == false).ToList().Select(s => new InfoReciboSon()
             {
                 IdInfoRecibo = s.IdInfoRecibo,
                 IdRecinto = s.IdRecinto,
@@ -488,9 +487,9 @@ namespace PruebaWPF.ViewModel
                 Pie = s.Pie,
                 UsuarioCreacion = s.UsuarioCreacion,
                 FechaCreacion = s.FechaCreacion,
-                Recinto = db.vw_RecintosRH.Where(w => w.IdRecinto == s.IdRecinto).Select(a => a.Siglas).FirstOrDefault().ToString(),
+                Recinto = clsSessionHelper.recintosMemory.Where(w => w.IdRecinto == s.IdRecinto).Select(a => a.Siglas).FirstOrDefault().ToString(),
                 regAnulado = s.regAnulado
-            }).Where(w => w.regAnulado == false).ToList().Where(b => new SecurityViewModel().RecintosPermiso(pantalla).Any(a => b.IdRecinto == a.IdRecinto)).ToList();
+            }).Where(b => new SecurityViewModel().RecintosPermiso(pantalla).Any(a => b.IdRecinto == a.IdRecinto)).ToList();
         }
 
         public void SaveInfoRecibo(InfoRecibo infoRecibo)
@@ -555,8 +554,7 @@ namespace PruebaWPF.ViewModel
     public class CajaSon : Caja, ICloneable
     {
         public string Recinto { get; set; }
-        public int cantidadRecibos { get; set; }
-
+  
         public object Clone()
         {
             return MemberwiseClone();

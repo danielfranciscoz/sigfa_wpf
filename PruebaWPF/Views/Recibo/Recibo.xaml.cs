@@ -278,7 +278,7 @@ namespace PruebaWPF.Views.Recibo
                 if (tblRecibo.SelectedItem != null)
                 {
                     ReciboSon fila = (ReciboSon)tblRecibo.SelectedItem;
-                    if (controller().Autorice_Recinto(((Button)sender).Tag.ToString(), fila.Caja.IdRecinto))
+                    if (controller().Autorice_Recinto(((Button)sender).Tag.ToString(), fila.DetAperturaCaja.Caja.IdRecinto))
                     {
                         AnularRecibo anularRecibo = new AnularRecibo(fila);
                         anularRecibo.ShowDialog();

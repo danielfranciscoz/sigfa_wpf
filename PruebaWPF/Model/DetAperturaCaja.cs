@@ -14,6 +14,12 @@ namespace PruebaWPF.Model
     
     public partial class DetAperturaCaja
     {
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
+        public DetAperturaCaja()
+        {
+            this.Recibo1 = new HashSet<Recibo1>();
+        }
+    
         public int IdDetAperturaCaja { get; set; }
         public int IdAperturaCaja { get; set; }
         public int IdCaja { get; set; }
@@ -21,7 +27,9 @@ namespace PruebaWPF.Model
         public Nullable<System.DateTime> FechaCierre { get; set; }
     
         public virtual Usuario Usuario { get; set; }
-        public virtual AperturaCaja AperturaCaja { get; set; }
         public virtual Caja Caja { get; set; }
+        public virtual AperturaCaja AperturaCaja { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Recibo1> Recibo1 { get; set; }
     }
 }

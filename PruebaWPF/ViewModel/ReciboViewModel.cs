@@ -35,7 +35,14 @@ namespace PruebaWPF.ViewModel
         public List<ReciboSon> FindAll()
         {
 
-            List<Recibo1> recibo = db.Recibo1.Take(clsConfiguration.Actual().TopRow).ToList().Where(w => new SecurityViewModel().RecintosPermiso(pantalla).Any(a => w.Caja.IdRecinto == a.IdRecinto)).ToList();
+            List<Recibo1> recibo = db.Recibo1.Take(clsConfiguration.Actual().TopRow).ToList().Where(w => new SecurityViewModel().RecintosPermiso(pantalla).Any(a => w.InfoRecibo.IdRecinto == a.IdRecinto)).ToList();
+
+            return UnirRecibos(recibo);
+        }
+
+        public List<ReciboSon> FindAllApertura(int IdDetApertura)
+        {
+            List<Recibo1> recibo = db.Recibo1.Where(w => w.IdDetAperturaCaja == IdDetApertura).ToList();
 
             return UnirRecibos(recibo);
         }
@@ -49,7 +56,7 @@ namespace PruebaWPF.ViewModel
                 List<Recibo1> recibo = db.Recibo1
                     .Where(w => busqueda.All(a => w.IdRecibo.ToString().Equals(a) || w.Serie.Contains(a)))
                     .ToList()
-                    .Where(w => new SecurityViewModel().RecintosPermiso(pantalla).Any(a => w.Caja.IdRecinto == a.IdRecinto))
+                    .Where(w => new SecurityViewModel().RecintosPermiso(pantalla).Any(a => w.InfoRecibo.IdRecinto == a.IdRecinto))
                     .ToList();
                 return UnirRecibos(recibo);
             }
@@ -87,8 +94,7 @@ namespace PruebaWPF.ViewModel
             var ListaConOrdenes = recibo.Where(w => w.IdOrdenPago != null).Select(r => new ReciboSon()
             {
                 IdRecibo = r.IdRecibo,
-                Serie = r.Serie,
-                IdCaja = r.IdCaja,
+                IdDetAperturaCaja = r.IdDetAperturaCaja,
                 IdPeriodoEspecifico = r.IdPeriodoEspecifico,
                 IdArea = r.OrdenPago.IdArea,
                 IdFuenteFinanciamiento = r.IdFuenteFinanciamiento,
@@ -97,17 +103,17 @@ namespace PruebaWPF.ViewModel
                 Recibimos = r.OrdenPago.Recibimos,
                 Fecha = r.Fecha,
                 IdOrdenPago = r.OrdenPago.IdOrdenPago,
-                UsuarioCreacion = r.UsuarioCreacion,
                 regAnulado = r.regAnulado,
                 IdInfoRecibo = r.IdInfoRecibo,
-                Recinto = db.vw_RecintosRH.Where(w => w.IdRecinto == r.Caja.IdRecinto).Select(s1 => s1.Siglas).FirstOrDefault().ToString(),
-                Area = db.vw_Areas.Where(w => w.codigo == r.OrdenPago.IdArea).Select(s1 => s1.descripcion).FirstOrDefault().ToString().ToUpper(),
                 InfoRecibo = r.InfoRecibo,
-                Caja = r.Caja,
+                DetAperturaCaja = r.DetAperturaCaja,
                 OrdenPago = r.OrdenPago,
                 FuenteFinanciamiento = r.FuenteFinanciamiento,
                 TipoDeposito = r.OrdenPago.TipoDeposito,
-                ReciboPago = r.ReciboPago
+                UsuarioCreacion = r.UsuarioCreacion,
+                Serie = r.Serie,
+                Recinto = clsSessionHelper.recintosMemory.Where(w => w.IdRecinto == r.InfoRecibo.IdRecinto).Select(s1 => s1.Siglas).FirstOrDefault().ToString(),
+                Area = clsSessionHelper.areasMemory.Where(w => w.codigo == r.OrdenPago.IdArea).Select(s1 => s1.descripcion).FirstOrDefault().ToString().ToUpper(),
             }).ToList();
 
             //La información se obtiene del detalle del recibo
@@ -115,7 +121,7 @@ namespace PruebaWPF.ViewModel
             {
                 IdRecibo = r.IdRecibo,
                 Serie = r.Serie,
-                IdCaja = r.IdCaja,
+                IdDetAperturaCaja = r.IdDetAperturaCaja,
                 IdPeriodoEspecifico = r.IdPeriodoEspecifico,
                 IdArea = r.IdArea,
                 IdFuenteFinanciamiento = r.IdFuenteFinanciamiento,
@@ -124,18 +130,16 @@ namespace PruebaWPF.ViewModel
                 Recibimos = r.Recibimos,
                 Fecha = r.Fecha,
                 IdOrdenPago = r.IdOrdenPago,
-                UsuarioCreacion = r.UsuarioCreacion,
                 regAnulado = r.regAnulado,
                 IdInfoRecibo = r.IdInfoRecibo,
-                Recinto = db.vw_RecintosRH.Where(w => w.IdRecinto == r.Caja.IdRecinto).Select(s1 => s1.Siglas).FirstOrDefault().ToString(),
-                Area = db.vw_Areas.Where(w => w.codigo == r.IdArea).Select(s1 => s1.descripcion).FirstOrDefault().ToString().ToUpper(),
                 InfoRecibo = r.InfoRecibo,
-                Caja = r.Caja,
+                DetAperturaCaja = r.DetAperturaCaja,
                 OrdenPago = r.OrdenPago,
                 FuenteFinanciamiento = r.FuenteFinanciamiento,
                 TipoDeposito = r.TipoDeposito,
-                ReciboPago = r.ReciboPago,
-                ReciboDet = r.ReciboDet
+                UsuarioCreacion = r.UsuarioCreacion,
+                Recinto = clsSessionHelper.recintosMemory.Where(w => w.IdRecinto == r.InfoRecibo.IdRecinto).Select(s1 => s1.Siglas).FirstOrDefault().ToString(),
+                Area = clsSessionHelper.areasMemory.Where(w => w.codigo == r.IdArea).Select(s1 => s1.descripcion).FirstOrDefault().ToString().ToUpper(),
             }).ToList();
 
             //La información se obtiene de la orden de pago, cuando el recibo está anulado
@@ -143,7 +147,7 @@ namespace PruebaWPF.ViewModel
             {
                 IdRecibo = r.IdRecibo,
                 Serie = r.Serie,
-                IdCaja = r.IdCaja,
+                IdDetAperturaCaja = r.IdDetAperturaCaja,
                 IdPeriodoEspecifico = r.IdPeriodoEspecifico,
                 IdArea = r.ReciboAnulado.OrdenPago.IdArea,
                 IdFuenteFinanciamiento = r.IdFuenteFinanciamiento,
@@ -152,17 +156,16 @@ namespace PruebaWPF.ViewModel
                 Recibimos = r.ReciboAnulado.OrdenPago.Recibimos,
                 Fecha = r.Fecha,
                 IdOrdenPago = r.ReciboAnulado.OrdenPago.IdOrdenPago,
-                UsuarioCreacion = r.UsuarioCreacion,
                 regAnulado = r.regAnulado,
                 IdInfoRecibo = r.IdInfoRecibo,
-                Recinto = db.vw_RecintosRH.Where(w => w.IdRecinto == r.Caja.IdRecinto).Select(s1 => s1.Siglas).FirstOrDefault().ToString(),
-                Area = db.vw_Areas.Where(w => w.codigo == r.ReciboAnulado.OrdenPago.IdArea).Select(s1 => s1.descripcion).FirstOrDefault().ToString().ToUpper(),
                 InfoRecibo = r.InfoRecibo,
-                Caja = r.Caja,
+                DetAperturaCaja = r.DetAperturaCaja,
                 OrdenPago = r.ReciboAnulado.OrdenPago,
                 FuenteFinanciamiento = r.FuenteFinanciamiento,
                 TipoDeposito = r.ReciboAnulado.OrdenPago.TipoDeposito,
-                ReciboPago = r.ReciboPago,
+                UsuarioCreacion = r.UsuarioCreacion,
+                Recinto = clsSessionHelper.recintosMemory.Where(w => w.IdRecinto == r.InfoRecibo.IdRecinto).Select(s1 => s1.Siglas).FirstOrDefault().ToString(),
+                Area = clsSessionHelper.areasMemory.Where(w => w.codigo == r.ReciboAnulado.OrdenPago.IdArea).Select(s1 => s1.descripcion).FirstOrDefault().ToString().ToUpper(),
                 ReciboAnulado = r.ReciboAnulado
             }).ToList();
 
@@ -171,7 +174,7 @@ namespace PruebaWPF.ViewModel
             {
                 IdRecibo = r.IdRecibo,
                 Serie = r.Serie,
-                IdCaja = r.IdCaja,
+                IdDetAperturaCaja = r.IdDetAperturaCaja,
                 IdPeriodoEspecifico = r.IdPeriodoEspecifico,
                 IdArea = r.IdArea,
                 IdFuenteFinanciamiento = r.IdFuenteFinanciamiento,
@@ -180,18 +183,16 @@ namespace PruebaWPF.ViewModel
                 Recibimos = r.Recibimos,
                 Fecha = r.Fecha,
                 IdOrdenPago = r.IdOrdenPago,
-                UsuarioCreacion = r.UsuarioCreacion,
                 regAnulado = r.regAnulado,
                 IdInfoRecibo = r.IdInfoRecibo,
-                Recinto = db.vw_RecintosRH.Where(w => w.IdRecinto == r.Caja.IdRecinto).Select(s1 => s1.Siglas).FirstOrDefault().ToString(),
-                Area = db.vw_Areas.Where(w => w.codigo == r.IdArea).Select(s1 => s1.descripcion).FirstOrDefault().ToString().ToUpper(),
                 InfoRecibo = r.InfoRecibo,
-                Caja = r.Caja,
+                DetAperturaCaja = r.DetAperturaCaja,
                 OrdenPago = r.OrdenPago,
                 FuenteFinanciamiento = r.FuenteFinanciamiento,
                 TipoDeposito = r.TipoDeposito,
-                ReciboPago = r.ReciboPago,
-                ReciboDet = r.ReciboDet,
+                UsuarioCreacion = r.UsuarioCreacion,
+                Recinto = clsSessionHelper.recintosMemory.Where(w => w.IdRecinto == r.InfoRecibo.IdRecinto).Select(s1 => s1.Siglas).FirstOrDefault().ToString(),
+                Area = clsSessionHelper.areasMemory.Where(w => w.codigo == r.IdArea).Select(s1 => s1.descripcion).FirstOrDefault().ToString().ToUpper(),
                 ReciboAnulado = r.ReciboAnulado
             }).ToList();
 
@@ -227,7 +228,7 @@ namespace PruebaWPF.ViewModel
         public List<DetOrdenPagoSon> FindAllDetailsOrderPay(OrdenPago op)
         {
 
-            return op.DetOrdenPagoArancel.Select(s => new DetOrdenPagoSon
+            return db.DetOrdenPagoArancel.Where(w => w.IdOrdenPago == op.IdOrdenPago && w.regAnulado == false).Select(s => new DetOrdenPagoSon
             {
                 IdDetalleOrdenPago = s.IdDetalleOrdenPago,
                 IdOrdenPago = s.IdOrdenPago,
@@ -236,7 +237,7 @@ namespace PruebaWPF.ViewModel
                 regAnulado = s.regAnulado,
                 ArancelPrecio = s.ArancelPrecio,
                 PrecioVariable = s.PrecioVariable,
-            }).Where(w => w.regAnulado == false).ToList();
+            }).ToList();
         }
 
         public ReciboSon FindById(int Id)
@@ -256,7 +257,7 @@ namespace PruebaWPF.ViewModel
             List<DetReciboSon> detalles;
             if (recibo.IdOrdenPago == null)
             {
-                detalles = recibo.ReciboDet.Select(s => new DetReciboSon()
+                detalles = db.ReciboDet.Select(s => new DetReciboSon()
                 {
                     IdRecibo = s.IdRecibo,
                     Serie = s.Serie,
@@ -283,7 +284,7 @@ namespace PruebaWPF.ViewModel
 
         public List<ReciboPagoSon> ReciboFormaPago(ReciboSon recibo)
         {
-            return recibo.ReciboPago.Select(s => new ReciboPagoSon()
+            return db.ReciboPago.Where(w => w.IdRecibo == recibo.IdRecibo && w.Serie == recibo.Serie).ToList().Select(s => new ReciboPagoSon()
             {
                 DetalleAdicional = ObtenerObjetoAdicional(s)[0],
                 InfoAdicional = ObtenerObjetoAdicional(s)[1].ToString(),
@@ -393,7 +394,7 @@ namespace PruebaWPF.ViewModel
                     //Información general del recibo que debe ser almacenada
                     roc.IdRecibo = recibo.IdRecibo;
                     roc.Serie = recibo.Serie;
-                    roc.IdCaja = recibo.IdCaja;
+                    roc.IdDetAperturaCaja = recibo.IdDetAperturaCaja;
                     roc.IdPeriodoEspecifico = recibo.IdPeriodoEspecifico;
                     roc.IdFuenteFinanciamiento = recibo.IdFuenteFinanciamiento;
                     roc.Fecha = System.DateTime.Now;
@@ -553,6 +554,18 @@ namespace PruebaWPF.ViewModel
             string MAC = new TesoreriaViewModel().FindMacActual();
             Caja serieCajero = db.Caja.Where(w1 => w1.MAC == MAC && w1.regAnulado == false).FirstOrDefault();
 
+            //"No hemos podido obtener un código de recibo válido, es probable que desde este ordenador no sea posible generar recibos, por favor revise la configuración de tesorería."
+
+            if (serieCajero == null)
+            {
+                throw new Exception("No hemos encontrado este ordenador entre la lista de cajas disponibles para realizar pagos en el sistema, por favor pida ayuda al administrador de tesorería.");
+            }
+
+            var apertura = db.DetAperturaCaja.Where(w => w.IdCaja == serieCajero.IdCaja).ToList().Where(w => w.AperturaCaja.FechaApertura.Date == System.DateTime.Now.Date && w.FechaCierre == null).ToList();
+            if (apertura.Count == 0)
+            {
+                throw new Exception("Esta caja no se encuentra aperturada para realizar pagos, contacte al administrador de tesorería para dar apertura a la caja.");
+            }
             var r = db.Recibo1.Where(w => w.Serie.Equals(serieCajero.IdSerie.ToString()));
             int Idrecibo;
 
@@ -583,12 +596,12 @@ namespace PruebaWPF.ViewModel
                     }
 
                 }
-                catch (Exception)
+                catch (Exception ex)
                 {
-                    Idrecibo = 0;
+                    throw ex;
                 }
             }
-            return new string[] { (Idrecibo + 1).ToString(), serieCajero.IdSerie, serieCajero.IdCaja.ToString(), info.IdInfoRecibo.ToString() };
+            return new string[] { (Idrecibo + 1).ToString(), serieCajero.IdSerie, apertura.First().IdDetAperturaCaja.ToString(), info.IdInfoRecibo.ToString() };
         }
 
         public List<FuenteFinanciamiento> ObtenerFuentesFinanciamiento()
@@ -695,8 +708,6 @@ namespace PruebaWPF.ViewModel
 
     }
 
-
-
     public class ReciboPagoSon : ReciboPago
     {
         public decimal TipoCambio => new ReciboViewModel().ObtenerTasaCambioDia(IdMoneda).Valor;
@@ -707,6 +718,7 @@ namespace PruebaWPF.ViewModel
         public String InfoAdicional { get; set; }
         public Object DetalleAdicional { get; set; }
     }
+
 }
 
 

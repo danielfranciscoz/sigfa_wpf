@@ -69,11 +69,7 @@ namespace PruebaWPF.Views.Tesoreria
 
             cboSerie.ItemsSource = controller.FindAddSeries(caja.IdSerie);
             cboSerie.SelectedValue = caja.IdSerie;
-            if (caja.cantidadRecibos>0)
-            {
-                cboRecinto.IsEnabled = false;
-                cboSerie.IsEnabled = false;
-            }
+           
         }
 
         private void Diseñar()

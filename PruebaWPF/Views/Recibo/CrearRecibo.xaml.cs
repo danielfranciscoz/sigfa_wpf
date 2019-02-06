@@ -31,6 +31,7 @@ namespace PruebaWPF.Views.Recibo
         private ReciboSon recibo;
         List<MonedaMonto> aPagar;
         List<MonedaMonto> pendiente;
+        private fn_ConsultarInfoExterna_Result infoExterna;
 
         //TODO Cambiar la forma de los recibos, ya no serán series sino recintos
 
@@ -141,14 +142,14 @@ namespace PruebaWPF.Views.Recibo
             if (e.Action == System.Collections.Specialized.NotifyCollectionChangedAction.Remove)
             {
             }
-                if (tblDetallesPay.Items.Count == 0)
-                {
-                    CalcularMontosDeuda();
-                }
-                else
-                {
-                    CalcularMontosPago();
-                }
+            if (tblDetallesPay.Items.Count == 0)
+            {
+                CalcularMontosDeuda();
+            }
+            else
+            {
+                CalcularMontosPago();
+            }
             ContarRegistrosPay();
 
         }
@@ -165,45 +166,40 @@ namespace PruebaWPF.Views.Recibo
 
         private void Load()
         {
-            if (CargarCodigoRecibo())
+
+            try
             {
-                try
+                CargarCodigoRecibo();
+
+                if (orden != null)
                 {
-                    if (orden != null)
+                    if (orden.IdOrdenPago != 0)
                     {
-                        if (orden.IdOrdenPago != 0)
-                        {
-                            items = new ObservableCollection<DetOrdenPagoSon>(controller.FindAllDetailsOrderPay(orden));
-                        }
-                    }
-
-                    items.CollectionChanged += new System.Collections.Specialized.NotifyCollectionChangedEventHandler(Categories_CollectionChanged);
-                    ContarRegistros();
-                    tblDetalles.ItemsSource = items;
-
-                    CargarFuentesFinanciamiento();
-                    CargarMonedas();
-                    CargarFormasPago();
-                    CargarTiposDeposito();
-                    if (isOrdenPago)
-                    {
-                        cboTipoDeposito.SelectedValue = orden.IdTipoDeposito;
-                        AsignarDatos(InformacionResult(orden.IdTipoDeposito, orden.Identificador, true));
+                        items = new ObservableCollection<DetOrdenPagoSon>(controller.FindAllDetailsOrderPay(orden));
                     }
                 }
-                catch (Exception ex)
-                {
-                    clsutilidades.OpenMessage(new Operacion() { Mensaje = new clsException(ex).ErrorMessage(), OperationType = clsReferencias.TYPE_MESSAGE_Error });
-                }
 
-                tblDetallesPay.ItemsSource = formaPago;
+                items.CollectionChanged += new System.Collections.Specialized.NotifyCollectionChangedEventHandler(Categories_CollectionChanged);
+                ContarRegistros();
+                tblDetalles.ItemsSource = items;
+
+                CargarFuentesFinanciamiento();
+                CargarMonedas();
+                CargarFormasPago();
+                CargarTiposDeposito();
+                if (isOrdenPago)
+                {
+                    cboTipoDeposito.SelectedValue = orden.IdTipoDeposito;
+                    AsignarDatos(InformacionResult(orden.IdTipoDeposito, orden.Identificador, true));
+                }
             }
-            else
+            catch (Exception ex)
             {
-                o = new Operacion(clsReferencias.TYPE_MESSAGE_Error, "No hemos podido obtener un código de recibo válido, es probable que desde este ordenador no sea posible generar recibos, por favor revise la configuración de tesorería.");
-                clsutilidades.OpenMessage(o);
+                clsutilidades.OpenMessage(new Operacion() { Mensaje = new clsException(ex).ErrorMessage(), OperationType = clsReferencias.TYPE_MESSAGE_Error });
                 Close();
             }
+
+            tblDetallesPay.ItemsSource = formaPago;
 
         }
 
@@ -242,32 +238,21 @@ namespace PruebaWPF.Views.Recibo
             cboFuenteFinanciamiento.SelectedValuePath = "IdFuenteFinanciamiento";
         }
 
-        private bool CargarCodigoRecibo()
+        private void CargarCodigoRecibo()
         {
-            try
-            {
-                string[] codigo = controller.ObtenerCodigoRecibo();
-                if (codigo != null)
-                {
-                    recibo.IdRecibo = int.Parse(codigo[0]);
-                    recibo.Serie = codigo[1];
-                    recibo.IdCaja = int.Parse(codigo[2]);
-                    recibo.IdPeriodoEspecifico = clsSessionHelper.periodoEspecifico.IdPeriodoEspecifico;
-                    recibo.IdInfoRecibo = int.Parse(codigo[3]);
-                    recibo.IdOrdenPago = orden.IdOrdenPago;
-                    txtCodRecibo.Text = codigo[0] + codigo[1];
 
-                    return true;
-                }
-                else
-                {
-                    return false;
-                }
-            }
-            catch (Exception ex)
+            string[] codigo = controller.ObtenerCodigoRecibo();
+            if (codigo != null)
             {
-                return false;
+                recibo.IdRecibo = int.Parse(codigo[0]);
+                recibo.Serie = codigo[1];
+                recibo.IdDetAperturaCaja = int.Parse(codigo[2]);
+                recibo.IdPeriodoEspecifico = clsSessionHelper.periodoEspecifico.IdPeriodoEspecifico;
+                recibo.IdInfoRecibo = int.Parse(codigo[3]);
+                recibo.IdOrdenPago = orden.IdOrdenPago;
+                txtCodRecibo.Text = codigo[0] + codigo[1];
             }
+
         }
 
         private void CalcularMontosDeuda()
@@ -317,7 +302,7 @@ namespace PruebaWPF.Views.Recibo
                 if (lstEquivalenciaTotalPay.Items.Count == 0)
                 {
                     lstPendiente.Items.Add("Saldo en " + item.Moneda + " " + string.Format("{0:N}", item.Monto));
-                    pendiente.Add(new MonedaMonto() { Moneda = item.Moneda, Valor = Math.Round(item.Monto,2) });
+                    pendiente.Add(new MonedaMonto() { Moneda = item.Moneda, Valor = Math.Round(item.Monto, 2) });
                 }
             }
 
@@ -327,7 +312,7 @@ namespace PruebaWPF.Views.Recibo
         private void CalcularMontosPago()
         {
             var SumTotal = formaPago.GroupBy(a => new { a.Moneda }).Select(b => new { Moneda = b.Key.Moneda.Simbolo, IdMoneda = b.Key.Moneda.IdMoneda, Monto = b.Sum(c => c.Monto) }).OrderBy(o => o.IdMoneda).ToList();
-           
+
             if (lstEquivalenciaTotalPay.Items.Count > 0 || SumTotal.Count > 0)
             {
                 lstPendiente.Items.Clear();
@@ -491,7 +476,7 @@ namespace PruebaWPF.Views.Recibo
                 FormaPago = fp,
                 Moneda = m,
                 IdMoneda = m.IdMoneda,
-                Monto =Math.Round(Decimal.Parse(txtMontoPago.Text),2),
+                Monto = Math.Round(Decimal.Parse(txtMontoPago.Text), 2),
                 DetalleAdicional = o[0],
                 InfoAdicional = o[1].ToString()
             });
@@ -707,6 +692,7 @@ namespace PruebaWPF.Views.Recibo
 
         private void AsignarDatos(fn_ConsultarInfoExterna_Result selectedResult)
         {
+            infoExterna = selectedResult;
             orden.Identificador = selectedResult.Id;
             orden.PorCuenta = selectedResult.Nombre;
 
@@ -800,20 +786,22 @@ namespace PruebaWPF.Views.Recibo
                             {
                                 var a = pendiente.Where(w => w.Valor != 0).ToList();
 
-                                if (a.Count() >0)
+                                if (a.Count() > 0)
                                 {
-                                    string info="";
+                                    string info = "";
                                     foreach (var item in a)
                                     {
-                                        info = item.Moneda+"\t"+item.Valor +"\t"+ (item.Valor < 0?"(Debe restar esta cantidad a alguna forma de pago)":"El usuario aún debe entregar esta cantidad a la caja") +"\n"+info;
+                                        info = item.Moneda + "\t" + item.Valor + "\t" + (item.Valor < 0 ? "(Debe restar esta cantidad a alguna forma de pago)" : "El usuario aún debe entregar esta cantidad a la caja") + "\n" + info;
                                     }
-                                    clsutilidades.OpenMessage(new Operacion() {
-                                        Mensaje = "\nPara generar el recibo se requiere que los saldos de la columna PENDIENTE sean iguales a cero (0.00).\nPor favor corrija la siguiente información: \n\n"+info+"\nEn algunas ocasiones, habrán decimales de mas o de menos, esto se debe a que la conversión\nde moneda genera ciertos variaciones por la cantidad de decimales que se usan en las operaciones." ,
-                                        OperationType = clsReferencias.TYPE_MESSAGE_Advertencia });
+                                    clsutilidades.OpenMessage(new Operacion()
+                                    {
+                                        Mensaje = "\nPara generar el recibo se requiere que los saldos de la columna PENDIENTE sean iguales a cero (0.00).\nPor favor corrija la siguiente información: \n\n" + info + "\nEn algunas ocasiones, habrán decimales de mas o de menos, esto se debe a que la conversión\nde moneda genera ciertos variaciones por la cantidad de decimales que se usan en las operaciones.",
+                                        OperationType = clsReferencias.TYPE_MESSAGE_Advertencia
+                                    });
                                 }
                                 else
                                 {
-                                GenerarRecibo();
+                                    GenerarRecibo();
                                 }
                             }
                             else
@@ -844,6 +832,7 @@ namespace PruebaWPF.Views.Recibo
 
         private void GenerarRecibo()
         {
+            orden.Identificador = infoExterna.IdInterno; //Le asigno el id interno de las tablas, porque el que tiene asignado previamente es el id visible a los usuarios
             recibo = controller.GenerarRecibo(recibo, orden, items.ToList(), formaPago.ToList());
             rptRecibo boucher = new rptRecibo(recibo, true);
             Finalizar();

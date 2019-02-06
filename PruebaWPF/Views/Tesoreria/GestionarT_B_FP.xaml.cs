@@ -327,7 +327,7 @@ namespace PruebaWPF.Views.Tesoreria
         {
             if (ValidarCampos())
             {
-                rptRecibo boucher = new rptRecibo(info, true);
+                rptRecibo boucher = new rptRecibo(info);
                 boucher.ShowDialog();
             }
         }

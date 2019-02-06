@@ -22,6 +22,11 @@ namespace PruebaWPF.ViewModel
         {
             clsSessionHelper.recintosMemory = db.vw_RecintosRH.ToList();
         }
+        
+        public void AreasMemory()
+        {
+            clsSessionHelper.areasMemory = db.vw_Areas.ToList();
+        }
 
         public List<UsuarioPerfil> ObtenerPerfilesUsuario(String Usuario)
         {

@@ -50,5 +50,6 @@
     <sys:String x:Key="Permiso_Eliminar">Eliminar/Anular</sys:String>
     <sys:String x:Key="Permiso_Exportar">Exportar</sys:String>
     <sys:String x:Key="Permiso_Imprimir">Imprimir</sys:String>
+    <sys:String x:Key="Permiso_CerrarCaja">Cerrar Caja</sys:String>
 
 </ResourceDictionary>

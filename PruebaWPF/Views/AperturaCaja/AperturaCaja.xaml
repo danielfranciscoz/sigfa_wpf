@@ -6,6 +6,7 @@
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
       xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
       xmlns:local="clr-namespace:PruebaWPF.Views.AperturaCaja"
+      xmlns:l="clr-namespace:PruebaWPF.Clases"
       mc:Ignorable="d" 
       d:DesignHeight="350" d:DesignWidth="700"
       Title=""
@@ -26,7 +27,6 @@
         <Grid Grid.Row="1">
             <Grid.RowDefinitions>
                 <RowDefinition Height="auto"/>
-
                 <RowDefinition Height="*"/>
                 <RowDefinition Height="auto"/>
             </Grid.RowDefinitions>
@@ -38,27 +38,55 @@
                         <ColumnDefinition Width="*"/>
                     </Grid.ColumnDefinitions>
                     <StackPanel Grid.Column="0" Orientation="Horizontal">
-                        <Button BorderBrush="Transparent"  Background="{StaticResource Save_Button}" Margin="5 5 5 5" Click="Button_Click">APERTURAR CAJAS</Button>
+                        <Button BorderBrush="Transparent" Tag="{StaticResource Permiso_Guardar}" Background="{StaticResource Save_Button}" Margin="5 5 5 5" Click="Button_Click">APERTURAR CAJAS</Button>
+                        <Button x:Name="btnCerrar" BorderBrush="Transparent" Tag="{StaticResource Permiso_CerrarCaja}" Background="{StaticResource Edit_Button}" Margin="5 5 5 5" Click="Button_Click_1">CERRAR CAJA</Button>
                         <Button x:Name="btn_Exportar" Tag="{StaticResource Permiso_Exportar}" BorderBrush="Transparent" Background="{StaticResource Export_Button}" Margin="5" Click="btn_Exportar_Click" Height="Auto" Content="{StaticResource Text_Export_Button}"></Button>
                     </StackPanel>
                     <StackPanel HorizontalAlignment="Right" Grid.Column="1" Orientation="Horizontal">
-                        <TextBox SpellCheck.IsEnabled="True" Language="es-419" Margin="0 0 20 0"  x:Name="txtFind" Width="250" materialDesign:HintAssist.Hint="Búsqueda (dddd/MM/YYYY)" materialDesign:HintAssist.IsFloating="True" FontSize="13" KeyUp="txtFind_KeyUp" />
+                        <TextBox SpellCheck.IsEnabled="True" Language="es-419" Margin="0 0 20 0"  x:Name="txtFind" Width="250" materialDesign:HintAssist.Hint="Búsqueda (yyyy/MM)" materialDesign:HintAssist.IsFloating="True" FontSize="13" KeyUp="txtFind_KeyUp" />
                     </StackPanel>
                 </Grid>
 
             </StackPanel>
 
             <DockPanel  Grid.Row="1" x:Name="panelGrid" VerticalAlignment="Stretch">
-                <DataGrid Name="tblOrdenPago" CanUserDeleteRows="False" CanUserAddRows="False" AutoGenerateColumns="False" SelectionUnit="FullRow" SelectionMode="Single" >
+                <DataGrid Name="tblAperturas" CanUserDeleteRows="False" CanUserAddRows="False" AutoGenerateColumns="False" SelectionUnit="FullRow" SelectionMode="Single" SelectionChanged="tblAperturas_SelectionChanged">
 
                     <DataGrid.Columns>
-                        <DataGridTextColumn CanUserReorder="False" CanUserResize="False" IsReadOnly="True" Header="Recinto" Width="auto" Binding="{Binding Area}"></DataGridTextColumn>
-                        <DataGridTextColumn CanUserReorder="False" CanUserResize="False" IsReadOnly="True" Header="Caja" Width="auto" Binding="{Binding NoOrdenPago}"></DataGridTextColumn>
-                        <DataGridTextColumn CanUserReorder="False" CanUserResize="False" IsReadOnly="True" Header="Saldo Inicial" Width="auto" Binding="{Binding CantidadPagos}"></DataGridTextColumn>
-                        <DataGridTextColumn CanUserReorder="False" CanUserResize="False" IsReadOnly="True" Header="Fecha de Apertura" Width="auto" Binding="{Binding FechaEnvio}"></DataGridTextColumn>
-                        <DataGridTextColumn CanUserReorder="False" CanUserResize="False" IsReadOnly="True" Header="Aperturada por" Width="auto" Binding="{Binding UsuarioRemitente}"></DataGridTextColumn>
-                        <DataGridTextColumn CanUserReorder="False" CanUserResize="False" IsReadOnly="True" Header="Fecha de Cierre" Width="auto" Binding="{Binding UsuarioRemitente}"></DataGridTextColumn>
-                        <DataGridTextColumn CanUserReorder="False" CanUserResize="False" IsReadOnly="True" Header="Cerrada por" Width="auto" Binding="{Binding UsuarioRemitente}"></DataGridTextColumn>
+                        <DataGridTemplateColumn CanUserResize="False" Width="50" Header="">
+                            <DataGridTemplateColumn.CellTemplate>
+                                <DataTemplate>
+                                    <StackPanel>
+                                        <Button x:Name="btnInformeCierre" Tag="{StaticResource Permiso_Eliminar}" Background="{StaticResource Delete_Button}" Height="20" Width="20" BorderBrush="Transparent" ToolTip="Ver Informe de Cierre" Click="btnInformeCierre_Click">
+                                            <Button.Resources>
+                                                <l:IsNullConverter x:Key="isNullConverter" />
+                                            </Button.Resources>
+                                            <materialDesign:PackIcon Kind="FileDocument" HorizontalAlignment="Center"  VerticalAlignment="Center" Margin="0 0 0 0"></materialDesign:PackIcon>
+                                            <Button.Style>
+                                                <Style TargetType="{x:Type Button}" BasedOn="{StaticResource MaterialDesignToolButton}">
+                                                    <Style.Triggers>
+                                                        <DataTrigger Binding="{Binding FechaCierre, Converter={StaticResource isNullConverter}}" Value="True">
+                                                            <Setter Property="Button.Visibility" Value="Collapsed"/>
+                                                        </DataTrigger>
+                                                        <DataTrigger Binding="{Binding FechaCierre, Converter={StaticResource isNullConverter}}" Value="False">
+                                                            <Setter Property="Button.Visibility" Value="Visible"/>
+                                                        </DataTrigger>
+                                                    </Style.Triggers>
+                                                </Style>
+                                            </Button.Style>
+                                        </Button>
+                                    </StackPanel>
+                                </DataTemplate>
+                            </DataGridTemplateColumn.CellTemplate>
+                        </DataGridTemplateColumn>
+                        <DataGridTextColumn CanUserReorder="False" CanUserResize="False" IsReadOnly="True" Header="No. Apertura" Width="auto" Binding="{Binding IdDetAperturaCaja}"></DataGridTextColumn>
+                        <DataGridTextColumn CanUserReorder="False" CanUserResize="False" IsReadOnly="True" Header="Caja" Width="auto" Binding="{Binding Caja.Nombre}"></DataGridTextColumn>
+                        <DataGridTextColumn CanUserReorder="False" CanUserResize="False" IsReadOnly="True" Header="Recinto" Width="auto" Binding="{Binding Recinto}"></DataGridTextColumn>
+                        <DataGridTextColumn CanUserReorder="False" CanUserResize="False" IsReadOnly="True" Header="Saldo Inicial" Width="auto" Binding="{Binding AperturaCaja.SaldoInicial}"></DataGridTextColumn>
+                        <DataGridTextColumn CanUserReorder="False" CanUserResize="False" IsReadOnly="True" Header="Fecha de Apertura" Width="auto" Binding="{Binding AperturaCaja.FechaApertura,StringFormat={}{0:dd/MM/yyyy HH:mmmm:ss tt}}"></DataGridTextColumn>
+                        <DataGridTextColumn CanUserReorder="False" CanUserResize="False" IsReadOnly="True" Header="Aperturada por" Width="auto" Binding="{Binding AperturaCaja.UsuarioCreacion}"></DataGridTextColumn>
+                        <DataGridTextColumn CanUserReorder="False" CanUserResize="False" IsReadOnly="True" Header="Fecha de Cierre" Width="auto" Binding="{Binding FechaCierre,StringFormat={}{0:dd/MM/yyyy HH:mmmm:ss tt}}"></DataGridTextColumn>
+                        <DataGridTextColumn CanUserReorder="False" CanUserResize="False" IsReadOnly="True" Header="Cerrada por" Width="auto" Binding="{Binding UsuarioCierre}"></DataGridTextColumn>
                     </DataGrid.Columns>
 
                 </DataGrid>

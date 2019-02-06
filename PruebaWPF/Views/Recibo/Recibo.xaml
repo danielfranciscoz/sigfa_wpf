@@ -79,7 +79,7 @@
                             <DataGrid.Columns>
                                 <DataGridTextColumn CanUserReorder="False" CanUserResize="False" IsReadOnly="True" Header="No.Recibo" Width="auto" Binding="{Binding IdRecibo}"></DataGridTextColumn>
                                 <DataGridTextColumn CanUserReorder="False" CanUserResize="False" IsReadOnly="True" Header="Serie" Width="auto" Binding="{Binding Serie}"></DataGridTextColumn>
-                                <DataGridTextColumn CanUserReorder="False" CanUserResize="False" IsReadOnly="True" Header="Caja" Width="auto" Binding="{Binding Caja.Nombre}"></DataGridTextColumn>
+                                <DataGridTextColumn CanUserReorder="False" CanUserResize="False" IsReadOnly="True" Header="Caja" Width="auto" Binding="{Binding DetAperturaCaja.Caja.Nombre}"></DataGridTextColumn>
                                 <DataGridTextColumn CanUserReorder="False" CanUserResize="False" IsReadOnly="True" Header="Recinto" Width="auto" Binding="{Binding Recinto}"></DataGridTextColumn>
                                 <DataGridTextColumn CanUserReorder="False" CanUserResize="False" IsReadOnly="True" Header="Area" Width="auto" Binding="{Binding Area}"></DataGridTextColumn>
                                 <DataGridTextColumn CanUserReorder="False" CanUserResize="False" IsReadOnly="True" Header="Fuente" Width="auto" Binding="{Binding FuenteFinanciamiento.Nombre}"></DataGridTextColumn>

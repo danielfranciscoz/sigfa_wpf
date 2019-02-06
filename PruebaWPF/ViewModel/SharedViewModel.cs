@@ -1,4 +1,5 @@
-﻿using PruebaWPF.Model;
+﻿using PruebaWPF.Helper;
+using PruebaWPF.Model;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -16,7 +17,7 @@ namespace PruebaWPF.ViewModel
         public List<vw_Areas> ObtenerAreasRH()
         {
 
-            return db.vw_Areas.Where(w=>w.estado.Equals("A") && db.ArancelArea.Any(w1=>w1.IdArea == w.codigo && w1.Arancel.regAnulado==false)).OrderBy(a => a.codigo).ToList();
+            return clsSessionHelper.areasMemory.Where(w=>w.estado.Equals("A") && db.ArancelArea.Any(w1=>w1.IdArea == w.codigo && w1.Arancel.regAnulado==false)).OrderBy(a => a.codigo).ToList();
         }
 
         public List<vw_Areas> FindAreaByText(string text)
@@ -24,7 +25,7 @@ namespace PruebaWPF.ViewModel
             if (!text.Equals(""))
             {
                 string[] busqueda = text.Trim().Split(' ');
-                return db.vw_Areas.Where(
+                return clsSessionHelper.areasMemory.Where(
                        w => busqueda.All(a => w.nombre.Contains(a) || w.codigo.Contains(text))
                        && w.estado.Equals("A") && db.ArancelArea.Any(w1 => w1.IdArea == w.codigo)
                        ).OrderBy(a => a.codigo).ToList();

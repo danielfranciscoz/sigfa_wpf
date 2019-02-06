@@ -59,7 +59,7 @@ namespace PruebaWPF.Views.AgenteExterno
             {
                 items = await FindAsync(text);
                 tblAgenteExterno.ItemsSource = items;
-                Load();
+                ContarRegistros();
             }
             catch (Exception ex)
             {
@@ -83,12 +83,6 @@ namespace PruebaWPF.Views.AgenteExterno
                     return new ObservableCollection<AgenteExternoCat>(controller().FindByText(text)); ;
                 });
             }
-        }
-
-        private void Load()
-        {
-            
-            ContarRegistros();
         }
 
         private void ContarRegistros()

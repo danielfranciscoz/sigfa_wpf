@@ -237,6 +237,7 @@ namespace PruebaWPF.Views.Acceso
         private void IniciarMain()
         {
             controller.RecintosMemory(); //Cargo los recintos en memoria, para no estar realizando peticiones a la base de datos cuando haga validaciones de autorización
+            controller.AreasMemory();
             this.Hide();
             frmMain main = new frmMain();
             main.Show();

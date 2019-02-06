@@ -1,0 +1,138 @@
+﻿<Window x:Class="PruebaWPF.Views.AperturaCaja.AperturarCajas"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+        xmlns:System="clr-namespace:System;assembly=mscorlib"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:PruebaWPF.Views.AperturaCaja"
+        mc:Ignorable="d"         
+        WindowStyle="None" 
+        Title="AperturarCajas"
+        Loaded="Window_Loaded">
+    <Grid>
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="auto"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="auto"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+
+
+            <materialDesign:Card  Grid.Column="1" Grid.Row="1" Height="auto" Width="450">
+                <Grid >
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="auto"/>
+                        <RowDefinition Height="auto"/>
+                        <RowDefinition Height="auto"/>
+
+                    </Grid.RowDefinitions>
+
+                    <Grid Grid.Row="0" Margin="20 15 20 15">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"></ColumnDefinition>
+                            <ColumnDefinition Width="auto"></ColumnDefinition>
+                        </Grid.ColumnDefinitions>
+                        <StackPanel  Grid.Column="0" HorizontalAlignment="Left" VerticalAlignment="Center">
+                            <TextBlock x:Name="txtTitle" Width="320" FontSize="18" FontWeight="Bold" Text="Apertura de Cajas"></TextBlock>
+                        </StackPanel>
+                        <StackPanel Grid.Column="1" HorizontalAlignment="Right">
+                            <Button x:Name="btnClose" Foreground="Black" Style="{DynamicResource MaterialDesignToolButton}"  Width="auto" BorderBrush="Transparent"  Background="Transparent" Padding="0" Click="btnCancel_Click">
+                                <materialDesign:PackIcon Width="25" Height="25" Kind="WindowClose"></materialDesign:PackIcon>
+                            </Button>
+                        </StackPanel>
+                    </Grid>
+
+                    <StackPanel Grid.Row="1" VerticalAlignment="Top" Margin="20 0 20 15">
+                        <StackPanel x:Name="panelApertura">
+                            <Grid Margin="0 15 0 0">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="20"/>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
+
+                                <TextBox  Grid.Column="0"  x:Name="txtFechaApertura" materialDesign:HintAssist.Hint="* Fecha de Apertura" materialDesign:HintAssist.IsFloating="True" FontSize="12" Text="{Binding FechaApertura,StringFormat={}{0:dd/MM/yyyy}}" IsEnabled="False"/>
+                                <TextBox  Grid.Column="2"  x:Name="txtSaldoInicial" materialDesign:HintAssist.Hint="* Saldo Inicial" materialDesign:HintAssist.IsFloating="True" FontSize="12" Text="{Binding SaldoInicial}" IsEnabled="False"/>
+                            </Grid>
+
+                            <ComboBox Margin="0 15 0 10"  x:Name="cboRecinto" materialDesign:HintAssist.Hint="* Recinto" materialDesign:HintAssist.IsFloating="True" FontSize="12" SelectedValuePath="IdRecinto" DisplayMemberPath="Siglas" SelectionChanged="cboRecinto_SelectionChanged"></ComboBox>
+                            <StackPanel Margin="0 0 0 0" Orientation="Horizontal">
+                                <TextBlock VerticalAlignment="Center" FontSize="10" Text="Se muestran recintos en base a sus permisos de ususario." Foreground="{StaticResource DarkGray}"/>
+                            </StackPanel>
+
+                            <Grid Margin="0 15 0 0" Height="250">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="auto"/>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
+
+                                <DockPanel Grid.Column="0">
+                                    <TextBlock DockPanel.Dock="Top" VerticalAlignment="Center" Margin="0 0 0 5" FontSize="10" Text="Cajas del recinto" Foreground="{StaticResource DarkGray}"/>
+                                    <DockPanel HorizontalAlignment="Stretch" >
+                                        <ListBox Name="lstCajas" HorizontalAlignment="Stretch" BorderBrush="Gray" BorderThickness="1">
+                                            <ListBox.ItemTemplate>
+                                                <DataTemplate>
+                                                    <StackPanel>
+                                                        <TextBlock Text="{Binding Path=Nombre}" Tag="{Binding Path=IdCaja}" Margin="0 0 0 0"></TextBlock>
+                                                    </StackPanel>
+                                                </DataTemplate>
+                                            </ListBox.ItemTemplate>
+                                        </ListBox>
+                                    </DockPanel>
+                                </DockPanel>
+                                <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center" Grid.Column="1">
+                                    <Button Padding="0" x:Name="btnAllCajas" Height="30" Width="30" Foreground="{StaticResource DarkGray}"  Style="{StaticResource MaterialDesignFlatButton}" BorderBrush="Transparent" Click="btnAllCajas_Click" ToolTip="Aperturar todas">
+                                        <materialDesign:PackIcon Kind="ChevronDoubleRight" HorizontalAlignment="Center"  VerticalAlignment="Center" ></materialDesign:PackIcon>
+                                    </Button>
+                                    <Button Padding="0" x:Name="btnAddCaja" Height="30" Width="30" Foreground="{StaticResource DarkGray}"  Style="{StaticResource MaterialDesignFlatButton}" BorderBrush="Transparent" Click="btnAddCaja_Click" ToolTip="Aperturar seleccionada">
+                                        <materialDesign:PackIcon Kind="ChevronRight" HorizontalAlignment="Center"  VerticalAlignment="Center" ></materialDesign:PackIcon>
+                                    </Button>
+                                    <Button Padding="0" x:Name="btnRemoveCaja" Height="30" Width="30" Foreground="{StaticResource DarkGray}" Style="{StaticResource MaterialDesignFlatButton}" BorderBrush="Transparent" Click="btnRemoveCaja_Click" ToolTip="Quitar seleccionada">
+                                        <materialDesign:PackIcon Kind="ChevronLeft" HorizontalAlignment="Center"  VerticalAlignment="Center" ></materialDesign:PackIcon>
+                                    </Button>
+                                    <Button Padding="0" x:Name="btnRemoveAllCajas" Height="30" Width="30" Foreground="{StaticResource DarkGray}"  Style="{StaticResource MaterialDesignFlatButton}" BorderBrush="Transparent" Click="btnRemoveAllCajas_Click" ToolTip="Aperturar todas">
+                                        <materialDesign:PackIcon Kind="ChevronDoubleLeft" HorizontalAlignment="Center"  VerticalAlignment="Center" ></materialDesign:PackIcon>
+                                    </Button>
+                                </StackPanel>
+                                <DockPanel Grid.Column="2">
+                                    <TextBlock DockPanel.Dock="Top" VerticalAlignment="Center" Margin="0 0 0 5" FontSize="10" Text="Cajas a Aperturar" Foreground="{StaticResource DarkGray}"/>
+                                    <DockPanel HorizontalAlignment="Stretch" >
+                                    <ListBox Name="lstAperturar" HorizontalAlignment="Stretch" BorderBrush="Gray" BorderThickness="1">
+                                            <ListBox.ItemTemplate>
+                                                <DataTemplate>
+                                                    <StackPanel>
+                                                        <TextBlock Text="{Binding Path=Nombre}" Tag="{Binding Path=IdCaja}" Margin="0 0 0 0"></TextBlock>
+                                                    </StackPanel>
+                                                </DataTemplate>
+                                            </ListBox.ItemTemplate>
+                                        </ListBox>
+                                </DockPanel>
+                                </DockPanel>
+
+                            </Grid>
+
+                        </StackPanel>
+
+                    </StackPanel>
+
+                    <StackPanel Grid.Row="2" Height="auto" Margin="20 0 20 10">
+
+                        <StackPanel  Orientation="Horizontal" HorizontalAlignment="Right">
+                            <Button x:Name="btnCancel" Style="{DynamicResource MaterialDesignFlatButton}" Foreground="{StaticResource Save_Button}"  Margin="0 2 0 2" Click="btnCancel_Click" Content="{StaticResource Text_Cancel_Button}"></Button>
+                            <Button Tag="{StaticResource Permiso_Guardar}" x:Name="btnSave" Style="{DynamicResource MaterialDesignFlatButton}" Foreground="{StaticResource Save_Button}"  Margin="0 2 0 2" Click="btnSave_Click" Content="{StaticResource Text_Save_Button}"></Button>
+                        </StackPanel>
+
+                    </StackPanel>
+
+                </Grid>
+            </materialDesign:Card>
+        </Grid>
+    </Grid>
+</Window>

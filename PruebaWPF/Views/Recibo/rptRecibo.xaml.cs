@@ -33,12 +33,12 @@ namespace PruebaWPF.Views.Recibo
             this.isFirtTime = isFirstTime;
         }
 
-        public rptRecibo(InfoRecibo info, Boolean isFirstTime)
+        public rptRecibo(InfoRecibo info)
         {
             this.info = info;
             InitializeComponent();
             this.Title = "Previsualización de Encabezado y Pie de Recibo";
-            this.isFirtTime = isFirstTime;
+            this.isFirtTime = true;
         }
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
@@ -132,7 +132,7 @@ namespace PruebaWPF.Views.Recibo
 
             reporteDemo.Reset();
             reporteDemo.LocalReport.ReportEmbeddedResource = "PruebaWPF.Reportes.Recibo.Recibo.rdlc";
-            reporteDemo.LocalReport.SetParameters(new ReportParameter("isFirstTime", "True"));
+            reporteDemo.LocalReport.SetParameters(new ReportParameter("isFirstTime", isFirtTime.ToString()));
             reporteDemo.LocalReport.DataSources.Add(ReciboDataSource);
             reporteDemo.LocalReport.DataSources.Add(OrdenPagoDataSource);
             reporteDemo.LocalReport.DataSources.Add(InfoReciboDataSource);

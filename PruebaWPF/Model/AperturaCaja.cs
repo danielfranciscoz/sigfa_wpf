@@ -21,11 +21,10 @@ namespace PruebaWPF.Model
         }
     
         public int IdApertura { get; set; }
-        public System.DateTime Fecha { get; set; }
-        public double SaldoIncial { get; set; }
+        public System.DateTime FechaApertura { get; set; }
+        public double SaldoInicial { get; set; }
         public int IdRecinto { get; set; }
         public string UsuarioCreacion { get; set; }
-        public System.DateTime FechaCreacion { get; set; }
     
         public virtual Usuario Usuario { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]

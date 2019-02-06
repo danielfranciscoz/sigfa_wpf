@@ -97,7 +97,6 @@
                                             <DataGridTextColumn CanUserReorder="False" CanUserResize="False" IsReadOnly="True" Header="Dirección MAC" Width="auto" Binding="{Binding MAC}"></DataGridTextColumn>
                                             <DataGridTextColumn CanUserReorder="False" CanUserResize="False" IsReadOnly="True" Header="Serie" Width="100" Binding="{Binding IdSerie}"></DataGridTextColumn>
                                             <DataGridTextColumn CanUserReorder="False" CanUserResize="False" IsReadOnly="True" Header="Recinto" Width="100" Binding="{Binding Recinto}"></DataGridTextColumn>
-                                            <DataGridTextColumn CanUserReorder="False" CanUserResize="False" IsReadOnly="True" Header="Recibos Generados" Width="auto" Binding="{Binding cantidadRecibos}"></DataGridTextColumn>
                                             <DataGridTextColumn CanUserReorder="False" CanUserResize="False" IsReadOnly="True" Header="Creado por" Width="auto" Binding="{Binding UsuarioCreacion}"></DataGridTextColumn>
                                             <DataGridTextColumn CanUserReorder="False" CanUserResize="False" IsReadOnly="True" Header="Fecha de Creación" Width="auto" Binding="{Binding FechaCreacion}"></DataGridTextColumn>
                                         </DataGrid.Columns>

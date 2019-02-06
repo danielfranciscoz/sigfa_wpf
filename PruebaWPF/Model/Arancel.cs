@@ -43,5 +43,6 @@ namespace PruebaWPF.Model
         public virtual ICollection<ArancelTipoDeposito> ArancelTipoDeposito { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Exoneracion> Exoneracion { get; set; }
+        public virtual TipoArancel TipoArancel { get; set; }
     }
 }

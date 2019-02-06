@@ -28,7 +28,7 @@ namespace PruebaWPF.ViewModel
             var permisos = db.Permiso.Where(w => w.IdPantalla == p.IdPantalla && w.PermisoName.Nombre.Equals(PermisoName)).Select(s => s.IdRecinto);
             var Ids = clsSessionHelper.perfiles.Select(s => s.IdRecinto).Intersect(permisos);
 
-            return db.vw_RecintosRH.Where(w => Ids.Any(a => w.IdRecinto == a)).ToList();
+            return clsSessionHelper.recintosMemory.Where(w => Ids.Any(a => w.IdRecinto == a)).ToList();
         }
 
         /// <summary>
@@ -42,7 +42,7 @@ namespace PruebaWPF.ViewModel
             var permisos = db.Permiso.Where(w => w.IdPantalla == p.IdPantalla && w.IdPermisoName == 1).Select(s => s.IdRecinto);
             var Ids = clsSessionHelper.perfiles.Select(s => s.IdRecinto).Intersect(permisos);
 
-            return db.vw_RecintosRH.Where(w => Ids.Any(a => w.IdRecinto == a)).ToList();
+            return clsSessionHelper.recintosMemory.Where(w => Ids.Any(a => w.IdRecinto == a)).ToList();
         }
 
         /// <summary>

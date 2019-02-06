@@ -2340,11 +2340,10 @@ advertencia 6002: La tabla o vista 'SIFOP.dbo.TmpSolicitudesArchivo' no tiene de
             <PropertyRef Name="IdApertura" />
           </Key>
           <Property Name="IdApertura" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="Fecha" Type="date" Nullable="false" />
-          <Property Name="SaldoIncial" Type="float" Nullable="false" />
+          <Property Name="FechaApertura" Type="datetime" Nullable="false" />
+          <Property Name="SaldoInicial" Type="float" Nullable="false" />
           <Property Name="IdRecinto" Type="int" Nullable="false" />
           <Property Name="UsuarioCreacion" Type="nvarchar" MaxLength="20" Nullable="false" />
-          <Property Name="FechaCreacion" Type="datetime" Nullable="false" />
         </EntityType>
         <EntityType Name="Arqueo">
           <Key>
@@ -2422,7 +2421,7 @@ advertencia 6002: La tabla o vista 'SIFOP.dbo.TmpSolicitudesArchivo' no tiene de
           </Key>
           <Property Name="IdRecibo" Type="int" Nullable="false" />
           <Property Name="Serie" Type="char" MaxLength="1" Nullable="false" />
-          <Property Name="IdCaja" Type="int" Nullable="false" />
+          <Property Name="IdDetAperturaCaja" Type="int" Nullable="false" />
           <Property Name="IdPeriodoEspecifico" Type="tinyint" Nullable="false" />
           <Property Name="IdArea" Type="varchar" MaxLength="4" />
           <Property Name="IdFuenteFinanciamiento" Type="tinyint" Nullable="false" />
@@ -4701,6 +4700,18 @@ advertencia 6002: La tabla o vista 'SIFOP.dbo.w_LibroMayorAcumulado_Vlast' no ti
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_Arancel_TipoArancel">
+          <End Role="TipoArancel" Type="Self.TipoArancel" Multiplicity="1" />
+          <End Role="Arancel" Type="Self.Arancel" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="TipoArancel">
+              <PropertyRef Name="IdTipoArancel" />
+            </Principal>
+            <Dependent Role="Arancel">
+              <PropertyRef Name="IdTipoArancel" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_Arancel_Usuario">
           <End Role="Usuario" Type="Self.Usuario" Multiplicity="1" />
           <End Role="Arancel" Type="Self.Arancel" Multiplicity="*" />
@@ -6213,18 +6224,6 @@ advertencia 6002: La tabla o vista 'SIFOP.dbo.w_LibroMayorAcumulado_Vlast' no ti
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_Recibo_Caja">
-          <End Role="Caja" Type="Self.Caja" Multiplicity="1" />
-          <End Role="Recibo1" Type="Self.Recibo1" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Caja">
-              <PropertyRef Name="IdCaja" />
-            </Principal>
-            <Dependent Role="Recibo1">
-              <PropertyRef Name="IdCaja" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <Association Name="FK_Recibo_Concepto">
           <End Role="Concepto" Type="Self.Concepto" Multiplicity="0..1" />
           <End Role="Recibo" Type="Self.Recibo" Multiplicity="*" />
@@ -6236,6 +6235,18 @@ advertencia 6002: La tabla o vista 'SIFOP.dbo.w_LibroMayorAcumulado_Vlast' no ti
             <Dependent Role="Recibo">
               <PropertyRef Name="IdConcepto" />
               <PropertyRef Name="IdActividad" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Recibo_DetAperturaCaja">
+          <End Role="DetAperturaCaja" Type="Self.DetAperturaCaja" Multiplicity="1" />
+          <End Role="Recibo1" Type="Self.Recibo1" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="DetAperturaCaja">
+              <PropertyRef Name="IdDetAperturaCaja" />
+            </Principal>
+            <Dependent Role="Recibo1">
+              <PropertyRef Name="IdDetAperturaCaja" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -11138,6 +11149,10 @@ advertencia 6002: La tabla o vista 'SIFOP.dbo.w_LibroMayorAcumulado_Vlast' no ti
             <End Role="CuentaContable" EntitySet="CuentaContable" />
             <End Role="Arancel" EntitySet="Arancel" />
           </AssociationSet>
+          <AssociationSet Name="FK_Arancel_TipoArancel" Association="Self.FK_Arancel_TipoArancel">
+            <End Role="TipoArancel" EntitySet="TipoArancel" />
+            <End Role="Arancel" EntitySet="Arancel" />
+          </AssociationSet>
           <AssociationSet Name="FK_Arancel_Usuario" Association="Self.FK_Arancel_Usuario">
             <End Role="Usuario" EntitySet="Usuario" />
             <End Role="Arancel" EntitySet="Arancel" />
@@ -11638,13 +11653,13 @@ advertencia 6002: La tabla o vista 'SIFOP.dbo.w_LibroMayorAcumulado_Vlast' no ti
             <End Role="Actividad" EntitySet="Actividad" />
             <End Role="Recibo" EntitySet="Recibo" />
           </AssociationSet>
-          <AssociationSet Name="FK_Recibo_Caja" Association="Self.FK_Recibo_Caja">
-            <End Role="Caja" EntitySet="Caja" />
-            <End Role="Recibo1" EntitySet="Recibo1" />
-          </AssociationSet>
           <AssociationSet Name="FK_Recibo_Concepto" Association="Self.FK_Recibo_Concepto">
             <End Role="Concepto" EntitySet="Concepto" />
             <End Role="Recibo" EntitySet="Recibo" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Recibo_DetAperturaCaja" Association="Self.FK_Recibo_DetAperturaCaja">
+            <End Role="DetAperturaCaja" EntitySet="DetAperturaCaja" />
+            <End Role="Recibo1" EntitySet="Recibo1" />
           </AssociationSet>
           <AssociationSet Name="FK_Recibo_FuenteFinanciamiento" Association="Self.FK_Recibo_FuenteFinanciamiento">
             <End Role="FuenteFinanciamiento" EntitySet="FuenteFinanciamiento" />
@@ -13745,9 +13760,9 @@ advertencia 6002: La tabla o vista 'SIFOP.dbo.w_LibroMayorAcumulado_Vlast' no ti
           <Property Name="LoginCreacion" Type="String" MaxLength="20" FixedLength="false" Unicode="true" Nullable="false" />
           <Property Name="RegAnulado" Type="Boolean" Nullable="false" />
           <NavigationProperty Name="Recibo" Relationship="Self.FK_Recibo_FuenteFinanciamiento" FromRole="FuenteFinanciamiento" ToRole="Recibo" />
-          <NavigationProperty Name="Recibo1" Relationship="Self.FK_Recibo_FuenteFinanciamiento1" FromRole="FuenteFinanciamiento" ToRole="Recibo1" />
           <NavigationProperty Name="SolicitudCheque" Relationship="Self.FK_SolicitudCheque_FuenteFinanciamiento" FromRole="FuenteFinanciamiento" ToRole="SolicitudCheque" />
           <Property Name="FechaCreacion" Type="DateTime" Precision="3" />
+          <NavigationProperty Name="Recibo1" Relationship="SIFOPModel.FK_Recibo_FuenteFinanciamiento1" FromRole="FuenteFinanciamiento" ToRole="Recibo1" />
         </EntityType>
         <EntityType Name="LineaComprobanteDiario">
           <Key>
@@ -13926,8 +13941,8 @@ advertencia 6002: La tabla o vista 'SIFOP.dbo.w_LibroMayorAcumulado_Vlast' no ti
           <NavigationProperty Name="Usuario" Relationship="Self.FK_Periodo_Usuario" FromRole="PeriodoEspecifico" ToRole="Usuario" />
           <NavigationProperty Name="Presupuesto" Relationship="Self.FK_Presupuesto_PeriodoEspecifico" FromRole="PeriodoEspecifico" ToRole="Presupuesto" />
           <NavigationProperty Name="Recibo" Relationship="Self.FK_Recibo_PeriodoEspecifico" FromRole="PeriodoEspecifico" ToRole="Recibo" />
-          <NavigationProperty Name="Recibo1" Relationship="Self.FK_Recibo_PeriodoEspecifico1" FromRole="PeriodoEspecifico" ToRole="Recibo1" />
           <NavigationProperty Name="SolicitudCheque" Relationship="Self.FK_SolicitudCheque_PeriodoEspecifico" FromRole="PeriodoEspecifico" ToRole="SolicitudCheque" />
+          <NavigationProperty Name="Recibo1" Relationship="SIFOPModel.FK_Recibo_PeriodoEspecifico1" FromRole="PeriodoEspecifico" ToRole="Recibo1" />
         </EntityType>
         <EntityType Name="PeriodoEspecificoEP">
           <Key>
@@ -15226,7 +15241,6 @@ advertencia 6002: La tabla o vista 'SIFOP.dbo.w_LibroMayorAcumulado_Vlast' no ti
           <NavigationProperty Name="FormaPago" Relationship="Self.FK_FormaPago_FormaPago" FromRole="Usuario" ToRole="FormaPago" />
           <NavigationProperty Name="InfoRecibo" Relationship="Self.FK_InfoRecibo_Usuario" FromRole="Usuario" ToRole="InfoRecibo" />
           <NavigationProperty Name="Permiso" Relationship="Self.FK_Permiso_Usuario" FromRole="Usuario" ToRole="Permiso" />
-          <NavigationProperty Name="Recibo1" Relationship="Self.FK_Recibo_Usuario" FromRole="Usuario" ToRole="Recibo1" />
           <NavigationProperty Name="ReciboAnulado" Relationship="Self.FK_ReciboAnulado_Usuario" FromRole="Usuario" ToRole="ReciboAnulado" />
           <NavigationProperty Name="ReciboDet" Relationship="Self.FK_ReciboDet_Usuario" FromRole="Usuario" ToRole="ReciboDet" />
           <NavigationProperty Name="ReciboPago" Relationship="Self.FK_ReciboPago_Usuario" FromRole="Usuario" ToRole="ReciboPago" />
@@ -15236,10 +15250,11 @@ advertencia 6002: La tabla o vista 'SIFOP.dbo.w_LibroMayorAcumulado_Vlast' no ti
           <NavigationProperty Name="UsuarioPrograma" Relationship="Self.FK_UsuarioPrograma_Usuario" FromRole="Usuario" ToRole="UsuarioPrograma" />
           <NavigationProperty Name="VariacionCambiaria" Relationship="Self.FK_VariacionCambiaria_Usuario" FromRole="Usuario" ToRole="VariacionCambiaria" />
           <NavigationProperty Name="Moneda" Relationship="SIFOPModel.FK_Moneda_Usuario" FromRole="Usuario" ToRole="Moneda" />
-          <NavigationProperty Name="AperturaCaja" Relationship="SIFOPModel.FK_AperturaCaja_Usuario" FromRole="Usuario" ToRole="AperturaCaja" />
           <NavigationProperty Name="Arqueo" Relationship="SIFOPModel.FK_Arqueo_Usuario" FromRole="Usuario" ToRole="Arqueo" />
           <NavigationProperty Name="DetAperturaCaja" Relationship="SIFOPModel.FK_DetAperturaCaja_Usuario" FromRole="Usuario" ToRole="DetAperturaCaja" />
           <NavigationProperty Name="TipoArancel" Relationship="SIFOPModel.FK_TipoArancel_Usuario" FromRole="Usuario" ToRole="TipoArancel" />
+          <NavigationProperty Name="AperturaCaja" Relationship="SIFOPModel.FK_AperturaCaja_Usuario" FromRole="Usuario" ToRole="AperturaCaja" />
+          <NavigationProperty Name="Recibo1" Relationship="SIFOPModel.FK_Recibo_Usuario" FromRole="Usuario" ToRole="Recibo1" />
         </EntityType>
         <EntityType Name="UsuarioArea">
           <Key>
@@ -15323,6 +15338,7 @@ advertencia 6002: La tabla o vista 'SIFOP.dbo.w_LibroMayorAcumulado_Vlast' no ti
           <NavigationProperty Name="ArancelTipoDeposito" Relationship="Self.FK_ArancelTipoDeposito_Arancel" FromRole="Arancel" ToRole="ArancelTipoDeposito" />
           <NavigationProperty Name="Exoneracion" Relationship="Self.FK_Exoneracion_Arancel" FromRole="Arancel" ToRole="Exoneracion" />
           <Property Name="IdTipoArancel" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="TipoArancel" Relationship="SIFOPModel.FK_Arancel_TipoArancel" FromRole="Arancel" ToRole="TipoArancel" />
         </EntityType>
         <EntityType Name="ArancelArea">
           <Key>
@@ -15423,8 +15439,8 @@ advertencia 6002: La tabla o vista 'SIFOP.dbo.w_LibroMayorAcumulado_Vlast' no ti
           <Property Name="regAnulado" Type="Boolean" Nullable="false" />
           <NavigationProperty Name="DetOrdenPagoArancel" Relationship="Self.FK_DetOrdenPagoArancel_OrdenPago" FromRole="OrdenPago" ToRole="DetOrdenPagoArancel" />
           <NavigationProperty Name="TipoDeposito" Relationship="Self.FK_OrdenPago_TipoDeposito" FromRole="OrdenPago" ToRole="TipoDeposito" />
-          <NavigationProperty Name="Recibo1" Relationship="Self.FK_Recibo_OrdenPago" FromRole="OrdenPago" ToRole="Recibo1" />
           <NavigationProperty Name="ReciboAnulado" Relationship="Self.FK_ReciboAnulado_OrdenPago" FromRole="OrdenPago" ToRole="ReciboAnulado" />
+          <NavigationProperty Name="Recibo1" Relationship="SIFOPModel.FK_Recibo_OrdenPago" FromRole="OrdenPago" ToRole="Recibo1" />
         </EntityType>
         <EntityType Name="Caja">
           <Key>
@@ -15440,7 +15456,6 @@ advertencia 6002: La tabla o vista 'SIFOP.dbo.w_LibroMayorAcumulado_Vlast' no ti
           <Property Name="regAnulado" Type="Boolean" Nullable="false" />
           <NavigationProperty Name="Usuario" Relationship="Self.FK_Caja_Usuario" FromRole="Caja" ToRole="Usuario" />
           <NavigationProperty Name="SerieRecibo" Relationship="Self.FK_Caja_SerieRecibo" FromRole="Caja" ToRole="SerieRecibo" />
-          <NavigationProperty Name="Recibo1" Relationship="Self.FK_Recibo_Caja" FromRole="Caja" ToRole="Recibo1" />
           <NavigationProperty Name="Arqueo" Relationship="SIFOPModel.FK_Arqueo_Caja" FromRole="Caja" ToRole="Arqueo" />
           <NavigationProperty Name="DetAperturaCaja" Relationship="SIFOPModel.FK_DetAperturaCaja_Caja" FromRole="Caja" ToRole="DetAperturaCaja" />
         </EntityType>
@@ -15468,39 +15483,7 @@ advertencia 6002: La tabla o vista 'SIFOP.dbo.w_LibroMayorAcumulado_Vlast' no ti
           <Property Name="FechaCreacion" Type="DateTime" Nullable="false" Precision="3" />
           <Property Name="regAnulado" Type="Boolean" Nullable="false" />
           <NavigationProperty Name="Usuario" Relationship="Self.FK_InfoRecibo_Usuario" FromRole="InfoRecibo" ToRole="Usuario" />
-          <NavigationProperty Name="Recibo1" Relationship="Self.FK_Recibo_InfoRecibo" FromRole="InfoRecibo" ToRole="Recibo1" />
-        </EntityType>
-        <EntityType Name="Recibo1">
-          <Key>
-            <PropertyRef Name="IdRecibo" />
-            <PropertyRef Name="Serie" />
-          </Key>
-          <Property Name="IdRecibo" Type="Int32" Nullable="false" />
-          <Property Name="Serie" Type="String" MaxLength="1" FixedLength="true" Unicode="false" Nullable="false" />
-          <Property Name="IdCaja" Type="Int32" Nullable="false" />
-          <Property Name="IdPeriodoEspecifico" Type="Byte" Nullable="false" />
-          <Property Name="IdArea" Type="String" MaxLength="4" FixedLength="false" Unicode="false" />
-          <Property Name="IdFuenteFinanciamiento" Type="Byte" Nullable="false" />
-          <Property Name="IdTipoDeposito" Type="Int32" />
-          <Property Name="Identificador" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
-          <Property Name="Recibimos" Type="String" MaxLength="80" FixedLength="false" Unicode="false" />
-          <Property Name="Fecha" Type="DateTime" Nullable="false" Precision="3" />
-          <Property Name="IdInfoRecibo" Type="Int32" Nullable="false" />
-          <Property Name="IdOrdenPago" Type="Int32" />
-          <Property Name="UsuarioCreacion" Type="String" MaxLength="20" FixedLength="false" Unicode="true" Nullable="false" />
-          <Property Name="regAnulado" Type="Boolean" Nullable="false" />
-          <NavigationProperty Name="FuenteFinanciamiento" Relationship="Self.FK_Recibo_FuenteFinanciamiento1" FromRole="Recibo1" ToRole="FuenteFinanciamiento" />
-          <NavigationProperty Name="PeriodoEspecifico" Relationship="Self.FK_Recibo_PeriodoEspecifico1" FromRole="Recibo1" ToRole="PeriodoEspecifico" />
-          <NavigationProperty Name="Usuario" Relationship="Self.FK_Recibo_Usuario" FromRole="Recibo1" ToRole="Usuario" />
-          <NavigationProperty Name="OrdenPago" Relationship="Self.FK_Recibo_OrdenPago" FromRole="Recibo1" ToRole="OrdenPago" />
-          <NavigationProperty Name="Caja" Relationship="Self.FK_Recibo_Caja" FromRole="Recibo1" ToRole="Caja" />
-          <NavigationProperty Name="InfoRecibo" Relationship="Self.FK_Recibo_InfoRecibo" FromRole="Recibo1" ToRole="InfoRecibo" />
-          <NavigationProperty Name="SerieRecibo" Relationship="Self.FK_Recibo_SerieRecibo" FromRole="Recibo1" ToRole="SerieRecibo" />
-          <NavigationProperty Name="TipoDeposito" Relationship="Self.FK_Recibo_TipoDeposito" FromRole="Recibo1" ToRole="TipoDeposito" />
-          <NavigationProperty Name="ReciboAnulado" Relationship="Self.FK_ReciboAnulado_Recibo" FromRole="Recibo1" ToRole="ReciboAnulado" />
-          <NavigationProperty Name="ReciboDet" Relationship="Self.FK_ReciboDet_Recibo" FromRole="Recibo1" ToRole="ReciboDet" />
-          <NavigationProperty Name="ReciboPago" Relationship="Self.FK_ReciboPago_Recibo" FromRole="Recibo1" ToRole="ReciboPago" />
-          <NavigationProperty Name="ArqueoRecibo" Relationship="SIFOPModel.FK_ArqueoRecibo_Recibo" FromRole="Recibo1" ToRole="ArqueoRecibo" />
+          <NavigationProperty Name="Recibo1" Relationship="SIFOPModel.FK_Recibo_InfoRecibo" FromRole="InfoRecibo" ToRole="Recibo1" />
         </EntityType>
         <EntityType Name="ReciboAnulado">
           <Key>
@@ -15515,7 +15498,7 @@ advertencia 6002: La tabla o vista 'SIFOP.dbo.w_LibroMayorAcumulado_Vlast' no ti
           <Property Name="FechaAnulacion" Type="DateTime" Nullable="false" Precision="3" />
           <NavigationProperty Name="Usuario" Relationship="Self.FK_ReciboAnulado_Usuario" FromRole="ReciboAnulado" ToRole="Usuario" />
           <NavigationProperty Name="OrdenPago" Relationship="Self.FK_ReciboAnulado_OrdenPago" FromRole="ReciboAnulado" ToRole="OrdenPago" />
-          <NavigationProperty Name="Recibo1" Relationship="Self.FK_ReciboAnulado_Recibo" FromRole="ReciboAnulado" ToRole="Recibo1" />
+          <NavigationProperty Name="Recibo1" Relationship="SIFOPModel.FK_ReciboAnulado_Recibo" FromRole="ReciboAnulado" ToRole="Recibo1" />
         </EntityType>
         <EntityType Name="ReciboDet">
           <Key>
@@ -15533,7 +15516,7 @@ advertencia 6002: La tabla o vista 'SIFOP.dbo.w_LibroMayorAcumulado_Vlast' no ti
           <Property Name="regAnulado" Type="Boolean" Nullable="false" />
           <NavigationProperty Name="Usuario" Relationship="Self.FK_ReciboDet_Usuario" FromRole="ReciboDet" ToRole="Usuario" />
           <NavigationProperty Name="ArancelPrecio" Relationship="Self.FK_ReciboDet_ArancelPrecio" FromRole="ReciboDet" ToRole="ArancelPrecio" />
-          <NavigationProperty Name="Recibo1" Relationship="Self.FK_ReciboDet_Recibo" FromRole="ReciboDet" ToRole="Recibo1" />
+          <NavigationProperty Name="Recibo1" Relationship="SIFOPModel.FK_ReciboDet_Recibo" FromRole="ReciboDet" ToRole="Recibo1" />
         </EntityType>
         <EntityType Name="ReciboPago">
           <Key>
@@ -15551,11 +15534,11 @@ advertencia 6002: La tabla o vista 'SIFOP.dbo.w_LibroMayorAcumulado_Vlast' no ti
           <NavigationProperty Name="Moneda" Relationship="Self.FK_ReciboPago_Moneda" FromRole="ReciboPago" ToRole="Moneda" />
           <NavigationProperty Name="Usuario" Relationship="Self.FK_ReciboPago_Usuario" FromRole="ReciboPago" ToRole="Usuario" />
           <NavigationProperty Name="FormaPago" Relationship="Self.FK_ReciboPago_FormaPago" FromRole="ReciboPago" ToRole="FormaPago" />
-          <NavigationProperty Name="Recibo1" Relationship="Self.FK_ReciboPago_Recibo" FromRole="ReciboPago" ToRole="Recibo1" />
           <NavigationProperty Name="ReciboPagoBono" Relationship="Self.FK_ReciboPagoBono_ReciboPago" FromRole="ReciboPago" ToRole="ReciboPagoBono" />
           <NavigationProperty Name="ReciboPagoCheque" Relationship="Self.FK_ReciboPagoCheque_ReciboPago" FromRole="ReciboPago" ToRole="ReciboPagoCheque" />
           <NavigationProperty Name="ReciboPagoDeposito" Relationship="Self.FK_ReciboPagoDeposito_ReciboPago" FromRole="ReciboPago" ToRole="ReciboPagoDeposito" />
           <NavigationProperty Name="ReciboPagoTarjeta" Relationship="Self.FK_RecPagoTarjeta_ReciboPago" FromRole="ReciboPago" ToRole="ReciboPagoTarjeta" />
+          <NavigationProperty Name="Recibo1" Relationship="SIFOPModel.FK_ReciboPago_Recibo" FromRole="ReciboPago" ToRole="Recibo1" />
         </EntityType>
         <EntityType Name="ReciboPagoBono">
           <Key>
@@ -15608,7 +15591,7 @@ advertencia 6002: La tabla o vista 'SIFOP.dbo.w_LibroMayorAcumulado_Vlast' no ti
           <Property Name="regAnulado" Type="Boolean" Nullable="false" />
           <NavigationProperty Name="Cajero" Relationship="Self.FK_Cajero_SerieRecibo" FromRole="SerieRecibo" ToRole="Cajero" />
           <NavigationProperty Name="Caja" Relationship="Self.FK_Caja_SerieRecibo" FromRole="SerieRecibo" ToRole="Caja" />
-          <NavigationProperty Name="Recibo1" Relationship="Self.FK_Recibo_SerieRecibo" FromRole="SerieRecibo" ToRole="Recibo1" />
+          <NavigationProperty Name="Recibo1" Relationship="SIFOPModel.FK_Recibo_SerieRecibo" FromRole="SerieRecibo" ToRole="Recibo1" />
         </EntityType>
         <EntityType Name="TipoDeposito">
           <Key>
@@ -15622,7 +15605,7 @@ advertencia 6002: La tabla o vista 'SIFOP.dbo.w_LibroMayorAcumulado_Vlast' no ti
           <NavigationProperty Name="ArancelTipoDeposito" Relationship="Self.FK_ArancelTipoDeposito_TipoDeposito" FromRole="TipoDeposito" ToRole="ArancelTipoDeposito" />
           <NavigationProperty Name="Exoneracion" Relationship="Self.FK_Exoneracion_TipoDeposito" FromRole="TipoDeposito" ToRole="Exoneracion" />
           <NavigationProperty Name="OrdenPago" Relationship="Self.FK_OrdenPago_TipoDeposito" FromRole="TipoDeposito" ToRole="OrdenPago" />
-          <NavigationProperty Name="Recibo1" Relationship="Self.FK_Recibo_TipoDeposito" FromRole="TipoDeposito" ToRole="Recibo1" />
+          <NavigationProperty Name="Recibo1" Relationship="SIFOPModel.FK_Recibo_TipoDeposito" FromRole="TipoDeposito" ToRole="Recibo1" />
         </EntityType>
         <EntityType Name="AccesoDirectoPerfil">
           <Key>
@@ -18775,18 +18758,6 @@ advertencia 6002: La tabla o vista 'SIFOP.dbo.w_LibroMayorAcumulado_Vlast' no ti
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_Recibo_FuenteFinanciamiento1">
-          <End Role="FuenteFinanciamiento" Type="Self.FuenteFinanciamiento" Multiplicity="1" />
-          <End Role="Recibo1" Type="Self.Recibo1" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="FuenteFinanciamiento">
-              <PropertyRef Name="IdFuenteFinanciamiento" />
-            </Principal>
-            <Dependent Role="Recibo1">
-              <PropertyRef Name="IdFuenteFinanciamiento" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <Association Name="FK_SolicitudCheque_FuenteFinanciamiento">
           <End Role="FuenteFinanciamiento" Type="Self.FuenteFinanciamiento" Multiplicity="0..1" />
           <End Role="SolicitudCheque" Type="Self.SolicitudCheque" Multiplicity="*" />
@@ -18919,18 +18890,6 @@ advertencia 6002: La tabla o vista 'SIFOP.dbo.w_LibroMayorAcumulado_Vlast' no ti
               <PropertyRef Name="IdPeriodoEspecifico" />
             </Principal>
             <Dependent Role="Recibo">
-              <PropertyRef Name="IdPeriodoEspecifico" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_Recibo_PeriodoEspecifico1">
-          <End Role="PeriodoEspecifico" Type="Self.PeriodoEspecifico" Multiplicity="1" />
-          <End Role="Recibo1" Type="Self.Recibo1" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="PeriodoEspecifico">
-              <PropertyRef Name="IdPeriodoEspecifico" />
-            </Principal>
-            <Dependent Role="Recibo1">
               <PropertyRef Name="IdPeriodoEspecifico" />
             </Dependent>
           </ReferentialConstraint>
@@ -19459,18 +19418,6 @@ advertencia 6002: La tabla o vista 'SIFOP.dbo.w_LibroMayorAcumulado_Vlast' no ti
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_Recibo_Usuario">
-          <End Role="Usuario" Type="Self.Usuario" Multiplicity="1" />
-          <End Role="Recibo1" Type="Self.Recibo1" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Usuario">
-              <PropertyRef Name="Login" />
-            </Principal>
-            <Dependent Role="Recibo1">
-              <PropertyRef Name="UsuarioCreacion" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <Association Name="FK_ReciboAnulado_Usuario">
           <End Role="Usuario" Type="Self.Usuario" Multiplicity="1" />
           <End Role="ReciboAnulado" Type="Self.ReciboAnulado" Multiplicity="*" />
@@ -19699,18 +19646,6 @@ advertencia 6002: La tabla o vista 'SIFOP.dbo.w_LibroMayorAcumulado_Vlast' no ti
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_Recibo_OrdenPago">
-          <End Role="OrdenPago" Type="Self.OrdenPago" Multiplicity="0..1" />
-          <End Role="Recibo1" Type="Self.Recibo1" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="OrdenPago">
-              <PropertyRef Name="IdOrdenPago" />
-            </Principal>
-            <Dependent Role="Recibo1">
-              <PropertyRef Name="IdOrdenPago" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <Association Name="FK_ReciboAnulado_OrdenPago">
           <End Role="OrdenPago" Type="Self.OrdenPago" Multiplicity="0..1" />
           <End Role="ReciboAnulado" Type="Self.ReciboAnulado" Multiplicity="*" />
@@ -19735,18 +19670,6 @@ advertencia 6002: La tabla o vista 'SIFOP.dbo.w_LibroMayorAcumulado_Vlast' no ti
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_Recibo_Caja">
-          <End Role="Caja" Type="Self.Caja" Multiplicity="1" />
-          <End Role="Recibo1" Type="Self.Recibo1" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Caja">
-              <PropertyRef Name="IdCaja" />
-            </Principal>
-            <Dependent Role="Recibo1">
-              <PropertyRef Name="IdCaja" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <Association Name="FK_ReciboPago_FormaPago">
           <End Role="FormaPago" Type="Self.FormaPago" Multiplicity="1" />
           <End Role="ReciboPago" Type="Self.ReciboPago" Multiplicity="*" />
@@ -19756,84 +19679,6 @@ advertencia 6002: La tabla o vista 'SIFOP.dbo.w_LibroMayorAcumulado_Vlast' no ti
             </Principal>
             <Dependent Role="ReciboPago">
               <PropertyRef Name="IdFormaPago" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_Recibo_InfoRecibo">
-          <End Role="InfoRecibo" Type="Self.InfoRecibo" Multiplicity="1" />
-          <End Role="Recibo1" Type="Self.Recibo1" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="InfoRecibo">
-              <PropertyRef Name="IdInfoRecibo" />
-            </Principal>
-            <Dependent Role="Recibo1">
-              <PropertyRef Name="IdInfoRecibo" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_Recibo_SerieRecibo">
-          <End Role="SerieRecibo" Type="Self.SerieRecibo" Multiplicity="1" />
-          <End Role="Recibo1" Type="Self.Recibo1" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="SerieRecibo">
-              <PropertyRef Name="IdSerie" />
-            </Principal>
-            <Dependent Role="Recibo1">
-              <PropertyRef Name="Serie" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_Recibo_TipoDeposito">
-          <End Role="TipoDeposito" Type="Self.TipoDeposito" Multiplicity="0..1" />
-          <End Role="Recibo1" Type="Self.Recibo1" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="TipoDeposito">
-              <PropertyRef Name="IdTipoDeposito" />
-            </Principal>
-            <Dependent Role="Recibo1">
-              <PropertyRef Name="IdTipoDeposito" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_ReciboAnulado_Recibo">
-          <End Role="Recibo1" Type="Self.Recibo1" Multiplicity="1" />
-          <End Role="ReciboAnulado" Type="Self.ReciboAnulado" Multiplicity="0..1" />
-          <ReferentialConstraint>
-            <Principal Role="Recibo1">
-              <PropertyRef Name="IdRecibo" />
-              <PropertyRef Name="Serie" />
-            </Principal>
-            <Dependent Role="ReciboAnulado">
-              <PropertyRef Name="IdRecibo" />
-              <PropertyRef Name="Serie" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_ReciboDet_Recibo">
-          <End Role="Recibo1" Type="Self.Recibo1" Multiplicity="1" />
-          <End Role="ReciboDet" Type="Self.ReciboDet" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Recibo1">
-              <PropertyRef Name="IdRecibo" />
-              <PropertyRef Name="Serie" />
-            </Principal>
-            <Dependent Role="ReciboDet">
-              <PropertyRef Name="IdRecibo" />
-              <PropertyRef Name="Serie" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_ReciboPago_Recibo">
-          <End Role="Recibo1" Type="Self.Recibo1" Multiplicity="1" />
-          <End Role="ReciboPago" Type="Self.ReciboPago" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Recibo1">
-              <PropertyRef Name="IdRecibo" />
-              <PropertyRef Name="Serie" />
-            </Principal>
-            <Dependent Role="ReciboPago">
-              <PropertyRef Name="IdRecibo" />
-              <PropertyRef Name="Serie" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -20072,7 +19917,6 @@ advertencia 6002: La tabla o vista 'SIFOP.dbo.w_LibroMayorAcumulado_Vlast' no ti
           <EntitySet Name="Caja" EntityType="Self.Caja" />
           <EntitySet Name="FormaPago" EntityType="Self.FormaPago" />
           <EntitySet Name="InfoRecibo" EntityType="Self.InfoRecibo" />
-          <EntitySet Name="Recibo1" EntityType="Self.Recibo1" />
           <EntitySet Name="ReciboAnulado" EntityType="Self.ReciboAnulado" />
           <EntitySet Name="ReciboDet" EntityType="Self.ReciboDet" />
           <EntitySet Name="ReciboPago" EntityType="Self.ReciboPago" />
@@ -20559,10 +20403,6 @@ advertencia 6002: La tabla o vista 'SIFOP.dbo.w_LibroMayorAcumulado_Vlast' no ti
             <End Role="FuenteFinanciamiento" EntitySet="FuenteFinanciamiento" />
             <End Role="Recibo" EntitySet="Recibo" />
           </AssociationSet>
-          <AssociationSet Name="FK_Recibo_FuenteFinanciamiento1" Association="Self.FK_Recibo_FuenteFinanciamiento1">
-            <End Role="FuenteFinanciamiento" EntitySet="FuenteFinanciamiento" />
-            <End Role="Recibo1" EntitySet="Recibo1" />
-          </AssociationSet>
           <AssociationSet Name="FK_SolicitudCheque_FuenteFinanciamiento" Association="Self.FK_SolicitudCheque_FuenteFinanciamiento">
             <End Role="FuenteFinanciamiento" EntitySet="FuenteFinanciamiento" />
             <End Role="SolicitudCheque" EntitySet="SolicitudCheque" />
@@ -20606,10 +20446,6 @@ advertencia 6002: La tabla o vista 'SIFOP.dbo.w_LibroMayorAcumulado_Vlast' no ti
           <AssociationSet Name="FK_Recibo_PeriodoEspecifico" Association="Self.FK_Recibo_PeriodoEspecifico">
             <End Role="PeriodoEspecifico" EntitySet="PeriodoEspecifico" />
             <End Role="Recibo" EntitySet="Recibo" />
-          </AssociationSet>
-          <AssociationSet Name="FK_Recibo_PeriodoEspecifico1" Association="Self.FK_Recibo_PeriodoEspecifico1">
-            <End Role="PeriodoEspecifico" EntitySet="PeriodoEspecifico" />
-            <End Role="Recibo1" EntitySet="Recibo1" />
           </AssociationSet>
           <AssociationSet Name="FK_SolicitudCheque_PeriodoEspecifico" Association="Self.FK_SolicitudCheque_PeriodoEspecifico">
             <End Role="PeriodoEspecifico" EntitySet="PeriodoEspecifico" />
@@ -20775,10 +20611,6 @@ advertencia 6002: La tabla o vista 'SIFOP.dbo.w_LibroMayorAcumulado_Vlast' no ti
             <End Role="Usuario" EntitySet="Usuario" />
             <End Role="Permiso" EntitySet="Permiso" />
           </AssociationSet>
-          <AssociationSet Name="FK_Recibo_Usuario" Association="Self.FK_Recibo_Usuario">
-            <End Role="Usuario" EntitySet="Usuario" />
-            <End Role="Recibo1" EntitySet="Recibo1" />
-          </AssociationSet>
           <AssociationSet Name="FK_ReciboAnulado_Usuario" Association="Self.FK_ReciboAnulado_Usuario">
             <End Role="Usuario" EntitySet="Usuario" />
             <End Role="ReciboAnulado" EntitySet="ReciboAnulado" />
@@ -20855,10 +20687,6 @@ advertencia 6002: La tabla o vista 'SIFOP.dbo.w_LibroMayorAcumulado_Vlast' no ti
             <End Role="TipoDeposito" EntitySet="TipoDeposito" />
             <End Role="OrdenPago" EntitySet="OrdenPago" />
           </AssociationSet>
-          <AssociationSet Name="FK_Recibo_OrdenPago" Association="Self.FK_Recibo_OrdenPago">
-            <End Role="OrdenPago" EntitySet="OrdenPago" />
-            <End Role="Recibo1" EntitySet="Recibo1" />
-          </AssociationSet>
           <AssociationSet Name="FK_ReciboAnulado_OrdenPago" Association="Self.FK_ReciboAnulado_OrdenPago">
             <End Role="OrdenPago" EntitySet="OrdenPago" />
             <End Role="ReciboAnulado" EntitySet="ReciboAnulado" />
@@ -20867,36 +20695,8 @@ advertencia 6002: La tabla o vista 'SIFOP.dbo.w_LibroMayorAcumulado_Vlast' no ti
             <End Role="SerieRecibo" EntitySet="SerieRecibo" />
             <End Role="Caja" EntitySet="Caja" />
           </AssociationSet>
-          <AssociationSet Name="FK_Recibo_Caja" Association="Self.FK_Recibo_Caja">
-            <End Role="Caja" EntitySet="Caja" />
-            <End Role="Recibo1" EntitySet="Recibo1" />
-          </AssociationSet>
           <AssociationSet Name="FK_ReciboPago_FormaPago" Association="Self.FK_ReciboPago_FormaPago">
             <End Role="FormaPago" EntitySet="FormaPago" />
-            <End Role="ReciboPago" EntitySet="ReciboPago" />
-          </AssociationSet>
-          <AssociationSet Name="FK_Recibo_InfoRecibo" Association="Self.FK_Recibo_InfoRecibo">
-            <End Role="InfoRecibo" EntitySet="InfoRecibo" />
-            <End Role="Recibo1" EntitySet="Recibo1" />
-          </AssociationSet>
-          <AssociationSet Name="FK_Recibo_SerieRecibo" Association="Self.FK_Recibo_SerieRecibo">
-            <End Role="SerieRecibo" EntitySet="SerieRecibo" />
-            <End Role="Recibo1" EntitySet="Recibo1" />
-          </AssociationSet>
-          <AssociationSet Name="FK_Recibo_TipoDeposito" Association="Self.FK_Recibo_TipoDeposito">
-            <End Role="TipoDeposito" EntitySet="TipoDeposito" />
-            <End Role="Recibo1" EntitySet="Recibo1" />
-          </AssociationSet>
-          <AssociationSet Name="FK_ReciboAnulado_Recibo" Association="Self.FK_ReciboAnulado_Recibo">
-            <End Role="Recibo1" EntitySet="Recibo1" />
-            <End Role="ReciboAnulado" EntitySet="ReciboAnulado" />
-          </AssociationSet>
-          <AssociationSet Name="FK_ReciboDet_Recibo" Association="Self.FK_ReciboDet_Recibo">
-            <End Role="Recibo1" EntitySet="Recibo1" />
-            <End Role="ReciboDet" EntitySet="ReciboDet" />
-          </AssociationSet>
-          <AssociationSet Name="FK_ReciboPago_Recibo" Association="Self.FK_ReciboPago_Recibo">
-            <End Role="Recibo1" EntitySet="Recibo1" />
             <End Role="ReciboPago" EntitySet="ReciboPago" />
           </AssociationSet>
           <AssociationSet Name="FK_ReciboPagoBono_ReciboPago" Association="Self.FK_ReciboPagoBono_ReciboPago">
@@ -22082,14 +21882,9 @@ advertencia 6002: La tabla o vista 'SIFOP.dbo.w_LibroMayorAcumulado_Vlast' no ti
           </AssociationSet>
           <EntitySet Name="vw_FuentesSIPPSI" EntityType="SIFOPModel.vw_FuentesSIPPSI" />
           <EntitySet Name="TipoArancel" EntityType="SIFOPModel.TipoArancel" />
-          <EntitySet Name="AperturaCaja" EntityType="SIFOPModel.AperturaCaja" />
           <EntitySet Name="Arqueo" EntityType="SIFOPModel.Arqueo" />
           <EntitySet Name="ArqueoRecibo" EntityType="SIFOPModel.ArqueoRecibo" />
           <EntitySet Name="DetAperturaCaja" EntityType="SIFOPModel.DetAperturaCaja" />
-          <AssociationSet Name="FK_AperturaCaja_Usuario" Association="SIFOPModel.FK_AperturaCaja_Usuario">
-            <End Role="Usuario" EntitySet="Usuario" />
-            <End Role="AperturaCaja" EntitySet="AperturaCaja" />
-          </AssociationSet>
           <AssociationSet Name="FK_Arqueo_Usuario" Association="SIFOPModel.FK_Arqueo_Usuario">
             <End Role="Usuario" EntitySet="Usuario" />
             <End Role="Arqueo" EntitySet="Arqueo" />
@@ -22102,10 +21897,6 @@ advertencia 6002: La tabla o vista 'SIFOP.dbo.w_LibroMayorAcumulado_Vlast' no ti
             <End Role="Usuario" EntitySet="Usuario" />
             <End Role="TipoArancel" EntitySet="TipoArancel" />
           </AssociationSet>
-          <AssociationSet Name="FK_DetAperturaCaja_AperturaCaja" Association="SIFOPModel.FK_DetAperturaCaja_AperturaCaja">
-            <End Role="AperturaCaja" EntitySet="AperturaCaja" />
-            <End Role="DetAperturaCaja" EntitySet="DetAperturaCaja" />
-          </AssociationSet>
           <AssociationSet Name="FK_Arqueo_Caja" Association="SIFOPModel.FK_Arqueo_Caja">
             <End Role="Caja" EntitySet="Caja" />
             <End Role="Arqueo" EntitySet="Arqueo" />
@@ -22114,15 +21905,73 @@ advertencia 6002: La tabla o vista 'SIFOP.dbo.w_LibroMayorAcumulado_Vlast' no ti
             <End Role="Arqueo" EntitySet="Arqueo" />
             <End Role="ArqueoRecibo" EntitySet="ArqueoRecibo" />
           </AssociationSet>
-          <AssociationSet Name="FK_ArqueoRecibo_Recibo" Association="SIFOPModel.FK_ArqueoRecibo_Recibo">
-            <End Role="Recibo1" EntitySet="Recibo1" />
-            <End Role="ArqueoRecibo" EntitySet="ArqueoRecibo" />
-          </AssociationSet>
           <AssociationSet Name="FK_DetAperturaCaja_Caja" Association="SIFOPModel.FK_DetAperturaCaja_Caja">
             <End Role="Caja" EntitySet="Caja" />
             <End Role="DetAperturaCaja" EntitySet="DetAperturaCaja" />
           </AssociationSet>
-        </EntityContainer>
+          <AssociationSet Name="FK_Arancel_TipoArancel" Association="SIFOPModel.FK_Arancel_TipoArancel">
+            <End Role="TipoArancel" EntitySet="TipoArancel" />
+            <End Role="Arancel" EntitySet="Arancel" />
+          </AssociationSet>
+          <EntitySet Name="AperturaCaja" EntityType="SIFOPModel.AperturaCaja" />
+          <AssociationSet Name="FK_AperturaCaja_Usuario" Association="SIFOPModel.FK_AperturaCaja_Usuario">
+            <End Role="Usuario" EntitySet="Usuario" />
+            <End Role="AperturaCaja" EntitySet="AperturaCaja" />
+          </AssociationSet>
+          <AssociationSet Name="FK_DetAperturaCaja_AperturaCaja" Association="SIFOPModel.FK_DetAperturaCaja_AperturaCaja">
+            <End Role="AperturaCaja" EntitySet="AperturaCaja" />
+            <End Role="DetAperturaCaja" EntitySet="DetAperturaCaja" />
+          </AssociationSet>
+          <EntitySet Name="Recibo1" EntityType="SIFOPModel.Recibo1" />
+          <AssociationSet Name="FK_Recibo_FuenteFinanciamiento1" Association="SIFOPModel.FK_Recibo_FuenteFinanciamiento1">
+            <End Role="FuenteFinanciamiento" EntitySet="FuenteFinanciamiento" />
+            <End Role="Recibo1" EntitySet="Recibo1" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Recibo_PeriodoEspecifico1" Association="SIFOPModel.FK_Recibo_PeriodoEspecifico1">
+            <End Role="PeriodoEspecifico" EntitySet="PeriodoEspecifico" />
+            <End Role="Recibo1" EntitySet="Recibo1" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Recibo_Usuario" Association="SIFOPModel.FK_Recibo_Usuario">
+            <End Role="Usuario" EntitySet="Usuario" />
+            <End Role="Recibo1" EntitySet="Recibo1" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Recibo_OrdenPago" Association="SIFOPModel.FK_Recibo_OrdenPago">
+            <End Role="OrdenPago" EntitySet="OrdenPago" />
+            <End Role="Recibo1" EntitySet="Recibo1" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ArqueoRecibo_Recibo" Association="SIFOPModel.FK_ArqueoRecibo_Recibo">
+            <End Role="Recibo1" EntitySet="Recibo1" />
+            <End Role="ArqueoRecibo" EntitySet="ArqueoRecibo" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Recibo_DetAperturaCaja" Association="SIFOPModel.FK_Recibo_DetAperturaCaja">
+            <End Role="DetAperturaCaja" EntitySet="DetAperturaCaja" />
+            <End Role="Recibo1" EntitySet="Recibo1" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Recibo_InfoRecibo" Association="SIFOPModel.FK_Recibo_InfoRecibo">
+            <End Role="InfoRecibo" EntitySet="InfoRecibo" />
+            <End Role="Recibo1" EntitySet="Recibo1" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Recibo_SerieRecibo" Association="SIFOPModel.FK_Recibo_SerieRecibo">
+            <End Role="SerieRecibo" EntitySet="SerieRecibo" />
+            <End Role="Recibo1" EntitySet="Recibo1" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Recibo_TipoDeposito" Association="SIFOPModel.FK_Recibo_TipoDeposito">
+            <End Role="TipoDeposito" EntitySet="TipoDeposito" />
+            <End Role="Recibo1" EntitySet="Recibo1" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ReciboAnulado_Recibo" Association="SIFOPModel.FK_ReciboAnulado_Recibo">
+            <End Role="Recibo1" EntitySet="Recibo1" />
+            <End Role="ReciboAnulado" EntitySet="ReciboAnulado" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ReciboDet_Recibo" Association="SIFOPModel.FK_ReciboDet_Recibo">
+            <End Role="Recibo1" EntitySet="Recibo1" />
+            <End Role="ReciboDet" EntitySet="ReciboDet" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ReciboPago_Recibo" Association="SIFOPModel.FK_ReciboPago_Recibo">
+            <End Role="Recibo1" EntitySet="Recibo1" />
+            <End Role="ReciboPago" EntitySet="ReciboPago" />
+          </AssociationSet>
+          </EntityContainer>
         <ComplexType Name="dt_getpropertiesbyid_Result">
           <Property Type="String" Name="property" Nullable="false" MaxLength="64" />
           <Property Type="Int32" Name="version" Nullable="false" />
@@ -22226,19 +22075,7 @@ advertencia 6002: La tabla o vista 'SIFOP.dbo.w_LibroMayorAcumulado_Vlast' no ti
           <Property Name="FechaCreacion" Type="DateTime" Nullable="false" Precision="3" />
           <Property Name="regAnulado" Type="Boolean" Nullable="false" />
           <NavigationProperty Name="Usuario" Relationship="SIFOPModel.FK_TipoArancel_Usuario" FromRole="TipoArancel" ToRole="Usuario" />
-        </EntityType>
-        <EntityType Name="AperturaCaja">
-          <Key>
-            <PropertyRef Name="IdApertura" />
-          </Key>
-          <Property Name="IdApertura" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="Fecha" Type="DateTime" Nullable="false" Precision="0" />
-          <Property Name="SaldoIncial" Type="Double" Nullable="false" />
-          <Property Name="IdRecinto" Type="Int32" Nullable="false" />
-          <Property Name="UsuarioCreacion" Type="String" Nullable="false" MaxLength="20" FixedLength="false" Unicode="true" />
-          <Property Name="FechaCreacion" Type="DateTime" Nullable="false" Precision="3" />
-          <NavigationProperty Name="Usuario" Relationship="SIFOPModel.FK_AperturaCaja_Usuario" FromRole="AperturaCaja" ToRole="Usuario" />
-          <NavigationProperty Name="DetAperturaCaja" Relationship="SIFOPModel.FK_DetAperturaCaja_AperturaCaja" FromRole="AperturaCaja" ToRole="DetAperturaCaja" />
+          <NavigationProperty Name="Arancel" Relationship="SIFOPModel.FK_Arancel_TipoArancel" FromRole="TipoArancel" ToRole="Arancel" />
         </EntityType>
         <EntityType Name="Arqueo">
           <Key>
@@ -22279,21 +22116,10 @@ advertencia 6002: La tabla o vista 'SIFOP.dbo.w_LibroMayorAcumulado_Vlast' no ti
           <Property Name="UsuarioCierre" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
           <Property Name="FechaCierre" Type="DateTime" Precision="3" />
           <NavigationProperty Name="Usuario" Relationship="SIFOPModel.FK_DetAperturaCaja_Usuario" FromRole="DetAperturaCaja" ToRole="Usuario" />
-          <NavigationProperty Name="AperturaCaja" Relationship="SIFOPModel.FK_DetAperturaCaja_AperturaCaja" FromRole="DetAperturaCaja" ToRole="AperturaCaja" />
           <NavigationProperty Name="Caja" Relationship="SIFOPModel.FK_DetAperturaCaja_Caja" FromRole="DetAperturaCaja" ToRole="Caja" />
+          <NavigationProperty Name="AperturaCaja" Relationship="SIFOPModel.FK_DetAperturaCaja_AperturaCaja" FromRole="DetAperturaCaja" ToRole="AperturaCaja" />
+          <NavigationProperty Name="Recibo1" Relationship="SIFOPModel.FK_Recibo_DetAperturaCaja" FromRole="DetAperturaCaja" ToRole="Recibo1" />
         </EntityType>
-        <Association Name="FK_AperturaCaja_Usuario">
-          <End Type="SIFOPModel.Usuario" Role="Usuario" Multiplicity="1" />
-          <End Type="SIFOPModel.AperturaCaja" Role="AperturaCaja" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Usuario">
-              <PropertyRef Name="Login" />
-            </Principal>
-            <Dependent Role="AperturaCaja">
-              <PropertyRef Name="UsuarioCreacion" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <Association Name="FK_Arqueo_Usuario">
           <End Type="SIFOPModel.Usuario" Role="Usuario" Multiplicity="1" />
           <End Type="SIFOPModel.Arqueo" Role="Arqueo" Multiplicity="*" />
@@ -22330,18 +22156,6 @@ advertencia 6002: La tabla o vista 'SIFOP.dbo.w_LibroMayorAcumulado_Vlast' no ti
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_DetAperturaCaja_AperturaCaja">
-          <End Type="SIFOPModel.AperturaCaja" Role="AperturaCaja" Multiplicity="1" />
-          <End Type="SIFOPModel.DetAperturaCaja" Role="DetAperturaCaja" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="AperturaCaja">
-              <PropertyRef Name="IdApertura" />
-            </Principal>
-            <Dependent Role="DetAperturaCaja">
-              <PropertyRef Name="IdAperturaCaja" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <Association Name="FK_Arqueo_Caja">
           <End Type="SIFOPModel.Caja" Role="Caja" Multiplicity="1" />
           <End Type="SIFOPModel.Arqueo" Role="Arqueo" Multiplicity="*" />
@@ -22366,6 +22180,146 @@ advertencia 6002: La tabla o vista 'SIFOP.dbo.w_LibroMayorAcumulado_Vlast' no ti
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_DetAperturaCaja_Caja">
+          <End Type="SIFOPModel.Caja" Role="Caja" Multiplicity="1" />
+          <End Type="SIFOPModel.DetAperturaCaja" Role="DetAperturaCaja" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Caja">
+              <PropertyRef Name="IdCaja" />
+            </Principal>
+            <Dependent Role="DetAperturaCaja">
+              <PropertyRef Name="IdCaja" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Arancel_TipoArancel">
+          <End Type="SIFOPModel.TipoArancel" Role="TipoArancel" Multiplicity="1" />
+          <End Type="SIFOPModel.Arancel" Role="Arancel" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="TipoArancel">
+              <PropertyRef Name="IdTipoArancel" />
+            </Principal>
+            <Dependent Role="Arancel">
+              <PropertyRef Name="IdTipoArancel" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="AperturaCaja">
+          <Key>
+            <PropertyRef Name="IdApertura" />
+          </Key>
+          <Property Name="IdApertura" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="FechaApertura" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="SaldoInicial" Type="Double" Nullable="false" />
+          <Property Name="IdRecinto" Type="Int32" Nullable="false" />
+          <Property Name="UsuarioCreacion" Type="String" Nullable="false" MaxLength="20" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="Usuario" Relationship="SIFOPModel.FK_AperturaCaja_Usuario" FromRole="AperturaCaja" ToRole="Usuario" />
+          <NavigationProperty Name="DetAperturaCaja" Relationship="SIFOPModel.FK_DetAperturaCaja_AperturaCaja" FromRole="AperturaCaja" ToRole="DetAperturaCaja" />
+        </EntityType>
+        <Association Name="FK_AperturaCaja_Usuario">
+          <End Type="SIFOPModel.Usuario" Role="Usuario" Multiplicity="1" />
+          <End Type="SIFOPModel.AperturaCaja" Role="AperturaCaja" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Usuario">
+              <PropertyRef Name="Login" />
+            </Principal>
+            <Dependent Role="AperturaCaja">
+              <PropertyRef Name="UsuarioCreacion" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_DetAperturaCaja_AperturaCaja">
+          <End Type="SIFOPModel.AperturaCaja" Role="AperturaCaja" Multiplicity="1" />
+          <End Type="SIFOPModel.DetAperturaCaja" Role="DetAperturaCaja" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="AperturaCaja">
+              <PropertyRef Name="IdApertura" />
+            </Principal>
+            <Dependent Role="DetAperturaCaja">
+              <PropertyRef Name="IdAperturaCaja" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="Recibo1">
+          <Key>
+            <PropertyRef Name="IdRecibo" />
+            <PropertyRef Name="Serie" />
+          </Key>
+          <Property Name="IdRecibo" Type="Int32" Nullable="false" />
+          <Property Name="Serie" Type="String" Nullable="false" MaxLength="1" FixedLength="true" Unicode="false" />
+          <Property Name="IdDetAperturaCaja" Type="Int32" Nullable="false" />
+          <Property Name="IdPeriodoEspecifico" Type="Byte" Nullable="false" />
+          <Property Name="IdArea" Type="String" MaxLength="4" FixedLength="false" Unicode="false" />
+          <Property Name="IdFuenteFinanciamiento" Type="Byte" Nullable="false" />
+          <Property Name="IdTipoDeposito" Type="Int32" />
+          <Property Name="Identificador" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="Recibimos" Type="String" MaxLength="80" FixedLength="false" Unicode="false" />
+          <Property Name="Fecha" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="IdInfoRecibo" Type="Int32" Nullable="false" />
+          <Property Name="IdOrdenPago" Type="Int32" />
+          <Property Name="UsuarioCreacion" Type="String" Nullable="false" MaxLength="20" FixedLength="false" Unicode="true" />
+          <Property Name="regAnulado" Type="Boolean" Nullable="false" />
+          <NavigationProperty Name="FuenteFinanciamiento" Relationship="SIFOPModel.FK_Recibo_FuenteFinanciamiento1" FromRole="Recibo1" ToRole="FuenteFinanciamiento" />
+          <NavigationProperty Name="PeriodoEspecifico" Relationship="SIFOPModel.FK_Recibo_PeriodoEspecifico1" FromRole="Recibo1" ToRole="PeriodoEspecifico" />
+          <NavigationProperty Name="Usuario" Relationship="SIFOPModel.FK_Recibo_Usuario" FromRole="Recibo1" ToRole="Usuario" />
+          <NavigationProperty Name="OrdenPago" Relationship="SIFOPModel.FK_Recibo_OrdenPago" FromRole="Recibo1" ToRole="OrdenPago" />
+          <NavigationProperty Name="ArqueoRecibo" Relationship="SIFOPModel.FK_ArqueoRecibo_Recibo" FromRole="Recibo1" ToRole="ArqueoRecibo" />
+          <NavigationProperty Name="DetAperturaCaja" Relationship="SIFOPModel.FK_Recibo_DetAperturaCaja" FromRole="Recibo1" ToRole="DetAperturaCaja" />
+          <NavigationProperty Name="InfoRecibo" Relationship="SIFOPModel.FK_Recibo_InfoRecibo" FromRole="Recibo1" ToRole="InfoRecibo" />
+          <NavigationProperty Name="SerieRecibo" Relationship="SIFOPModel.FK_Recibo_SerieRecibo" FromRole="Recibo1" ToRole="SerieRecibo" />
+          <NavigationProperty Name="TipoDeposito" Relationship="SIFOPModel.FK_Recibo_TipoDeposito" FromRole="Recibo1" ToRole="TipoDeposito" />
+          <NavigationProperty Name="ReciboAnulado" Relationship="SIFOPModel.FK_ReciboAnulado_Recibo" FromRole="Recibo1" ToRole="ReciboAnulado" />
+          <NavigationProperty Name="ReciboDet" Relationship="SIFOPModel.FK_ReciboDet_Recibo" FromRole="Recibo1" ToRole="ReciboDet" />
+          <NavigationProperty Name="ReciboPago" Relationship="SIFOPModel.FK_ReciboPago_Recibo" FromRole="Recibo1" ToRole="ReciboPago" />
+        </EntityType>
+        <Association Name="FK_Recibo_FuenteFinanciamiento1">
+          <End Type="SIFOPModel.FuenteFinanciamiento" Role="FuenteFinanciamiento" Multiplicity="1" />
+          <End Type="SIFOPModel.Recibo1" Role="Recibo1" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="FuenteFinanciamiento">
+              <PropertyRef Name="IdFuenteFinanciamiento" />
+            </Principal>
+            <Dependent Role="Recibo1">
+              <PropertyRef Name="IdFuenteFinanciamiento" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Recibo_PeriodoEspecifico1">
+          <End Type="SIFOPModel.PeriodoEspecifico" Role="PeriodoEspecifico" Multiplicity="1" />
+          <End Type="SIFOPModel.Recibo1" Role="Recibo1" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="PeriodoEspecifico">
+              <PropertyRef Name="IdPeriodoEspecifico" />
+            </Principal>
+            <Dependent Role="Recibo1">
+              <PropertyRef Name="IdPeriodoEspecifico" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Recibo_Usuario">
+          <End Type="SIFOPModel.Usuario" Role="Usuario" Multiplicity="1" />
+          <End Type="SIFOPModel.Recibo1" Role="Recibo1" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Usuario">
+              <PropertyRef Name="Login" />
+            </Principal>
+            <Dependent Role="Recibo1">
+              <PropertyRef Name="UsuarioCreacion" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Recibo_OrdenPago">
+          <End Type="SIFOPModel.OrdenPago" Role="OrdenPago" Multiplicity="0..1" />
+          <End Type="SIFOPModel.Recibo1" Role="Recibo1" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="OrdenPago">
+              <PropertyRef Name="IdOrdenPago" />
+            </Principal>
+            <Dependent Role="Recibo1">
+              <PropertyRef Name="IdOrdenPago" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_ArqueoRecibo_Recibo">
           <End Type="SIFOPModel.Recibo1" Role="Recibo1" Multiplicity="1" />
           <End Type="SIFOPModel.ArqueoRecibo" Role="ArqueoRecibo" Multiplicity="*" />
@@ -22380,19 +22334,97 @@ advertencia 6002: La tabla o vista 'SIFOP.dbo.w_LibroMayorAcumulado_Vlast' no ti
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_DetAperturaCaja_Caja">
-          <End Type="SIFOPModel.Caja" Role="Caja" Multiplicity="1" />
-          <End Type="SIFOPModel.DetAperturaCaja" Role="DetAperturaCaja" Multiplicity="*" />
+        <Association Name="FK_Recibo_DetAperturaCaja">
+          <End Type="SIFOPModel.DetAperturaCaja" Role="DetAperturaCaja" Multiplicity="1" />
+          <End Type="SIFOPModel.Recibo1" Role="Recibo1" Multiplicity="*" />
           <ReferentialConstraint>
-            <Principal Role="Caja">
-              <PropertyRef Name="IdCaja" />
+            <Principal Role="DetAperturaCaja">
+              <PropertyRef Name="IdDetAperturaCaja" />
             </Principal>
-            <Dependent Role="DetAperturaCaja">
-              <PropertyRef Name="IdCaja" />
+            <Dependent Role="Recibo1">
+              <PropertyRef Name="IdDetAperturaCaja" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
-      </Schema>
+        <Association Name="FK_Recibo_InfoRecibo">
+          <End Type="SIFOPModel.InfoRecibo" Role="InfoRecibo" Multiplicity="1" />
+          <End Type="SIFOPModel.Recibo1" Role="Recibo1" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="InfoRecibo">
+              <PropertyRef Name="IdInfoRecibo" />
+            </Principal>
+            <Dependent Role="Recibo1">
+              <PropertyRef Name="IdInfoRecibo" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Recibo_SerieRecibo">
+          <End Type="SIFOPModel.SerieRecibo" Role="SerieRecibo" Multiplicity="1" />
+          <End Type="SIFOPModel.Recibo1" Role="Recibo1" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="SerieRecibo">
+              <PropertyRef Name="IdSerie" />
+            </Principal>
+            <Dependent Role="Recibo1">
+              <PropertyRef Name="Serie" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Recibo_TipoDeposito">
+          <End Type="SIFOPModel.TipoDeposito" Role="TipoDeposito" Multiplicity="0..1" />
+          <End Type="SIFOPModel.Recibo1" Role="Recibo1" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="TipoDeposito">
+              <PropertyRef Name="IdTipoDeposito" />
+            </Principal>
+            <Dependent Role="Recibo1">
+              <PropertyRef Name="IdTipoDeposito" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ReciboAnulado_Recibo">
+          <End Type="SIFOPModel.Recibo1" Role="Recibo1" Multiplicity="1" />
+          <End Type="SIFOPModel.ReciboAnulado" Role="ReciboAnulado" Multiplicity="0..1" />
+          <ReferentialConstraint>
+            <Principal Role="Recibo1">
+              <PropertyRef Name="IdRecibo" />
+              <PropertyRef Name="Serie" />
+            </Principal>
+            <Dependent Role="ReciboAnulado">
+              <PropertyRef Name="IdRecibo" />
+              <PropertyRef Name="Serie" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ReciboDet_Recibo">
+          <End Type="SIFOPModel.Recibo1" Role="Recibo1" Multiplicity="1" />
+          <End Type="SIFOPModel.ReciboDet" Role="ReciboDet" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Recibo1">
+              <PropertyRef Name="IdRecibo" />
+              <PropertyRef Name="Serie" />
+            </Principal>
+            <Dependent Role="ReciboDet">
+              <PropertyRef Name="IdRecibo" />
+              <PropertyRef Name="Serie" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ReciboPago_Recibo">
+          <End Type="SIFOPModel.Recibo1" Role="Recibo1" Multiplicity="1" />
+          <End Type="SIFOPModel.ReciboPago" Role="ReciboPago" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Recibo1">
+              <PropertyRef Name="IdRecibo" />
+              <PropertyRef Name="Serie" />
+            </Principal>
+            <Dependent Role="ReciboPago">
+              <PropertyRef Name="IdRecibo" />
+              <PropertyRef Name="Serie" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
     <edmx:Mappings>
@@ -24612,26 +24644,6 @@ advertencia 6002: La tabla o vista 'SIFOP.dbo.w_LibroMayorAcumulado_Vlast' no ti
                 <ScalarProperty Name="Pie" ColumnName="Pie" />
                 <ScalarProperty Name="UsuarioCreacion" ColumnName="UsuarioCreacion" />
                 <ScalarProperty Name="FechaCreacion" ColumnName="FechaCreacion" />
-                <ScalarProperty Name="regAnulado" ColumnName="regAnulado" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="Recibo1">
-            <EntityTypeMapping TypeName="SIFOPModel.Recibo1">
-              <MappingFragment StoreEntitySet="Recibo1">
-                <ScalarProperty Name="IdRecibo" ColumnName="IdRecibo" />
-                <ScalarProperty Name="Serie" ColumnName="Serie" />
-                <ScalarProperty Name="IdCaja" ColumnName="IdCaja" />
-                <ScalarProperty Name="IdPeriodoEspecifico" ColumnName="IdPeriodoEspecifico" />
-                <ScalarProperty Name="IdArea" ColumnName="IdArea" />
-                <ScalarProperty Name="IdFuenteFinanciamiento" ColumnName="IdFuenteFinanciamiento" />
-                <ScalarProperty Name="IdTipoDeposito" ColumnName="IdTipoDeposito" />
-                <ScalarProperty Name="Identificador" ColumnName="Identificador" />
-                <ScalarProperty Name="Recibimos" ColumnName="Recibimos" />
-                <ScalarProperty Name="Fecha" ColumnName="Fecha" />
-                <ScalarProperty Name="IdInfoRecibo" ColumnName="IdInfoRecibo" />
-                <ScalarProperty Name="IdOrdenPago" ColumnName="IdOrdenPago" />
-                <ScalarProperty Name="UsuarioCreacion" ColumnName="UsuarioCreacion" />
                 <ScalarProperty Name="regAnulado" ColumnName="regAnulado" />
               </MappingFragment>
             </EntityTypeMapping>
@@ -27819,18 +27831,6 @@ advertencia 6002: La tabla o vista 'SIFOP.dbo.w_LibroMayorAcumulado_Vlast' no ti
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="AperturaCaja">
-            <EntityTypeMapping TypeName="SIFOPModel.AperturaCaja">
-              <MappingFragment StoreEntitySet="AperturaCaja">
-                <ScalarProperty Name="FechaCreacion" ColumnName="FechaCreacion" />
-                <ScalarProperty Name="UsuarioCreacion" ColumnName="UsuarioCreacion" />
-                <ScalarProperty Name="IdRecinto" ColumnName="IdRecinto" />
-                <ScalarProperty Name="SaldoIncial" ColumnName="SaldoIncial" />
-                <ScalarProperty Name="Fecha" ColumnName="Fecha" />
-                <ScalarProperty Name="IdApertura" ColumnName="IdApertura" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
           <EntitySetMapping Name="Arqueo">
             <EntityTypeMapping TypeName="SIFOPModel.Arqueo">
               <MappingFragment StoreEntitySet="Arqueo">
@@ -27865,6 +27865,37 @@ advertencia 6002: La tabla o vista 'SIFOP.dbo.w_LibroMayorAcumulado_Vlast' no ti
                 <ScalarProperty Name="IdCaja" ColumnName="IdCaja" />
                 <ScalarProperty Name="IdAperturaCaja" ColumnName="IdAperturaCaja" />
                 <ScalarProperty Name="IdDetAperturaCaja" ColumnName="IdDetAperturaCaja" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="AperturaCaja">
+            <EntityTypeMapping TypeName="SIFOPModel.AperturaCaja">
+              <MappingFragment StoreEntitySet="AperturaCaja">
+                <ScalarProperty Name="UsuarioCreacion" ColumnName="UsuarioCreacion" />
+                <ScalarProperty Name="IdRecinto" ColumnName="IdRecinto" />
+                <ScalarProperty Name="SaldoInicial" ColumnName="SaldoInicial" />
+                <ScalarProperty Name="FechaApertura" ColumnName="FechaApertura" />
+                <ScalarProperty Name="IdApertura" ColumnName="IdApertura" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Recibo1">
+            <EntityTypeMapping TypeName="SIFOPModel.Recibo1">
+              <MappingFragment StoreEntitySet="Recibo1">
+                <ScalarProperty Name="regAnulado" ColumnName="regAnulado" />
+                <ScalarProperty Name="UsuarioCreacion" ColumnName="UsuarioCreacion" />
+                <ScalarProperty Name="IdOrdenPago" ColumnName="IdOrdenPago" />
+                <ScalarProperty Name="IdInfoRecibo" ColumnName="IdInfoRecibo" />
+                <ScalarProperty Name="Fecha" ColumnName="Fecha" />
+                <ScalarProperty Name="Recibimos" ColumnName="Recibimos" />
+                <ScalarProperty Name="Identificador" ColumnName="Identificador" />
+                <ScalarProperty Name="IdTipoDeposito" ColumnName="IdTipoDeposito" />
+                <ScalarProperty Name="IdFuenteFinanciamiento" ColumnName="IdFuenteFinanciamiento" />
+                <ScalarProperty Name="IdArea" ColumnName="IdArea" />
+                <ScalarProperty Name="IdPeriodoEspecifico" ColumnName="IdPeriodoEspecifico" />
+                <ScalarProperty Name="IdDetAperturaCaja" ColumnName="IdDetAperturaCaja" />
+                <ScalarProperty Name="Serie" ColumnName="Serie" />
+                <ScalarProperty Name="IdRecibo" ColumnName="IdRecibo" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
