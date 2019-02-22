@@ -57,30 +57,28 @@ namespace PruebaWPF.Views.Shared
             detalleApertura.Add(detApertura);
 
             List<vista_RecibosPago> vista = new List<vista_RecibosPago>();
-            
-            foreach (ReciboSon item in recibos.Where(w=>w.regAnulado==false))
-            {
-                foreach (ReciboPagoSon pay in controller.ReciboFormaPago(item))
-                {
-                    vista_RecibosPago vr = new vista_RecibosPago();
-                    vr.IdRecibo = item.IdRecibo;
-                    vr.Serie = item.Serie;
-                    vr.porCuenta = item.Recibimos;
-                    vr.FormaPago = pay.FormaPago.FormaPago1;
-                    vr.Moneda = pay.Moneda.Moneda1;
-                    vr.Monto = Double.Parse(pay.Monto.ToString());
-                    vista.Add(vr);
-                }
-            }
-            List<ReciboAnulado> anulados;
+            List<ReciboAnulado> anulados = new List<ReciboAnulado>();
 
-            if (recibos.Where(w => w.regAnulado == true).Count()>0)
+            foreach (ReciboSon item in recibos)
             {
-            anulados = recibos.Where(w => w.regAnulado == true).Select(s=>new ReciboAnulado() { IdRecibo=s.IdRecibo,Serie=s.Serie,Motivo=s.ReciboAnulado.Motivo,UsuarioAnulacion=s.ReciboAnulado.UsuarioAnulacion}).ToList();
-            }
-            else
-            {
-                anulados = new List<ReciboAnulado>();
+                if (item.regAnulado)
+                {
+                    anulados.Add(new ReciboAnulado() { IdRecibo = item.IdRecibo, Serie = item.Serie, Motivo = item.ReciboAnulado.Motivo, UsuarioAnulacion = item.ReciboAnulado.UsuarioAnulacion });
+                }
+                else
+                {
+                    foreach (ReciboPagoSon pay in controller.ReciboFormaPago(item))
+                    {
+                        vista_RecibosPago vr = new vista_RecibosPago();
+                        vr.IdRecibo = item.IdRecibo;
+                        vr.Serie = item.Serie;
+                        vr.porCuenta = item.Recibimos;
+                        vr.FormaPago = pay.FormaPago.FormaPago1;
+                        vr.Moneda = pay.Moneda.Moneda1;
+                        vr.Monto = Double.Parse(pay.Monto.ToString());
+                        vista.Add(vr);
+                    }
+                }
             }
 
             ReportDataSource ReciboDataSource = new ReportDataSource("ReciboPagos", vista);
@@ -93,7 +91,7 @@ namespace PruebaWPF.Views.Shared
             informe.LocalReport.ReportEmbeddedResource = "PruebaWPF.Reportes.AperturaCaja.InformeCierre.rdlc";
             informe.LocalReport.SetParameters(new ReportParameter("UserParameter", clsSessionHelper.usuario.Login));
 
-            AddDataSource(new ReportDataSource[] { ReciboDataSource,CajaDataSource,AperturaDataSource,DetAperturaDataSource,AnuladosDataSource});
+            AddDataSource(new ReportDataSource[] { ReciboDataSource, CajaDataSource, AperturaDataSource, DetAperturaDataSource, AnuladosDataSource });
 
 
             informe.SetDisplayMode(Microsoft.Reporting.WinForms.DisplayMode.PrintLayout);

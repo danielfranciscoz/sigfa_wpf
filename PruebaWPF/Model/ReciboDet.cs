@@ -24,6 +24,7 @@ namespace PruebaWPF.Model
         public string UsuarioCreacion { get; set; }
         public System.DateTime FechaCreacion { get; set; }
         public bool regAnulado { get; set; }
+        public string IdAreaIngreso { get; set; }
     
         public virtual Usuario Usuario { get; set; }
         public virtual ArancelPrecio ArancelPrecio { get; set; }

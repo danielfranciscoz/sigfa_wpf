@@ -81,7 +81,7 @@ namespace PruebaWPF.Model
         public string Login { get; set; }
         public Nullable<int> noInterno { get; set; }
         public string LoginEmail { get; set; }
-        public int IdOrden { get; set; }
+        public Nullable<int> IdOrden { get; set; }
         public string Nombre { get; set; }
         public string Descripcion { get; set; }
         public bool Auditar { get; set; }

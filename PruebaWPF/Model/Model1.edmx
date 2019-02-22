@@ -2157,7 +2157,7 @@ advertencia 6002: La tabla o vista 'SIFOP.dbo.TmpSolicitudesArchivo' no tiene de
           <Property Name="Login" Type="nvarchar" MaxLength="20" Nullable="false" />
           <Property Name="noInterno" Type="int" />
           <Property Name="LoginEmail" Type="varchar" MaxLength="50" />
-          <Property Name="IdOrden" Type="int" Nullable="false" />
+          <Property Name="IdOrden" Type="int" />
           <Property Name="Nombre" Type="nvarchar" MaxLength="80" Nullable="false" />
           <Property Name="Descripcion" Type="nvarchar" MaxLength="250" />
           <Property Name="Auditar" Type="bit" Nullable="false" />
@@ -2253,6 +2253,7 @@ advertencia 6002: La tabla o vista 'SIFOP.dbo.TmpSolicitudesArchivo' no tiene de
           <Property Name="IdArancelArea" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="IdArancel" Type="int" Nullable="false" />
           <Property Name="IdArea" Type="varchar" MaxLength="4" Nullable="false" />
+          <Property Name="IdAreaIngreso" Type="varchar" MaxLength="4" Nullable="false" />
           <Property Name="IdRecinto" Type="int" Nullable="false" />
           <Property Name="FechaCreacion" Type="datetime" Nullable="false" />
           <Property Name="UsuarioCreacion" Type="nvarchar" MaxLength="20" Nullable="false" />
@@ -2290,6 +2291,7 @@ advertencia 6002: La tabla o vista 'SIFOP.dbo.TmpSolicitudesArchivo' no tiene de
           <Property Name="PrecioVariable" Type="decimal" Precision="18" Scale="2" Nullable="false" />
           <Property Name="IdExoneracion" Type="int" />
           <Property Name="Descuento" Type="decimal" Precision="18" Scale="2" Nullable="false" />
+          <Property Name="IdAreaIngreso" Type="varchar" MaxLength="4" />
           <Property Name="FechaCreacion" Type="datetime" Nullable="false" />
           <Property Name="UsuarioCreacion" Type="nvarchar" MaxLength="20" Nullable="false" />
           <Property Name="regAnulado" Type="bit" Nullable="false" />
@@ -2457,6 +2459,7 @@ advertencia 6002: La tabla o vista 'SIFOP.dbo.TmpSolicitudesArchivo' no tiene de
           <Property Name="Concepto" Type="nvarchar" MaxLength="200" />
           <Property Name="Monto" Type="decimal" Precision="18" Scale="2" Nullable="false" />
           <Property Name="Descuento" Type="decimal" Precision="18" Scale="2" Nullable="false" />
+          <Property Name="IdAreaIngreso" Type="varchar" MaxLength="4" />
           <Property Name="UsuarioCreacion" Type="nvarchar" MaxLength="20" Nullable="false" />
           <Property Name="FechaCreacion" Type="datetime" Nullable="false" />
           <Property Name="regAnulado" Type="bit" Nullable="false" />
@@ -2525,6 +2528,7 @@ advertencia 6002: La tabla o vista 'SIFOP.dbo.TmpSolicitudesArchivo' no tiene de
           </Key>
           <Property Name="IdTipoDeposito" Type="int" Nullable="false" />
           <Property Name="Nombre" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="TextHint" Type="varchar" MaxLength="15" />
           <Property Name="FechaCreacion" Type="datetime" Nullable="false" />
           <Property Name="UsuarioCreacion" Type="nvarchar" MaxLength="20" Nullable="false" />
         </EntityType>
@@ -9529,6 +9533,9 @@ advertencia 6002: La tabla o vista 'SIFOP.dbo.w_LibroMayorAcumulado_Vlast' no ti
           <Parameter Name="IdCuentaContable" Type="int" Mode="In" />
           <Parameter Name="Sistema" Type="varchar" Mode="In" />
         </Function>
+        <Function Name="fn_ObtenerInfoUsuario" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="seg">
+          <Parameter Name="NoInterno" Type="varchar" Mode="In" />
+        </Function>
         <Function Name="fn_ObtenerMenu" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="true" ParameterTypeSemantics="AllowImplicitConversion" Schema="seg">
           <Parameter Name="user" Type="nvarchar" Mode="In" />
           <Parameter Name="isWeb" Type="bit" Mode="In" />
@@ -15178,7 +15185,7 @@ advertencia 6002: La tabla o vista 'SIFOP.dbo.w_LibroMayorAcumulado_Vlast' no ti
           <Property Name="Login" Type="String" MaxLength="20" FixedLength="false" Unicode="true" Nullable="false" />
           <Property Name="noInterno" Type="Int32" />
           <Property Name="LoginEmail" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Name="IdOrden" Type="Int32" Nullable="false" />
+          <Property Name="IdOrden" Type="Int32" />
           <Property Name="Nombre" Type="String" MaxLength="80" FixedLength="false" Unicode="true" Nullable="false" />
           <Property Name="Descripcion" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
           <Property Name="Auditar" Type="Boolean" Nullable="false" />
@@ -15352,6 +15359,7 @@ advertencia 6002: La tabla o vista 'SIFOP.dbo.w_LibroMayorAcumulado_Vlast' no ti
           <Property Name="UsuarioCreacion" Type="String" MaxLength="20" FixedLength="false" Unicode="true" Nullable="false" />
           <NavigationProperty Name="Usuario" Relationship="Self.FK_ArancelArea_Usuario" FromRole="ArancelArea" ToRole="Usuario" />
           <NavigationProperty Name="Arancel" Relationship="Self.FK_ArancelArea_Arancel" FromRole="ArancelArea" ToRole="Arancel" />
+          <Property Name="IdAreaIngreso" Type="String" Nullable="false" MaxLength="4" FixedLength="false" Unicode="false" />
         </EntityType>
         <EntityType Name="ArancelPrecio">
           <Key>
@@ -15401,6 +15409,7 @@ advertencia 6002: La tabla o vista 'SIFOP.dbo.w_LibroMayorAcumulado_Vlast' no ti
           <NavigationProperty Name="ArancelPrecio" Relationship="Self.FK_DetOrdenPagoArancel_ArancelPrecio" FromRole="DetOrdenPagoArancel" ToRole="ArancelPrecio" />
           <NavigationProperty Name="Exoneracion" Relationship="Self.FK_DetOrdenPagoArancel_Exoneracion" FromRole="DetOrdenPagoArancel" ToRole="Exoneracion" />
           <NavigationProperty Name="OrdenPago" Relationship="Self.FK_DetOrdenPagoArancel_OrdenPago" FromRole="DetOrdenPagoArancel" ToRole="OrdenPago" />
+          <Property Name="IdAreaIngreso" Type="String" MaxLength="4" FixedLength="false" Unicode="false" />
         </EntityType>
         <EntityType Name="Exoneracion">
           <Key>
@@ -15517,6 +15526,7 @@ advertencia 6002: La tabla o vista 'SIFOP.dbo.w_LibroMayorAcumulado_Vlast' no ti
           <NavigationProperty Name="Usuario" Relationship="Self.FK_ReciboDet_Usuario" FromRole="ReciboDet" ToRole="Usuario" />
           <NavigationProperty Name="ArancelPrecio" Relationship="Self.FK_ReciboDet_ArancelPrecio" FromRole="ReciboDet" ToRole="ArancelPrecio" />
           <NavigationProperty Name="Recibo1" Relationship="SIFOPModel.FK_ReciboDet_Recibo" FromRole="ReciboDet" ToRole="Recibo1" />
+          <Property Name="IdAreaIngreso" Type="String" MaxLength="4" FixedLength="false" Unicode="false" />
         </EntityType>
         <EntityType Name="ReciboPago">
           <Key>
@@ -15606,6 +15616,7 @@ advertencia 6002: La tabla o vista 'SIFOP.dbo.w_LibroMayorAcumulado_Vlast' no ti
           <NavigationProperty Name="Exoneracion" Relationship="Self.FK_Exoneracion_TipoDeposito" FromRole="TipoDeposito" ToRole="Exoneracion" />
           <NavigationProperty Name="OrdenPago" Relationship="Self.FK_OrdenPago_TipoDeposito" FromRole="TipoDeposito" ToRole="OrdenPago" />
           <NavigationProperty Name="Recibo1" Relationship="SIFOPModel.FK_Recibo_TipoDeposito" FromRole="TipoDeposito" ToRole="Recibo1" />
+          <Property Name="TextHint" Type="String" MaxLength="15" FixedLength="false" Unicode="false" />
         </EntityType>
         <EntityType Name="AccesoDirectoPerfil">
           <Key>
@@ -21971,6 +21982,9 @@ advertencia 6002: La tabla o vista 'SIFOP.dbo.w_LibroMayorAcumulado_Vlast' no ti
             <End Role="Recibo1" EntitySet="Recibo1" />
             <End Role="ReciboPago" EntitySet="ReciboPago" />
           </AssociationSet>
+          <FunctionImport Name="fn_ObtenerInfoUsuario">
+            <Parameter Name="NoInterno" Mode="In" Type="String" />
+          </FunctionImport>
           </EntityContainer>
         <ComplexType Name="dt_getpropertiesbyid_Result">
           <Property Type="String" Name="property" Nullable="false" MaxLength="64" />
@@ -24528,6 +24542,7 @@ advertencia 6002: La tabla o vista 'SIFOP.dbo.w_LibroMayorAcumulado_Vlast' no ti
           <EntitySetMapping Name="ArancelArea">
             <EntityTypeMapping TypeName="SIFOPModel.ArancelArea">
               <MappingFragment StoreEntitySet="ArancelArea">
+                <ScalarProperty Name="IdAreaIngreso" ColumnName="IdAreaIngreso" />
                 <ScalarProperty Name="IdArancelArea" ColumnName="IdArancelArea" />
                 <ScalarProperty Name="IdArancel" ColumnName="IdArancel" />
                 <ScalarProperty Name="IdArea" ColumnName="IdArea" />
@@ -24564,6 +24579,7 @@ advertencia 6002: La tabla o vista 'SIFOP.dbo.w_LibroMayorAcumulado_Vlast' no ti
           <EntitySetMapping Name="DetOrdenPagoArancel">
             <EntityTypeMapping TypeName="SIFOPModel.DetOrdenPagoArancel">
               <MappingFragment StoreEntitySet="DetOrdenPagoArancel">
+                <ScalarProperty Name="IdAreaIngreso" ColumnName="IdAreaIngreso" />
                 <ScalarProperty Name="IdDetalleOrdenPago" ColumnName="IdDetalleOrdenPago" />
                 <ScalarProperty Name="IdOrdenPago" ColumnName="IdOrdenPago" />
                 <ScalarProperty Name="IdPrecioArancel" ColumnName="IdPrecioArancel" />
@@ -24663,6 +24679,7 @@ advertencia 6002: La tabla o vista 'SIFOP.dbo.w_LibroMayorAcumulado_Vlast' no ti
           <EntitySetMapping Name="ReciboDet">
             <EntityTypeMapping TypeName="SIFOPModel.ReciboDet">
               <MappingFragment StoreEntitySet="ReciboDet">
+                <ScalarProperty Name="IdAreaIngreso" ColumnName="IdAreaIngreso" />
                 <ScalarProperty Name="IdReciboDet" ColumnName="IdReciboDet" />
                 <ScalarProperty Name="IdRecibo" ColumnName="IdRecibo" />
                 <ScalarProperty Name="Serie" ColumnName="Serie" />
@@ -24743,6 +24760,7 @@ advertencia 6002: La tabla o vista 'SIFOP.dbo.w_LibroMayorAcumulado_Vlast' no ti
           <EntitySetMapping Name="TipoDeposito">
             <EntityTypeMapping TypeName="SIFOPModel.TipoDeposito">
               <MappingFragment StoreEntitySet="TipoDeposito">
+                <ScalarProperty Name="TextHint" ColumnName="TextHint" />
                 <ScalarProperty Name="IdTipoDeposito" ColumnName="IdTipoDeposito" />
                 <ScalarProperty Name="Nombre" ColumnName="Nombre" />
                 <ScalarProperty Name="FechaCreacion" ColumnName="FechaCreacion" />
@@ -27899,6 +27917,7 @@ advertencia 6002: La tabla o vista 'SIFOP.dbo.w_LibroMayorAcumulado_Vlast' no ti
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
+          <FunctionImportMapping FunctionImportName="fn_ObtenerInfoUsuario" FunctionName="SIFOPModel.Store.fn_ObtenerInfoUsuario" />
         </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>

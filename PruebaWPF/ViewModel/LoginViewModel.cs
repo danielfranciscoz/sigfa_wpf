@@ -28,6 +28,11 @@ namespace PruebaWPF.ViewModel
             clsSessionHelper.areasMemory = db.vw_Areas.ToList();
         }
 
+        public void MacMemory()
+        {
+            clsSessionHelper.MACMemory = new TesoreriaViewModel().FindMacActual();
+        }
+
         public List<UsuarioPerfil> ObtenerPerfilesUsuario(String Usuario)
         {
             return db.UsuarioPerfil.Where(w => (w.Login == Usuario || w.Usuario.LoginEmail == Usuario) && w.RegAnulado == false && w.Usuario.RegAnulado == false).ToList();

@@ -1,9 +1,5 @@
 ﻿using PruebaWPF.Model;
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace PruebaWPF.Helper
 {
@@ -15,6 +11,6 @@ namespace PruebaWPF.Helper
         public static Programa programa;
         public static List<vw_RecintosRH> recintosMemory;
         public static List<vw_Areas> areasMemory;
-
+        public static string MACMemory;
     }
 }

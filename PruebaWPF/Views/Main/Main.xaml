@@ -1,4 +1,4 @@
-﻿<Window x:Class="PruebaWPF.Views.Main.frmMain"
+﻿  <Window x:Class="PruebaWPF.Views.Main.frmMain"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
@@ -17,10 +17,10 @@
         Closed="Window_Closed" SizeChanged="Window_SizeChanged"
         
         >
-    <WindowChrome.WindowChrome>
-        <WindowChrome CaptionHeight="30"/>
-    </WindowChrome.WindowChrome>
-    <Window.Style>
+    <!--<WindowChrome.WindowChrome>
+        <WindowChrome CaptionHeight="0"/>
+    </WindowChrome.WindowChrome>-->
+    <!--<Window.Style>
         <Style TargetType="{x:Type Window}">
 
             <Setter Property="Foreground" Value="White"/>
@@ -151,12 +151,10 @@
             </Setter>
 
         </Style>
-    </Window.Style>
+    </Window.Style>-->
     <Grid>
 
         <DockPanel>
-           
-            
             <!--Menú-->
             <StackPanel DockPanel.Dock="Top" x:Name="panelMenu" >
                 <ToggleButton x:Name="btnswitch" IsChecked="True" Visibility="Collapsed"></ToggleButton>
@@ -199,9 +197,8 @@
                         <Grid>
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="Auto"/>
-                                <ColumnDefinition Width="20" />
                                 <ColumnDefinition Width="Auto" />
-                                <ColumnDefinition Width="20" />
+                                <ColumnDefinition Width="Auto" />
                                 <ColumnDefinition Width="Auto" />
                                 <ColumnDefinition Width="*" />
                                 <ColumnDefinition Width="Auto" />
@@ -211,38 +208,50 @@
                 </StatusBar.ItemsPanel>
 
 
-                <StatusBarItem Grid.Column="0">
-                    <TextBlock Name="lblPerfil" Text="Perfil:" />
+                <StatusBarItem Grid.Column="0" Margin="0 0 20 0">
+                    <TextBlock >
+                        <TextBlock.Inlines>
+                            <Run Text="Perfil:" ></Run>
+                            <Run Name="lblPerfil"></Run>
+                        </TextBlock.Inlines>
+                    </TextBlock>
                 </StatusBarItem>
 
 
-                <StatusBarItem Grid.Column="2">
-                    <TextBlock Name="lblPeriodo" Text="Periodo:" />
+                <StatusBarItem Grid.Column="1" Margin="0 0 20 0">
+                    <TextBlock>
+                        <TextBlock.Inlines>
+                            <Run Text="Periodo:"></Run>
+                            <Run Name="lblPeriodo"></Run>
+                        </TextBlock.Inlines>
+                    </TextBlock>
                 </StatusBarItem>
 
 
-                <StatusBarItem Grid.Column="4">
-                    <TextBlock Name="lblTipoCambio" Text="T/C: 0.00" />
+                <StatusBarItem Grid.Column="2" Margin="0 0 20 0">
+                    <TextBlock >
+                        <TextBlock.Inlines>
+                            <Run Text="T/C:"></Run>
+                            <Run Name="lblTipoCambio"></Run>
+                        </TextBlock.Inlines>
+                    </TextBlock>
                 </StatusBarItem>
-
                 
-                <StatusBarItem Grid.Column="5" Padding="0.8" HorizontalAlignment="Right" x:Name="layoutRoot">
+                <StatusBarItem Grid.Column="3" Margin="0 0 20 0">
+                    <TextBlock >
+                        <TextBlock.Inlines>
+                            <Run Text="MAC:"></Run>
+                            <Run Name="lblMac"></Run>
+                        </TextBlock.Inlines>
+                    </TextBlock>
+                </StatusBarItem>
+                
+                <StatusBarItem Grid.Column="4" Padding="0.8" HorizontalAlignment="Right" x:Name="layoutRoot">
                     <Button x:Name="btnNotificaciones" Visibility="Hidden" Padding="42 2 42 2" BorderBrush="Transparent"  Background="Transparent" FontSize="13" FontWeight="Regular" Height="auto" ContextMenuService.IsEnabled="False" Click="btnNotificaciones_Click">
                         <Button.Content>
                             <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center" Orientation="Horizontal">
-
-                                <!--<TextBlock x:Name="lblCount" Foreground="Black" Text="100" Margin=" 0 0 10 0"/>-->
-                                <!--<Border CornerRadius="20" Margin=" 10 0 5 0"
-                                    Width="20"
-                                    Height="20"
-                                    Background="#d50000">
-                                    <TextBlock x:Name="txtNotificacionesCount" HorizontalAlignment="center" VerticalAlignment="Center"
-                                        Text="100" FontWeight="Bold" FontSize="11"/>
-                                </Border>-->
-
                                 <TextBlock x:Name="txtNotificacion" Text="0" VerticalAlignment="Center" Margin="0 0 10 0"  FontWeight="Bold"/>
-                                <materialDesign:PackIcon Kind="Message" Width="17" Height="17"></materialDesign:PackIcon>
-
+                                <materialDesign:PackIcon Kind="Bell" Width="17" Height="17"></materialDesign:PackIcon>
                             </StackPanel>
                         </Button.Content>
                         <Button.ContextMenu>
@@ -253,8 +262,8 @@
                     </Button>
                 </StatusBarItem>
 
-                <StatusBarItem x:Name="Label_Exportando" Grid.Column="6" Visibility="Collapsed">
-                <TextBlock  x:Name="txtExporting" Text="Exportando datos a Excel..." VerticalAlignment="Center" Margin="0 0 10 0" Foreground="White" ToolTip="Estamos exportando información, le avisaremos cuando hayamos terminado"/>
+                <StatusBarItem x:Name="Label_Exportando" Grid.Column="5" Visibility="Collapsed">
+                    <TextBlock  x:Name="txtExporting" Text="Exportando datos a Excel..." VerticalAlignment="Center" Margin="0 0 10 0" Foreground="White" ToolTip="Estamos exportando información, le avisaremos cuando hayamos terminado"/>
                 </StatusBarItem>
 
             </StatusBar>

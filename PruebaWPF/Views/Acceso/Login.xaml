@@ -30,21 +30,10 @@
             <Grid.RowDefinitions>
                 <!--<RowDefinition Height="30"/>-->
                 <RowDefinition Height="auto"/>
+                <RowDefinition Height="auto"/>
                 <RowDefinition Height="*"/>
                 <RowDefinition Height="auto"/>
             </Grid.RowDefinitions>
-
-            <!--<Border Grid.Row="0" Background="Transparent" MouseLeftButtonDown="Border_MouseLeftButtonDown">
-            <Grid>
-                <materialDesign:ColorZone Mode="PrimaryDark">
-                    <StackPanel HorizontalAlignment="Right">
-                        <Button Width="30" Height="30" materialDesign:ShadowAssist.ShadowDepth="Depth3" Padding="0" Click="Button_Click">
-                            <materialDesign:PackIcon Kind="WindowClose"></materialDesign:PackIcon>
-                        </Button>
-                    </StackPanel>
-                </materialDesign:ColorZone>
-            </Grid>
-        </Border>-->
 
             <!--Header-->
             <Grid Grid.Row="0" MouseLeftButtonDown="Border_MouseLeftButtonDown">
@@ -52,11 +41,13 @@
                     <TextBlock FontSize="15" TextAlignment="Center" Padding="20 20 0 20" FontWeight="Bold">UNIVERSIDAD NACIONAL DE INGENIERÍA <LineBreak/>DIVISIÓN DE FINANZAS <LineBreak/>SISTEMA DE GESTIÓN FINANCIERA SIGFA-UNI</TextBlock>
                 </materialDesign:ColorZone>
                 <Image HorizontalAlignment="Left" Height="51" Margin="20,20,0,19" Width="84" Source="/PruebaWPF;component/Images/logoUNI.png" VerticalAlignment="Center" RenderTransformOrigin="0.917,0.725"/>
-
+                
             </Grid>
 
+                <ProgressBar Grid.Row="1" x:Name="progressbar" Visibility="Hidden" IsIndeterminate="True"></ProgressBar>
             <!--Body-->
-            <Grid Grid.Row="1">
+            <Grid Grid.Row="2">
+                
                 <materialDesign:Card Panel.ZIndex="1" Margin="0 10 0 0" Width="400">
                     <materialDesign:ColorZone Mode="PrimaryDark" Background="{StaticResource Primary}">
                         <StackPanel Orientation="Horizontal">
@@ -72,16 +63,18 @@
                         <StackPanel x:Name="panel_Credenciales" Visibility="Visible" Orientation="Vertical" HorizontalAlignment="Center" Margin="0 20 0 0">
 
                             <StackPanel Orientation="Horizontal" Margin="0 25 0 0" Height="40">
-                                <materialDesign:PackIcon Kind="Account" Foreground="{Binding ElementName=txtUsuario,Path=BorderBrush}" VerticalAlignment="Bottom" Margin="0 0 10 7" Width="20" Height="20"/>
-                                <TextBox  x:Name="txtUsuario" Width="350" materialDesign:HintAssist.Hint="Usuario" materialDesign:HintAssist.IsFloating="True" FontSize="15" KeyDown="txtUsuario_KeyDown"/>
+                                <materialDesign:PackIcon Kind="Account" Foreground="{Binding ElementName=txtUsuario,Path=BorderBrush}" VerticalAlignment="Bottom" Margin="0 0 10 5" Width="20" Height="20"/>
+                                <TextBox  x:Name="txtUsuario" Width="350" materialDesign:HintAssist.Hint="Usuario" materialDesign:HintAssist.IsFloating="True" FontSize="14" KeyDown="txtUsuario_KeyDown"/>
                             </StackPanel>
+                            
                             <StackPanel Orientation="Horizontal" Margin="0 25 0 0" Height="40">
-                                <materialDesign:PackIcon Kind="Key" Foreground="{Binding ElementName=txtPassword,Path=BorderBrush}" VerticalAlignment="Bottom" Margin="0 0 10 7" Width="20" Height="20"/>
-                                <PasswordBox x:Name="txtPassword" Width="350" materialDesign:HintAssist.Hint="Contraseña" materialDesign:HintAssist.IsFloating="True" FontSize="15" KeyDown="txtPassword_KeyDown"/>
+                                <materialDesign:PackIcon Kind="Key" Foreground="{Binding ElementName=txtPassword,Path=BorderBrush}" VerticalAlignment="Bottom" Margin="0 0 10 5" Width="20" Height="20"/>
+                                <PasswordBox x:Name="txtPassword" Width="350" materialDesign:HintAssist.Hint="Contraseña" materialDesign:HintAssist.IsFloating="True" FontSize="14" KeyDown="txtPassword_KeyDown"/>
                             </StackPanel>
+                           
                             <StackPanel Orientation="Horizontal" Margin="0 25 0 20" HorizontalAlignment="Right">
                                 <Button Margin="0 0 10 0" Style="{DynamicResource MaterialDesignRaisedAccentButton}" Content="Cancelar" Click="Button_Click"></Button>
-                                <Button  Click="Button_Click_1">
+                                <Button  Click="Button_Click_1" x:Name="btnAceptar">
                                     <Button.Content>
                                         <StackPanel Orientation="Horizontal">
                                             <TextBlock Margin="0 0 10 0">Aceptar</TextBlock>
@@ -94,19 +87,18 @@
 
                         <StackPanel x:Name="panel_Periodo" Visibility="Hidden" Orientation="Vertical" HorizontalAlignment="Center" Margin="0 20 0 0">
 
-                            <StackPanel Orientation="Horizontal" Margin="0 25 0 0" Height="40">
-                                <Label VerticalAlignment="Center" Width="80" Height="30">Programa:</Label>
-                                <ComboBox x:Name="cboPrograma" DisplayMemberPath="Programa.Descripcion" SelectedValuePath="IdPrograma" Width="290"  HorizontalAlignment="Left" materialDesign:HintAssist.Hint="Seleccione">
+                            <StackPanel Orientation="Horizontal" Margin="20 25 0 0" Height="40">
+                                <ComboBox x:Name="cboPrograma" DisplayMemberPath="Programa.Descripcion" SelectedValuePath="IdPrograma" FontSize="14" Width="360"  HorizontalAlignment="Left" materialDesign:HintAssist.Hint="Programa" materialDesign:HintAssist.IsFloating="True">
                                 </ComboBox>
                             </StackPanel>
 
-                            <StackPanel Orientation="Horizontal" Margin="0 25 0 0" Height="40">
-                                <Label  Width="80" Height="30">Periodo:</Label>
-                                <ComboBox x:Name="cboPeriodo" Width="290"  HorizontalAlignment="Left" materialDesign:HintAssist.Hint="Seleccione">
+                            <StackPanel Orientation="Horizontal" Margin="20 25 0 0" Height="40">
+
+                                <ComboBox x:Name="cboPeriodo" Width="360" FontSize="14" HorizontalAlignment="Left" materialDesign:HintAssist.Hint="Periodo" materialDesign:HintAssist.IsFloating="True">
                                 </ComboBox>
                             </StackPanel>
 
-                            <StackPanel Orientation="Horizontal" Margin="0 25 0 0" HorizontalAlignment="Right">
+                            <StackPanel Orientation="Horizontal" Margin="0 25 0 20" HorizontalAlignment="Right">
                                 <Button Margin="0 0 10 0" Style="{DynamicResource MaterialDesignRaisedAccentButton}" Content="Cancelar" Click="Button_Click"></Button>
                                 <Button x:Name="btnRegresar" Margin="0 0 10 0" Click="btnRegresar_Click">
                                     <Button.Content>
@@ -116,10 +108,10 @@
                                         </StackPanel>
                                     </Button.Content>
                                 </Button>
-                                <Button x:Name="btnAceptarRol" Click="btnAceptarRol_Click" Width="120">
+                                <Button x:Name="btnAceptarRol" Click="btnAceptarRol_Click" >
                                     <Button.Content>
                                         <StackPanel Orientation="Horizontal">
-                                            <TextBlock Margin="0 0 10 0">Continuar</TextBlock>
+                                            <TextBlock Margin="0 0 10 0">Aceptar</TextBlock>
                                             <materialDesign:PackIcon Kind="ArrowRight" ></materialDesign:PackIcon>
                                         </StackPanel>
                                     </Button.Content>
@@ -130,12 +122,10 @@
                 </materialDesign:Card>
 
 
-
-
             </Grid>
 
             <!--Footer-->
-            <Grid Grid.Row="2">
+            <Grid Grid.Row="3">
                 <materialDesign:ColorZone Mode="PrimaryMid" Background="{StaticResource PrimaryDark}">
                     <!--<TextBlock TextAlignment="Center" Padding="10 10 10 10">
                     <Run Text="Universidad Nacional de Ingeniería (UNI), Managua, Nicaragua."/><LineBreak/>

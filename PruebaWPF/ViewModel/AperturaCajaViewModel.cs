@@ -42,6 +42,7 @@ namespace PruebaWPF.ViewModel
                     Caja = s.Caja,
                     IdAperturaCaja = s.IdAperturaCaja,
                     IdDetAperturaCaja = s.IdDetAperturaCaja,
+                    Recibo1 = s.Recibo1,
                     Recinto = clsSessionHelper.recintosMemory.Where(w => w.IdRecinto == s.AperturaCaja.IdRecinto).FirstOrDefault().Siglas
                 }).Where(b => new SecurityViewModel().RecintosPermiso(pantalla).Any(a => b.AperturaCaja.IdRecinto == a.IdRecinto)).ToList();
         }
@@ -86,9 +87,9 @@ namespace PruebaWPF.ViewModel
                     Caja = s.Caja,
                     IdAperturaCaja = s.IdAperturaCaja,
                     IdDetAperturaCaja = s.IdDetAperturaCaja,
+                    Recibo1 = s.Recibo1,
                     Recinto = clsSessionHelper.recintosMemory.Where(w => w.IdRecinto == s.AperturaCaja.IdRecinto).FirstOrDefault().Siglas
                 })
-
                 .Where(b => new SecurityViewModel().RecintosPermiso(pantalla).Any(a => b.AperturaCaja.IdRecinto == a.IdRecinto) &&
                     (b.AperturaCaja.FechaApertura.Year.ToString() + "/" + b.AperturaCaja.FechaApertura.ToString("MM")).Contains(text)).ToList();
 

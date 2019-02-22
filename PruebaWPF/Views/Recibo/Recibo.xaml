@@ -50,7 +50,7 @@
                         <Button Tag="{StaticResource Permiso_Exportar}" BorderBrush="Transparent" Background="{StaticResource Export_Button}" Margin="5" Click="btn_Exportar" Height="Auto" Content="{StaticResource Text_Export_Button}"></Button>
                     </StackPanel>
                     <StackPanel HorizontalAlignment="Right" Grid.Column="1" Orientation="Horizontal">
-                        <TextBox SpellCheck.IsEnabled="True" Language="es-419" Margin="0 0 20 0"  x:Name="txtFind" Width="250" materialDesign:HintAssist.Hint="Búsqueda (No.Recibo Serie)" materialDesign:HintAssist.IsFloating="True" FontSize="13" KeyUp="txtFindText" ToolTip="La busqueda se realiza de la siguiente manera [No.Recibo Serie] respetando el espacio entre campos."/>
+                        <TextBox SpellCheck.IsEnabled="True" Language="es-419" Margin="0 0 20 0"  x:Name="txtFind" Width="250" materialDesign:HintAssist.Hint="Búsqueda (No.Recibo Serie)" materialDesign:HintAssist.IsFloating="True" FontSize="13" KeyUp="txtFindText" ToolTip="La búsqueda se realiza de la siguiente manera [No.Recibo Serie] respetando el espacio entre campos."/>
                     </StackPanel>
                 </Grid>
 

@@ -132,13 +132,21 @@ namespace PruebaWPF.Views.Main
                 String perfil = "";
                 for (int i = 0; i < clsSessionHelper.perfiles.Count; i++)
                 {
-                    perfil = "" + ((i == 0) ? clsSessionHelper.perfiles.ElementAt(i).Perfil.Descripcion : perfil + "," + clsSessionHelper.perfiles.ElementAt(i).Perfil.Descripcion);
+                    perfil = "" + ((i == 0) ? clsSessionHelper.perfiles.ElementAt(i).Perfil.Perfil1 : perfil + "," + clsSessionHelper.perfiles.ElementAt(i).Perfil.Perfil1);
                 }
 
-                lblPerfil.Text = "Perfil: " + perfil;
-                lblPeriodo.Text = "Periodo: " + clsSessionHelper.periodoEspecifico.FechaInicio.Month.ToString() + "/" + clsSessionHelper.periodoEspecifico.FechaInicio.Year.ToString() + " - " + clsSessionHelper.periodoEspecifico.Periodo;
+                lblPerfil.ToolTip = perfil;
+
+                if (perfil.Length>13)
+                {
+                    perfil = perfil.Substring(0, 13) + "...";
+                }
+
+                lblPerfil.Text = perfil;
+                lblPeriodo.Text = clsSessionHelper.periodoEspecifico.FechaInicio.Month.ToString() + "/" + clsSessionHelper.periodoEspecifico.FechaInicio.Year.ToString() + " - " + clsSessionHelper.periodoEspecifico.Periodo;
                 mnUsuario.Header = clsSessionHelper.usuario.Login;
-                lblTipoCambio.Text = "T/C: " + controller.ObtenerTipoCambio();
+                lblTipoCambio.Text = controller.ObtenerTipoCambio();
+                lblMac.Text = clsSessionHelper.MACMemory;
 
             }
             catch (Exception ex)

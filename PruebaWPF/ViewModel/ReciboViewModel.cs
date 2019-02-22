@@ -551,7 +551,7 @@ namespace PruebaWPF.ViewModel
         /// <returns>String[]</returns>
         public String[] ObtenerCodigoRecibo()
         {
-            string MAC = new TesoreriaViewModel().FindMacActual();
+            string MAC = clsSessionHelper.MACMemory;
             Caja serieCajero = db.Caja.Where(w1 => w1.MAC == MAC && w1.regAnulado == false).FirstOrDefault();
 
             //"No hemos podido obtener un código de recibo válido, es probable que desde este ordenador no sea posible generar recibos, por favor revise la configuración de tesorería."

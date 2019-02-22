@@ -4371,5 +4371,14 @@ namespace PruebaWPF.Model
     
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("sp_InsertarOrdenPago", noOrdenParameter, recibimosParameter, conceptoParameter, montoParameter, tipoMonedaParameter, usuarioParameter, idAreaRRHHParameter, idCuentaContableParameter, sistemaParameter);
         }
+    
+        public virtual int fn_ObtenerInfoUsuario(string noInterno)
+        {
+            var noInternoParameter = noInterno != null ?
+                new ObjectParameter("NoInterno", noInterno) :
+                new ObjectParameter("NoInterno", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("fn_ObtenerInfoUsuario", noInternoParameter);
+        }
     }
 }

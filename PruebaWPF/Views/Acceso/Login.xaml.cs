@@ -7,6 +7,8 @@ using PruebaWPF.Views.Main;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
 
@@ -68,49 +70,47 @@ namespace PruebaWPF.Views.Acceso
             }
         }
 
-        private void Iniciar()
+        private async void Iniciar()
         {
+           
             if (txtUsuario.Text.Length > 0 && txtPassword.Password.Length > 0)
             {
-                ValidarCredenciales(txtUsuario.Text, txtPassword.Password);
 
+                progressbar.Visibility = Visibility.Visible;
+                btnAceptar.IsEnabled = false;
+                bool result = await ValidarCredenciales(txtUsuario.Text, txtPassword.Password);
+
+                if (result)
+                {
+                    //Credenciales correctas
+                    VerificarRoles(txtUsuario.Text);
+                }
+                else
+                {
+                    WrongUserPass();
+                }
+                btnAceptar.IsEnabled = true;
+                progressbar.Visibility = Visibility.Hidden;
             }
             else
             {
                 txtMensaje.Text = InformacionNecesaria((txtUsuario.Text.Length == 0) ? "Usuario" : "Contraseña");
                 msgDialog.IsOpen = true;
             }
+
         }
 
-        private void ValidarCredenciales(String Usuario, String Password)
+        private Task<bool> ValidarCredenciales(String Usuario, String Password)
         {
             if (Usuario.Contains("@")) // Verificando la autenticación con Office365
             {
                 var credencialesOffice = new wsOffice365.authSoapClient();
-
-                if (credencialesOffice.Validate(Usuario, Password))
-                {
-                    //Credenciales correctas
-                    VerificarRoles(Usuario);
-                }
-                else
-                {
-                    WrongUserPass();
-                }
+                return Task.Run(() => credencialesOffice.Validate(Usuario, Password));
             }
             else //Verificando la autenticación con LDAP
             {
                 var credencialesLdap = new wsLDAP.LDAPSoapClient();
-
-                if (credencialesLdap.EsUsuarioValido(Usuario, Password))
-                {
-                    //Credenciales correctas
-                    VerificarRoles(Usuario);
-                }
-                else
-                {
-                    WrongUserPass();
-                }
+                return Task.Run(() => credencialesLdap.EsUsuarioValido(Usuario, Password));
             }
         }
 
@@ -238,6 +238,7 @@ namespace PruebaWPF.Views.Acceso
         {
             controller.RecintosMemory(); //Cargo los recintos en memoria, para no estar realizando peticiones a la base de datos cuando haga validaciones de autorización
             controller.AreasMemory();
+            controller.MacMemory();
             this.Hide();
             frmMain main = new frmMain();
             main.Show();

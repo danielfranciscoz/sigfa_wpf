@@ -1,4 +1,5 @@
 ﻿using PruebaWPF.Clases;
+using PruebaWPF.Helper;
 using PruebaWPF.Model;
 using PruebaWPF.Referencias;
 using PruebaWPF.ViewModel;
@@ -144,7 +145,7 @@ namespace PruebaWPF.Views.Tesoreria
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
-            lblMac.Text = controller.FindMacActual();
+            lblMac.Text = clsSessionHelper.MACMemory;
         }
 
         private void btnEstablecer_Click(object sender, RoutedEventArgs e)
