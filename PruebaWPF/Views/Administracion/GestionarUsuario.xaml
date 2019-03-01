@@ -1,0 +1,197 @@
+﻿<Window x:Class="PruebaWPF.Views.Administracion.GestionarUsuario"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+         xmlns:l="clr-namespace:PruebaWPF.Clases"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:PruebaWPF.Views.Administracion"
+        mc:Ignorable="d"
+        WindowStyle="None"
+        Title="GestionarUsuario" Loaded="Window_Loaded" Width="1000">
+    <Window.Resources>
+        <l:BoolToStringConverter x:Key="convertidor" />
+    </Window.Resources>
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="auto"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <materialDesign:Card  Grid.Column="1" Grid.Row="1" Height="500" Width="auto">
+            <Grid >
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="auto"/>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="auto"/>
+
+                </Grid.RowDefinitions>
+
+                <Grid Grid.Row="0" Margin="20 15 20 15">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"></ColumnDefinition>
+                        <ColumnDefinition Width="auto"></ColumnDefinition>
+                    </Grid.ColumnDefinitions>
+                    <StackPanel  Grid.Column="0" HorizontalAlignment="Left" VerticalAlignment="Center">
+                        <TextBlock x:Name="txtTitle" Width="320" FontSize="18" FontWeight="Bold" Text="Crear Usuario"></TextBlock>
+                    </StackPanel>
+                    <StackPanel Grid.Column="1" HorizontalAlignment="Right">
+                        <Button x:Name="btnClose" Foreground="Black" Style="{DynamicResource MaterialDesignToolButton}"  Width="auto" BorderBrush="Transparent"  Background="Transparent" Padding="0" Click="btnClose_Click">
+                            <materialDesign:PackIcon Width="25" Height="25" Kind="WindowClose"></materialDesign:PackIcon>
+                        </Button>
+                    </StackPanel>
+                </Grid>
+
+
+                <Grid Grid.Row="1" Margin="20 0 20 15">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition x:Name="panel0" Width="200"/>
+                        <ColumnDefinition x:Name="panel1" Width="10"/>
+                        <ColumnDefinition x:Name="panel2" Width="700"/>
+                    </Grid.ColumnDefinitions>
+                    <DockPanel Grid.Column="0" x:Name="panelInfo">
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="*"/>
+                                <RowDefinition Height="*"/>
+                            </Grid.RowDefinitions>
+                            <StackPanel Grid.Row="0">
+                                <StackPanel Orientation="Horizontal" HorizontalAlignment="Left">
+                                    <materialDesign:PackIcon Kind="SecurityAccount" HorizontalAlignment="Center"  VerticalAlignment="Center" Margin="0 0 10 0"></materialDesign:PackIcon>
+                                    <TextBlock VerticalAlignment="Center" FontWeight="Bold">Autenticación</TextBlock>
+
+                                </StackPanel>
+                                <Separator  Margin="0 5 0 5"/>
+                                <TextBox x:Name="txtUser" Text="{Binding Login,Mode=TwoWay}" materialDesign:HintAssist.Hint="* Usuario LDAP" materialDesign:HintAssist.IsFloating="True" FontSize="12" />
+                                <StackPanel Margin="0 10 0 0" Orientation="Horizontal">
+                                    <TextBlock VerticalAlignment="Center" FontSize="10" Text="También conocido como usuario PIDGIN." Foreground="{StaticResource DarkGray}"/>
+                                </StackPanel>
+                                <TextBox Margin="0 15 0 0" x:Name="txtEmail" Text="{Binding LoginEmail,Mode=TwoWay}" materialDesign:HintAssist.Hint="* Correo Insitucional Office365" materialDesign:HintAssist.IsFloating="True" FontSize="12" />
+
+                            </StackPanel>
+                            <StackPanel Grid.Row="1">
+                                <StackPanel Margin="0 0 0 0"  Orientation="Horizontal" HorizontalAlignment="Left">
+                                    <materialDesign:PackIcon Kind="AccountCardDetails" HorizontalAlignment="Center"  VerticalAlignment="Center" Margin="0 0 10 0"></materialDesign:PackIcon>
+                                    <TextBlock VerticalAlignment="Center" FontWeight="Bold">Información de Trabajador</TextBlock>
+                                </StackPanel>
+                                <Separator  Margin="0 5 0 5"/>
+                                <TextBox Margin="0 0 0 0" x:Name="txtcodigoEmpleado"  VerticalAlignment="Bottom" materialDesign:HintAssist.Hint="* Código Trabajador" materialDesign:HintAssist.IsFloating="True" KeyDown="txtcodigoEmpleado_KeyDown" ></TextBox>
+                                <Button HorizontalAlignment="Right" x:Name="btnFindEmpleado" Click="btnFindEmpleado_Click" FontWeight="Bold" ToolTip="Buscar trabajador en RRHH" Style="{DynamicResource MaterialDesignToolButton}" FontSize="10">
+                                    Buscar en RRHH
+                                </Button>
+                                <TextBox x:Name="txtNoInterno" Margin="0 0 0 0" VerticalAlignment="Bottom" Text="{Binding noInterno,Mode=TwoWay}" Visibility="Collapsed"></TextBox>
+                                <TextBox x:Name="txtNombreCompleto" Margin="0 15 0 0" VerticalAlignment="Bottom" Text="{Binding Nombre}" ToolTip="{Binding NombreCompleto,Mode=OneWay}" IsReadOnly="True" materialDesign:HintAssist.Hint="Nombre Completo" materialDesign:HintAssist.IsFloating="True">
+
+                                </TextBox>
+                            </StackPanel>
+                        </Grid>
+
+                    </DockPanel>
+                    <Separator Grid.Column="1" x:Name="panelSeparator">
+                        <Separator.LayoutTransform>
+                            <RotateTransform Angle="90" />
+                        </Separator.LayoutTransform>
+                    </Separator>
+                    <DockPanel Grid.Column="2" x:Name="panelRoles">
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="10"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+                            <DockPanel Grid.Column="0">
+                                <StackPanel DockPanel.Dock="Top" >
+                                    <StackPanel Margin="0 0 0 0"  Orientation="Horizontal" HorizontalAlignment="Left">
+                                        <materialDesign:PackIcon Kind="VectorSelection" HorizontalAlignment="Center"  VerticalAlignment="Center" Margin="0 0 10 0"></materialDesign:PackIcon>
+                                        <TextBlock VerticalAlignment="Center" FontWeight="Bold">Selección de Perfiles</TextBlock>
+
+                                    </StackPanel>
+                                    <Separator  Margin="0 5 0 3"/>
+
+                                    <ComboBox x:Name="cboRecinto" materialDesign:HintAssist.Hint="* Recinto" materialDesign:HintAssist.IsFloating="True" SelectedValuePath="IdRecinto" DisplayMemberPath="Siglas" SelectionChanged="cboRecinto_SelectionChanged"></ComboBox>
+
+                                </StackPanel>
+                                <DockPanel Margin="0 10 0 0"  HorizontalAlignment="Stretch">
+                                    <ListBox ScrollViewer.HorizontalScrollBarVisibility="Auto" Name="lstRoles" Background="{StaticResource Gray_BackgroundDisabled}">
+                                        <ListBox.ItemTemplate>
+                                            <DataTemplate>
+                                                <StackPanel Orientation="Horizontal" >
+                                                    <Button x:Name="btnAddRole" Tag="{StaticResource Permiso_Eliminar}" Background="{StaticResource Delete_Button}" Height="30" Width="30" Style="{StaticResource MaterialDesignToolButton}" BorderBrush="Transparent" Click="btnAddRole_Click">
+                                                        <materialDesign:PackIcon Kind="PlusBox" HorizontalAlignment="Center"  VerticalAlignment="Center" Margin="0 0 0 0"></materialDesign:PackIcon>
+                                                    </Button>
+                                                    
+                                                    <TextBlock  VerticalAlignment="Center" Margin="5 0 0 0" >
+                                                        <TextBlock.Inlines>
+                                                            <Run FontWeight="Bold" Foreground="{StaticResource OkMsj}" Text="{Binding isWeb, Converter={StaticResource convertidor},ConverterParameter='Web |;'}"></Run>
+                                                            <Run Text="{Binding Perfil1}"></Run>
+                                                        </TextBlock.Inlines>
+                                                    </TextBlock>
+                                                </StackPanel>
+                                            </DataTemplate>
+                                        </ListBox.ItemTemplate>
+                                    </ListBox>
+                                </DockPanel>
+
+                            </DockPanel>
+                            <Separator Grid.Column="1">
+                                <Separator.LayoutTransform>
+                                    <RotateTransform Angle="90" />
+                                </Separator.LayoutTransform>
+                            </Separator>
+                            <DockPanel Grid.Column="2">
+                                <StackPanel DockPanel.Dock="Top" >
+                                    <StackPanel Margin="0 0 0 0"  Orientation="Horizontal" HorizontalAlignment="Left">
+                                        <materialDesign:PackIcon Kind="SetLeft" HorizontalAlignment="Center"  VerticalAlignment="Center" Margin="0 0 10 0"></materialDesign:PackIcon>
+                                        <TextBlock VerticalAlignment="Center" FontWeight="Bold">Perfiles a asignar</TextBlock>
+
+                                    </StackPanel>
+                                    <Separator  Margin="0 5 0 3"/>
+                                </StackPanel>
+                                <DockPanel Grid.Column="2">
+                                    <DataGrid Name="tblRolesUsuario"  CanUserDeleteRows="False" CanUserAddRows="False" AutoGenerateColumns="False" SelectionUnit="FullRow" SelectionMode="Single" >
+                                        <DataGrid.Columns>
+                                            <DataGridTemplateColumn CanUserResize="False" Width="50" Header="">
+                                                <DataGridTemplateColumn.CellTemplate>
+                                                    <DataTemplate>
+                                                        <StackPanel>
+                                                            <Button x:Name="btnDeleteRoleUser" Tag="{StaticResource Permiso_Eliminar}" Background="{StaticResource Delete_Button}" Height="20" Width="20" Style="{StaticResource MaterialDesignToolButton}" BorderBrush="Transparent" Click="btnDeleteRoleUser_Click">
+                                                                <materialDesign:PackIcon Kind="Delete" HorizontalAlignment="Center"  VerticalAlignment="Center" Margin="0 0 0 0"></materialDesign:PackIcon>
+                                                            </Button>
+                                                        </StackPanel>
+                                                    </DataTemplate>
+                                                </DataGridTemplateColumn.CellTemplate>
+                                            </DataGridTemplateColumn>
+
+                                            <DataGridTextColumn CanUserReorder="False" CanUserResize="False" IsReadOnly="True" Header="Recinto" Width="auto" Binding="{Binding Recinto}"></DataGridTextColumn>
+                                            <DataGridTextColumn CanUserReorder="False" CanUserResize="False" IsReadOnly="True" Header="Acceso" Width="100" Binding="{Binding Perfil.isWeb, Converter={StaticResource convertidor},ConverterParameter='Web;Escritorio'}"></DataGridTextColumn>
+                                            <DataGridTextColumn CanUserReorder="False" CanUserResize="False" IsReadOnly="True" Header="Perfil" Width="auto" Binding="{Binding Perfil.Perfil1}"></DataGridTextColumn>
+                                        </DataGrid.Columns>
+                                    </DataGrid>
+                                </DockPanel>
+                            </DockPanel>
+                        </Grid>
+                    </DockPanel>
+                </Grid>
+
+
+
+                <StackPanel Grid.Row="2" Height="auto" Margin="20 0 20 10">
+                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
+                        <Button x:Name="btnCancel" Style="{DynamicResource MaterialDesignFlatButton}" Foreground="{StaticResource Save_Button}"  Margin="0 2 0 2" Click="btnClose_Click" Content="{StaticResource Text_Cancel_Button}"></Button>
+                        <Button Tag="{StaticResource Permiso_Editar}" x:Name="btnEdit" Visibility="Collapsed" Style="{DynamicResource MaterialDesignFlatButton}" Foreground="{StaticResource Save_Button}"  Margin="0 2 0 2" Click="btnSave_Click" Content="{StaticResource Text_Edit_Button}"></Button>
+                        <Button Tag="{StaticResource Permiso_Guardar}" x:Name="btnSave" Style="{DynamicResource MaterialDesignFlatButton}" Foreground="{StaticResource Save_Button}"  Margin="0 2 0 2" Click="btnSave_Click" Content="{StaticResource Text_Save_Button}"></Button>
+                    </StackPanel>
+                </StackPanel>
+
+            </Grid>
+        </materialDesign:Card>
+
+    </Grid>
+
+</Window>

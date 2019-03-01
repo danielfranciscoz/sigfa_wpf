@@ -912,6 +912,7 @@ advertencia 6002: La tabla o vista 'SIFOP.dbo.ParametroSistema' no tiene definid
           <Property Name="IdPerfil" Type="tinyint" Nullable="false" />
           <Property Name="Perfil" Type="nvarchar" MaxLength="50" Nullable="false" />
           <Property Name="Descripcion" Type="nvarchar" MaxLength="100" Nullable="false" />
+          <Property Name="isWeb" Type="bit" Nullable="false" />
           <Property Name="LoginCreacion" Type="nvarchar" MaxLength="20" Nullable="false" />
           <Property Name="RegAnulado" Type="bit" Nullable="false" />
         </EntityType>
@@ -13903,6 +13904,7 @@ advertencia 6002: La tabla o vista 'SIFOP.dbo.w_LibroMayorAcumulado_Vlast' no ti
           <NavigationProperty Name="PerfilContenido" Relationship="Self.FK_DetallePerfil_Perfil" FromRole="Perfil" ToRole="PerfilContenido" />
           <NavigationProperty Name="Permiso" Relationship="Self.FK_Permiso_Permiso" FromRole="Perfil" ToRole="Permiso" />
           <NavigationProperty Name="UsuarioPerfil" Relationship="Self.FK_UsuarioPerfil_Perfil" FromRole="Perfil" ToRole="UsuarioPerfil" />
+          <Property Name="isWeb" Type="Boolean" Nullable="false" />
         </EntityType>
         <EntityType Name="PerfilContenido">
           <Key>
@@ -21983,7 +21985,7 @@ advertencia 6002: La tabla o vista 'SIFOP.dbo.w_LibroMayorAcumulado_Vlast' no ti
             <End Role="ReciboPago" EntitySet="ReciboPago" />
           </AssociationSet>
           <FunctionImport Name="fn_ObtenerInfoUsuario">
-            <Parameter Name="NoInterno" Mode="In" Type="String" />
+          <Parameter Name="NoInterno" Mode="In" Type="String" />
           </FunctionImport>
           </EntityContainer>
         <ComplexType Name="dt_getpropertiesbyid_Result">
@@ -23301,6 +23303,7 @@ advertencia 6002: La tabla o vista 'SIFOP.dbo.w_LibroMayorAcumulado_Vlast' no ti
           <EntitySetMapping Name="Perfil">
             <EntityTypeMapping TypeName="SIFOPModel.Perfil">
               <MappingFragment StoreEntitySet="Perfil">
+                <ScalarProperty Name="isWeb" ColumnName="isWeb" />
                 <ScalarProperty Name="IdPerfil" ColumnName="IdPerfil" />
                 <ScalarProperty Name="Perfil1" ColumnName="Perfil" />
                 <ScalarProperty Name="Descripcion" ColumnName="Descripcion" />

@@ -35,7 +35,7 @@ namespace PruebaWPF.ViewModel
 
         public List<UsuarioPerfil> ObtenerPerfilesUsuario(String Usuario)
         {
-            return db.UsuarioPerfil.Where(w => (w.Login == Usuario || w.Usuario.LoginEmail == Usuario) && w.RegAnulado == false && w.Usuario.RegAnulado == false).ToList();
+            return db.UsuarioPerfil.Where(w => (w.Login == Usuario || w.Usuario.LoginEmail == Usuario) && w.Perfil.isWeb==false && w.RegAnulado == false && w.Usuario.RegAnulado == false).ToList();
         }
 
         //public List<UsuarioPerfil> ObtenerPerfiles(String Usuario)

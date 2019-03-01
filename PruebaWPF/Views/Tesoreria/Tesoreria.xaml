@@ -123,19 +123,23 @@
                                     <RowDefinition Height="auto"/>
                                 </Grid.RowDefinitions>
 
-                                <StackPanel Grid.Row="0" Orientation="Horizontal" >
+                                <DockPanel Grid.Row="0" >
                                     <Grid>
-                                        <Grid.ColumnDefinitions>
-                                            <ColumnDefinition Width="50"/>
-                                            <ColumnDefinition Width="*"/>
-                                        </Grid.ColumnDefinitions>
 
-                                        <Button Grid.Column="0" x:Name="btnNewSerie" Tag="{StaticResource Permiso_Guardar}" ToolTip="Crear una nueva serie"  BorderBrush="Transparent"  Style="{StaticResource MaterialDesignFloatingActionButton}" Width="25" Height="25" Margin="5 5 5 5" Click="btnNewSerie_Click">
-                                            <materialDesign:PackIcon Kind="Plus"  VerticalAlignment="Center" Margin="0 0 0 0"></materialDesign:PackIcon>
-                                        </Button>
-                                        <TextBlock Grid.Column="1" VerticalAlignment="Center" FontWeight="Bold">Registro de Series de Recibo</TextBlock>
+                                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Left">
+                                            <materialDesign:PackIcon Kind="FormatListNumbers" HorizontalAlignment="Center"  VerticalAlignment="Center" Margin="10 0 10 0"></materialDesign:PackIcon>
+                                            <TextBlock VerticalAlignment="Center" FontWeight="Bold">Registro de Series</TextBlock>
+                                        </StackPanel>
+
+                                        <StackPanel HorizontalAlignment="Right" >
+                                            <Button Padding="0" x:Name="btnNewRol" Height="25" Width="30" Foreground="{StaticResource DarkGray}" Tag="{StaticResource Permiso_Guardar}"  Style="{StaticResource MaterialDesignFlatButton}" BorderBrush="Transparent" Click="btnNewSerie_Click" ToolTip="Agregar una nueva serie">
+                                                <materialDesign:PackIcon Kind="Plus" HorizontalAlignment="Center"  VerticalAlignment="Center" ></materialDesign:PackIcon>
+                                            </Button>
+
+                                        </StackPanel>
+
                                     </Grid>
-                                </StackPanel>
+                                </DockPanel>
                                 <DockPanel x:Name="panelGridSerie"  Grid.Row="2" VerticalAlignment="Stretch">
                                     <DataGrid Name="tblSerie" CanUserDeleteRows="False" CanUserAddRows="False" AutoGenerateColumns="False" SelectionUnit="FullRow" SelectionMode="Single" >
 

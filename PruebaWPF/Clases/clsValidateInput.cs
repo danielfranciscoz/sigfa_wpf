@@ -130,6 +130,23 @@ namespace PruebaWPF.Clases
             return flag;
         }
 
+        public static bool ValidateMayorCero(TextBox[] campos)
+        {
+            bool flag = true;
+            TextBox txt;
+            for (int i = 0; i < campos.Length; i++)
+            {
+                txt = (TextBox)campos[i];
+                if (txt.Text.Equals("0"))
+                {
+                    flag = false;
+                    txt.BorderBrush = clsutilidades.BorderError();
+                }
+            }
+
+            return flag;
+        }
+
 
         public static bool ValidateLength(TextBox campo, int MaxLength, bool isMaxMin)
         {
@@ -176,6 +193,32 @@ namespace PruebaWPF.Clases
                         }
                         break;
                 }
+            }
+
+            return flag;
+        }
+
+        public static bool ValidateEmail(TextBox campo)
+        {
+            bool flag = true;
+
+            String expresion = "\\w+([-+.']\\w+)*@\\w+([-.]\\w+)*\\.\\w+([-.]\\w+)*";
+            if (Regex.IsMatch(campo.Text, expresion))
+            {
+                if (Regex.Replace(campo.Text, expresion, String.Empty).Length == 0)
+                {
+                    flag = true;
+                }
+                else
+                {
+                    flag = false;
+                    campo.BorderBrush = clsutilidades.BorderError();
+                }
+            }
+            else
+            {
+                flag = false;
+                campo.BorderBrush = clsutilidades.BorderError();
             }
 
             return flag;

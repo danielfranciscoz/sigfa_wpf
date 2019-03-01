@@ -130,6 +130,7 @@
     <Compile Include="Clases\GetDataTable.cs" />
     <Compile Include="Clases\IsNullConverter.cs" />
     <Compile Include="Clases\Operacion.cs" />
+    <Compile Include="Clases\PerfilComparer.cs" />
     <Compile Include="Connected Services\wsTipoCambio\Reference.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -1102,6 +1103,12 @@
     <Compile Include="Views\Administracion\Administracion.xaml.cs">
       <DependentUpon>Administracion.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Views\Administracion\GestionarRoles.xaml.cs">
+      <DependentUpon>GestionarRoles.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Administracion\GestionarUsuario.xaml.cs">
+      <DependentUpon>GestionarUsuario.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\AgenteExterno\AgenteExterno.xaml.cs">
       <DependentUpon>AgenteExterno.xaml</DependentUpon>
     </Compile>
@@ -1215,6 +1222,14 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\Administracion\Administracion.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\Administracion\GestionarRoles.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\Administracion\GestionarUsuario.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

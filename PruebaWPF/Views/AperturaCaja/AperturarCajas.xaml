@@ -76,7 +76,7 @@
                                 <DockPanel Grid.Column="0">
                                     <TextBlock DockPanel.Dock="Top" VerticalAlignment="Center" Margin="0 0 0 5" FontSize="10" Text="Cajas del recinto" Foreground="{StaticResource DarkGray}"/>
                                     <DockPanel HorizontalAlignment="Stretch" >
-                                        <ListBox Name="lstCajas" HorizontalAlignment="Stretch" BorderBrush="Gray" BorderThickness="1">
+                                        <ListBox Name="lstCajas" HorizontalAlignment="Stretch" Background="{StaticResource Gray_BackgroundDisabled}">
                                             <ListBox.ItemTemplate>
                                                 <DataTemplate>
                                                     <StackPanel>
@@ -104,7 +104,7 @@
                                 <DockPanel Grid.Column="2">
                                     <TextBlock DockPanel.Dock="Top" VerticalAlignment="Center" Margin="0 0 0 5" FontSize="10" Text="Cajas a Aperturar" Foreground="{StaticResource DarkGray}"/>
                                     <DockPanel HorizontalAlignment="Stretch" >
-                                    <ListBox Name="lstAperturar" HorizontalAlignment="Stretch" BorderBrush="Gray" BorderThickness="1">
+                                        <ListBox Name="lstAperturar" HorizontalAlignment="Stretch" Background="{StaticResource Gray_BackgroundDisabled}">
                                             <ListBox.ItemTemplate>
                                                 <DataTemplate>
                                                     <StackPanel>

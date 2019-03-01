@@ -17,7 +17,24 @@ namespace PruebaWPF.ViewModel
 
         public List<Pantalla> ObtenerMenu()
         {
-            return db.fn_ObtenerMenu(clsSessionHelper.usuario.Login,false).ToList().Select(a => new Pantalla { IdPantalla = a.IdPantalla.Value, IdPadre = a.IdPadre.Value, Titulo = a.Titulo, isMenu = a.isMenu.Value, URL = a.URL, Orden = a.Orden.Value, Tipo = a.Tipo, Icon = a.Icon, Uid = a.UId }).OrderBy(a => a.Orden).ToList();
+            List<Perfil> perfiles = clsSessionHelper.perfiles.Select(s=>s.Perfil).ToList();
+            List<Permiso> permisos = db.Permiso.ToList().Where(w => perfiles.Any(a => a.IdPerfil == w.IdPerfil)).ToList();
+
+            List<Pantalla> hijos = permisos.Where(w => w.Pantalla.Uid != null).Select(s => s.Pantalla).Distinct().ToList();
+            List<Pantalla> padres = FindPadres(hijos);
+
+            return padres;
+        }
+
+        private List<Pantalla> FindPadres(List<Pantalla> hijos)
+        {
+            List<Pantalla> padre = db.Pantalla.ToList().Where(w => hijos.Any(a => a.IdPadre == w.IdPantalla)).ToList();
+
+            if (padre.Where(w => w.IdPadre != null).Count() > 0)
+            {
+                padre = FindPadres(padre).ToList();
+            }
+            return hijos.Union(padre).ToList();
         }
 
         public String ObtenerTipoCambio()

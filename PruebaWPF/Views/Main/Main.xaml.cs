@@ -60,7 +60,7 @@ namespace PruebaWPF.Views.Main
 
             MenuItem mi;
 
-            foreach (Pantalla item in pantallas.Where(w => w.IdPadre == 0))
+            foreach (Pantalla item in pantallas.Where(w => w.IdPadre == null))
             {
                 mi = new MenuItem();
                 mi.Header = item.Titulo;
@@ -79,23 +79,35 @@ namespace PruebaWPF.Views.Main
             {
                 subMi = new MenuItem();
 
-                if (!item.Tipo.Equals("Separador"))
+                if (item.Tipo != null)
                 {
-                    subMi.Header = item.Titulo;
-                    subMi.Icon = getIcon(item.Icon);
-
-                    if (item.URL != null)
+                    if (!item.Tipo.Equals("Separador"))
                     {
-                        subMi.Click += (sender, e) => MenuDinamic_Click(item);
-                    }
+                        subMi.Header = item.Titulo;
+                        subMi.Icon = getIcon(item.Icon);
 
-                    mi.Items.Add(subMi);
-                    CargarSubMenu(item, pantallas, subMi);
+                        if (item.URL != null)
+                        {
+                            subMi.Click += (sender, e) => MenuDinamic_Click(item);
+                        }
+
+                        mi.Items.Add(subMi);
+                        CargarSubMenu(item, pantallas, subMi);
+                    }
+                    else
+                    {
+                        mi.Items.Add(sep);
+                    }
                 }
                 else
                 {
-                    mi.Items.Add(sep);
+                    subMi.Header = item.Titulo;
+                    subMi.Height = Double.NaN;
+                    mi.Items.Add(subMi);
+                    CargarSubMenu(item, pantallas, subMi);
                 }
+
+
             }
 
         }
@@ -130,14 +142,20 @@ namespace PruebaWPF.Views.Main
             try
             {
                 String perfil = "";
-                for (int i = 0; i < clsSessionHelper.perfiles.Count; i++)
+
+                foreach (UsuarioPerfil up in clsSessionHelper.perfiles.Distinct())
                 {
-                    perfil = "" + ((i == 0) ? clsSessionHelper.perfiles.ElementAt(i).Perfil.Perfil1 : perfil + "," + clsSessionHelper.perfiles.ElementAt(i).Perfil.Perfil1);
+                    perfil = perfil.Equals("") ? up.Perfil.Perfil1 : perfil + "," + up.Perfil.Perfil1;
+
                 }
+                //for (int i = 0; i < clsSessionHelper.perfiles.Count; i++)
+                //{
+                //    perfil = "" + ((i == 0) ? clsSessionHelper.perfiles.ElementAt(i).Perfil.Perfil1 : perfil + "," + clsSessionHelper.perfiles.ElementAt(i).Perfil.Perfil1);
+                //}
 
                 lblPerfil.ToolTip = perfil;
 
-                if (perfil.Length>13)
+                if (perfil.Length > 13)
                 {
                     perfil = perfil.Substring(0, 13) + "...";
                 }

@@ -20,5 +20,7 @@ namespace PruebaWPF.Model
             this.Caption = caption;
             this.isChecked = ischecked;
         }
+
+        public ListaExporta() { }
     }
 }
