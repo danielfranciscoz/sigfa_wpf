@@ -84,7 +84,6 @@ namespace PruebaWPF.Views.Administracion
 
         private void Diseñar()
         {
-
             clsutilidades.Dialog_ModalDesign(this);
         }
 

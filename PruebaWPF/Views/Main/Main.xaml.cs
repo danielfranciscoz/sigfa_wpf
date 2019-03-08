@@ -143,9 +143,9 @@ namespace PruebaWPF.Views.Main
             {
                 String perfil = "";
 
-                foreach (UsuarioPerfil up in clsSessionHelper.perfiles.Distinct())
+                foreach (Perfil up in clsSessionHelper.perfiles.Select(s=>s.Perfil).Distinct())
                 {
-                    perfil = perfil.Equals("") ? up.Perfil.Perfil1 : perfil + "," + up.Perfil.Perfil1;
+                    perfil = perfil.Equals("") ? up.Perfil1 : perfil + "," + up.Perfil1;
 
                 }
                 //for (int i = 0; i < clsSessionHelper.perfiles.Count; i++)

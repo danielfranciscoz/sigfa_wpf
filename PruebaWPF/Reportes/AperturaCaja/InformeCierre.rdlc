@@ -724,7 +724,7 @@
               <Paragraph>
                 <TextRuns>
                   <TextRun>
-                    <Value>=iIf(CountRows("ReciboPagos")=0,"NO EXISTEN INGRESOS","RECIBOS OFICIALES DE CAJA (" &amp; CountDistinct(Fields!IdRecibo.Value,"ReciboPagos") &amp; ")")</Value>
+                    <Value>=iIf(CountRows("ReciboPagos")=0,"NO EXISTEN INGRESOS","RECIBOS OFICIALES DE CAJA (" &amp; CountDistinct(CSTR(Fields!IdRecibo.Value)+CSTR(Fields!Serie.Value),"ReciboPagos") &amp; ")")</Value>
                     <Style>
                       <FontWeight>Bold</FontWeight>
                     </Style>
@@ -1701,7 +1701,7 @@
                 <DataSetName>ReciboPagos</DataSetName>
                 <Top>0.18039cm</Top>
                 <Height>1.2cm</Height>
-                <Width>18.56001cm</Width>
+                <Width>18.56cm</Width>
                 <Style>
                   <Border>
                     <Style>None</Style>

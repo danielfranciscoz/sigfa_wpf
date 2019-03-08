@@ -29,9 +29,11 @@ namespace PruebaWPF.Views.Administracion
         private Pantalla pantalla;
         private List<Usuario> usuarios;
         private List<Perfil> perfiles;
-
+        private List<PermisoSon> permisos;
+        private bool isLastAccesDelete = false;
         public static bool Cambios = false;
         public static bool isCreated = false;
+        public static bool isAddPermiso = false;
 
         public static Usuario selectedUser = null;
         public static Perfil selectedPerfil = null;
@@ -122,7 +124,6 @@ namespace PruebaWPF.Views.Administracion
                 if (selectedPerfil != null)
                 {
                     lstRoles.SelectedItem = perfiles.Find(f => f.IdPerfil == selectedPerfil.IdPerfil);
-
                 }
             }
             catch (Exception ex)
@@ -383,29 +384,9 @@ namespace PruebaWPF.Views.Administracion
             gu.ShowDialog();
         }
 
-        private void Page_Unloaded(object sender, RoutedEventArgs e)
-        {
-            //selectedUser = null;
-        }
-
         private void txtFindRol_KeyUp(object sender, KeyEventArgs e)
         {
             LoadListPerfiles(txtFindRol.Text);
-        }
-
-        private void txtFindPantallaRol_KeyUp(object sender, KeyEventArgs e)
-        {
-
-        }
-
-        private void txtFindPermisos_KeyUp(object sender, KeyEventArgs e)
-        {
-
-        }
-
-        private void lstPermisos_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-
         }
 
         private void lstRoles_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -427,7 +408,7 @@ namespace PruebaWPF.Views.Administracion
         }
 
         private void CargarPantallasPerfil(Perfil perfil)
-        {
+        {//TODO Aun queda pendiente la carga de datos cuando se seleccionan filas de la lista de roles y del arbol de pantallas
             CargarMenu(perfil);
             tree.Height = panelListaPantallasRol.ActualHeight;
 
@@ -437,13 +418,14 @@ namespace PruebaWPF.Views.Administracion
 
         private void CargarAccesos(Perfil perfil)
         {
-            List<Pantalla> pantallas = controller().FindAccesosDirectos(perfil);
+            List<AccesoDirectoPerfil> pantallas = controller().FindAccesosDirectos(perfil);
             lstAccesos.ItemsSource = pantallas;
         }
 
         private void CargarPermisos(Pantalla PantallaPerfil, Perfil perfil)
         {
-            tblPermisos.ItemsSource = controller().FindPermisos(PantallaPerfil, perfil);
+            permisos = controller().FindPermisos(PantallaPerfil, perfil);
+            tblPermisos.ItemsSource = permisos;
             tblPermisos.Height = panelListaPermisos.ActualHeight;
 
         }
@@ -486,10 +468,19 @@ namespace PruebaWPF.Views.Administracion
                         subMi.Header = item.Titulo;
                         subMi.FontWeight = FontWeights.Normal;
                         subMi.DataContext = item;
+
+                        if (selectedPantallaPerfil != null && isAddPermiso)
+                        {
+                            if (item.IdPantalla == selectedPantallaPerfil.IdPantalla)
+                            {
+                                subMi.IsSelected = true;
+                                selectedPantallaPerfil = null;
+                            }
+                        }
+
                         mi.Items.Add(subMi);
                         mi.IsExpanded = true;
                         CargarSubMenu(item, pantallas, subMi);
-
                     }
                 }
                 else
@@ -510,14 +501,15 @@ namespace PruebaWPF.Views.Administracion
         {
             if (tree.SelectedItem != null)
             {
-                Pantalla p = (Pantalla)((TreeViewItem)tree.SelectedItem).DataContext;
-                if (p != null)
+                selectedPantallaPerfil = (Pantalla)((TreeViewItem)tree.SelectedItem).DataContext;
+
+                if (selectedPantallaPerfil != null)
                 {
                     if (panelEmptyPermisos.Visibility != Visibility.Collapsed)
                     {
                         panelEmptyPermisos.Visibility = Visibility.Collapsed;
                     }
-                    CargarPermisos(p, selectedPerfil);
+                    CargarPermisos(selectedPantallaPerfil, selectedPerfil);
                 }
                 else
                 {
@@ -536,7 +528,19 @@ namespace PruebaWPF.Views.Administracion
 
         private void btnDeleteAccess_Click(object sender, RoutedEventArgs e)
         {
+            try
+            {
+                AccesoDirectoPerfil accesoDirecto = (AccesoDirectoPerfil)((Button)sender).DataContext;
 
+                if (clsutilidades.OpenDeleteQuestionMessage())
+                {
+                    clsutilidades.OpenMessage(EliminarAccesoDirecto(accesoDirecto));
+                }
+            }
+            catch (Exception ex)
+            {
+                clsutilidades.OpenMessage(new Operacion() { Mensaje = new clsException(ex).ErrorMessage(), OperationType = clsReferencias.TYPE_MESSAGE_Error });
+            }
         }
 
         private void btnNewRol_Click(object sender, RoutedEventArgs e)
@@ -547,32 +551,199 @@ namespace PruebaWPF.Views.Administracion
 
         private void btnEditRol_Click(object sender, RoutedEventArgs e)
         {
-
+            if (lstRoles.SelectedItem != null)
+            {
+                GestionarRoles gr = new GestionarRoles(pantalla, selectedPerfil);
+                gr.ShowDialog();
+            }
+            else
+            {
+                clsutilidades.OpenMessage(new Operacion() { Mensaje = clsReferencias.MESSAGE_NoSelection, OperationType = clsReferencias.TYPE_MESSAGE_Advertencia });
+            }
         }
 
         private void btnDeleteRol_Click(object sender, RoutedEventArgs e)
         {
+            try
+            {
 
+                if (lstRoles.SelectedItem != null)
+                {
+                    var roles = selectedPerfil.UsuarioPerfil.Select(s => s.Login).Distinct();
+
+                    if (roles.Count() > 0)
+                    {
+                        if (clsutilidades.OpenDeleteQuestionMessage(string.Format("Atención, hemos detectado que este perfil se encuentra asociado a {0} usuario(s), tenga en cuenta que si lo elimina hará que a estos usuarios les sea eliminado el acceso mediante este perfil y posiblemente no podrán ingresar al sistema, ¿Realmente desea continuar con esta acción?", roles.Count())))
+                        {
+                            clsutilidades.OpenMessage(EliminarRol(selectedPerfil));
+                        }
+                    }
+                    else
+                    {
+                        if (clsutilidades.OpenDeleteQuestionMessage())
+                        {
+                            clsutilidades.OpenMessage(EliminarRol(selectedPerfil));
+                        }
+
+                    }
+                }
+                else
+                {
+                    clsutilidades.OpenMessage(new Operacion() { Mensaje = clsReferencias.MESSAGE_NoSelection, OperationType = clsReferencias.TYPE_MESSAGE_Advertencia });
+                }
+
+            }
+            catch (Exception ex)
+            {
+                clsutilidades.OpenMessage(new Operacion() { Mensaje = new clsException(ex).ErrorMessage(), OperationType = clsReferencias.TYPE_MESSAGE_Error });
+
+            }
+        }
+
+        private Operacion EliminarAccesoDirecto(AccesoDirectoPerfil accesoDirecto)
+        {
+            Operacion o = new Operacion();
+            try
+            {
+                controller().DeleteAccesoDirecto(accesoDirecto);
+
+                o.Mensaje = clsReferencias.MESSAGE_Exito_Delete;
+                o.OperationType = clsReferencias.TYPE_MESSAGE_Exito;
+
+                CargarAccesos(selectedPerfil);
+
+            }
+            catch (Exception ex)
+            {
+                o.Mensaje = new clsException(ex).ErrorMessage();
+                o.OperationType = clsReferencias.TYPE_MESSAGE_Error;
+            }
+
+            return o;
+        }
+
+        private Operacion EliminarRol(Perfil p)
+        {
+            Operacion o = new Operacion();
+            try
+            {
+                controller().DeletePerfil(p);
+
+                o.Mensaje = clsReferencias.MESSAGE_Exito_Delete;
+                o.OperationType = clsReferencias.TYPE_MESSAGE_Exito;
+                selectedPerfil = null;
+                LoadListPerfiles(txtFind.Text);
+
+            }
+            catch (Exception ex)
+            {
+                o.Mensaje = new clsException(ex).ErrorMessage();
+                o.OperationType = clsReferencias.TYPE_MESSAGE_Error;
+            }
+
+            return o;
         }
 
         private void btnNewMenu_Click(object sender, RoutedEventArgs e)
         {
-
-        }
-
-        private void btnDeleteMenu_Click(object sender, RoutedEventArgs e)
-        {
-
+            if (lstRoles.SelectedItem != null)
+            {
+                UpdateMenu um = new UpdateMenu(pantalla, selectedPerfil);
+                um.ShowDialog();
+            }
+            else
+            {
+                clsutilidades.OpenMessage(new Operacion() { Mensaje = clsReferencias.MESSAGE_NoSelection, OperationType = clsReferencias.TYPE_MESSAGE_Advertencia });
+            }
         }
 
         private void btnNewAcces_Click(object sender, RoutedEventArgs e)
         {
-
+            if (lstRoles.SelectedItem != null)
+            {
+                UpdateMenu um = new UpdateMenu(pantalla, selectedPerfil, true);
+                um.ShowDialog();
+            }
+            else
+            {
+                clsutilidades.OpenMessage(new Operacion() { Mensaje = clsReferencias.MESSAGE_NoSelection, OperationType = clsReferencias.TYPE_MESSAGE_Advertencia });
+            }
         }
 
         private void btnNewPermiso_Click(object sender, RoutedEventArgs e)
         {
+            AddPermiso ap = new AddPermiso(pantalla, selectedPerfil, selectedPantallaPerfil);
+            ap.ShowDialog();
+        }
 
+        private void btnDeletePermiso_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                Permiso permiso = (Permiso)tblPermisos.CurrentItem;
+
+                if (MensajeConfirmacion(permiso))
+                {
+                    clsutilidades.OpenMessage(EliminarPermiso(permiso));
+                }
+            }
+            catch (Exception ex)
+            {
+                clsutilidades.OpenMessage(new Operacion() { Mensaje = new clsException(ex).ErrorMessage(), OperationType = clsReferencias.TYPE_MESSAGE_Error });
+
+            }
+        }
+
+        private bool MensajeConfirmacion(Permiso permiso)
+        {
+            isLastAccesDelete = false;
+            if (permiso.IdPermisoName == 1)
+            {
+                if (permisos.Where(w => w.IdPermisoName == 1).Count() == 1)
+                {
+                    isLastAccesDelete = true;
+                    return clsutilidades.OpenDeleteQuestionMessage("Esta a punto de Eliminar por completo el acceso a esta pantalla, por lo tanto, también serán eliminados los accesos directos de esta pantalla en este perfil, ¿Realmente desea continuar con esta acción?");
+                }
+                else
+                {
+                    return clsutilidades.OpenDeleteQuestionMessage("Esta a punto de Eliminar por completo el acceso a esta pantalla, por lo tanto, los usuarios con este Perfil no podrán acceder a ella, ¿Realmente desea continuar con esta acción?");
+                }
+            }
+            else
+            {
+                return clsutilidades.OpenDeleteQuestionMessage();
+            }
+        }
+
+        private Operacion EliminarPermiso(Permiso permiso)
+        {
+            Operacion o = new Operacion();
+            try
+            {
+                controller().DeletePermiso(permiso);
+
+                o.Mensaje = clsReferencias.MESSAGE_Exito_Delete;
+                o.OperationType = clsReferencias.TYPE_MESSAGE_Exito;
+                if (isLastAccesDelete)
+                {
+                    CargarMenu(selectedPerfil);
+                    CargarAccesos(selectedPerfil);
+                    selectedPantallaPerfil = null;
+                    panelEmptyPermisos.Visibility = Visibility.Visible;
+                }
+                else
+                {
+                    CargarPermisos(selectedPantallaPerfil, selectedPerfil);
+                }
+
+            }
+            catch (Exception ex)
+            {
+                o.Mensaje = new clsException(ex).ErrorMessage();
+                o.OperationType = clsReferencias.TYPE_MESSAGE_Error;
+            }
+
+            return o;
         }
     }
 }

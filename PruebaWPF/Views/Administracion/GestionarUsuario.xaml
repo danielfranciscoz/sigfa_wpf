@@ -125,7 +125,7 @@
                                                     <Button x:Name="btnAddRole" Tag="{StaticResource Permiso_Eliminar}" Background="{StaticResource Delete_Button}" Height="30" Width="30" Style="{StaticResource MaterialDesignToolButton}" BorderBrush="Transparent" Click="btnAddRole_Click">
                                                         <materialDesign:PackIcon Kind="PlusBox" HorizontalAlignment="Center"  VerticalAlignment="Center" Margin="0 0 0 0"></materialDesign:PackIcon>
                                                     </Button>
-                                                    
+
                                                     <TextBlock  VerticalAlignment="Center" Margin="5 0 0 0" >
                                                         <TextBlock.Inlines>
                                                             <Run FontWeight="Bold" Foreground="{StaticResource OkMsj}" Text="{Binding isWeb, Converter={StaticResource convertidor},ConverterParameter='Web |;'}"></Run>

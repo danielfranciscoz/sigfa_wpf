@@ -42,7 +42,7 @@ namespace PruebaWPF.Views.VariacionCambiaria
 
         private void Diseñar()
         {
-            clsutilidades.Dialog_Perfomance(this);
+            clsutilidades.Dialog_ModalDesign(this);
         }
 
         private void ActivarValidadorCampos()
@@ -286,6 +286,11 @@ namespace PruebaWPF.Views.VariacionCambiaria
         private void CleanList()
         {
             items.Clear();
+        }
+
+        private void btnClose_Click(object sender, RoutedEventArgs e)
+        {
+            Close();
         }
     }
 }

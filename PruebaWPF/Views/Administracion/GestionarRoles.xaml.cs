@@ -43,14 +43,36 @@ namespace PruebaWPF.Views.Administracion
         public GestionarRoles(Pantalla pantalla)
         {
             this.pantalla = pantalla;
+            perfil = new Perfil();
             InitializeComponent();
             Inicializar();
+        }
+
+        public GestionarRoles(Pantalla pantalla, Perfil perfil)
+        {
+            this.pantalla = pantalla;
+            this.perfil = perfil;
+            InitializeComponent();
+            OcultarPaneles(Visibility.Collapsed);
+            Inicializar();
+
+        }
+
+        private void OcultarPaneles(Visibility visibilidad)
+        {
+            panelRecintos.Height = new GridLength(0);
+            panelSeparador.Width = new GridLength(0);
+            panelPermisos.Width = new GridLength(0);
+            body.Height = new GridLength(200);
+            txtTitle.Text = "Editar Perfil";
+            btnSave.Visibility = btnEdit.Visibility;
+            btnEdit.Visibility = Visibility.Visible;
         }
 
         private void Inicializar()
         {
             controller = new AdministracionViewModel(pantalla);
-            perfil = new Perfil();
+
             Diseñar();
             this.DataContext = perfil;
             CamposNormales();
@@ -120,7 +142,7 @@ namespace PruebaWPF.Views.Administracion
 
         private bool validarSeleccionPantallas()
         {
-            if (!pantallas.Any(a => a.canAccess))
+            if (!pantallas.Any(a => a.canAccess) && perfil.IdPerfil==0)
             {
                 return false;
             }
@@ -129,7 +151,7 @@ namespace PruebaWPF.Views.Administracion
 
         private bool validarSeleccionRecintos()
         {
-            if (!recintos.Any(a => a.isChecked))
+            if (!recintos.Any(a => a.isChecked) && perfil.IdPerfil == 0)
             {
                 return false;
             }

@@ -75,7 +75,7 @@
                             </Grid.ColumnDefinitions>
                             
                             <TextBlock   Grid.Column="0" TextWrapping="Wrap" VerticalAlignment="Center" Text="Verificación (seg)" />
-                            <Slider Grid.Column="1" x:Name="sldSleep" TickFrequency="1" IsSnapToTickEnabled="True" Minimum="3" Maximum="10" Value="{Binding Sleep}" Width="auto" AutoToolTipPlacement="BottomRight" TickPlacement="BottomRight"></Slider>
+                            <Slider Grid.Column="1" x:Name="sldSleep" IsEnabled="{Binding ElementName=Autoload,Path=IsChecked}" TickFrequency="1" IsSnapToTickEnabled="True" Minimum="3" Maximum="10" Value="{Binding Sleep}" Width="auto" AutoToolTipPlacement="BottomRight" TickPlacement="BottomRight"></Slider>
                             <TextBlock HorizontalAlignment="Right"  Grid.Column="3" VerticalAlignment="Center">
                                 <TextBlock.Inlines>
                                     <Run Text="/"></Run>

@@ -254,11 +254,11 @@ namespace PruebaWPF.ViewModel
             return padres;
         }
 
-        public List<Pantalla> FindAccesosDirectos(Perfil p)
+        public List<AccesoDirectoPerfil> FindAccesosDirectos(Perfil p)
         {
             List<Permiso> pantallasAcceso = db.Permiso.Where(w => w.IdPerfil == p.IdPerfil && w.Pantalla.Uid != null && w.IdPermisoName == 1).ToList();
 
-            List<Pantalla> hijos = db.AccesoDirectoPerfil.ToList().Where(w => w.IdPerfil == p.IdPerfil && w.Pantalla.regAnulado == false && pantallasAcceso.Any(a => a.IdPantalla == w.IdPantalla)).Select(s => s.Pantalla).ToList();
+            List<AccesoDirectoPerfil> hijos = db.AccesoDirectoPerfil.ToList().Where(w => w.IdPerfil == p.IdPerfil && w.Pantalla.regAnulado == false && pantallasAcceso.Any(a => a.IdPantalla == w.IdPantalla)).ToList();
             return hijos;
         }
 
@@ -290,6 +290,13 @@ namespace PruebaWPF.ViewModel
                 }).ToList();
         }
 
+        public List<PermisoName> FindPermisosToAdd(Pantalla pantalla, Perfil perfil, byte Idrecinto)
+        {
+            List<Permiso> permisos = db.Permiso.Where(w => w.IdPerfil == perfil.IdPerfil && w.IdPantalla == pantalla.IdPantalla && w.IdRecinto == Idrecinto).ToList();
+            List<PermisoName> p = db.PermisoName.ToList().Where(w => !permisos.Exists(e => e.IdPermisoName == w.IdPermisoName)).ToList();
+            return p;
+        }
+
         public List<Perfil> FindPerfilesByName(String text)
         {
             if (!text.Equals(""))
@@ -307,7 +314,7 @@ namespace PruebaWPF.ViewModel
             }
         }
 
-        public List<PantallaToAccess> FindPantallaToAccess(bool isWeb, Perfil p = null)
+        public List<PantallaToAccess> FindPantallaToAccess(bool isWeb, byte? idrecinto = null, Perfil p = null)
         {
             if (p == null)
             {
@@ -320,9 +327,10 @@ namespace PruebaWPF.ViewModel
             }
             else
             {
-                List<Pantalla> actualAcceso = db.Permiso.Where(w => w.Pantalla.Uid != null && w.IdPermisoName == 1 && w.Pantalla.regAnulado == false).Select(s => s.Pantalla).ToList();
+                List<Pantalla> actualAcceso = db.Permiso.Where(w => w.IdPermisoName == 1 && w.IdPerfil == p.IdPerfil && w.IdRecinto == idrecinto).Select(s => s.Pantalla).ToList();
+                List<Pantalla> pantallas = db.Pantalla.Where(w => w.Uid != null && w.regAnulado == false && w.isWeb == p.isWeb).ToList().Where(w => !actualAcceso.Exists(a => a.IdPantalla == w.IdPantalla)).ToList();
 
-                return db.Pantalla.ToList().Where(w => actualAcceso.Any(a => a.IdPantalla != w.IdPantalla) && w.isWeb == isWeb).Select(s => new PantallaToAccess()
+                return pantallas.Select(s => new PantallaToAccess()
                 {
                     IdPantalla = s.IdPantalla,
                     Titulo = s.Titulo
@@ -331,9 +339,23 @@ namespace PruebaWPF.ViewModel
             }
 
         }
-        public Perfil SaveUpdatePerfil(Perfil perfil, List<vw_RecintosRH> recintos, List<PantallaToAccess> pantallas)
+
+        public List<PantallaToAccess> FindPantallaToAccessDirecto(Perfil p)
         {
 
+            List<Pantalla> actualAcceso = db.Permiso.Where(w => w.IdPermisoName == 1 && w.IdPerfil == p.IdPerfil).Select(s => s.Pantalla).Distinct().ToList();
+            List<Pantalla> pantallas = actualAcceso.Where(w => !db.AccesoDirectoPerfil.Where(w1 => w1.IdPerfil == p.IdPerfil).ToList().Exists(a => a.IdPantalla == w.IdPantalla)).ToList();
+
+            return pantallas.Select(s => new PantallaToAccess()
+            {
+                IdPantalla = s.IdPantalla,
+                Titulo = s.Titulo,
+                canAccess = true
+            }).ToList();
+        }
+
+        public Perfil SaveUpdatePerfil(Perfil perfil, List<vw_RecintosRH> recintos, List<PantallaToAccess> pantallas)
+        {
             using (var transaction = db.Database.BeginTransaction())
             {
                 try
@@ -391,7 +413,7 @@ namespace PruebaWPF.ViewModel
                         p.Perfil1 = perfil.Perfil1;
                         p.Descripcion = perfil.Descripcion;
 
-                        db.Entry(perfil).State = System.Data.Entity.EntityState.Modified;
+                        db.Entry(p).State = System.Data.Entity.EntityState.Modified;
 
                         db.SaveChanges();
                         transaction.Commit();
@@ -407,6 +429,92 @@ namespace PruebaWPF.ViewModel
 
         }
 
+        public Perfil SaveUpdatePerfil(Perfil perfil, List<PantallaToAccess> pantallas, bool onlyAccesDirecto = false)
+        {
+            using (var transaction = db.Database.BeginTransaction())
+            {
+                try
+                {
+                    AccesoDirectoPerfil adp;
+                    Permiso permiso;
+                    string usuario = clsSessionHelper.usuario.Login;
+
+                    if (perfil.IdPerfil != 0)
+                    {
+                        foreach (PantallaToAccess item in pantallas)
+                        {
+                            if (item.canAccess)
+                            {
+                                if (!onlyAccesDirecto)
+                                {
+                                    permiso = new Permiso();
+                                    permiso.IdPantalla = item.IdPantalla;
+                                    permiso.IdPerfil = perfil.IdPerfil;
+                                    permiso.UsuarioCreacion = usuario;
+                                    permiso.FechaCreacion = System.DateTime.Now;
+                                    permiso.IdPermisoName = 1;
+                                    permiso.IdRecinto = byte.Parse(item.recinto.IdRecinto.ToString());
+
+                                    db.Permiso.Add(permiso);
+                                }
+
+                                if (item.createAD)
+                                {
+                                    if (!db.AccesoDirectoPerfil.ToList().Exists(w => w.IdPerfil == perfil.IdPerfil && w.IdPantalla == item.IdPantalla))
+                                    {
+                                        adp = new AccesoDirectoPerfil();
+                                        adp.IdPantalla = item.IdPantalla;
+                                        adp.IdPerfil = perfil.IdPerfil;
+                                        adp.UsuarioCreacion = usuario;
+                                        adp.FechaCreacion = System.DateTime.Now;
+
+                                        db.AccesoDirectoPerfil.Add(adp);
+                                    }
+                                }
+                            }
+
+                        }
+
+                        db.SaveChanges();
+                        transaction.Commit();
+                        return perfil;
+                    }
+                    else
+                    {
+                        transaction.Dispose();
+                        throw new Exception("Esta función fue desarrollada para perfiles creados.");
+                    }
+                }
+                catch (Exception ex)
+                {
+                    transaction.Rollback();
+                    throw ex;
+                }
+            }
+
+        }
+
+        public Perfil SavePermiso(Perfil perfil, List<PermisoSon> permisos)
+        {
+            Permiso permiso;
+            string usuario = clsSessionHelper.usuario.Login;
+
+            foreach (PermisoSon p in permisos)
+            {
+                permiso = new Permiso();
+                permiso.IdPantalla = p.IdPantalla;
+                permiso.IdPerfil = perfil.IdPerfil;
+                permiso.UsuarioCreacion = usuario;
+                permiso.FechaCreacion = System.DateTime.Now;
+                permiso.IdPermisoName = p.IdPermisoName;
+                permiso.IdRecinto = p.IdRecinto;
+
+                db.Permiso.Add(permiso);
+            }
+            db.SaveChanges();
+            return perfil;
+        }
+
         public void DeletePerfil(Perfil perfil)
         {
             Perfil p = db.Perfil.Find(perfil.IdPerfil);
@@ -414,6 +522,46 @@ namespace PruebaWPF.ViewModel
             db.Entry(p).State = System.Data.Entity.EntityState.Modified;
             db.SaveChanges();
         }
+
+        public void DeletePermiso(Permiso permiso)
+        {
+            using (var transaction = db.Database.BeginTransaction())
+            {
+                try
+                {
+                    Permiso p = db.Permiso.Find(permiso.IdPermiso);
+                    if (permiso.IdPermisoName == 1)
+                    {
+                        if (db.Permiso.Where(w => w.IdPantalla == permiso.IdPantalla && w.IdPerfil == permiso.IdPerfil && w.IdPermisoName == 1).Count() == 1)
+                        {
+                            AccesoDirectoPerfil ad = db.AccesoDirectoPerfil.Where(w => w.IdPantalla == permiso.IdPantalla && w.IdPerfil == permiso.IdPerfil).FirstOrDefault();
+                            if (ad != null)
+                            {
+                                DeleteAccesoDirecto(ad);
+                            }
+                        }
+                    }
+                    db.Entry(p).State = System.Data.Entity.EntityState.Deleted;
+                    db.SaveChanges();
+
+                    transaction.Commit();
+                }
+                catch (Exception ex)
+                {
+                    transaction.Rollback();
+                    throw ex;
+                }
+            }
+        }
+
+        public void DeleteAccesoDirecto(AccesoDirectoPerfil ad)
+        {
+            AccesoDirectoPerfil acceso = db.AccesoDirectoPerfil.Find(ad.IdAccesoDirectoPerfil);
+            db.Entry(acceso).State = System.Data.Entity.EntityState.Deleted;
+            db.SaveChanges();
+        }
+
+
         #endregion
 
         public List<vw_RecintosRH> Recintos()
@@ -458,5 +606,6 @@ namespace PruebaWPF.ViewModel
     {
         public bool canAccess { get; set; }
         public bool createAD { get; set; }
+        public vw_RecintosRH recinto { get; set; }
     }
 }

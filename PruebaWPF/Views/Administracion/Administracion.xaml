@@ -10,7 +10,7 @@
       mc:Ignorable="d" d:DesignHeight="600" d:DesignWidth="1300"
       Title="Administracion"
       Uid="GAdminitracion"
-      Loaded="Page_Loaded" Unloaded="Page_Unloaded">
+      Loaded="Page_Loaded">
 
     <Page.Resources>
         <l:BoolToStringConverter x:Key="convertidor" />
@@ -379,14 +379,14 @@
                                                     <Separator  Margin="0 5 0 5"/>
                                                 </StackPanel>
                                                 <DockPanel x:Name="panelListaAccesosDirectos">
-                                                    <ListBox x:Name="lstAccesos" SelectionChanged="lstRoles_SelectionChanged">
+                                                    <ListBox x:Name="lstAccesos">
                                                         <ListBox.ItemTemplate>
                                                             <DataTemplate>
                                                                 <StackPanel Orientation="Horizontal" >
                                                                     <Button x:Name="btnDeleteAccess" Tag="{StaticResource Permiso_Eliminar}" Background="{StaticResource Delete_Button}" Height="20" Width="35" Style="{StaticResource MaterialDesignToolButton}" BorderBrush="Transparent" Click="btnDeleteAccess_Click">
                                                                         <materialDesign:PackIcon Kind="Delete" HorizontalAlignment="Center"  VerticalAlignment="Center" Margin="0 0 0 0"></materialDesign:PackIcon>
                                                                     </Button>
-                                                                    <TextBlock FontSize="12" VerticalAlignment="Center" Text="{Binding Path=Titulo}" Tag="{Binding Path=Login}" Margin="5 0 0 0"></TextBlock>
+                                                                    <TextBlock FontSize="12" VerticalAlignment="Center" Text="{Binding Path=Pantalla.Titulo}" Margin="5 0 0 0"></TextBlock>
 
                                                                 </StackPanel>
                                                             </DataTemplate>
@@ -436,7 +436,7 @@
                                                                     <DataGridTemplateColumn.CellTemplate>
                                                                         <DataTemplate>
                                                                             <StackPanel>
-                                                                                <Button x:Name="btnDeleteRoleUser" Tag="{StaticResource Permiso_Eliminar}" Background="{StaticResource Delete_Button}" Height="20" Width="20" Style="{StaticResource MaterialDesignToolButton}" BorderBrush="Transparent" Click="btnDeleteRoleUser_Click">
+                                                                                <Button x:Name="btnDeletePermiso" Tag="{StaticResource Permiso_Eliminar}" Background="{StaticResource Delete_Button}" Height="20" Width="20" Style="{StaticResource MaterialDesignToolButton}" BorderBrush="Transparent" Click="btnDeletePermiso_Click">
                                                                                     <materialDesign:PackIcon Kind="Delete" HorizontalAlignment="Center"  VerticalAlignment="Center" Margin="0 0 0 0"></materialDesign:PackIcon>
                                                                                 </Button>
                                                                             </StackPanel>

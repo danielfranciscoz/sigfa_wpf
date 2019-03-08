@@ -1100,6 +1100,9 @@
     <Compile Include="Views\Account\Configuracion.xaml.cs">
       <DependentUpon>Configuracion.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Views\Administracion\AddPermiso.xaml.cs">
+      <DependentUpon>AddPermiso.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\Administracion\Administracion.xaml.cs">
       <DependentUpon>Administracion.xaml</DependentUpon>
     </Compile>
@@ -1108,6 +1111,9 @@
     </Compile>
     <Compile Include="Views\Administracion\GestionarUsuario.xaml.cs">
       <DependentUpon>GestionarUsuario.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Administracion\UpdateMenu.xaml.cs">
+      <DependentUpon>UpdateMenu.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\AgenteExterno\AgenteExterno.xaml.cs">
       <DependentUpon>AgenteExterno.xaml</DependentUpon>
@@ -1221,6 +1227,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Views\Administracion\AddPermiso.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Views\Administracion\Administracion.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -1230,6 +1240,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\Administracion\GestionarUsuario.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\Administracion\UpdateMenu.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
