@@ -47,7 +47,7 @@
 
                 <StackPanel Grid.Row="1" VerticalAlignment="Top" Margin="20 0 20 15">
                     
-                    <DockPanel Margin="0 15 0 10">
+                    <DockPanel Margin="0 15 0 0">
                         <Grid >
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="auto"/>
@@ -60,6 +60,12 @@
                     <TextBlock TextWrapping="Wrap" VerticalAlignment="Center" FontSize="10" Text="Entre mayor cantidad de filas, mayor será el tiempo de respuesta, se recomienda mantener valores entre 1 a 1000, para no afectar el rendimiento del equipo." Foreground="{StaticResource DarkGray}"/>
 
                     <StackPanel Orientation="Horizontal" Margin="0 15 0 10">
+                        <TextBlock  Margin="0 0 10 0"  TextWrapping="Wrap" VerticalAlignment="Center" Text="Recordar mi usuario al volver a iniciar sesión" />
+                        <ToggleButton x:Name="RememberMe"  Style="{DynamicResource MaterialDesignSwitchToggleButton}" IsChecked="{Binding rememberMe,Mode=TwoWay}">
+                        </ToggleButton>
+                    </StackPanel>
+                    
+                    <StackPanel Orientation="Horizontal" Margin="0 0 0 0">
                         <TextBlock  Margin="0 0 15 0"  TextWrapping="Wrap" VerticalAlignment="Center" Text="Activar/Desactivar carga automatizada" />
                         <ToggleButton x:Name="Autoload" Style="{DynamicResource MaterialDesignSwitchToggleButton}" IsChecked="{Binding AutoLoad,Mode=TwoWay}">
                         </ToggleButton>

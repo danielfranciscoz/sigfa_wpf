@@ -13,19 +13,16 @@ using System.Threading.Tasks;
 
 namespace PruebaWPF.ViewModel
 {
-    class AdministracionViewModel : ISecurity
+    class AdministracionViewModel
     {
         private SIFOPEntities db = new SIFOPEntities();
-        private Pantalla pantalla;
 
-        public AdministracionViewModel(Pantalla pantalla)
-        {
-            this.pantalla = pantalla;
-        }
+
 
         public AdministracionViewModel() { }
 
         #region Administracion de Usuarios
+
         public List<Usuario> FindAllUsers()
         {
             return db.Usuario.ToList();
@@ -222,8 +219,8 @@ namespace PruebaWPF.ViewModel
         }
         #endregion
 
-
         #region Perfiles
+
         public List<Perfil> FindAllRolesUser(Usuario user, int IdRecinto = 0)
         {
             if (string.IsNullOrEmpty(user.Login))
@@ -264,7 +261,7 @@ namespace PruebaWPF.ViewModel
 
         private List<Pantalla> FindPadres(List<Pantalla> hijos)
         {
-            List<Pantalla> padre = db.Pantalla.ToList().Where(w => hijos.Any(a => a.IdPadre == w.IdPantalla)).ToList();
+            List<Pantalla> padre = db.Pantalla.Where(w => w.regAnulado == false).ToList().Where(w => hijos.Any(a => a.IdPadre == w.IdPantalla)).ToList();
 
             if (padre.Where(w => w.IdPadre != null).Count() > 0)
             {
@@ -318,7 +315,7 @@ namespace PruebaWPF.ViewModel
         {
             if (p == null)
             {
-                return db.Pantalla.Where(w => w.Uid != null && w.isWeb == isWeb).Select(s => new PantallaToAccess()
+                return db.Pantalla.Where(w => w.Uid != null && w.isWeb == isWeb && w.regAnulado == false).Select(s => new PantallaToAccess()
                 {
                     IdPantalla = s.IdPantalla,
                     Titulo = s.Titulo
@@ -564,32 +561,206 @@ namespace PruebaWPF.ViewModel
 
         #endregion
 
+        #region Pantalla
+
+        public List<Pantalla> FindAllPantallas(bool isWeb)
+        {
+            return db.Pantalla.Where(w => w.regAnulado == false && w.isWeb == isWeb).OrderBy(o => o.Orden).ToList();
+        }
+
+        public List<Pantalla> FindPantallasPadre(bool isWeb, int? idPantallaActual)
+        {
+            if (idPantallaActual == null)
+            {
+                return db.Pantalla.Where(w => w.Uid == null && w.regAnulado == false && w.isWeb == isWeb).OrderBy(o => o.Orden).ToList();
+            }
+            else
+            {
+                return db.Pantalla.Where(w => w.Uid == null && w.regAnulado == false && w.isWeb == isWeb && w.IdPantalla != idPantallaActual).OrderBy(o => o.Orden).ToList();
+            }
+        }
+
+        public List<Pantalla> FindOrdenPantalla(int idPantallaPadre, bool isWeb, bool isEdit, int? idPadreInicial)
+        {
+            List<Pantalla> ordenes;
+            int? id = null;
+
+            if (idPantallaPadre == 0)
+            {
+                id = null;
+            }
+            else
+            {
+                id = idPantallaPadre;
+            }
+            ordenes = db.Pantalla.Where(w => w.regAnulado == false && w.IdPadre == id && w.isWeb == isWeb).OrderByDescending(o => o.Orden).ToList();
+
+
+            if (id != idPadreInicial)
+            {
+
+                byte max = (byte)(ordenes.Select(s => s.Orden).DefaultIfEmpty().Max() + 1);
+                ordenes.Insert(0, new Pantalla() { Titulo = "<Última posición>", Orden = max });
+            }
+
+            return ordenes;
+        }
+
+        public void SaveUpdatePantalla(Pantalla pantalla, int maxPosition)
+        {
+            using (var transaction = db.Database.BeginTransaction())
+            {
+                try
+                {
+                    bool isOrdenEdited = false, isUpPosition = false, isCreating = (pantalla.IdPantalla == 0);
+                    byte lastOrden = 0;
+                    int? idpadre;
+
+                    if (string.IsNullOrEmpty(pantalla.Uid))
+                    {
+                        pantalla.Uid = null;
+                        pantalla.Tipo = null;
+                        pantalla.URL = null;
+                    }
+                    if (pantalla.IdPadre == 0)
+                    {
+                        pantalla.IdPadre = null;
+                    }
+
+                    if (string.IsNullOrEmpty(pantalla.Icon))
+                    {
+                        pantalla.Icon = null;
+                    }
+
+                    if (pantalla.IdPantalla == 0)
+                    {
+                        if (!pantalla.isMenu)
+                        {
+                            if (isCreating)
+                            {
+                                pantalla.Orden = (byte)(maxPosition);
+                            }
+                        }
+
+                        int id = 0;
+
+                        isUpPosition = true;
+
+                        id = db.Pantalla.Select(s => s.IdPantalla).DefaultIfEmpty().Max() + 1;
+
+                        pantalla.FechaCreacion = System.DateTime.Now;
+                        pantalla.UsuarioCreacion = clsSessionHelper.usuario.Login;
+                        pantalla.IdPantalla = id;
+                        lastOrden = (byte)maxPosition;
+                        db.Pantalla.Add(pantalla);
+
+                    }
+                    else
+                    {
+                        Pantalla original = db.Pantalla.Find(pantalla.IdPantalla);
+                        idpadre = original.IdPadre;
+
+                        if (pantalla.Orden != original.Orden)
+                        {
+                            if (!pantalla.isMenu)
+                            {
+                                pantalla.Orden = original.Orden;
+                            }
+                            else
+                            {
+                                isUpPosition = (original.Orden > pantalla.Orden);
+                                isOrdenEdited = true;
+                            }
+                        }
+
+                        original.Titulo = pantalla.Titulo;
+                        original.Abreviacion = pantalla.Abreviacion;
+                        original.IdPadre = pantalla.IdPadre;
+                        original.Uid = pantalla.Uid;
+                        original.Tipo = pantalla.Tipo;
+                        original.URL = pantalla.URL;
+                        original.isMenu = pantalla.isMenu;
+                        lastOrden = original.Orden;
+                        original.Orden = pantalla.Orden;
+                        original.Icon = pantalla.Icon;
+                        original.Descripcion = pantalla.Descripcion;
+
+                        db.Entry(original).State = System.Data.Entity.EntityState.Modified;
+
+                        if (idpadre != original.IdPadre)
+                        {
+
+                            List<Pantalla> reOrdenar = db.Pantalla.Where(w => w.regAnulado == false && w.IdPadre == idpadre && w.isWeb == pantalla.isWeb && w.IdPantalla != pantalla.IdPantalla).OrderBy(o => o.Orden).ToList();
+                            int consecutivo = 1;
+                            foreach (Pantalla item in reOrdenar)
+                            {
+                                if (consecutivo != item.Orden)
+                                {
+                                    item.Orden = (byte)(item.Orden - 1);
+                                    db.Entry(item).State = System.Data.Entity.EntityState.Modified;
+                                }
+                                consecutivo++;
+                            }
+                            isCreating = true;
+                            isUpPosition = true;
+                            isOrdenEdited = false;
+                            lastOrden = (byte)maxPosition;
+                        }
+
+
+                    }
+
+                    if ((pantalla.Orden != maxPosition && isCreating) || (isOrdenEdited && pantalla.IdPantalla != 0))
+                    {
+                        List<Pantalla> aOrdernar = db.Pantalla.Where(w => w.regAnulado == false && w.IdPadre == pantalla.IdPadre && w.isWeb == pantalla.isWeb && w.IdPantalla != pantalla.IdPantalla).ToList();
+                        if (!isUpPosition)
+                        {
+                            aOrdernar = aOrdernar.Where(w => w.Orden >= lastOrden && w.Orden <= pantalla.Orden).ToList();
+                        }
+                        else
+                        {
+                            aOrdernar = aOrdernar.Where(w => w.Orden <= lastOrden && w.Orden >= pantalla.Orden).ToList();
+                        }
+
+                        foreach (Pantalla item in aOrdernar)
+                        {
+                            item.Orden = (byte)(isUpPosition ? item.Orden + 1 : item.Orden - 1);
+
+                            db.Entry(item).State = System.Data.Entity.EntityState.Modified;
+                        }
+                    }
+
+                    db.SaveChanges();
+                    transaction.Commit();
+                }
+                catch (Exception ex)
+                {
+                    transaction.Rollback();
+                    throw ex;
+                }
+            }
+        }
+
+        public bool HasSons(Pantalla pantalla)
+        {
+            return !db.Pantalla.Any(w => w.IdPadre == pantalla.IdPantalla && w.regAnulado == false);
+        }
+
+        public void DeletePantalla(Pantalla pantalla)
+        {
+            Pantalla p = db.Pantalla.Find(pantalla.IdPantalla);
+            p.regAnulado = true;
+            db.Entry(p).State = System.Data.Entity.EntityState.Modified;
+            db.SaveChanges();
+        }
+
+        #endregion
+
         public List<vw_RecintosRH> Recintos()
         {
             return clsSessionHelper.recintosMemory;
         }
-        public bool Autorice_Recinto(string PermisoName, int IdRecinto)
-        {
-            if (new SecurityViewModel().Autorize(pantalla, PermisoName, IdRecinto))
-            {
-                return true;
-            }
-            else
-            {
-                throw new AuthorizationException(PermisoName, IdRecinto);
-            }
-        }
-        public bool Autorice(string PermisoName)
-        {
-            if (new SecurityViewModel().Autorize(pantalla, PermisoName))
-            {
-                return true;
-            }
-            else
-            {
-                throw new AuthorizationException(PermisoName);
-            }
-        }
+
     }
 
     public class UsuarioPerfilSon : UsuarioPerfil

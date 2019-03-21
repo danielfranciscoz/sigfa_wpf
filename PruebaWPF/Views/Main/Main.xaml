@@ -14,7 +14,7 @@
         Title="Sistema de Gestión Financiera" 
         Height="600" Width="auto" 
         WindowStartupLocation="CenterScreen" 
-        Closed="Window_Closed" SizeChanged="Window_SizeChanged"
+        Closed="Window_Closed" SizeChanged="Window_SizeChanged" Loaded="Window_Loaded"
         
         >
     <!--<WindowChrome.WindowChrome>
@@ -165,11 +165,11 @@
                         </ItemsPanelTemplate>
                     </Menu.ItemsPanel>
 
-                    <MenuItem Height="30" x:Name="mnUsuario" HorizontalAlignment="Right"  Header="Usuario">
+                    <MenuItem  Height="30" x:Name="mnUsuario" HorizontalAlignment="Right"  Header="Usuario">
                         <MenuItem.Icon >
                             <materialDesign:PackIcon Kind="Account"></materialDesign:PackIcon>
                         </MenuItem.Icon>
-                        <MenuItem Header="Mis Accesos Directos">
+                        <MenuItem Header="Mis Accesos Directos" Click="MenuItem_Click_2">
                             <MenuItem.Icon >
                                 <materialDesign:PackIcon Kind="Store" ></materialDesign:PackIcon>
                             </MenuItem.Icon>

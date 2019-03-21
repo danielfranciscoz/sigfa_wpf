@@ -31,7 +31,7 @@ namespace PruebaWPF.UserControls
         public Card_AccesoDirecto()
         {
             InitializeComponent();
-            
+
         }
 
         private void btnOpen_Click(object sender, RoutedEventArgs e)
@@ -43,7 +43,8 @@ namespace PruebaWPF.UserControls
         {
             c = CAccesoDirecto.Background;
             var a = c as SolidColorBrush;
-           Byte factor = Byte.Parse("80");
+            byte factor = 80;
+
             //a.Color = Color.FromArgb((byte)(a.Color.A+factor), (byte)(a.Color.R + factor), (byte)(a.Color.G + factor), (byte)(a.Color.B + factor));
 
             CAccesoDirecto.Background = new SolidColorBrush(Color.FromArgb((byte)(a.Color.A * factor), a.Color.R, a.Color.G, a.Color.B));

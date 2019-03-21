@@ -13,7 +13,14 @@
     <SolidColorBrush x:Key="ErrorAlert" Color="#ffebee" />
 
     <SolidColorBrush x:Key="ADPerfil" Color="#1565C0" />
-    <SolidColorBrush x:Key="ADPersonal" Color="#424242" />
+
+    <SolidColorBrush x:Key="AD_Aqua" Color="#00838F" />
+    <SolidColorBrush x:Key="AD_Amarillo" Color="#EF6C00" />
+    <SolidColorBrush x:Key="AD_Gris" Color="#424242" />
+    <SolidColorBrush x:Key="AD_Morado" Color="#6A1B9A" />
+    <SolidColorBrush x:Key="AD_Rojo" Color="#c62828" />
+    <SolidColorBrush x:Key="AD_Verde" Color="#2E7D32" />
+       
     <SolidColorBrush x:Key="TextoBlanco" Color="#FAFAFA" />
     <SolidColorBrush x:Key="Bar_BackgroundColor" Color="#EEEEEE"/>
 
@@ -29,6 +36,7 @@
     <SolidColorBrush x:Key="Print_Button" Color="#424242"/>
     <SolidColorBrush x:Key="Search_Button" Color="#F9A825"/>
     <SolidColorBrush x:Key="Search_Button_Second" Color="#283593"/>
+    <SolidColorBrush x:Key="Search_Button_Third" Color="#757575"/>
     <SolidColorBrush x:Key="Add_Button" Color="#00695C"/>
 
     <sys:String x:Key="Text_Seleccione">SELECCIONE</sys:String>

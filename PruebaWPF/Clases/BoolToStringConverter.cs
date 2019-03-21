@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace PruebaWPF.Clases
 {
-  public class BoolToStringConverter : System.Windows.Data.IValueConverter
+    public class BoolToStringConverter : System.Windows.Data.IValueConverter
     {
         public char Separator { get; set; } = ';';
 
@@ -17,9 +17,14 @@ namespace PruebaWPF.Clases
             var strings = ((string)parameter).Split(Separator);
             var trueString = strings[0];
             var falseString = strings[1];
+            bool boolValue = false;
 
-            var boolValue = (bool)value;
-            if (boolValue == true)
+            if (value != null)
+            {
+                boolValue = (bool)value;
+            }
+
+            if (boolValue)
             {
                 return trueString;
             }

@@ -5,6 +5,7 @@ using PruebaWPF.Model;
 using PruebaWPF.Referencias;
 using PruebaWPF.ViewModel;
 using PruebaWPF.Views.Acceso;
+using PruebaWPF.Views.Account;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -66,7 +67,7 @@ namespace PruebaWPF.Views.Main
                 mi.Header = item.Titulo;
                 mi.Height = Double.NaN;
 
-                MenuOpciones.Items.Insert(item.Orden - 1, mi);
+                MenuOpciones.Items.Insert(MenuOpciones.Items.Count - 1, mi);
                 CargarSubMenu(item, pantallas, mi);
             }
         }
@@ -132,9 +133,20 @@ namespace PruebaWPF.Views.Main
             Contenedor.NavigationUIVisibility = System.Windows.Navigation.NavigationUIVisibility.Hidden;
             MainContainer.Children.Add(Contenedor);
 
+            ////Agrego los accesos directos por defecto
+            //AddPage(new pgDashboard());
+
+        }
+
+        private void AgregarAccesos()
+        {
             //Agrego los accesos directos por defecto
             AddPage(new pgDashboard());
+        }
 
+        public static void reloadMain()
+        {
+            Contenedor.NavigationService.Navigate(new pgDashboard());
         }
 
         private void CargarStatusBar()
@@ -143,7 +155,7 @@ namespace PruebaWPF.Views.Main
             {
                 String perfil = "";
 
-                foreach (Perfil up in clsSessionHelper.perfiles.Select(s=>s.Perfil).Distinct())
+                foreach (Perfil up in clsSessionHelper.perfiles.Select(s => s.Perfil).Distinct())
                 {
                     perfil = perfil.Equals("") ? up.Perfil1 : perfil + "," + up.Perfil1;
 
@@ -332,6 +344,8 @@ namespace PruebaWPF.Views.Main
         }
 
 
+
+
         private void btnNotificaciones_Click(object sender, RoutedEventArgs e)
         {
             (sender as Button).ContextMenu.IsEnabled = true;
@@ -373,6 +387,17 @@ namespace PruebaWPF.Views.Main
         {
             Views.Account.Configuracion cf = new Views.Account.Configuracion();
             cf.ShowDialog();
+        }
+
+        private void MenuItem_Click_2(object sender, RoutedEventArgs e)
+        {
+            MisAccesos ma = new MisAccesos();
+            ma.ShowDialog();
+        }
+
+        private void Window_Loaded(object sender, RoutedEventArgs e)
+        {
+            AgregarAccesos();
         }
     }
 }

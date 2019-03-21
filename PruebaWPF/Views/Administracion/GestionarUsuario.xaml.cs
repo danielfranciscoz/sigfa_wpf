@@ -74,7 +74,7 @@ namespace PruebaWPF.Views.Administracion
         }
         private void Inicializar()
         {
-            controller = new AdministracionViewModel(pantalla);
+            controller = new AdministracionViewModel();
             uperfiles = new ObservableCollection<UsuarioPerfilSon>();
             Diseñar();
             CargarCombo();

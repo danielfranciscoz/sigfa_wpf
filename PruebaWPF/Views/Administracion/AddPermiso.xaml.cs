@@ -42,12 +42,13 @@ namespace PruebaWPF.Views.Administracion
             this.pantalla = pantalla;
             this.perfil = perfil;
             this.pantallaPadre = pantallaPadre;
-            InitializeComponent(); Inicializar();
+            InitializeComponent();
+            Inicializar();
         }
 
         private void Inicializar()
         {
-            controller = new AdministracionViewModel(pantalla);
+            controller = new AdministracionViewModel();
             permisos = new ObservableCollection<PermisoSon>();
             Diseñar();
             CargarCombo();

@@ -67,5 +67,29 @@ namespace PruebaWPF.Properties {
                 this["AutomaticReload"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool rememberSession {
+            get {
+                return ((bool)(this["rememberSession"]));
+            }
+            set {
+                this["rememberSession"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string UserRemember {
+            get {
+                return ((string)(this["UserRemember"]));
+            }
+            set {
+                this["UserRemember"] = value;
+            }
+        }
     }
 }

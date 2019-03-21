@@ -1,0 +1,147 @@
+﻿<Window x:Class="PruebaWPF.Views.Administracion.GestionarPantalla"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:l="clr-namespace:PruebaWPF.Clases"
+        xmlns:local="clr-namespace:PruebaWPF.Views.Administracion"
+        mc:Ignorable="d"
+        Title="GestionarPantalla" WindowStyle="None" Height="700">
+    <Window.Resources>
+        <l:BoolToStringConverter x:Key="convertidor" />
+        <l:IsNullConverter x:Key="convertidorNull" />
+    </Window.Resources>
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="auto"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <materialDesign:Card  Grid.Column="1" Grid.Row="1" Height="auto" Width="400">
+            <Grid >
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="auto"/>
+                    <RowDefinition Height="auto"/>
+                    <RowDefinition Height="auto"/>
+
+                </Grid.RowDefinitions>
+
+                <Grid Grid.Row="0" Margin="20 15 20 15">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"></ColumnDefinition>
+                        <ColumnDefinition Width="auto"></ColumnDefinition>
+                    </Grid.ColumnDefinitions>
+                    <StackPanel  Grid.Column="0" HorizontalAlignment="Left" VerticalAlignment="Center">
+                        <TextBlock x:Name="txtTitle" Width="320" FontSize="18" FontWeight="Bold" Text="Crear Pantalla"></TextBlock>
+                    </StackPanel>
+                    <StackPanel Grid.Column="1" HorizontalAlignment="Right">
+                        <Button x:Name="btnClose" Foreground="Black" Style="{DynamicResource MaterialDesignToolButton}"  Width="auto" BorderBrush="Transparent"  Background="Transparent" Padding="0" Click="btnClose_Click">
+                            <materialDesign:PackIcon Width="25" Height="25" Kind="WindowClose"></materialDesign:PackIcon>
+                        </Button>
+                    </StackPanel>
+                </Grid>
+
+                <StackPanel Grid.Row="1" VerticalAlignment="Top" Height="460" Margin="20 0 20 15">
+
+                    <Grid Margin="0 15 0 0">
+                        <Grid.ColumnDefinitions>
+
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="100"/>
+                        </Grid.ColumnDefinitions>
+
+                        <TextBox Grid.Column="0" x:Name="txtTitulo" Text="{Binding Titulo,Mode=TwoWay}" materialDesign:HintAssist.Hint="* Título de la Pantalla" materialDesign:HintAssist.IsFloating="True" FontSize="12" />
+                        <TextBox Grid.Column="1" x:Name="txtAbreviacion" Margin="10 0 0 0" Text="{Binding Abreviacion,Mode=TwoWay}" materialDesign:HintAssist.Hint="Abreviación" materialDesign:HintAssist.IsFloating="True" FontSize="12" MaxLength="4"/>
+                    </Grid>
+
+                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Center" Margin="0 15 0 0">
+                        <TextBlock Foreground="{StaticResource DarkGray}">Aplicación de Escritorio</TextBlock>
+                        <ToggleButton Margin="10 0 10 0" x:Name="isWeb" IsChecked="{Binding isWeb, Mode=TwoWay}" Style="{DynamicResource MaterialDesignSwitchToggleButton}" Click="isWeb_Click"></ToggleButton>
+                        <TextBlock Margin="0 0 10 0" Foreground="{StaticResource DarkGray}">Sitio Web</TextBlock>
+                    </StackPanel>
+                    <ComboBox Margin="0 15 0 0" SelectionChanged="cboPadre_SelectionChanged" x:Name="cboPadre" materialDesign:HintAssist.Hint="* Dependencia" materialDesign:HintAssist.IsFloating="True" FontSize="12" SelectedValuePath="IdPantalla" DisplayMemberPath="Titulo"></ComboBox>
+                    <Grid Margin="0 15 0 0">
+                        <Grid.ColumnDefinitions>
+
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="150"/>
+                        </Grid.ColumnDefinitions>
+                        <TextBox Grid.Column="0" x:Name="txtUid" Text="{Binding Uid,Mode=TwoWay}" materialDesign:HintAssist.Hint="Uid (código asignado en C#)" materialDesign:HintAssist.IsFloating="True" FontSize="12" />
+                        <ComboBox Grid.Column="1" Margin="10 0 0 0" x:Name="cboTipo" materialDesign:HintAssist.Hint="* Tipo" materialDesign:HintAssist.IsFloating="True" FontSize="12" IsEnabled="{Binding ElementName=txtUid,Path=Text,Converter={StaticResource convertidorNull},ConverterParameter='False;True'}">
+                            <ComboBoxItem Content="Pagina"/>
+                            <ComboBoxItem Content="Dialogo"/>
+                        </ComboBox>
+                    </Grid>
+
+                    <TextBox Margin="0 15 0 0" x:Name="txtURL" Text="{Binding URL,Mode=TwoWay}" materialDesign:HintAssist.Hint="URL de acceso" materialDesign:HintAssist.IsFloating="True" FontSize="12" AcceptsReturn="True" IsEnabled="{Binding ElementName=txtUid,Path=Text,Converter={StaticResource convertidorNull},ConverterParameter='False;True'}"/>
+
+
+                    <StackPanel  VerticalAlignment="Top" Margin="0 15 0 0">
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="auto"/>
+                                <ColumnDefinition Width="auto"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+
+                            <TextBlock Grid.Column="0" VerticalAlignment="Bottom" Foreground="{StaticResource DarkGray}">Ver en Menú</TextBlock>
+                            <ToggleButton Grid.Column="1" IsChecked="{Binding isMenu,Mode=TwoWay}" HorizontalAlignment="Left" VerticalAlignment="Bottom" Margin="10 0 10 0" x:Name="chkisMenu" Style="{DynamicResource MaterialDesignSwitchToggleButton}" Checked="chkisMenu_Checked"></ToggleButton>
+                            <ComboBox Grid.Column="2" Margin="5 0 0 0" SelectedValuePath="Orden"  x:Name="cboOrden" materialDesign:HintAssist.Hint="* Posición en menú" materialDesign:HintAssist.IsFloating="True" FontSize="12" IsEnabled="{Binding ElementName=chkisMenu,Path=IsChecked}" >
+                                <ComboBox.ItemTemplate>
+                                    <DataTemplate>
+                                        <StackPanel Orientation="Horizontal">
+                                            <TextBlock>
+                                                <TextBlock.Inlines>
+                                                    <Run Text="{Binding Orden}"></Run>
+                                                    <Run Text="-"></Run>
+                                                    <Run Text="{Binding Titulo}"></Run>
+                                                </TextBlock.Inlines>
+                                            </TextBlock>
+                                        </StackPanel>
+                                    </DataTemplate>
+                                </ComboBox.ItemTemplate>
+                            </ComboBox>
+                        </Grid>
+                    </StackPanel>
+
+                    <Grid Margin="0 15 0 0">
+                        <Grid.ColumnDefinitions>
+
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="auto"/>
+                        </Grid.ColumnDefinitions>
+                        <TextBox Grid.Column="0" x:Name="txtIcono" Text="{Binding Icon,Mode=TwoWay}" materialDesign:HintAssist.Hint="{Binding isWeb,Converter={StaticResource convertidor},ConverterParameter='Icono (Bootstrap);Icono'}" materialDesign:HintAssist.IsFloating="True" FontSize="12" IsReadOnly="{Binding isWeb,Converter={StaticResource convertidor},ConverterParameter='False;True'}"/>
+                        <Button  Grid.Column="1" x:Name="btnFindIcon" Width="25" Height="25" Margin="12 0 0 0" Background="{StaticResource Search_Button_Third}" Style="{StaticResource MaterialDesignFloatingActionDarkButton}" BorderBrush="Transparent"  Click="btnFindIcon_Click" IsEnabled="{Binding isWeb,Converter={StaticResource convertidor},ConverterParameter='False;True'}">
+                            <materialDesign:PackIcon Kind="Folder"  VerticalAlignment="Center" Margin="0"></materialDesign:PackIcon>
+                        </Button>
+                    </Grid>
+                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Center" Margin="0 0 0 0">
+                        <Button x:Name="btnRemoveIcon" Click="btnRemoveIcon_Click" FontWeight="Bold" ToolTip="Remover el ícono seleccionado" Style="{DynamicResource MaterialDesignToolButton}" FontSize="10">
+                            Quitar Icono
+                        </Button>
+                    </StackPanel>
+                    
+                    <TextBox  x:Name="txtDescripcion" Text="{Binding Descripcion,Mode=TwoWay}" materialDesign:HintAssist.Hint="Descripción" materialDesign:HintAssist.IsFloating="True" FontSize="12" AcceptsReturn="True" MaxLines="4"/>
+
+                </StackPanel>
+
+                <StackPanel Grid.Row="2" Height="auto" Margin="20 0 20 10">
+                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
+                        <Button x:Name="btnCancel" Style="{DynamicResource MaterialDesignFlatButton}" Foreground="{StaticResource Save_Button}"  Margin="0 2 0 2" Click="btnClose_Click" Content="{StaticResource Text_Cancel_Button}"></Button>
+                        <Button Tag="{StaticResource Permiso_Editar}" x:Name="btnEdit" Visibility="Collapsed" Style="{DynamicResource MaterialDesignFlatButton}" Foreground="{StaticResource Save_Button}"  Margin="0 2 0 2" Click="btnSave_Click" Content="{StaticResource Text_Edit_Button}"></Button>
+                        <Button Tag="{StaticResource Permiso_Guardar}" x:Name="btnSave" Style="{DynamicResource MaterialDesignFlatButton}" Foreground="{StaticResource Save_Button}"  Margin="0 2 0 2" Click="btnSave_Click" Content="{StaticResource Text_Save_Button}"></Button>
+                    </StackPanel>
+                </StackPanel>
+
+            </Grid>
+        </materialDesign:Card>
+
+    </Grid>
+</Window>

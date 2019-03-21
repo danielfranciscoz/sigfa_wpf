@@ -1,0 +1,95 @@
+﻿<Window x:Class="PruebaWPF.Views.Account.MisAccesos"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:PruebaWPF.Views.Account"
+        WindowStyle="None" 
+        mc:Ignorable="d"
+        Title="MisAccesos" Height="600" Width="800" Loaded="Window_Loaded">
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="auto"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+
+        <materialDesign:Card  Grid.Column="1" Grid.Row="1" Height="auto" Width="600">
+            <Grid >
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="auto"/>
+                    <RowDefinition Height="auto"/>
+                    <RowDefinition Height="auto"/>
+
+                </Grid.RowDefinitions>
+
+                <Grid Grid.Row="0" Margin="20 15 20 15">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"></ColumnDefinition>
+                        <ColumnDefinition Width="auto"></ColumnDefinition>
+                    </Grid.ColumnDefinitions>
+                    <StackPanel  Grid.Column="0" HorizontalAlignment="Left" VerticalAlignment="Center">
+                        <TextBlock Width="320" FontSize="18" FontWeight="Bold" Text="Mis Accesos Directos"></TextBlock>
+                    </StackPanel>
+                    <StackPanel Grid.Column="1" HorizontalAlignment="Right">
+                        <Button x:Name="btnClose" Foreground="Black" Style="{DynamicResource MaterialDesignToolButton}"  Width="auto" BorderBrush="Transparent"  Background="Transparent" Padding="0" Click="btnClose_Click">
+                            <materialDesign:PackIcon Width="25" Height="25" Kind="WindowClose"></materialDesign:PackIcon>
+                        </Button>
+                    </StackPanel>
+                </Grid>
+
+                <DockPanel Grid.Row="1" VerticalAlignment="Top" Margin="20 0 20 15" Height="400">
+                    <DataGrid Name="tblAccesosDirectos"  CanUserDeleteRows="False" CanUserAddRows="False" AutoGenerateColumns="False" SelectionUnit="FullRow" SelectionMode="Single" >
+                        <DataGrid.Columns>
+
+                            <DataGridTextColumn CanUserReorder="False" CanUserResize="False" IsReadOnly="True" Header="Pantalla" Width="*" Binding="{Binding Pantalla.Titulo}"></DataGridTextColumn>
+                           
+                            <DataGridTemplateColumn CanUserResize="False" Width="auto" Header="Acceso Directo">
+                                <DataGridTemplateColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <ToggleButton x:Name="chkAD" Style="{DynamicResource MaterialDesignSwitchToggleButton}" IsChecked="{Binding hasAD,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"></ToggleButton>
+                                    </DataTemplate>
+                                </DataGridTemplateColumn.CellTemplate>
+                            </DataGridTemplateColumn>
+
+                            <DataGridTemplateColumn CanUserResize="False" Width="130" Header="Color del Acceso"  >
+                                <DataGridTemplateColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <ComboBox x:Name="chkAD" IsEnabled="{Binding hasAD}" Text="{Binding BackgroundCard,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}">
+                                            <ComboBoxItem Content="Aqua" Foreground="White" Background="#00838F"></ComboBoxItem>
+                                            <ComboBoxItem Content="Amarillo" Foreground="White" Background="#EF6C00"></ComboBoxItem>
+                                            <ComboBoxItem Content="Gris" Foreground="White" Background="#424242"></ComboBoxItem>
+                                            <ComboBoxItem Content="Morado" Foreground="White" Background="#6A1B9A"></ComboBoxItem>
+                                            <ComboBoxItem Content="Rojo" Foreground="White" Background="#c62828"></ComboBoxItem>
+                                            <ComboBoxItem Content="Verde" Foreground="White" Background="#2E7D32"></ComboBoxItem>
+                                        </ComboBox>
+                                    </DataTemplate>
+                                </DataGridTemplateColumn.CellTemplate>
+                            </DataGridTemplateColumn>
+
+
+                        </DataGrid.Columns>
+                    </DataGrid>
+
+
+                </DockPanel>
+
+                <StackPanel Grid.Row="2" Height="auto" Margin="20 0 20 10">
+                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
+                        <Button x:Name="btnCancel" Style="{DynamicResource MaterialDesignFlatButton}" Foreground="{StaticResource Save_Button}"  Margin="0 2 0 2" Click="btnClose_Click" Content="{StaticResource Text_Cancel_Button}"></Button>
+                        <Button  x:Name="btnSave" Style="{DynamicResource MaterialDesignFlatButton}" Foreground="{StaticResource Save_Button}"  Margin="0 2 0 2" Click="btnSave_Click" Content="{StaticResource Text_Save_Button}"></Button>
+                    </StackPanel>
+                </StackPanel>
+
+            </Grid>
+        </materialDesign:Card>
+
+    </Grid>
+</Window>

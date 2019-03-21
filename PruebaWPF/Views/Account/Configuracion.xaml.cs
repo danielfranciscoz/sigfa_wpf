@@ -81,13 +81,16 @@ namespace PruebaWPF.Views.Account
 
         private void Restablecer()
         {
+            clsConfiguration defaultConf = clsConfiguration.Default();
 
-            cf.TopRow = clsConfiguration.Default().TopRow;
-            cf.AutoLoad = clsConfiguration.Default().AutoLoad;
-            cf.Sleep = clsConfiguration.Default().Sleep;
+            cf.TopRow = defaultConf.TopRow;
+            cf.AutoLoad = defaultConf.AutoLoad;
+            cf.Sleep = defaultConf.Sleep;
+            cf.AutoLoad = defaultConf.rememberMe;
 
             clsutilidades.UpdateControl(txtTopRow);
             clsutilidades.UpdateControl(Autoload);
+            clsutilidades.UpdateControl(RememberMe);
             clsutilidades.UpdateControl(sldSleep);
         }
 

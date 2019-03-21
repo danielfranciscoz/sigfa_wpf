@@ -61,7 +61,7 @@ namespace PruebaWPF.Views.Administracion
 
         private void Inicializar()
         {
-            controller = new AdministracionViewModel(pantalla);
+            controller = new AdministracionViewModel();
             paccess = new ObservableCollection<PantallaToAccess>();
             Diseñar();
             CargarCombo();

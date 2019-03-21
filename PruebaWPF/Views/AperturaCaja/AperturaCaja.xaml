@@ -65,10 +65,10 @@
                                             <Button.Style>
                                                 <Style TargetType="{x:Type Button}" BasedOn="{StaticResource MaterialDesignToolButton}">
                                                     <Style.Triggers>
-                                                        <DataTrigger Binding="{Binding FechaCierre, Converter={StaticResource isNullConverter}}" Value="True">
+                                                        <DataTrigger Binding="{Binding FechaCierre, Converter={StaticResource isNullConverter},ConverterParameter='True;False'}" Value="True">
                                                             <Setter Property="Button.Visibility" Value="Collapsed"/>
                                                         </DataTrigger>
-                                                        <DataTrigger Binding="{Binding FechaCierre, Converter={StaticResource isNullConverter}}" Value="False">
+                                                        <DataTrigger Binding="{Binding FechaCierre, Converter={StaticResource isNullConverter},ConverterParameter='True;False'}" Value="False">
                                                             <Setter Property="Button.Visibility" Value="Visible"/>
                                                         </DataTrigger>
                                                     </Style.Triggers>

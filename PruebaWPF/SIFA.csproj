@@ -1100,11 +1100,17 @@
     <Compile Include="Views\Account\Configuracion.xaml.cs">
       <DependentUpon>Configuracion.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Views\Account\MisAccesos.xaml.cs">
+      <DependentUpon>MisAccesos.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\Administracion\AddPermiso.xaml.cs">
       <DependentUpon>AddPermiso.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\Administracion\Administracion.xaml.cs">
       <DependentUpon>Administracion.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Administracion\GestionarPantalla.xaml.cs">
+      <DependentUpon>GestionarPantalla.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\Administracion\GestionarRoles.xaml.cs">
       <DependentUpon>GestionarRoles.xaml</DependentUpon>
@@ -1159,6 +1165,9 @@
     </Compile>
     <Compile Include="Views\Shared\Exportar.xaml.cs">
       <DependentUpon>Exportar.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Shared\Iconos.xaml.cs">
+      <DependentUpon>Iconos.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\Shared\Loading.xaml.cs">
       <DependentUpon>Loading.xaml</DependentUpon>
@@ -1227,11 +1236,19 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Views\Account\MisAccesos.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Views\Administracion\AddPermiso.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\Administracion\Administracion.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\Administracion\GestionarPantalla.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -1304,6 +1321,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\Shared\Exportar.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\Shared\Iconos.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

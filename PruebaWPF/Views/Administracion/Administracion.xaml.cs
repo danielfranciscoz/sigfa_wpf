@@ -29,7 +29,9 @@ namespace PruebaWPF.Views.Administracion
         private Pantalla pantalla;
         private List<Usuario> usuarios;
         private List<Perfil> perfiles;
+        private List<Pantalla> pantallas;
         private List<PermisoSon> permisos;
+
         private bool isLastAccesDelete = false;
         public static bool Cambios = false;
         public static bool isCreated = false;
@@ -38,6 +40,7 @@ namespace PruebaWPF.Views.Administracion
         public static Usuario selectedUser = null;
         public static Perfil selectedPerfil = null;
         public static Pantalla selectedPantallaPerfil = null;
+        public static Pantalla selectedPantalla = null;
 
         public Administracion()
         {
@@ -50,12 +53,10 @@ namespace PruebaWPF.Views.Administracion
             InitializeComponent();
         }
 
-
         private AdministracionViewModel controller()
         {
-            return new AdministracionViewModel(pantalla);
+            return new AdministracionViewModel();
         }
-
 
         private void LoadTitle()
         {
@@ -68,9 +69,7 @@ namespace PruebaWPF.Views.Administracion
         private void Page_Loaded(object sender, RoutedEventArgs e)
         {
             LoadTitle();
-
             LoadTables();
-            Cambios = false;
         }
 
         private void LoadTables()
@@ -89,15 +88,15 @@ namespace PruebaWPF.Views.Administracion
                     case 1:
                         if (perfiles == null || Cambios)
                         {
-                            LoadListPerfiles(txtFindRol.Text);
+                            LoadListPerfiles(txtFindRol.Text, false);
 
                         }
                         break;
                     case 2:
-                        //if (fuentes == null || monedas == null || identificaciones == null || Cambios)
-                        //{
-                        //    CargarPesataña3();
-                        //}
+                        if (pantallas == null || Cambios)
+                        {
+                            LoadListPantallas(isWeb.IsChecked.Value);
+                        }
                         break;
                     case 3:
                         //if (infoRecibos == null || Cambios)
@@ -113,7 +112,7 @@ namespace PruebaWPF.Views.Administracion
             }
         }
 
-        private async void LoadListPerfiles(string text)
+        private async void LoadListPerfiles(string text, bool isWriting)
         {
             try
             {
@@ -123,13 +122,35 @@ namespace PruebaWPF.Views.Administracion
 
                 if (selectedPerfil != null)
                 {
-                    lstRoles.SelectedItem = perfiles.Find(f => f.IdPerfil == selectedPerfil.IdPerfil);
+                    if (!isWriting || Cambios)
+                    {
+                        lstRoles.SelectedItem = perfiles.Find(f => f.IdPerfil == selectedPerfil.IdPerfil);
+                    }
+
                 }
             }
             catch (Exception ex)
             {
                 clsutilidades.OpenMessage(new Operacion() { Mensaje = new clsException(ex).ErrorMessage(), OperationType = clsReferencias.TYPE_MESSAGE_Error });
             }
+            Cambios = false;
+        }
+
+        private async void LoadListPantallas(bool isWeb)
+        {
+            try
+            {
+                pantallas = await FindAsyncPantallas(isWeb);
+                tblPantallas.ItemsSource = pantallas.OrderByDescending(o => o.IdPantalla);
+                tblPantallas.Height = panelGridPantalla.ActualHeight;
+                CargarMenuSistema();
+                treeMenu.Height = panelMenu.ActualHeight;
+            }
+            catch (Exception ex)
+            {
+                clsutilidades.OpenMessage(new Operacion() { Mensaje = new clsException(ex).ErrorMessage(), OperationType = clsReferencias.TYPE_MESSAGE_Error });
+            }
+            Cambios = false;
         }
 
         private async void LoadUsuarios(string text)
@@ -154,6 +175,7 @@ namespace PruebaWPF.Views.Administracion
             {
                 clsutilidades.OpenMessage(new Operacion() { Mensaje = new clsException(ex).ErrorMessage(), OperationType = clsReferencias.TYPE_MESSAGE_Error });
             }
+            Cambios = false;
         }
 
         private Task<List<Usuario>> FindAsyncUsers(string text)
@@ -175,6 +197,14 @@ namespace PruebaWPF.Views.Administracion
             }
         }
 
+        private Task<List<Pantalla>> FindAsyncPantallas(bool isWeb)
+        {
+            return Task.Run(() =>
+            {
+                return controller().FindAllPantallas(isWeb);
+            });
+        }
+
         private Task<List<Perfil>> FindAsyncPerfiles(string text)
         {
             if (text.Equals("") || isCreated)
@@ -192,32 +222,6 @@ namespace PruebaWPF.Views.Administracion
                     return controller().FindPerfilesByName(text);
                 });
             }
-        }
-
-
-        private void tabControl_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-            LoadTables();
-        }
-
-        private void btnNew_Click(object sender, RoutedEventArgs e)
-        {
-
-        }
-
-        private void Button_Click(object sender, RoutedEventArgs e)
-        {
-
-        }
-
-        private void btnExportar_Click(object sender, RoutedEventArgs e)
-        {
-
-        }
-
-        private void btn_Exportar_Click(object sender, RoutedEventArgs e)
-        {
-
         }
 
         private void lstUsuarios_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -293,22 +297,11 @@ namespace PruebaWPF.Views.Administracion
 
         private Operacion EliminarRolUsuario(UsuarioPerfil usuarioPerfil)
         {
-            Operacion o = new Operacion();
-            try
-            {
-                controller().DeletePerfilUsuario(usuarioPerfil);
 
-                o.Mensaje = clsReferencias.MESSAGE_Exito_Delete;
-                o.OperationType = clsReferencias.TYPE_MESSAGE_Exito;
-                CargarRolesUser(selectedUser);
-            }
-            catch (Exception ex)
-            {
-                o.Mensaje = new clsException(ex).ErrorMessage();
-                o.OperationType = clsReferencias.TYPE_MESSAGE_Error;
-            }
+            controller().DeletePerfilUsuario(usuarioPerfil);
+            CargarRolesUser(selectedUser);
 
-            return o;
+            return new Operacion() { Mensaje = clsReferencias.MESSAGE_Exito_Delete, OperationType = clsReferencias.TYPE_MESSAGE_Exito };
         }
 
         private void btnAddPerfil_Click(object sender, RoutedEventArgs e)
@@ -346,28 +339,16 @@ namespace PruebaWPF.Views.Administracion
 
         private Operacion ActivaDesactivaUsuario(Usuario user)
         {
-            Operacion o = new Operacion();
-            try
-            {
-                user.RegAnulado = !user.RegAnulado;
-                controller().ActivaDesactivaUsuario(user);
 
-                o.Mensaje = clsReferencias.MESSAGE_Exito_Delete;
-                o.OperationType = clsReferencias.TYPE_MESSAGE_Exito;
-                CargarInfoUsuario(user);
-            }
-            catch (Exception ex)
-            {
-                o.Mensaje = new clsException(ex).ErrorMessage();
-                o.OperationType = clsReferencias.TYPE_MESSAGE_Error;
-            }
+            user.RegAnulado = !user.RegAnulado;
+            controller().ActivaDesactivaUsuario(user);
+            CargarInfoUsuario(user);
 
-            return o;
+            return new Operacion() { Mensaje = clsReferencias.MESSAGE_Exito_Delete, OperationType = clsReferencias.TYPE_MESSAGE_Exito };
         }
 
         private void btnNewUser_Click(object sender, RoutedEventArgs e)
         {
-
             GestionarUsuario gu = new GestionarUsuario(pantalla);
             gu.ShowDialog();
         }
@@ -386,7 +367,7 @@ namespace PruebaWPF.Views.Administracion
 
         private void txtFindRol_KeyUp(object sender, KeyEventArgs e)
         {
-            LoadListPerfiles(txtFindRol.Text);
+            LoadListPerfiles(txtFindRol.Text, true);
         }
 
         private void lstRoles_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -403,13 +384,18 @@ namespace PruebaWPF.Views.Administracion
                     panelEmptyPermisos.Visibility = Visibility.Visible;
                 }
                 selectedPerfil = (Perfil)lstRoles.SelectedItem;
+
                 CargarPantallasPerfil(selectedPerfil);
+                if (!isAddPermiso)
+                {
+                    selectedPantallaPerfil = null;
+                }
             }
         }
 
         private void CargarPantallasPerfil(Perfil perfil)
-        {//TODO Aun queda pendiente la carga de datos cuando se seleccionan filas de la lista de roles y del arbol de pantallas
-            CargarMenu(perfil);
+        {
+            CargarMenuPerfil(perfil);
             tree.Height = panelListaPantallasRol.ActualHeight;
 
             CargarAccesos(perfil);
@@ -430,7 +416,7 @@ namespace PruebaWPF.Views.Administracion
 
         }
 
-        private void CargarMenu(Perfil perfil)
+        private void CargarMenuPerfil(Perfil perfil)
         {
             List<Pantalla> pantallas = controller().FindPantallas(perfil);
 
@@ -450,6 +436,28 @@ namespace PruebaWPF.Views.Administracion
                     mi.DataContext = item;
                 }
                 tree.Items.Add(mi);
+            }
+        }
+
+        private void CargarMenuSistema()
+        {
+            TreeViewItem mi;
+            treeMenu.Items.Clear();
+            List<Pantalla> onlyMenu = pantallas.Where(w => w.isMenu).ToList();
+            foreach (Pantalla item in onlyMenu.Where(w => w.IdPadre == null))
+            {
+                mi = new TreeViewItem();
+                mi.Header = item.Titulo;
+                mi.Height = Double.NaN;
+                mi.IsExpanded = true;
+                mi.FontWeight = FontWeights.Bold;
+                CargarSubMenu(item, onlyMenu, mi);
+
+                if (mi.Items.Count == 0 && Uid != null)
+                {
+                    mi.DataContext = item;
+                }
+                treeMenu.Items.Add(mi);
             }
         }
 
@@ -474,15 +482,21 @@ namespace PruebaWPF.Views.Administracion
                             if (item.IdPantalla == selectedPantallaPerfil.IdPantalla)
                             {
                                 subMi.IsSelected = true;
-                                selectedPantallaPerfil = null;
+                                isAddPermiso = false;
                             }
                         }
 
                         mi.Items.Add(subMi);
                         mi.IsExpanded = true;
                         CargarSubMenu(item, pantallas, subMi);
+
+                    }
+                    else
+                    {
+                        mi.Items.Add(new Separator());
                     }
                 }
+
                 else
                 {
                     subMi.Header = item.Titulo;
@@ -510,6 +524,7 @@ namespace PruebaWPF.Views.Administracion
                         panelEmptyPermisos.Visibility = Visibility.Collapsed;
                     }
                     CargarPermisos(selectedPantallaPerfil, selectedPerfil);
+
                 }
                 else
                 {
@@ -566,7 +581,6 @@ namespace PruebaWPF.Views.Administracion
         {
             try
             {
-
                 if (lstRoles.SelectedItem != null)
                 {
                     var roles = selectedPerfil.UsuarioPerfil.Select(s => s.Login).Distinct();
@@ -602,46 +616,19 @@ namespace PruebaWPF.Views.Administracion
 
         private Operacion EliminarAccesoDirecto(AccesoDirectoPerfil accesoDirecto)
         {
-            Operacion o = new Operacion();
-            try
-            {
-                controller().DeleteAccesoDirecto(accesoDirecto);
+            controller().DeleteAccesoDirecto(accesoDirecto);
+            CargarAccesos(selectedPerfil);
 
-                o.Mensaje = clsReferencias.MESSAGE_Exito_Delete;
-                o.OperationType = clsReferencias.TYPE_MESSAGE_Exito;
-
-                CargarAccesos(selectedPerfil);
-
-            }
-            catch (Exception ex)
-            {
-                o.Mensaje = new clsException(ex).ErrorMessage();
-                o.OperationType = clsReferencias.TYPE_MESSAGE_Error;
-            }
-
-            return o;
+            return new Operacion() { Mensaje = clsReferencias.MESSAGE_Exito_Delete, OperationType = clsReferencias.TYPE_MESSAGE_Exito };
         }
 
         private Operacion EliminarRol(Perfil p)
         {
-            Operacion o = new Operacion();
-            try
-            {
-                controller().DeletePerfil(p);
+            controller().DeletePerfil(p);
+            selectedPerfil = null;
+            LoadListPerfiles(txtFind.Text, false);
 
-                o.Mensaje = clsReferencias.MESSAGE_Exito_Delete;
-                o.OperationType = clsReferencias.TYPE_MESSAGE_Exito;
-                selectedPerfil = null;
-                LoadListPerfiles(txtFind.Text);
-
-            }
-            catch (Exception ex)
-            {
-                o.Mensaje = new clsException(ex).ErrorMessage();
-                o.OperationType = clsReferencias.TYPE_MESSAGE_Error;
-            }
-
-            return o;
+            return new Operacion() { Mensaje = clsReferencias.MESSAGE_Exito_Delete, OperationType = clsReferencias.TYPE_MESSAGE_Exito };
         }
 
         private void btnNewMenu_Click(object sender, RoutedEventArgs e)
@@ -717,33 +704,85 @@ namespace PruebaWPF.Views.Administracion
 
         private Operacion EliminarPermiso(Permiso permiso)
         {
-            Operacion o = new Operacion();
+            controller().DeletePermiso(permiso);
+
+            if (isLastAccesDelete)
+            {
+                CargarMenuPerfil(selectedPerfil);
+                CargarAccesos(selectedPerfil);
+                selectedPantallaPerfil = null;
+                panelEmptyPermisos.Visibility = Visibility.Visible;
+            }
+            else
+            {
+                CargarPermisos(selectedPantallaPerfil, selectedPerfil);
+            }
+
+            return new Operacion() { Mensaje = clsReferencias.MESSAGE_Exito_Delete, OperationType = clsReferencias.TYPE_MESSAGE_Exito };
+        }
+
+        private void tabControl_SelectionChanged(object sender, MouseButtonEventArgs e)
+        {
+            LoadTables();
+        }
+
+        private void isWeb_Click(object sender, RoutedEventArgs e)
+        {
+            LoadListPantallas(isWeb.IsChecked.Value);
+        }
+
+        private void btnNewPantalla_Click(object sender, RoutedEventArgs e)
+        {
+            GestionarPantalla gp = new GestionarPantalla();
+            gp.ShowDialog();
+        }
+
+        private void btnEditPantalla_Click(object sender, RoutedEventArgs e)
+        {
+            if (tblPantallas.SelectedItem != null)
+            {
+                GestionarPantalla gp = new GestionarPantalla((Pantalla)tblPantallas.SelectedItem);
+                gp.ShowDialog();
+            }
+            else
+            {
+                clsutilidades.OpenMessage(new Operacion() { Mensaje = clsReferencias.MESSAGE_NoSelection, OperationType = clsReferencias.TYPE_MESSAGE_Advertencia });
+            }
+        }
+
+        private void btnDeletePantalla_Click(object sender, RoutedEventArgs e)
+        {
             try
             {
-                controller().DeletePermiso(permiso);
-
-                o.Mensaje = clsReferencias.MESSAGE_Exito_Delete;
-                o.OperationType = clsReferencias.TYPE_MESSAGE_Exito;
-                if (isLastAccesDelete)
+                if (tblPantallas.SelectedItem != null)
                 {
-                    CargarMenu(selectedPerfil);
-                    CargarAccesos(selectedPerfil);
-                    selectedPantallaPerfil = null;
-                    panelEmptyPermisos.Visibility = Visibility.Visible;
+                    if (clsutilidades.OpenDeleteQuestionMessage())
+                    {
+                        clsutilidades.OpenMessage(EliminarPantalla((Pantalla)tblPantallas.SelectedItem));
+                    }
                 }
                 else
                 {
-                    CargarPermisos(selectedPantallaPerfil, selectedPerfil);
+                    clsutilidades.OpenMessage(new Operacion() { Mensaje = clsReferencias.MESSAGE_NoSelection, OperationType = clsReferencias.TYPE_MESSAGE_Advertencia });
                 }
-
             }
             catch (Exception ex)
             {
-                o.Mensaje = new clsException(ex).ErrorMessage();
-                o.OperationType = clsReferencias.TYPE_MESSAGE_Error;
+                clsutilidades.OpenMessage(new Operacion() { Mensaje = new clsException(ex).ErrorMessage(), OperationType = clsReferencias.TYPE_MESSAGE_Error });
+            }
+        }
+
+        private Operacion EliminarPantalla(Pantalla selectedItem)
+        {
+            if (!controller().HasSons(pantalla))
+            {
+                return new Operacion() { Mensaje = "No es posible eliminar esta pantalla, hemos detectado que contiene elementos que dependen de ella, deberá eliminar, o reposicionar sus dependencias a otro elemento, para poder continuar.", OperationType = clsReferencias.TYPE_MESSAGE_Error };
             }
 
-            return o;
+            controller().DeletePantalla(selectedItem);
+            LoadListPantallas(isWeb.IsChecked.Value);
+
+            return new Operacion() { Mensaje = clsReferencias.MESSAGE_Exito_Delete, OperationType = clsReferencias.TYPE_MESSAGE_Exito };
         }
     }
 }

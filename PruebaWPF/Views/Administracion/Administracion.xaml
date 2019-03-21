@@ -14,6 +14,7 @@
 
     <Page.Resources>
         <l:BoolToStringConverter x:Key="convertidor" />
+        <l:IsNullConverter x:Key="convertidorNull" />
     </Page.Resources>
     <Grid Background="White">
         <Grid.RowDefinitions>
@@ -34,13 +35,13 @@
                 <ComboBoxItem x:Name="opcion1" IsSelected="True">USUARIOS</ComboBoxItem>
                 <ComboBoxItem x:Name="opcion2">ROLES</ComboBoxItem>
                 <ComboBoxItem x:Name="opcion3">PANTALLAS</ComboBoxItem>
-                <ComboBoxItem x:Name="opcion4">PERMISOS</ComboBoxItem>
+                <ComboBoxItem x:Name="opcion4">ACCESOS</ComboBoxItem>
             </ComboBox>
         </StackPanel>
 
 
         <Grid Grid.Row="2">
-            <TabControl SelectionChanged="tabControl_SelectionChanged" Height="auto" x:Name="tabControl" BorderThickness="1" >
+            <TabControl PreviewMouseLeftButtonUp="tabControl_SelectionChanged" Height="auto" x:Name="tabControl" BorderThickness="1" >
 
                 <!--Usuarios-->
                 <TabItem Header="{Binding ElementName=opcion1,Path=Content}">
@@ -252,9 +253,7 @@
 
                 <!--Roles-->
                 <TabItem Header="{Binding ElementName=opcion2,Path=Content}">
-                    <Grid >
-
-
+                   
                         <Grid Margin="0 10 0 0" x:Name="panelGridRol">
                             <Grid >
                                 <Grid.ColumnDefinitions>
@@ -465,13 +464,113 @@
                         </Grid>
 
 
-                    </Grid>
+                  
                 </TabItem>
 
 
                 <!--Pantallas -->
                 <TabItem Header="{Binding ElementName=opcion3,Path=Content}">
+                    <Grid >
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="auto"/>
+                            <RowDefinition Height="*"/>
+                            <RowDefinition Height="auto"/>
 
+                        </Grid.RowDefinitions>
+
+                        <StackPanel Grid.Row="0" Orientation="Horizontal">
+                            <StackPanel Orientation="Horizontal">
+                                <Button x:Name="btnNewPantalla" Tag="{StaticResource Permiso_Guardar}" BorderBrush="Transparent"  Background="{StaticResource Save_Button}" Margin="5 5 5 5" Click="btnNewPantalla_Click" Content="{StaticResource Text_New_Button}"></Button>
+                                <Button x:Name="btnEditPantalla" Tag="{StaticResource Permiso_Editar}" BorderBrush="Transparent"  Background="{StaticResource Edit_Button}" Margin="5 5 5 5" Click="btnEditPantalla_Click" Content="{StaticResource Text_Edit_Button}"></Button>
+                                <Button x:Name="btnDeletePantalla" Tag="{StaticResource Permiso_Eliminar}" BorderBrush="Transparent"  Background="{StaticResource Delete_Button}" Margin="5 5 5 5" Click="btnDeletePantalla_Click" Content="{StaticResource Text_Delete_Button}"></Button>
+
+                            </StackPanel>
+                            <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Center" Margin="20 0 0 0">
+                                <TextBlock Foreground="{StaticResource DarkGray}">Aplicación de Escritorio</TextBlock>
+                                <ToggleButton Margin="10 0 10 0" Click="isWeb_Click" x:Name="isWeb" Style="{DynamicResource MaterialDesignSwitchToggleButton}"></ToggleButton>
+                                <TextBlock Margin="0 0 10 0" Foreground="{StaticResource DarkGray}">Sitio Web</TextBlock>
+
+
+                            </StackPanel>
+                            <Separator/>
+                        </StackPanel>
+
+                        <Grid Grid.Row="1" >
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="10"/>
+                                    <ColumnDefinition MinWidth="450" Width="auto"/>
+                                </Grid.ColumnDefinitions>
+                                
+                                <Grid Grid.Row="0">
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="*"/>
+                                        <RowDefinition Height="auto"/>
+                                    </Grid.RowDefinitions>
+
+                                    <DockPanel  Grid.Row="0" x:Name="panelGridPantalla" VerticalAlignment="Stretch">
+                                        <DataGrid Name="tblPantallas" CanUserDeleteRows="False" CanUserAddRows="False" AutoGenerateColumns="False" SelectionUnit="FullRow" SelectionMode="Single" >
+                                            <DataGrid.Columns>
+                                                <DataGridTemplateColumn CanUserResize="False" Width="auto" Header="Icono">
+                                                    <DataGridTemplateColumn.CellTemplate>
+                                                        <DataTemplate>
+                                                            <StackPanel Visibility="{Binding isWeb,Converter={StaticResource convertidor},ConverterParameter='Hidden;Visible'}">
+                                                                <materialDesign:PackIcon Kind="{Binding Icon}" Visibility="{Binding Icon,Converter={StaticResource convertidorNull},ConverterParameter='Hidden;Visible'}" HorizontalAlignment="Center"  VerticalAlignment="Center" Margin="0 0 0 0"></materialDesign:PackIcon>
+                                                            </StackPanel>
+                                                        </DataTemplate>
+                                                    </DataGridTemplateColumn.CellTemplate>
+                                                </DataGridTemplateColumn>
+                                                <DataGridTextColumn CanUserReorder="False" CanUserResize="False" IsReadOnly="True" Header="Título" Width="auto" Binding="{Binding Titulo}"></DataGridTextColumn>
+                                                <DataGridTextColumn CanUserReorder="False" CanUserResize="False" IsReadOnly="True" Header="Abreviación" Width="auto" Binding="{Binding Abreviacion}"></DataGridTextColumn>
+                                                <DataGridTextColumn CanUserReorder="False" CanUserResize="False" IsReadOnly="True" Header="Uid" Width="auto" Binding="{Binding Uid}"></DataGridTextColumn>
+                                                <DataGridTextColumn CanUserReorder="False" CanUserResize="False" IsReadOnly="True" Header="URL" Width="auto" Binding="{Binding URL}"></DataGridTextColumn>
+                                                <DataGridTextColumn CanUserReorder="False" CanUserResize="False" IsReadOnly="True" Header="Tipo" Width="auto" Binding="{Binding Tipo}"></DataGridTextColumn>
+                                                <DataGridTextColumn CanUserReorder="False" CanUserResize="False" IsReadOnly="True" Header="Menú" Width="auto" Binding="{Binding isMenu,Converter={StaticResource convertidor},ConverterParameter='SI;NO'}"></DataGridTextColumn>
+                                                <DataGridTextColumn CanUserReorder="False" CanUserResize="False" IsReadOnly="True" Header="Posición" Width="auto" Binding="{Binding Orden}"></DataGridTextColumn>
+
+                                            </DataGrid.Columns>
+
+                                        </DataGrid>
+                                    </DockPanel>
+
+                                    <DockPanel Grid.Row="1" DockPanel.Dock="Bottom" HorizontalAlignment="Right">
+                                        <TextBlock FontWeight="Bold">Cantidad de registros:</TextBlock>
+                                        <TextBlock FontWeight="Bold" Margin="5 0 20 0" Name="lblCantidadRegitrosPantallas" Text="{Binding ElementName=tblPantallas,Path=Items.Count}"></TextBlock>
+                                    </DockPanel>
+                                </Grid>
+                                <Separator Grid.Column="1">
+                                    <Separator.LayoutTransform>
+                                        <RotateTransform Angle="90" />
+                                    </Separator.LayoutTransform>
+                                </Separator>
+                                <Grid Grid.Column="2" >
+                                    <DockPanel>
+                                        <StackPanel DockPanel.Dock="Top" >
+                                            <Grid>
+                                                <StackPanel Orientation="Horizontal">
+                                                    <materialDesign:PackIcon Kind="WindowOpen" HorizontalAlignment="Center"  VerticalAlignment="Center" Margin="10 0 10 0"></materialDesign:PackIcon>
+                                                    <TextBlock VerticalAlignment="Center" FontWeight="Bold">Pre visualización del Menú</TextBlock>
+                                                </StackPanel>
+
+                                            </Grid>
+                                            <Separator  Margin="0 5 0 5"/>
+                                        </StackPanel>
+                                        <DockPanel Margin="0 0 0 0"  HorizontalAlignment="Stretch" >
+                                            <DockPanel x:Name="panelMenu">
+                                                <TreeView x:Name="treeMenu" SelectedItemChanged="tree_SelectedItemChanged">
+
+                                                </TreeView>
+                                            </DockPanel>
+                                        </DockPanel>
+                                    </DockPanel>
+                                    
+                                </Grid>
+                            </Grid>
+                        </Grid>
+
+
+                    </Grid>
                 </TabItem>
 
                 <!--Permisos-->

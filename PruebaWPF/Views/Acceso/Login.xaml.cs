@@ -1,5 +1,6 @@
 ﻿
 using PruebaWPF.Clases;
+using PruebaWPF.Helper;
 using PruebaWPF.Model;
 using PruebaWPF.Referencias;
 using PruebaWPF.ViewModel;
@@ -25,7 +26,7 @@ namespace PruebaWPF.Views.Acceso
         public MainWindow()
         {
             InitializeComponent();
-            txtUsuario.Text = "dfzamora";
+            txtUsuario.Text = clsConfiguration.Actual().userRemember;
             txtPassword.Password = "zamora2112u";
 
         }
@@ -72,7 +73,7 @@ namespace PruebaWPF.Views.Acceso
 
         private async void Iniciar()
         {
-           
+
             if (txtUsuario.Text.Length > 0 && txtPassword.Password.Length > 0)
             {
 
@@ -133,7 +134,7 @@ namespace PruebaWPF.Views.Acceso
                 panel_Credenciales.Visibility = Visibility.Hidden;
                 panel_Periodo.Visibility = Visibility.Visible;
 
-                CargarProgramas(Usuario);
+                CargarProgramas();
                 CargarPeriodosEspecificos();
             }
 
@@ -163,9 +164,9 @@ namespace PruebaWPF.Views.Acceso
 
         }
 
-        private void CargarProgramas(String Usuario)
+        private void CargarProgramas()
         {
-            var programa = controller.ObtenerProgramas(Usuario);
+            var programa = controller.ObtenerProgramas(clsSessionHelper.usuario.Login);
             cboPrograma.ItemsSource = programa;
         }
 
@@ -240,6 +241,9 @@ namespace PruebaWPF.Views.Acceso
             controller.AreasMemory();
             controller.MacMemory();
             this.Hide();
+
+            clsConfiguration.saveUser(txtUsuario.Text);
+
             frmMain main = new frmMain();
             main.Show();
         }
