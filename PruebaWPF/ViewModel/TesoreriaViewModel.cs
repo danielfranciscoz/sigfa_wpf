@@ -15,9 +15,13 @@ namespace PruebaWPF.ViewModel
     {
         private SIFOPEntities db = new SIFOPEntities();
         private Pantalla pantalla;
-
+        List<vw_RecintosRH> r;
+        private SecurityViewModel seguridad;
         public TesoreriaViewModel(Pantalla pantalla)
         {
+            seguridad = new SecurityViewModel();
+            r = seguridad.RecintosPermiso(pantalla);
+
             this.pantalla = pantalla;
         }
 
@@ -42,7 +46,7 @@ namespace PruebaWPF.ViewModel
                 regAnulado = s.regAnulado,
                 FechaCreacion = s.FechaCreacion,
                 Recinto = clsSessionHelper.recintosMemory.Where(w => w.IdRecinto == s.IdRecinto).Select(a => a.Siglas).FirstOrDefault().ToString(),                
-            }).Where(b => new SecurityViewModel().RecintosPermiso(pantalla).Any(a => b.IdRecinto == a.IdRecinto)).ToList();
+            }).Where(b =>r.Any(a => b.IdRecinto == a.IdRecinto)).ToList();
         }
 
         public string FindMacActual()
@@ -489,7 +493,7 @@ namespace PruebaWPF.ViewModel
                 FechaCreacion = s.FechaCreacion,
                 Recinto = clsSessionHelper.recintosMemory.Where(w => w.IdRecinto == s.IdRecinto).Select(a => a.Siglas).FirstOrDefault().ToString(),
                 regAnulado = s.regAnulado
-            }).Where(b => new SecurityViewModel().RecintosPermiso(pantalla).Any(a => b.IdRecinto == a.IdRecinto)).ToList();
+            }).Where(b => r.Any(a => b.IdRecinto == a.IdRecinto)).ToList();
         }
 
         public void SaveInfoRecibo(InfoRecibo infoRecibo)
@@ -511,7 +515,7 @@ namespace PruebaWPF.ViewModel
 
         public List<vw_RecintosRH> RecintosInfo(string PermisoName)
         {
-            var recintos = new SecurityViewModel().RecintosPermiso(pantalla, PermisoName).ToList();
+            var recintos = seguridad.RecintosPermiso(pantalla, PermisoName).ToList();
 
             var b = db.InfoRecibo.Where(w => w.regAnulado == false).Select(s => s.IdRecinto).ToList();
 
@@ -523,12 +527,12 @@ namespace PruebaWPF.ViewModel
         #endregion
         public List<vw_RecintosRH> Recintos(string PermisoName)
         {
-            return new SecurityViewModel().RecintosPermiso(pantalla, PermisoName);
+            return seguridad.RecintosPermiso(pantalla, PermisoName);
         }
 
         public bool Autorice_Recinto(string PermisoName, int IdRecinto)
         {
-            if (new SecurityViewModel().Autorize(pantalla, PermisoName, IdRecinto))
+            if (seguridad.Autorize(pantalla, PermisoName, IdRecinto))
             {
                 return true;
             }
@@ -540,7 +544,7 @@ namespace PruebaWPF.ViewModel
 
         public bool Autorice(string PermisoName)
         {
-            if (new SecurityViewModel().Autorize(pantalla, PermisoName))
+            if (seguridad.Autorize(pantalla, PermisoName))
             {
                 return true;
             }

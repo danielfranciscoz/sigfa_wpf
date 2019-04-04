@@ -14,9 +14,14 @@ namespace PruebaWPF.ViewModel
     {
         private SIFOPEntities db = new SIFOPEntities();
         private Pantalla pantalla;
+        List<vw_RecintosRH> r;
+        private SecurityViewModel seguridad;
 
         public AperturaCajaViewModel(Pantalla pantalla)
         {
+            seguridad = new SecurityViewModel();
+            r = seguridad.RecintosPermiso(pantalla);
+
             this.pantalla = pantalla;
         }
 
@@ -33,6 +38,8 @@ namespace PruebaWPF.ViewModel
 
         public List<DetAperturaCajaSon> FindAllAperturas()
         {
+
+
             return db.DetAperturaCaja.OrderByDescending(o => o.IdDetAperturaCaja).Take(clsConfiguration.Actual().TopRow).ToList()
                 .Select(s => new DetAperturaCajaSon()
                 {
@@ -43,15 +50,16 @@ namespace PruebaWPF.ViewModel
                     IdAperturaCaja = s.IdAperturaCaja,
                     IdDetAperturaCaja = s.IdDetAperturaCaja,
                     Recibo1 = s.Recibo1,
-                    Recinto = clsSessionHelper.recintosMemory.Where(w => w.IdRecinto == s.AperturaCaja.IdRecinto).FirstOrDefault().Siglas
-                }).Where(b => new SecurityViewModel().RecintosPermiso(pantalla).Any(a => b.AperturaCaja.IdRecinto == a.IdRecinto)).ToList();
+                    Recinto = clsSessionHelper.recintosMemory.Find(w => w.IdRecinto == s.AperturaCaja.IdRecinto).Siglas
+                }).Where(w => r.Any(a => w.AperturaCaja.IdRecinto == a.IdRecinto)).ToList();
+
         }
 
         public AperturaCaja InicializarAperturaCaja()
         {
             AperturaCaja a = new AperturaCaja();
             a.FechaApertura = System.DateTime.Now;
-            a.SaldoInicial = double.Parse(db.Configuracion.Where(w => w.Llave == clsConfiguration.Llaves.Saldo_Inicial_Cajas.ToString()).FirstOrDefault().Valor);
+            a.SaldoInicial = double.Parse(db.Configuracion.Find(clsConfiguration.Llaves.Saldo_Inicial_Cajas.ToString()).Valor);
             a.UsuarioCreacion = clsSessionHelper.usuario.Login;
             return a;
         }
@@ -78,7 +86,6 @@ namespace PruebaWPF.ViewModel
 
             if (!text.Equals(""))
             {
-
                 return db.DetAperturaCaja.OrderByDescending(o => o.IdDetAperturaCaja).ToList().Select(s => new DetAperturaCajaSon()
                 {
                     AperturaCaja = s.AperturaCaja,
@@ -88,9 +95,9 @@ namespace PruebaWPF.ViewModel
                     IdAperturaCaja = s.IdAperturaCaja,
                     IdDetAperturaCaja = s.IdDetAperturaCaja,
                     Recibo1 = s.Recibo1,
-                    Recinto = clsSessionHelper.recintosMemory.Where(w => w.IdRecinto == s.AperturaCaja.IdRecinto).FirstOrDefault().Siglas
+                    Recinto = clsSessionHelper.recintosMemory.Find(w => w.IdRecinto == s.AperturaCaja.IdRecinto).Siglas
                 })
-                .Where(b => new SecurityViewModel().RecintosPermiso(pantalla).Any(a => b.AperturaCaja.IdRecinto == a.IdRecinto) &&
+                .Where(b => r.Any(a => b.AperturaCaja.IdRecinto == a.IdRecinto) &&
                     (b.AperturaCaja.FechaApertura.Year.ToString() + "/" + b.AperturaCaja.FechaApertura.ToString("MM")).Contains(text)).ToList();
 
             }
@@ -114,9 +121,12 @@ namespace PruebaWPF.ViewModel
                     db.AperturaCaja.Add(Obj);
                     List<DetAperturaCaja> det = new List<DetAperturaCaja>();
 
+                    int maxID = db.DetAperturaCaja.Max(m => m.IdDetAperturaCaja);
+
                     foreach (Caja c in cajas)
                     {
-                        det.Add(new DetAperturaCaja() { IdAperturaCaja = Obj.IdApertura, IdCaja = c.IdCaja, UsuarioCierre = null, FechaCierre = null });
+                        maxID++;
+                        det.Add(new DetAperturaCaja() { IdDetAperturaCaja = maxID, IdAperturaCaja = Obj.IdApertura, IdCaja = c.IdCaja, UsuarioCierre = null, FechaCierre = null });
                     }
 
                     db.DetAperturaCaja.AddRange(det);
@@ -148,12 +158,12 @@ namespace PruebaWPF.ViewModel
 
         public List<vw_RecintosRH> Recintos(string PermisoName)
         {
-            return new SecurityViewModel().RecintosPermiso(pantalla, PermisoName);
+            return seguridad.RecintosPermiso(pantalla, PermisoName);
         }
 
         public bool Autorice_Recinto(string PermisoName, int IdRecinto)
         {
-            if (new SecurityViewModel().Autorize(pantalla, PermisoName, IdRecinto))
+            if (seguridad.Autorize(pantalla, PermisoName, IdRecinto))
             {
                 return true;
             }
@@ -165,7 +175,7 @@ namespace PruebaWPF.ViewModel
 
         public bool Autorice(string PermisoName)
         {
-            if (new SecurityViewModel().Autorize(pantalla, PermisoName))
+            if (seguridad.Autorize(pantalla, PermisoName))
             {
                 return true;
             }

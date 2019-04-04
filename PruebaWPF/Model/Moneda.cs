@@ -17,31 +17,31 @@ namespace PruebaWPF.Model
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public Moneda()
         {
+            this.DenominacionMoneda = new HashSet<DenominacionMoneda>();
             this.ArancelPrecio = new HashSet<ArancelPrecio>();
+            this.ArqueoEfectivo = new HashSet<ArqueoEfectivo>();
             this.ReciboPago = new HashSet<ReciboPago>();
             this.VariacionCambiaria = new HashSet<VariacionCambiaria>();
-            this.DenominacionMoneda = new HashSet<DenominacionMoneda>();
-            this.ArqueoEfectivo = new HashSet<ArqueoEfectivo>();
         }
     
         public int IdMoneda { get; set; }
         public string Moneda1 { get; set; }
         public string Simbolo { get; set; }
-        public System.DateTime FechaCreacion { get; set; }
         public bool WebService { get; set; }
-        public bool regAnulado { get; set; }
         public string UsuarioCreacion { get; set; }
+        public System.DateTime FechaCreacion { get; set; }
+        public bool regAnulado { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<DenominacionMoneda> DenominacionMoneda { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<ArancelPrecio> ArancelPrecio { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<ArqueoEfectivo> ArqueoEfectivo { get; set; }
+        public virtual Usuario Usuario { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<ReciboPago> ReciboPago { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<VariacionCambiaria> VariacionCambiaria { get; set; }
-        public virtual Usuario Usuario { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<DenominacionMoneda> DenominacionMoneda { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<ArqueoEfectivo> ArqueoEfectivo { get; set; }
     }
 }

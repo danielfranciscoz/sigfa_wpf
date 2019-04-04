@@ -14,18 +14,21 @@ namespace PruebaWPF.ViewModel
     {
         private SIFOPEntities db = new SIFOPEntities();
         private Pantalla pantalla;
+        private SecurityViewModel seguridad;
 
         public AgenteExternoViewModel()
         {
-
+            seguridad = new SecurityViewModel();
         }
+
         public AgenteExternoViewModel(Pantalla pantalla)
         {
+            seguridad = new SecurityViewModel();
             this.pantalla = pantalla;
         }
         public bool Autorice(string PermisoName)
         {
-            if (new SecurityViewModel().Autorize(pantalla, PermisoName))
+            if (seguridad.Autorize(pantalla, PermisoName))
             {
                 return true;
             }
@@ -37,7 +40,7 @@ namespace PruebaWPF.ViewModel
 
         public bool Autorice_Recinto(string PermisoName, int IdRecinto)
         {
-            if (new SecurityViewModel().Autorize(pantalla, PermisoName, IdRecinto))
+            if (seguridad.Autorize(pantalla, PermisoName, IdRecinto))
             {
                 return true;
             }

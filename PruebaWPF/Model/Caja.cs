@@ -17,7 +17,6 @@ namespace PruebaWPF.Model
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public Caja()
         {
-            this.Arqueo = new HashSet<Arqueo>();
             this.DetAperturaCaja = new HashSet<DetAperturaCaja>();
         }
     
@@ -32,8 +31,6 @@ namespace PruebaWPF.Model
     
         public virtual Usuario Usuario { get; set; }
         public virtual SerieRecibo SerieRecibo { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Arqueo> Arqueo { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<DetAperturaCaja> DetAperturaCaja { get; set; }
     }

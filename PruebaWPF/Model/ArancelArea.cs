@@ -17,10 +17,10 @@ namespace PruebaWPF.Model
         public int IdArancelArea { get; set; }
         public int IdArancel { get; set; }
         public string IdArea { get; set; }
+        public string IdAreaIngreso { get; set; }
         public int IdRecinto { get; set; }
         public System.DateTime FechaCreacion { get; set; }
         public string UsuarioCreacion { get; set; }
-        public string IdAreaIngreso { get; set; }
     
         public virtual Usuario Usuario { get; set; }
         public virtual Arancel Arancel { get; set; }

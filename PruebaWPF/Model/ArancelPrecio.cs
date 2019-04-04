@@ -18,8 +18,8 @@ namespace PruebaWPF.Model
         public ArancelPrecio()
         {
             this.DetOrdenPagoArancel = new HashSet<DetOrdenPagoArancel>();
-            this.ReciboDet = new HashSet<ReciboDet>();
             this.Exoneracion = new HashSet<Exoneracion>();
+            this.ReciboDet = new HashSet<ReciboDet>();
         }
     
         public int IdArancelPrecio { get; set; }
@@ -36,8 +36,8 @@ namespace PruebaWPF.Model
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<DetOrdenPagoArancel> DetOrdenPagoArancel { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<ReciboDet> ReciboDet { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Exoneracion> Exoneracion { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<ReciboDet> ReciboDet { get; set; }
     }
 }

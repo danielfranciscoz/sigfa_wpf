@@ -23,20 +23,18 @@ namespace PruebaWPF.Model
         public int IdExoneracion { get; set; }
         public string Identificador { get; set; }
         public int IdTipoDeposito { get; set; }
-        public int IdArancel { get; set; }
+        public int IdArancelPrecio { get; set; }
         public decimal Exonerado { get; set; }
         public System.DateTime FechaCreacion { get; set; }
         public string UsuarioCreacion { get; set; }
         public bool regAnulado { get; set; }
         public string Autorizadopor { get; set; }
-        public int IdArancelPrecio { get; set; }
     
         public virtual Usuario Usuario { get; set; }
         public virtual Usuario Usuario1 { get; set; }
-        public virtual Arancel Arancel { get; set; }
+        public virtual ArancelPrecio ArancelPrecio { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<DetOrdenPagoArancel> DetOrdenPagoArancel { get; set; }
         public virtual TipoDeposito TipoDeposito { get; set; }
-        public virtual ArancelPrecio ArancelPrecio { get; set; }
     }
 }

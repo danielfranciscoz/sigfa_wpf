@@ -13,14 +13,19 @@ namespace PruebaWPF.ViewModel
 {
     class OrdenPagoViewModel : IGestiones<OrdenPagoSon>
     {
-        private  SIFOPEntities db = new SIFOPEntities();
+        private SIFOPEntities db = new SIFOPEntities();
         private Pantalla pantalla;
+        List<vw_RecintosRH> r;
+        private SecurityViewModel seguridad;
 
         public OrdenPagoViewModel(Pantalla pantalla)
         {
+            seguridad = new SecurityViewModel();
+            r = seguridad.RecintosPermiso(pantalla);
+
             this.pantalla = pantalla;
         }
-       
+
         public Pantalla Pantalla(string UId)
         {
             return new PantallaViewModel().FindById(UId);
@@ -62,12 +67,10 @@ namespace PruebaWPF.ViewModel
                 Area = clsSessionHelper.areasMemory.Where(w => w.codigo == a.IdArea).Select(s => s.descripcion).FirstOrDefault().ToString().ToUpper(),
                 Recinto = clsSessionHelper.recintosMemory.Where(w => w.IdRecinto == a.IdRecinto).Select(s => s.Siglas).FirstOrDefault().ToString()
             }
-            ).Where(b => new SecurityViewModel().RecintosPermiso(pantalla).Any(a => b.IdRecinto == a.IdRecinto)).ToList();
+            ).Where(b => r.Any(a => b.IdRecinto == a.IdRecinto)).ToList();
 
-            
 
             return data;
-
         }
 
         public OrdenPagoSon FindById(int Id)
@@ -98,12 +101,12 @@ namespace PruebaWPF.ViewModel
                     TipoDeposito = a.TipoDeposito,
                     IdArea = a.IdArea,
                     DetOrdenPagoArancel = a.DetOrdenPagoArancel,
-                    CantidadPagos= db.DetOrdenPagoArancel.Where(w => w.IdOrdenPago == a.IdOrdenPago && w.regAnulado == false).Count(),
-                    Area = clsSessionHelper.areasMemory.Where(w => w.codigo == a.IdArea).Select(s => s.descripcion).FirstOrDefault().ToString().ToUpper(),
-                    Recinto = clsSessionHelper.recintosMemory.Where(w => w.IdRecinto == a.IdRecinto).Select(s => s.Siglas).FirstOrDefault().ToString()
+                    CantidadPagos = db.DetOrdenPagoArancel.Where(w => w.IdOrdenPago == a.IdOrdenPago && w.regAnulado == false).Count(),
+                    Area = clsSessionHelper.areasMemory.Find(w => w.codigo == a.IdArea).descripcion.ToUpper(),
+                    Recinto = clsSessionHelper.recintosMemory.Find(w => w.IdRecinto == a.IdRecinto).Siglas
                 }).Where(
                    w => busqueda.All(a => w.Recibimos.Contains(a))
-                && (w.regAnulado == false && string.IsNullOrEmpty(w.CodRecibo))).ToList().Where(b => new SecurityViewModel().RecintosPermiso(pantalla).Any(a => b.IdRecinto == a.IdRecinto)).ToList();
+                && (w.regAnulado == false && string.IsNullOrEmpty(w.CodRecibo))).ToList().Where(b => r.Any(a => b.IdRecinto == a.IdRecinto)).ToList();
             }
             else
             {
@@ -125,7 +128,7 @@ namespace PruebaWPF.ViewModel
 
         public bool Autorice_Recinto(string PermisoName, int IdRecinto)
         {
-            if (new SecurityViewModel().Autorize(pantalla, PermisoName, IdRecinto))
+            if (seguridad.Autorize(pantalla, PermisoName, IdRecinto))
             {
                 return true;
             }
@@ -137,7 +140,7 @@ namespace PruebaWPF.ViewModel
 
         public bool Autorice(string PermisoName)
         {
-            if (new SecurityViewModel().Autorize(pantalla, PermisoName))
+            if (seguridad.Autorize(pantalla, PermisoName))
             {
                 return true;
             }
@@ -149,8 +152,8 @@ namespace PruebaWPF.ViewModel
     }
     public class OrdenPagoSon : OrdenPago, ICloneable
     {
-        
-    
+
+
         public int CantidadPagos { get; set; }
         public string Area { get; set; }
         public string Recinto { get; set; }

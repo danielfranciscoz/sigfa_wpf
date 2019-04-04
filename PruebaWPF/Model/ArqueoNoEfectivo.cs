@@ -12,16 +12,13 @@ namespace PruebaWPF.Model
     using System;
     using System.Collections.Generic;
     
-    public partial class vw_Prematricula1
+    public partial class ArqueoNoEfectivo
     {
-        public string IdPrematricula { get; set; }
-        public string ALCodigo { get; set; }
-        public int Carnet { get; set; }
-        public string Nombre { get; set; }
-        public byte ESTipo { get; set; }
-        public string CarreraCodigoPrimOpcion { get; set; }
-        public string CarreraCodigoSegOpcion { get; set; }
-        public Nullable<bool> Becado { get; set; }
-        public int Clasificado { get; set; }
+        public int IdArqueoNoEfectivo { get; set; }
+        public int IdArqueo { get; set; }
+        public int IdFormaPago { get; set; }
+        public int IdReciboPago { get; set; }
+        public string Observacion { get; set; }
+        public System.DateTime FechaCreacion { get; set; }
     }
 }

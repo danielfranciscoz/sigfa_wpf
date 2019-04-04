@@ -26,9 +26,9 @@ namespace PruebaWPF.Model
         public byte IdPerfil { get; set; }
         public string Perfil1 { get; set; }
         public string Descripcion { get; set; }
+        public bool isWeb { get; set; }
         public string LoginCreacion { get; set; }
         public bool RegAnulado { get; set; }
-        public bool isWeb { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<AccesoDirectoPerfil> AccesoDirectoPerfil { get; set; }

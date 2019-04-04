@@ -18,8 +18,8 @@ namespace PruebaWPF.Model
         public FuenteFinanciamiento()
         {
             this.Recibo = new HashSet<Recibo>();
-            this.SolicitudCheque = new HashSet<SolicitudCheque>();
             this.Recibo1 = new HashSet<Recibo1>();
+            this.SolicitudCheque = new HashSet<SolicitudCheque>();
         }
     
         public byte IdFuenteFinanciamiento { get; set; }
@@ -29,14 +29,14 @@ namespace PruebaWPF.Model
         public bool Tiene_Egreso { get; set; }
         public Nullable<byte> IdFuente_SIPPSI { get; set; }
         public string LoginCreacion { get; set; }
-        public bool RegAnulado { get; set; }
         public Nullable<System.DateTime> FechaCreacion { get; set; }
+        public bool RegAnulado { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Recibo> Recibo { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<SolicitudCheque> SolicitudCheque { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Recibo1> Recibo1 { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<SolicitudCheque> SolicitudCheque { get; set; }
     }
 }

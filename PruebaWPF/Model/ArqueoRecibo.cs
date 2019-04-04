@@ -19,7 +19,6 @@ namespace PruebaWPF.Model
         public int IdRecibo { get; set; }
         public string Serie { get; set; }
         public System.DateTime FechaCreacion { get; set; }
-        public bool regAnulado { get; set; }
     
         public virtual Arqueo Arqueo { get; set; }
         public virtual Recibo1 Recibo1 { get; set; }

@@ -14,12 +14,15 @@ namespace PruebaWPF.ViewModel
     {
         private SIFOPEntities db = new SIFOPEntities();
         private Pantalla pantalla;
-
+        List<vw_RecintosRH> r;
+        private SecurityViewModel seguridad;
         public ReciboViewModel() { }
 
         public ReciboViewModel(Pantalla pantalla)
         {
             this.pantalla = pantalla;
+            seguridad = new SecurityViewModel();
+            r = seguridad.RecintosPermiso(pantalla);
         }
 
         public Pantalla Pantalla(string UId)
@@ -35,7 +38,7 @@ namespace PruebaWPF.ViewModel
         public List<ReciboSon> FindAll()
         {
 
-            List<Recibo1> recibo = db.Recibo1.Take(clsConfiguration.Actual().TopRow).ToList().Where(w => new SecurityViewModel().RecintosPermiso(pantalla).Any(a => w.InfoRecibo.IdRecinto == a.IdRecinto)).ToList();
+            List<Recibo1> recibo = db.Recibo1.Take(clsConfiguration.Actual().TopRow).ToList().Where(w => r.Any(a => w.InfoRecibo.IdRecinto == a.IdRecinto)).ToList();
 
             return UnirRecibos(recibo);
         }
@@ -56,7 +59,7 @@ namespace PruebaWPF.ViewModel
                 List<Recibo1> recibo = db.Recibo1
                     .Where(w => busqueda.All(a => w.IdRecibo.ToString().Equals(a) || w.Serie.Contains(a)))
                     .ToList()
-                    .Where(w => new SecurityViewModel().RecintosPermiso(pantalla).Any(a => w.InfoRecibo.IdRecinto == a.IdRecinto))
+                    .Where(w => r.Any(a => w.InfoRecibo.IdRecinto == a.IdRecinto))
                     .ToList();
                 return UnirRecibos(recibo);
             }
@@ -112,8 +115,8 @@ namespace PruebaWPF.ViewModel
                 TipoDeposito = r.OrdenPago.TipoDeposito,
                 UsuarioCreacion = r.UsuarioCreacion,
                 Serie = r.Serie,
-                Recinto = clsSessionHelper.recintosMemory.Where(w => w.IdRecinto == r.InfoRecibo.IdRecinto).Select(s1 => s1.Siglas).FirstOrDefault().ToString(),
-                Area = clsSessionHelper.areasMemory.Where(w => w.codigo == r.OrdenPago.IdArea).Select(s1 => s1.descripcion).FirstOrDefault().ToString().ToUpper(),
+                Recinto = clsSessionHelper.recintosMemory.Find(w => w.IdRecinto == r.InfoRecibo.IdRecinto).Siglas,
+                Area = clsSessionHelper.areasMemory.Find(w => w.codigo == r.OrdenPago.IdArea).descripcion.ToUpper(),
             }).ToList();
 
             //La información se obtiene del detalle del recibo
@@ -138,8 +141,8 @@ namespace PruebaWPF.ViewModel
                 FuenteFinanciamiento = r.FuenteFinanciamiento,
                 TipoDeposito = r.TipoDeposito,
                 UsuarioCreacion = r.UsuarioCreacion,
-                Recinto = clsSessionHelper.recintosMemory.Where(w => w.IdRecinto == r.InfoRecibo.IdRecinto).Select(s1 => s1.Siglas).FirstOrDefault().ToString(),
-                Area = clsSessionHelper.areasMemory.Where(w => w.codigo == r.IdArea).Select(s1 => s1.descripcion).FirstOrDefault().ToString().ToUpper(),
+                Recinto = clsSessionHelper.recintosMemory.Find(w => w.IdRecinto == r.InfoRecibo.IdRecinto).Siglas,
+                Area = clsSessionHelper.areasMemory.Find(w => w.codigo == r.IdArea).descripcion.ToUpper(),
             }).ToList();
 
             //La información se obtiene de la orden de pago, cuando el recibo está anulado
@@ -164,8 +167,8 @@ namespace PruebaWPF.ViewModel
                 FuenteFinanciamiento = r.FuenteFinanciamiento,
                 TipoDeposito = r.ReciboAnulado.OrdenPago.TipoDeposito,
                 UsuarioCreacion = r.UsuarioCreacion,
-                Recinto = clsSessionHelper.recintosMemory.Where(w => w.IdRecinto == r.InfoRecibo.IdRecinto).Select(s1 => s1.Siglas).FirstOrDefault().ToString(),
-                Area = clsSessionHelper.areasMemory.Where(w => w.codigo == r.ReciboAnulado.OrdenPago.IdArea).Select(s1 => s1.descripcion).FirstOrDefault().ToString().ToUpper(),
+                Recinto = clsSessionHelper.recintosMemory.Find(w => w.IdRecinto == r.InfoRecibo.IdRecinto).Siglas,
+                Area = clsSessionHelper.areasMemory.Find(w => w.codigo == r.ReciboAnulado.OrdenPago.IdArea).descripcion.ToUpper(),
                 ReciboAnulado = r.ReciboAnulado
             }).ToList();
 
@@ -191,8 +194,8 @@ namespace PruebaWPF.ViewModel
                 FuenteFinanciamiento = r.FuenteFinanciamiento,
                 TipoDeposito = r.TipoDeposito,
                 UsuarioCreacion = r.UsuarioCreacion,
-                Recinto = clsSessionHelper.recintosMemory.Where(w => w.IdRecinto == r.InfoRecibo.IdRecinto).Select(s1 => s1.Siglas).FirstOrDefault().ToString(),
-                Area = clsSessionHelper.areasMemory.Where(w => w.codigo == r.IdArea).Select(s1 => s1.descripcion).FirstOrDefault().ToString().ToUpper(),
+                Recinto = clsSessionHelper.recintosMemory.Find(w => w.IdRecinto == r.InfoRecibo.IdRecinto).Siglas,
+                Area = clsSessionHelper.areasMemory.Find(w => w.codigo == r.IdArea).descripcion.ToUpper(),
                 ReciboAnulado = r.ReciboAnulado
             }).ToList();
 
@@ -658,7 +661,7 @@ namespace PruebaWPF.ViewModel
 
         public bool Autorice_Recinto(string PermisoName, int IdRecinto)
         {
-            if (new SecurityViewModel().Autorize(pantalla, PermisoName, IdRecinto))
+            if (seguridad.Autorize(pantalla, PermisoName, IdRecinto))
             {
                 return true;
             }
@@ -670,7 +673,7 @@ namespace PruebaWPF.ViewModel
 
         public bool Autorice(string PermisoName)
         {
-            if (new SecurityViewModel().Autorize(pantalla, PermisoName))
+            if (seguridad.Autorize(pantalla, PermisoName))
             {
                 return true;
             }

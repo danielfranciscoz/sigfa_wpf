@@ -21,10 +21,10 @@ namespace PruebaWPF.Model
         public decimal PrecioVariable { get; set; }
         public Nullable<int> IdExoneracion { get; set; }
         public decimal Descuento { get; set; }
+        public string IdAreaIngreso { get; set; }
         public System.DateTime FechaCreacion { get; set; }
         public string UsuarioCreacion { get; set; }
         public bool regAnulado { get; set; }
-        public string IdAreaIngreso { get; set; }
     
         public virtual Usuario Usuario { get; set; }
         public virtual ArancelPrecio ArancelPrecio { get; set; }

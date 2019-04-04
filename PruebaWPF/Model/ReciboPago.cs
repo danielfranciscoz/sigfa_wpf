@@ -27,10 +27,10 @@ namespace PruebaWPF.Model
         public virtual Moneda Moneda { get; set; }
         public virtual Usuario Usuario { get; set; }
         public virtual FormaPago FormaPago { get; set; }
+        public virtual Recibo1 Recibo1 { get; set; }
         public virtual ReciboPagoBono ReciboPagoBono { get; set; }
         public virtual ReciboPagoCheque ReciboPagoCheque { get; set; }
         public virtual ReciboPagoDeposito ReciboPagoDeposito { get; set; }
         public virtual ReciboPagoTarjeta ReciboPagoTarjeta { get; set; }
-        public virtual Recibo1 Recibo1 { get; set; }
     }
 }

@@ -17,12 +17,12 @@ namespace PruebaWPF.Model
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public Arqueo()
         {
-            this.ArqueoRecibo = new HashSet<ArqueoRecibo>();
             this.ArqueoEfectivo = new HashSet<ArqueoEfectivo>();
+            this.ArqueoRecibo = new HashSet<ArqueoRecibo>();
         }
     
         public int IdArqueo { get; set; }
-        public int IdCaja { get; set; }
+        public int IdDetApertura { get; set; }
         public System.DateTime FechaArqueo { get; set; }
         public string UsuarioArqueador { get; set; }
         public string Observaciones { get; set; }
@@ -31,10 +31,10 @@ namespace PruebaWPF.Model
         public bool isFinalizado { get; set; }
     
         public virtual Usuario Usuario { get; set; }
-        public virtual Caja Caja { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<ArqueoRecibo> ArqueoRecibo { get; set; }
+        public virtual DetAperturaCaja DetAperturaCaja { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<ArqueoEfectivo> ArqueoEfectivo { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<ArqueoRecibo> ArqueoRecibo { get; set; }
     }
 }

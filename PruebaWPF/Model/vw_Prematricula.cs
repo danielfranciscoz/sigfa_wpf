@@ -15,13 +15,12 @@ namespace PruebaWPF.Model
     public partial class vw_Prematricula
     {
         public string IdPrematricula { get; set; }
-        public string ALCodigo { get; set; }
+        public string AñoLectivo { get; set; }
         public int Carnet { get; set; }
         public string Nombre { get; set; }
         public byte ESTipo { get; set; }
-        public string CarreraCodigoPrimOpcion { get; set; }
-        public string CarreraCodigoSegOpcion { get; set; }
-        public Nullable<bool> Becado { get; set; }
-        public int Clasificado { get; set; }
+        public string PrimeraOpcion { get; set; }
+        public string SegundaOpcion { get; set; }
+        public Nullable<bool> isBecado { get; set; }
     }
 }

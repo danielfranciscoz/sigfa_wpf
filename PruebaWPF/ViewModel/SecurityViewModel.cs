@@ -25,10 +25,14 @@ namespace PruebaWPF.ViewModel
         public List<vw_RecintosRH> RecintosPermiso(Pantalla p, string PermisoName)
         {
 
-            var permisos = db.Permiso.Where(w => w.IdPantalla == p.IdPantalla && w.PermisoName.Nombre.Equals(PermisoName)).Select(s => s.IdRecinto);
-            var Ids = clsSessionHelper.perfiles.Select(s => s.IdRecinto).Intersect(permisos);
+            var permisos = db.Permiso.ToList().Where(w =>
+                w.IdPantalla == p.IdPantalla &&
+                w.PermisoName.Nombre.Equals(PermisoName) &&
+                clsSessionHelper.perfiles.Any(a => a.IdPerfil == w.IdPerfil && a.IdRecinto == w.IdRecinto)
+               ).Select(s => s.IdRecinto);
 
-            return clsSessionHelper.recintosMemory.Where(w => Ids.Any(a => w.IdRecinto == a)).ToList();
+
+            return clsSessionHelper.recintosMemory.Where(w => permisos.Any(a => w.IdRecinto == a)).ToList();
         }
 
         /// <summary>
@@ -39,10 +43,15 @@ namespace PruebaWPF.ViewModel
         public List<vw_RecintosRH> RecintosPermiso(Pantalla p)
         {
 
-            var permisos = db.Permiso.Where(w => w.IdPantalla == p.IdPantalla && w.IdPermisoName == 1).Select(s => s.IdRecinto);
-            var Ids = clsSessionHelper.perfiles.Select(s => s.IdRecinto).Intersect(permisos);
+            var permisos = db.Permiso.ToList().Where(w =>
+                w.IdPantalla == p.IdPantalla &&
+                w.IdPermisoName == 1 &&
+                clsSessionHelper.perfiles.Any(a => a.IdPerfil == w.IdPerfil && a.IdRecinto == w.IdRecinto)
+            ).Select(s => s.IdRecinto);
 
-            return clsSessionHelper.recintosMemory.Where(w => Ids.Any(a => w.IdRecinto == a)).ToList();
+            //var Ids = clsSessionHelper.perfiles.Select(s => s.IdRecinto).Intersect(permisos);
+
+            return clsSessionHelper.recintosMemory.Where(w => permisos.Any(a => w.IdRecinto == a)).ToList();
         }
 
         /// <summary>
@@ -55,10 +64,16 @@ namespace PruebaWPF.ViewModel
         public bool Autorize(Pantalla p, string PermisoName, int IdRecinto)
         {
 
-            var permisos = db.Permiso.Where(w => w.IdPantalla == p.IdPantalla && w.PermisoName.Nombre.Equals(PermisoName) && w.IdRecinto == IdRecinto).Select(s => s.IdPerfil);
-            var Ids = clsSessionHelper.perfiles.Select(s => s.IdPerfil).Intersect(permisos);
-       
-            return Ids.ToList().Count > 0 ? true : false;
+            var permisos = db.Permiso.ToList().Where(w =>
+                    w.IdPantalla == p.IdPantalla &&
+                    w.PermisoName.Nombre.Equals(PermisoName) &&
+                    w.IdRecinto == IdRecinto &&
+                    clsSessionHelper.perfiles.Any(a => a.IdPerfil == w.IdPerfil && a.IdRecinto == w.IdRecinto)
+                ).Select(s => s.IdPerfil);
+
+
+
+            return permisos.Any() ? true : false;
         }
 
         /// <summary>
@@ -72,10 +87,13 @@ namespace PruebaWPF.ViewModel
         public bool Autorize(Pantalla p, string PermisoName)
         {
 
-            var permisos = db.Permiso.Where(w => w.IdPantalla == p.IdPantalla && w.PermisoName.Nombre.Equals(PermisoName)).Select(s => s.IdPerfil);
-            var Ids = clsSessionHelper.perfiles.Select(s => s.IdPerfil).Intersect(permisos);
+            var permisos = db.Permiso.ToList().Where(w =>
+                w.IdPantalla == p.IdPantalla &&
+                w.PermisoName.Nombre.Equals(PermisoName) &&
+                clsSessionHelper.perfiles.Any(a => a.IdPerfil == w.IdPerfil && a.IdRecinto == w.IdRecinto)
+            ).Select(s => s.IdPerfil);
 
-            return Ids.ToList().Count > 0 ? true : false;
+            return permisos.Any() ? true : false;
         }
     }
 }
