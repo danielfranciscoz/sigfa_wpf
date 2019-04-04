@@ -29,6 +29,7 @@ namespace PruebaWPF.Model
         public string UsuarioCreacion { get; set; }
         public bool regAnulado { get; set; }
         public string Autorizadopor { get; set; }
+        public int IdArancelPrecio { get; set; }
     
         public virtual Usuario Usuario { get; set; }
         public virtual Usuario Usuario1 { get; set; }
@@ -36,5 +37,6 @@ namespace PruebaWPF.Model
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<DetOrdenPagoArancel> DetOrdenPagoArancel { get; set; }
         public virtual TipoDeposito TipoDeposito { get; set; }
+        public virtual ArancelPrecio ArancelPrecio { get; set; }
     }
 }

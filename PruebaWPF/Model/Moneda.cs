@@ -20,6 +20,8 @@ namespace PruebaWPF.Model
             this.ArancelPrecio = new HashSet<ArancelPrecio>();
             this.ReciboPago = new HashSet<ReciboPago>();
             this.VariacionCambiaria = new HashSet<VariacionCambiaria>();
+            this.DenominacionMoneda = new HashSet<DenominacionMoneda>();
+            this.ArqueoEfectivo = new HashSet<ArqueoEfectivo>();
         }
     
         public int IdMoneda { get; set; }
@@ -37,5 +39,9 @@ namespace PruebaWPF.Model
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<VariacionCambiaria> VariacionCambiaria { get; set; }
         public virtual Usuario Usuario { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<DenominacionMoneda> DenominacionMoneda { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<ArqueoEfectivo> ArqueoEfectivo { get; set; }
     }
 }

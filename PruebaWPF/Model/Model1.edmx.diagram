@@ -446,6 +446,15 @@
         <AssociationConnector Association="SIFOPModel.FK_ReciboAnulado_Recibo" />
         <AssociationConnector Association="SIFOPModel.FK_ReciboDet_Recibo" />
         <AssociationConnector Association="SIFOPModel.FK_ReciboPago_Recibo" />
+        <EntityTypeShape EntityType="SIFOPModel.DenominacionMoneda" Width="1.5" PointX="28.875" PointY="133.5" />
+        <EntityTypeShape EntityType="SIFOPModel.ArqueoEfectivo" Width="1.5" PointX="24.875" PointY="148.875" />
+        <EntityTypeShape EntityType="SIFOPModel.vw_Aranceles" Width="1.5" PointX="0.75" PointY="37.75" />
+        <EntityTypeShape EntityType="SIFOPModel.vw_Prematricula1" Width="1.5" PointX="2.75" PointY="37.75" />
+        <AssociationConnector Association="SIFOPModel.FK_DenominacionMoneda_Moneda" />
+        <AssociationConnector Association="SIFOPModel.FK_DenominacionMoneda_Usuario" />
+        <AssociationConnector Association="SIFOPModel.FK_ArqueoEfectivo_Moneda" />
+        <AssociationConnector Association="SIFOPModel.FK_Exoneracion_ArancelPrecio" />
+        <AssociationConnector Association="SIFOPModel.FK_ArqueoEfectivo_Arqueo" />
         </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

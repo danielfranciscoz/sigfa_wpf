@@ -266,6 +266,10 @@ namespace PruebaWPF.Model
         public virtual DbSet<DetAperturaCaja> DetAperturaCaja { get; set; }
         public virtual DbSet<AperturaCaja> AperturaCaja { get; set; }
         public virtual DbSet<Recibo1> Recibo1 { get; set; }
+        public virtual DbSet<DenominacionMoneda> DenominacionMoneda { get; set; }
+        public virtual DbSet<ArqueoEfectivo> ArqueoEfectivo { get; set; }
+        public virtual DbSet<vw_Aranceles> vw_Aranceles { get; set; }
+        public virtual DbSet<vw_Prematricula1> vw_Prematricula1Set { get; set; }
     
         [DbFunction("SIFOPEntities", "fn_ConsultarInfoExterna")]
         public virtual IQueryable<fn_ConsultarInfoExterna_Result> fn_ConsultarInfoExterna(Nullable<int> tipoDeposito, string criterio, Nullable<bool> criterioInterno, string texto, Nullable<int> top)

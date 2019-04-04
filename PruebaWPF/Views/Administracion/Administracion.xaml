@@ -528,7 +528,6 @@
                                                 <DataGridTextColumn CanUserReorder="False" CanUserResize="False" IsReadOnly="True" Header="Tipo" Width="auto" Binding="{Binding Tipo}"></DataGridTextColumn>
                                                 <DataGridTextColumn CanUserReorder="False" CanUserResize="False" IsReadOnly="True" Header="Menú" Width="auto" Binding="{Binding isMenu,Converter={StaticResource convertidor},ConverterParameter='SI;NO'}"></DataGridTextColumn>
                                                 <DataGridTextColumn CanUserReorder="False" CanUserResize="False" IsReadOnly="True" Header="Posición" Width="auto" Binding="{Binding Orden}"></DataGridTextColumn>
-
                                             </DataGrid.Columns>
 
                                         </DataGrid>

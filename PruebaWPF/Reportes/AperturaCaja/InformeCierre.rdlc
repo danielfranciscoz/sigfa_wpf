@@ -1903,7 +1903,7 @@
                               <Paragraph>
                                 <TextRuns>
                                   <TextRun>
-                                    <Value>=Fields!FormaPago.Value</Value>
+                                    <Value>=CSTR(Fields!FormaPago.Value) &amp; " (" &amp; Count(Fields!FormaPago.Value) &amp; ")"</Value>
                                     <Style />
                                   </TextRun>
                                 </TextRuns>
@@ -2341,7 +2341,7 @@
                 <Paragraph>
                   <TextRuns>
                     <TextRun>
-                      <Value>OFICINA DE CONTABILIDAD</Value>
+                      <Value>OFICINA DE TESORERÍA</Value>
                       <Style>
                         <FontSize>11pt</FontSize>
                         <FontWeight>Bold</FontWeight>
@@ -2355,7 +2355,7 @@
                 <Paragraph>
                   <TextRuns>
                     <TextRun>
-                      <Value>INFORME GENERAL DE CAJA</Value>
+                      <Value>INFORME DE CIERRE DE CAJA</Value>
                       <Style>
                         <FontSize>11pt</FontSize>
                         <FontWeight>Bold</FontWeight>

@@ -76,6 +76,7 @@ namespace PruebaWPF.Model
             this.TipoArancel = new HashSet<TipoArancel>();
             this.AperturaCaja = new HashSet<AperturaCaja>();
             this.Recibo1 = new HashSet<Recibo1>();
+            this.DenominacionMoneda = new HashSet<DenominacionMoneda>();
         }
     
         public string Login { get; set; }
@@ -218,5 +219,7 @@ namespace PruebaWPF.Model
         public virtual ICollection<AperturaCaja> AperturaCaja { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Recibo1> Recibo1 { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<DenominacionMoneda> DenominacionMoneda { get; set; }
     }
 }

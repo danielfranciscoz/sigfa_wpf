@@ -30,6 +30,16 @@
           <Property Name="FechaCreacion" Type="datetime" Nullable="false" />
           <Property Name="regAnulado" Type="bit" Nullable="false" />
         </EntityType>
+        <EntityType Name="DenominacionMoneda">
+          <Key>
+            <PropertyRef Name="IdDenominacionMoneda" />
+          </Key>
+          <Property Name="IdDenominacionMoneda" Type="tinyint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Denominacion" Type="float" Nullable="false" />
+          <Property Name="Moneda" Type="int" Nullable="false" />
+          <Property Name="FechaCreacion" Type="datetime" Nullable="false" />
+          <Property Name="UsuarioCreacion" Type="nvarchar" MaxLength="20" Nullable="false" />
+        </EntityType>
         <!--Errores durante la generación:
 advertencia 6002: La tabla o vista 'SIFOP.coin.FormulaConversion' no tiene definida ninguna clave principal. Se ha inferido la clave y la definición se creado como una vista o tabla de solo lectura.-->
         <EntityType Name="FormulaConversion">
@@ -2304,7 +2314,7 @@ advertencia 6002: La tabla o vista 'SIFOP.dbo.TmpSolicitudesArchivo' no tiene de
           <Property Name="IdExoneracion" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="Identificador" Type="varchar" MaxLength="20" Nullable="false" />
           <Property Name="IdTipoDeposito" Type="int" Nullable="false" />
-          <Property Name="IdArancel" Type="int" Nullable="false" />
+          <Property Name="IdArancelPrecio" Type="int" Nullable="false" />
           <Property Name="Exonerado" Type="decimal" Precision="18" Scale="2" Nullable="false" />
           <Property Name="FechaCreacion" Type="datetime" Nullable="false" />
           <Property Name="UsuarioCreacion" Type="nvarchar" MaxLength="20" Nullable="false" />
@@ -2360,6 +2370,16 @@ advertencia 6002: La tabla o vista 'SIFOP.dbo.TmpSolicitudesArchivo' no tiene de
           <Property Name="CajeroEntrega" Type="nvarchar" MaxLength="20" Nullable="false" />
           <Property Name="JefeCajero" Type="nvarchar" MaxLength="20" Nullable="false" />
           <Property Name="isFinalizado" Type="bit" Nullable="false" />
+        </EntityType>
+        <EntityType Name="ArqueoEfectivo">
+          <Key>
+            <PropertyRef Name="IdArqueoEfectivo" />
+          </Key>
+          <Property Name="IdArqueoEfectivo" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="IdArqueo" Type="int" Nullable="false" />
+          <Property Name="IdMoneda" Type="int" Nullable="false" />
+          <Property Name="Denominacion" Type="float" Nullable="false" />
+          <Property Name="Cantidad" Type="tinyint" Nullable="false" />
         </EntityType>
         <EntityType Name="ArqueoRecibo">
           <Key>
@@ -2612,6 +2632,31 @@ advertencia 6002: La tabla o vista 'SIFOP.dbo.TmpSolicitudesArchivo' no tiene de
           <Property Name="FechaCreacion" Type="datetime" Nullable="false" />
         </EntityType>
         <!--Errores durante la generación:
+advertencia 6002: La tabla o vista 'SIFOP.cat.vw_Aranceles' no tiene definida ninguna clave principal. Se ha inferido la clave y la definición se creado como una vista o tabla de solo lectura.-->
+        <EntityType Name="vw_Aranceles">
+          <Key>
+            <PropertyRef Name="IdArancel" />
+            <PropertyRef Name="Arancel" />
+            <PropertyRef Name="IdTipo" />
+            <PropertyRef Name="Tipo" />
+            <PropertyRef Name="IdPrecio" />
+            <PropertyRef Name="Precio" />
+            <PropertyRef Name="IdMoneda" />
+            <PropertyRef Name="Moneda" />
+            <PropertyRef Name="IdArea" />
+          </Key>
+          <Property Name="IdArancel" Type="int" Nullable="false" />
+          <Property Name="Arancel" Type="varchar" MaxLength="80" Nullable="false" />
+          <Property Name="IdTipo" Type="int" Nullable="false" />
+          <Property Name="Tipo" Type="varchar" MaxLength="20" Nullable="false" />
+          <Property Name="IdPrecio" Type="int" Nullable="false" />
+          <Property Name="Precio" Type="decimal" Precision="18" Scale="2" Nullable="false" />
+          <Property Name="IdMoneda" Type="int" Nullable="false" />
+          <Property Name="Moneda" Type="varchar" MaxLength="20" Nullable="false" />
+          <Property Name="IdArea" Type="varchar" MaxLength="4" Nullable="false" />
+          <Property Name="Area" Type="varchar" MaxLength="200" />
+        </EntityType>
+        <!--Errores durante la generación:
 advertencia 6002: La tabla o vista 'SIFOP.cat.vw_Areas' no tiene definida ninguna clave principal. Se ha inferido la clave y la definición se creado como una vista o tabla de solo lectura.-->
         <EntityType Name="vw_Areas">
           <Key>
@@ -2638,6 +2683,25 @@ advertencia 6002: La tabla o vista 'SIFOP.cat.vw_FuentesSIPPSI' no tiene definid
           <Property Name="Nombre" Type="nvarchar" MaxLength="500" Nullable="false" />
           <Property Name="Siglas" Type="varchar" MaxLength="50" />
           <Property Name="isActiva" Type="int" Nullable="false" />
+        </EntityType>
+        <!--Errores durante la generación:
+advertencia 6002: La tabla o vista 'SIFOP.cat.vw_Prematricula' no tiene definida ninguna clave principal. Se ha inferido la clave y la definición se creado como una vista o tabla de solo lectura.-->
+        <EntityType Name="vw_Prematricula">
+          <Key>
+            <PropertyRef Name="AñoLectivo" />
+            <PropertyRef Name="Carnet" />
+            <PropertyRef Name="ESTipo" />
+            <PropertyRef Name="PrimeraOpcion" />
+            <PropertyRef Name="SegundaOpcion" />
+          </Key>
+          <Property Name="IdPrematricula" Type="nvarchar" MaxLength="10" />
+          <Property Name="AñoLectivo" Type="nvarchar" MaxLength="8" Nullable="false" />
+          <Property Name="Carnet" Type="int" Nullable="false" />
+          <Property Name="Nombre" Type="nvarchar" MaxLength="200" />
+          <Property Name="ESTipo" Type="tinyint" Nullable="false" />
+          <Property Name="PrimeraOpcion" Type="nvarchar" MaxLength="4" Nullable="false" />
+          <Property Name="SegundaOpcion" Type="nvarchar" MaxLength="4" Nullable="false" />
+          <Property Name="isBecado" Type="bit" />
         </EntityType>
         <!--Errores durante la generación:
 advertencia 6002: La tabla o vista 'SIFOP.cat.vw_ProveedoresSISCOM' no tiene definida ninguna clave principal. Se ha inferido la clave y la definición se creado como una vista o tabla de solo lectura.-->
@@ -3702,7 +3766,7 @@ advertencia 6002: La tabla o vista 'SIFOP.dbo.vw_PremaMatricula' no tiene defini
         </EntityType>
         <!--Errores durante la generación:
 advertencia 6002: La tabla o vista 'SIFOP.dbo.vw_Prematricula' no tiene definida ninguna clave principal. Se ha inferido la clave y la definición se creado como una vista o tabla de solo lectura.-->
-        <EntityType Name="vw_Prematricula">
+        <EntityType Name="vw_Prematricula1">
           <Key>
             <PropertyRef Name="ALCodigo" />
             <PropertyRef Name="Carnet" />
@@ -4849,6 +4913,30 @@ advertencia 6002: La tabla o vista 'SIFOP.dbo.w_LibroMayorAcumulado_Vlast' no ti
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_ArqueoEfectivo_Arqueo">
+          <End Role="Arqueo" Type="Self.Arqueo" Multiplicity="1" />
+          <End Role="ArqueoEfectivo" Type="Self.ArqueoEfectivo" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Arqueo">
+              <PropertyRef Name="IdArqueo" />
+            </Principal>
+            <Dependent Role="ArqueoEfectivo">
+              <PropertyRef Name="IdArqueo" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ArqueoEfectivo_Moneda">
+          <End Role="Moneda" Type="Self.Moneda" Multiplicity="1" />
+          <End Role="ArqueoEfectivo" Type="Self.ArqueoEfectivo" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Moneda">
+              <PropertyRef Name="IdMoneda" />
+            </Principal>
+            <Dependent Role="ArqueoEfectivo">
+              <PropertyRef Name="IdMoneda" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_ArqueoRecibo_Arqueo">
           <End Role="Arqueo" Type="Self.Arqueo" Multiplicity="1" />
           <End Role="ArqueoRecibo" Type="Self.ArqueoRecibo" Multiplicity="*" />
@@ -5325,6 +5413,30 @@ advertencia 6002: La tabla o vista 'SIFOP.dbo.w_LibroMayorAcumulado_Vlast' no ti
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_DenominacionMoneda_Moneda">
+          <End Role="Moneda" Type="Self.Moneda" Multiplicity="1" />
+          <End Role="DenominacionMoneda" Type="Self.DenominacionMoneda" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Moneda">
+              <PropertyRef Name="IdMoneda" />
+            </Principal>
+            <Dependent Role="DenominacionMoneda">
+              <PropertyRef Name="Moneda" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_DenominacionMoneda_Usuario">
+          <End Role="Usuario" Type="Self.Usuario" Multiplicity="1" />
+          <End Role="DenominacionMoneda" Type="Self.DenominacionMoneda" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Usuario">
+              <PropertyRef Name="Login" />
+            </Principal>
+            <Dependent Role="DenominacionMoneda">
+              <PropertyRef Name="UsuarioCreacion" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_Departamento_Paises">
           <End Role="Paises" Type="Self.Paises" Multiplicity="1" />
           <End Role="Departamento" Type="Self.Departamento" Multiplicity="*" />
@@ -5745,15 +5857,15 @@ advertencia 6002: La tabla o vista 'SIFOP.dbo.w_LibroMayorAcumulado_Vlast' no ti
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_Exoneracion_Arancel">
-          <End Role="Arancel" Type="Self.Arancel" Multiplicity="1" />
+        <Association Name="FK_Exoneracion_ArancelPrecio">
+          <End Role="ArancelPrecio" Type="Self.ArancelPrecio" Multiplicity="1" />
           <End Role="Exoneracion" Type="Self.Exoneracion" Multiplicity="*" />
           <ReferentialConstraint>
-            <Principal Role="Arancel">
-              <PropertyRef Name="IdArancel" />
+            <Principal Role="ArancelPrecio">
+              <PropertyRef Name="IdArancelPrecio" />
             </Principal>
             <Dependent Role="Exoneracion">
-              <PropertyRef Name="IdArancel" />
+              <PropertyRef Name="IdArancelPrecio" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -9575,6 +9687,7 @@ advertencia 6002: La tabla o vista 'SIFOP.dbo.w_LibroMayorAcumulado_Vlast' no ti
         <EntityContainer Name="SIFOPModelStoreContainer">
           <EntitySet Name="AgenteExternoCat" EntityType="Self.AgenteExternoCat" Schema="cat" store:Type="Tables" />
           <EntitySet Name="IdentificacionAgenteExterno" EntityType="Self.IdentificacionAgenteExterno" Schema="cat" store:Type="Tables" />
+          <EntitySet Name="DenominacionMoneda" EntityType="Self.DenominacionMoneda" Schema="coin" store:Type="Tables" />
           <EntitySet Name="Moneda" EntityType="Self.Moneda" Schema="coin" store:Type="Tables" />
           <EntitySet Name="Actividad" EntityType="Self.Actividad" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="AgenteExterno" EntityType="Self.AgenteExterno" Schema="dbo" store:Type="Tables" />
@@ -9711,6 +9824,7 @@ advertencia 6002: La tabla o vista 'SIFOP.dbo.w_LibroMayorAcumulado_Vlast' no ti
           <EntitySet Name="TipoArancel" EntityType="Self.TipoArancel" Schema="op" store:Type="Tables" />
           <EntitySet Name="AperturaCaja" EntityType="Self.AperturaCaja" Schema="pay" store:Type="Tables" />
           <EntitySet Name="Arqueo" EntityType="Self.Arqueo" Schema="pay" store:Type="Tables" />
+          <EntitySet Name="ArqueoEfectivo" EntityType="Self.ArqueoEfectivo" Schema="pay" store:Type="Tables" />
           <EntitySet Name="ArqueoRecibo" EntityType="Self.ArqueoRecibo" Schema="pay" store:Type="Tables" />
           <EntitySet Name="Caja" EntityType="Self.Caja" Schema="pay" store:Type="Tables" />
           <EntitySet Name="DetAperturaCaja" EntityType="Self.DetAperturaCaja" Schema="pay" store:Type="Tables" />
@@ -9813,6 +9927,20 @@ advertencia 6002: La tabla o vista 'SIFOP.dbo.w_LibroMayorAcumulado_Vlast' no ti
     [TmpSolicitudesArchivo].[LoginCreacion] AS [LoginCreacion]
     FROM [dbo].[TmpSolicitudesArchivo] AS [TmpSolicitudesArchivo]</DefiningQuery>
           </EntitySet>
+          <EntitySet Name="vw_Aranceles" EntityType="Self.vw_Aranceles" store:Type="Views" store:Schema="cat">
+            <DefiningQuery>SELECT 
+    [vw_Aranceles].[IdArancel] AS [IdArancel], 
+    [vw_Aranceles].[Arancel] AS [Arancel], 
+    [vw_Aranceles].[IdTipo] AS [IdTipo], 
+    [vw_Aranceles].[Tipo] AS [Tipo], 
+    [vw_Aranceles].[IdPrecio] AS [IdPrecio], 
+    [vw_Aranceles].[Precio] AS [Precio], 
+    [vw_Aranceles].[IdMoneda] AS [IdMoneda], 
+    [vw_Aranceles].[Moneda] AS [Moneda], 
+    [vw_Aranceles].[IdArea] AS [IdArea], 
+    [vw_Aranceles].[Area] AS [Area]
+    FROM [cat].[vw_Aranceles] AS [vw_Aranceles]</DefiningQuery>
+          </EntitySet>
           <EntitySet Name="vw_Areas" EntityType="Self.vw_Areas" store:Type="Views" store:Schema="cat">
             <DefiningQuery>SELECT 
     [vw_Areas].[codigo] AS [codigo], 
@@ -9831,6 +9959,18 @@ advertencia 6002: La tabla o vista 'SIFOP.dbo.w_LibroMayorAcumulado_Vlast' no ti
     [vw_FuentesSIPPSI].[Siglas] AS [Siglas], 
     [vw_FuentesSIPPSI].[isActiva] AS [isActiva]
     FROM [cat].[vw_FuentesSIPPSI] AS [vw_FuentesSIPPSI]</DefiningQuery>
+          </EntitySet>
+          <EntitySet Name="vw_Prematricula" EntityType="Self.vw_Prematricula" store:Type="Views" store:Schema="cat">
+            <DefiningQuery>SELECT 
+    [vw_Prematricula].[IdPrematricula] AS [IdPrematricula], 
+    [vw_Prematricula].[AñoLectivo] AS [AñoLectivo], 
+    [vw_Prematricula].[Carnet] AS [Carnet], 
+    [vw_Prematricula].[Nombre] AS [Nombre], 
+    [vw_Prematricula].[ESTipo] AS [ESTipo], 
+    [vw_Prematricula].[PrimeraOpcion] AS [PrimeraOpcion], 
+    [vw_Prematricula].[SegundaOpcion] AS [SegundaOpcion], 
+    [vw_Prematricula].[isBecado] AS [isBecado]
+    FROM [cat].[vw_Prematricula] AS [vw_Prematricula]</DefiningQuery>
           </EntitySet>
           <EntitySet Name="vw_ProveedoresSISCOM" EntityType="Self.vw_ProveedoresSISCOM" store:Type="Views" store:Schema="cat">
             <DefiningQuery>SELECT 
@@ -10549,18 +10689,18 @@ advertencia 6002: La tabla o vista 'SIFOP.dbo.w_LibroMayorAcumulado_Vlast' no ti
     [vw_PremaMatricula].[PMNumero] AS [PMNumero]
     FROM [dbo].[vw_PremaMatricula] AS [vw_PremaMatricula]</DefiningQuery>
           </EntitySet>
-          <EntitySet Name="vw_Prematricula" EntityType="Self.vw_Prematricula" store:Type="Views" store:Schema="dbo">
+          <EntitySet Name="vw_Prematricula1" EntityType="Self.vw_Prematricula1" store:Type="Views" store:Schema="dbo" store:Name="vw_Prematricula">
             <DefiningQuery>SELECT 
-    [vw_Prematricula].[IdPrematricula] AS [IdPrematricula], 
-    [vw_Prematricula].[ALCodigo] AS [ALCodigo], 
-    [vw_Prematricula].[Carnet] AS [Carnet], 
-    [vw_Prematricula].[Nombre] AS [Nombre], 
-    [vw_Prematricula].[ESTipo] AS [ESTipo], 
-    [vw_Prematricula].[CarreraCodigoPrimOpcion] AS [CarreraCodigoPrimOpcion], 
-    [vw_Prematricula].[CarreraCodigoSegOpcion] AS [CarreraCodigoSegOpcion], 
-    [vw_Prematricula].[Becado] AS [Becado], 
-    [vw_Prematricula].[Clasificado] AS [Clasificado]
-    FROM [dbo].[vw_Prematricula] AS [vw_Prematricula]</DefiningQuery>
+    [vw_Prematricula1].[IdPrematricula] AS [IdPrematricula], 
+    [vw_Prematricula1].[ALCodigo] AS [ALCodigo], 
+    [vw_Prematricula1].[Carnet] AS [Carnet], 
+    [vw_Prematricula1].[Nombre] AS [Nombre], 
+    [vw_Prematricula1].[ESTipo] AS [ESTipo], 
+    [vw_Prematricula1].[CarreraCodigoPrimOpcion] AS [CarreraCodigoPrimOpcion], 
+    [vw_Prematricula1].[CarreraCodigoSegOpcion] AS [CarreraCodigoSegOpcion], 
+    [vw_Prematricula1].[Becado] AS [Becado], 
+    [vw_Prematricula1].[Clasificado] AS [Clasificado]
+    FROM [dbo].[vw_Prematricula] AS [vw_Prematricula1]</DefiningQuery>
           </EntitySet>
           <EntitySet Name="vw_Proveedor" EntityType="Self.vw_Proveedor" store:Type="Views" store:Schema="dbo">
             <DefiningQuery>SELECT 
@@ -11205,6 +11345,14 @@ advertencia 6002: La tabla o vista 'SIFOP.dbo.w_LibroMayorAcumulado_Vlast' no ti
             <End Role="Usuario" EntitySet="Usuario" />
             <End Role="Arqueo" EntitySet="Arqueo" />
           </AssociationSet>
+          <AssociationSet Name="FK_ArqueoEfectivo_Arqueo" Association="Self.FK_ArqueoEfectivo_Arqueo">
+            <End Role="Arqueo" EntitySet="Arqueo" />
+            <End Role="ArqueoEfectivo" EntitySet="ArqueoEfectivo" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ArqueoEfectivo_Moneda" Association="Self.FK_ArqueoEfectivo_Moneda">
+            <End Role="Moneda" EntitySet="Moneda" />
+            <End Role="ArqueoEfectivo" EntitySet="ArqueoEfectivo" />
+          </AssociationSet>
           <AssociationSet Name="FK_ArqueoRecibo_Arqueo" Association="Self.FK_ArqueoRecibo_Arqueo">
             <End Role="Arqueo" EntitySet="Arqueo" />
             <End Role="ArqueoRecibo" EntitySet="ArqueoRecibo" />
@@ -11361,6 +11509,14 @@ advertencia 6002: La tabla o vista 'SIFOP.dbo.w_LibroMayorAcumulado_Vlast' no ti
             <End Role="Usuario" EntitySet="Usuario" />
             <End Role="CuentaContable" EntitySet="CuentaContable" />
           </AssociationSet>
+          <AssociationSet Name="FK_DenominacionMoneda_Moneda" Association="Self.FK_DenominacionMoneda_Moneda">
+            <End Role="Moneda" EntitySet="Moneda" />
+            <End Role="DenominacionMoneda" EntitySet="DenominacionMoneda" />
+          </AssociationSet>
+          <AssociationSet Name="FK_DenominacionMoneda_Usuario" Association="Self.FK_DenominacionMoneda_Usuario">
+            <End Role="Usuario" EntitySet="Usuario" />
+            <End Role="DenominacionMoneda" EntitySet="DenominacionMoneda" />
+          </AssociationSet>
           <AssociationSet Name="FK_Departamento_Paises" Association="Self.FK_Departamento_Paises">
             <End Role="Paises" EntitySet="Paises" />
             <End Role="Departamento" EntitySet="Departamento" />
@@ -11501,8 +11657,8 @@ advertencia 6002: La tabla o vista 'SIFOP.dbo.w_LibroMayorAcumulado_Vlast' no ti
             <End Role="Personas" EntitySet="Personas" />
             <End Role="Estudiantes" EntitySet="Estudiantes" />
           </AssociationSet>
-          <AssociationSet Name="FK_Exoneracion_Arancel" Association="Self.FK_Exoneracion_Arancel">
-            <End Role="Arancel" EntitySet="Arancel" />
+          <AssociationSet Name="FK_Exoneracion_ArancelPrecio" Association="Self.FK_Exoneracion_ArancelPrecio">
+            <End Role="ArancelPrecio" EntitySet="ArancelPrecio" />
             <End Role="Exoneracion" EntitySet="Exoneracion" />
           </AssociationSet>
           <AssociationSet Name="FK_Exoneracion_TipoDeposito" Association="Self.FK_Exoneracion_TipoDeposito">
@@ -12964,6 +13120,8 @@ advertencia 6002: La tabla o vista 'SIFOP.dbo.w_LibroMayorAcumulado_Vlast' no ti
           <Property Name="regAnulado" Type="Boolean" Nullable="false" />
           <Property Name="UsuarioCreacion" Type="String" Nullable="false" MaxLength="20" FixedLength="false" Unicode="true" />
           <NavigationProperty Name="Usuario" Relationship="SIFOPModel.FK_Moneda_Usuario" FromRole="Moneda" ToRole="Usuario" />
+          <NavigationProperty Name="DenominacionMoneda" Relationship="SIFOPModel.FK_DenominacionMoneda_Moneda" FromRole="Moneda" ToRole="DenominacionMoneda" />
+          <NavigationProperty Name="ArqueoEfectivo" Relationship="SIFOPModel.FK_ArqueoEfectivo_Moneda" FromRole="Moneda" ToRole="ArqueoEfectivo" />
         </EntityType>
         <EntityType Name="Actividad">
           <Key>
@@ -15264,6 +15422,7 @@ advertencia 6002: La tabla o vista 'SIFOP.dbo.w_LibroMayorAcumulado_Vlast' no ti
           <NavigationProperty Name="TipoArancel" Relationship="SIFOPModel.FK_TipoArancel_Usuario" FromRole="Usuario" ToRole="TipoArancel" />
           <NavigationProperty Name="AperturaCaja" Relationship="SIFOPModel.FK_AperturaCaja_Usuario" FromRole="Usuario" ToRole="AperturaCaja" />
           <NavigationProperty Name="Recibo1" Relationship="SIFOPModel.FK_Recibo_Usuario" FromRole="Usuario" ToRole="Recibo1" />
+          <NavigationProperty Name="DenominacionMoneda" Relationship="SIFOPModel.FK_DenominacionMoneda_Usuario" FromRole="Usuario" ToRole="DenominacionMoneda" />
         </EntityType>
         <EntityType Name="UsuarioArea">
           <Key>
@@ -15379,6 +15538,7 @@ advertencia 6002: La tabla o vista 'SIFOP.dbo.w_LibroMayorAcumulado_Vlast' no ti
           <NavigationProperty Name="Arancel" Relationship="Self.FK_ArancelPrecio_Arancel" FromRole="ArancelPrecio" ToRole="Arancel" />
           <NavigationProperty Name="DetOrdenPagoArancel" Relationship="Self.FK_DetOrdenPagoArancel_ArancelPrecio" FromRole="ArancelPrecio" ToRole="DetOrdenPagoArancel" />
           <NavigationProperty Name="ReciboDet" Relationship="Self.FK_ReciboDet_ArancelPrecio" FromRole="ArancelPrecio" ToRole="ReciboDet" />
+          <NavigationProperty Name="Exoneracion" Relationship="SIFOPModel.FK_Exoneracion_ArancelPrecio" FromRole="ArancelPrecio" ToRole="Exoneracion" />
         </EntityType>
         <EntityType Name="ArancelTipoDeposito">
           <Key>
@@ -15431,6 +15591,8 @@ advertencia 6002: La tabla o vista 'SIFOP.dbo.w_LibroMayorAcumulado_Vlast' no ti
           <NavigationProperty Name="Arancel" Relationship="Self.FK_Exoneracion_Arancel" FromRole="Exoneracion" ToRole="Arancel" />
           <NavigationProperty Name="DetOrdenPagoArancel" Relationship="Self.FK_DetOrdenPagoArancel_Exoneracion" FromRole="Exoneracion" ToRole="DetOrdenPagoArancel" />
           <NavigationProperty Name="TipoDeposito" Relationship="Self.FK_Exoneracion_TipoDeposito" FromRole="Exoneracion" ToRole="TipoDeposito" />
+          <Property Name="IdArancelPrecio" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="ArancelPrecio" Relationship="SIFOPModel.FK_Exoneracion_ArancelPrecio" FromRole="Exoneracion" ToRole="ArancelPrecio" />
         </EntityType>
         <EntityType Name="OrdenPago">
           <Key>
@@ -21987,6 +22149,30 @@ advertencia 6002: La tabla o vista 'SIFOP.dbo.w_LibroMayorAcumulado_Vlast' no ti
           <FunctionImport Name="fn_ObtenerInfoUsuario">
           <Parameter Name="NoInterno" Mode="In" Type="String" />
           </FunctionImport>
+          <EntitySet Name="DenominacionMoneda" EntityType="SIFOPModel.DenominacionMoneda" />
+          <EntitySet Name="ArqueoEfectivo" EntityType="SIFOPModel.ArqueoEfectivo" />
+          <EntitySet Name="vw_Aranceles" EntityType="SIFOPModel.vw_Aranceles" />
+          <EntitySet Name="vw_Prematricula1Set" EntityType="SIFOPModel.vw_Prematricula1" />
+          <AssociationSet Name="FK_DenominacionMoneda_Moneda" Association="SIFOPModel.FK_DenominacionMoneda_Moneda">
+            <End Role="Moneda" EntitySet="Moneda" />
+            <End Role="DenominacionMoneda" EntitySet="DenominacionMoneda" />
+          </AssociationSet>
+          <AssociationSet Name="FK_DenominacionMoneda_Usuario" Association="SIFOPModel.FK_DenominacionMoneda_Usuario">
+            <End Role="Usuario" EntitySet="Usuario" />
+            <End Role="DenominacionMoneda" EntitySet="DenominacionMoneda" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ArqueoEfectivo_Moneda" Association="SIFOPModel.FK_ArqueoEfectivo_Moneda">
+            <End Role="Moneda" EntitySet="Moneda" />
+            <End Role="ArqueoEfectivo" EntitySet="ArqueoEfectivo" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Exoneracion_ArancelPrecio" Association="SIFOPModel.FK_Exoneracion_ArancelPrecio">
+            <End Role="ArancelPrecio" EntitySet="ArancelPrecio" />
+            <End Role="Exoneracion" EntitySet="Exoneracion" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ArqueoEfectivo_Arqueo" Association="SIFOPModel.FK_ArqueoEfectivo_Arqueo">
+            <End Role="Arqueo" EntitySet="Arqueo" />
+            <End Role="ArqueoEfectivo" EntitySet="ArqueoEfectivo" />
+          </AssociationSet>
           </EntityContainer>
         <ComplexType Name="dt_getpropertiesbyid_Result">
           <Property Type="String" Name="property" Nullable="false" MaxLength="64" />
@@ -22108,6 +22294,7 @@ advertencia 6002: La tabla o vista 'SIFOP.dbo.w_LibroMayorAcumulado_Vlast' no ti
           <NavigationProperty Name="Usuario" Relationship="SIFOPModel.FK_Arqueo_Usuario" FromRole="Arqueo" ToRole="Usuario" />
           <NavigationProperty Name="Caja" Relationship="SIFOPModel.FK_Arqueo_Caja" FromRole="Arqueo" ToRole="Caja" />
           <NavigationProperty Name="ArqueoRecibo" Relationship="SIFOPModel.FK_ArqueoRecibo_Arqueo" FromRole="Arqueo" ToRole="ArqueoRecibo" />
+          <NavigationProperty Name="ArqueoEfectivo" Relationship="SIFOPModel.FK_ArqueoEfectivo_Arqueo" FromRole="Arqueo" ToRole="ArqueoEfectivo" />
         </EntityType>
         <EntityType Name="ArqueoRecibo">
           <Key>
@@ -22437,6 +22624,130 @@ advertencia 6002: La tabla o vista 'SIFOP.dbo.w_LibroMayorAcumulado_Vlast' no ti
             <Dependent Role="ReciboPago">
               <PropertyRef Name="IdRecibo" />
               <PropertyRef Name="Serie" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="DenominacionMoneda">
+          <Key>
+            <PropertyRef Name="IdDenominacionMoneda" />
+          </Key>
+          <Property Name="IdDenominacionMoneda" Type="Byte" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Denominacion" Type="Double" Nullable="false" />
+          <Property Name="Moneda" Type="Int32" Nullable="false" />
+          <Property Name="FechaCreacion" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="UsuarioCreacion" Type="String" Nullable="false" MaxLength="20" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="Moneda1" Relationship="SIFOPModel.FK_DenominacionMoneda_Moneda" FromRole="DenominacionMoneda" ToRole="Moneda" />
+          <NavigationProperty Name="Usuario" Relationship="SIFOPModel.FK_DenominacionMoneda_Usuario" FromRole="DenominacionMoneda" ToRole="Usuario" />
+        </EntityType>
+        <EntityType Name="ArqueoEfectivo">
+          <Key>
+            <PropertyRef Name="IdArqueoEfectivo" />
+          </Key>
+          <Property Name="IdArqueoEfectivo" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="IdArqueo" Type="Int32" Nullable="false" />
+          <Property Name="IdMoneda" Type="Int32" Nullable="false" />
+          <Property Name="Denominacion" Type="Double" Nullable="false" />
+          <Property Name="Cantidad" Type="Byte" Nullable="false" />
+          <NavigationProperty Name="Moneda" Relationship="SIFOPModel.FK_ArqueoEfectivo_Moneda" FromRole="ArqueoEfectivo" ToRole="Moneda" />
+          <NavigationProperty Name="Arqueo" Relationship="SIFOPModel.FK_ArqueoEfectivo_Arqueo" FromRole="ArqueoEfectivo" ToRole="Arqueo" />
+        </EntityType>
+        <EntityType Name="vw_Aranceles">
+          <Key>
+            <PropertyRef Name="IdArancel" />
+            <PropertyRef Name="Arancel" />
+            <PropertyRef Name="IdTipo" />
+            <PropertyRef Name="Tipo" />
+            <PropertyRef Name="IdPrecio" />
+            <PropertyRef Name="Precio" />
+            <PropertyRef Name="IdMoneda" />
+            <PropertyRef Name="Moneda" />
+            <PropertyRef Name="IdArea" />
+          </Key>
+          <Property Name="IdArancel" Type="Int32" Nullable="false" />
+          <Property Name="Arancel" Type="String" Nullable="false" MaxLength="80" FixedLength="false" Unicode="false" />
+          <Property Name="IdTipo" Type="Int32" Nullable="false" />
+          <Property Name="Tipo" Type="String" Nullable="false" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="IdPrecio" Type="Int32" Nullable="false" />
+          <Property Name="Precio" Type="Decimal" Nullable="false" Precision="18" Scale="2" />
+          <Property Name="IdMoneda" Type="Int32" Nullable="false" />
+          <Property Name="Moneda" Type="String" Nullable="false" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="IdArea" Type="String" Nullable="false" MaxLength="4" FixedLength="false" Unicode="false" />
+          <Property Name="Area" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
+        </EntityType>
+        <EntityType Name="vw_Prematricula1">
+          <Key>
+            <PropertyRef Name="AñoLectivo" />
+            <PropertyRef Name="Carnet" />
+            <PropertyRef Name="ESTipo" />
+            <PropertyRef Name="PrimeraOpcion" />
+            <PropertyRef Name="SegundaOpcion" />
+          </Key>
+          <Property Name="IdPrematricula" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+          <Property Name="AñoLectivo" Type="String" Nullable="false" MaxLength="8" FixedLength="false" Unicode="true" />
+          <Property Name="Carnet" Type="Int32" Nullable="false" />
+          <Property Name="Nombre" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="ESTipo" Type="Byte" Nullable="false" />
+          <Property Name="PrimeraOpcion" Type="String" Nullable="false" MaxLength="4" FixedLength="false" Unicode="true" />
+          <Property Name="SegundaOpcion" Type="String" Nullable="false" MaxLength="4" FixedLength="false" Unicode="true" />
+          <Property Name="isBecado" Type="Boolean" />
+        </EntityType>
+        <Association Name="FK_DenominacionMoneda_Moneda">
+          <End Type="SIFOPModel.Moneda" Role="Moneda" Multiplicity="1" />
+          <End Type="SIFOPModel.DenominacionMoneda" Role="DenominacionMoneda" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Moneda">
+              <PropertyRef Name="IdMoneda" />
+            </Principal>
+            <Dependent Role="DenominacionMoneda">
+              <PropertyRef Name="Moneda" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_DenominacionMoneda_Usuario">
+          <End Type="SIFOPModel.Usuario" Role="Usuario" Multiplicity="1" />
+          <End Type="SIFOPModel.DenominacionMoneda" Role="DenominacionMoneda" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Usuario">
+              <PropertyRef Name="Login" />
+            </Principal>
+            <Dependent Role="DenominacionMoneda">
+              <PropertyRef Name="UsuarioCreacion" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ArqueoEfectivo_Moneda">
+          <End Type="SIFOPModel.Moneda" Role="Moneda" Multiplicity="1" />
+          <End Type="SIFOPModel.ArqueoEfectivo" Role="ArqueoEfectivo" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Moneda">
+              <PropertyRef Name="IdMoneda" />
+            </Principal>
+            <Dependent Role="ArqueoEfectivo">
+              <PropertyRef Name="IdMoneda" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Exoneracion_ArancelPrecio">
+          <End Type="SIFOPModel.ArancelPrecio" Role="ArancelPrecio" Multiplicity="1" />
+          <End Type="SIFOPModel.Exoneracion" Role="Exoneracion" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ArancelPrecio">
+              <PropertyRef Name="IdArancelPrecio" />
+            </Principal>
+            <Dependent Role="Exoneracion">
+              <PropertyRef Name="IdArancelPrecio" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ArqueoEfectivo_Arqueo">
+          <End Type="SIFOPModel.Arqueo" Role="Arqueo" Multiplicity="1" />
+          <End Type="SIFOPModel.ArqueoEfectivo" Role="ArqueoEfectivo" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Arqueo">
+              <PropertyRef Name="IdArqueo" />
+            </Principal>
+            <Dependent Role="ArqueoEfectivo">
+              <PropertyRef Name="IdArqueo" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -24599,10 +24910,10 @@ advertencia 6002: La tabla o vista 'SIFOP.dbo.w_LibroMayorAcumulado_Vlast' no ti
           <EntitySetMapping Name="Exoneracion">
             <EntityTypeMapping TypeName="SIFOPModel.Exoneracion">
               <MappingFragment StoreEntitySet="Exoneracion">
+                <ScalarProperty Name="IdArancelPrecio" ColumnName="IdArancelPrecio" />
                 <ScalarProperty Name="IdExoneracion" ColumnName="IdExoneracion" />
                 <ScalarProperty Name="Identificador" ColumnName="Identificador" />
                 <ScalarProperty Name="IdTipoDeposito" ColumnName="IdTipoDeposito" />
-                <ScalarProperty Name="IdArancel" ColumnName="IdArancel" />
                 <ScalarProperty Name="Exonerado" ColumnName="Exonerado" />
                 <ScalarProperty Name="FechaCreacion" ColumnName="FechaCreacion" />
                 <ScalarProperty Name="UsuarioCreacion" ColumnName="UsuarioCreacion" />
@@ -25782,7 +26093,7 @@ advertencia 6002: La tabla o vista 'SIFOP.dbo.w_LibroMayorAcumulado_Vlast' no ti
           </EntitySetMapping>
           <EntitySetMapping Name="vw_Prematricula">
             <EntityTypeMapping TypeName="SIFOPModel.vw_Prematricula">
-              <MappingFragment StoreEntitySet="vw_Prematricula">
+              <MappingFragment StoreEntitySet="vw_Prematricula1">
                 <ScalarProperty Name="IdPrematricula" ColumnName="IdPrematricula" />
                 <ScalarProperty Name="ALCodigo" ColumnName="ALCodigo" />
                 <ScalarProperty Name="Carnet" ColumnName="Carnet" />
@@ -27921,6 +28232,58 @@ advertencia 6002: La tabla o vista 'SIFOP.dbo.w_LibroMayorAcumulado_Vlast' no ti
             </EntityTypeMapping>
           </EntitySetMapping>
           <FunctionImportMapping FunctionImportName="fn_ObtenerInfoUsuario" FunctionName="SIFOPModel.Store.fn_ObtenerInfoUsuario" />
+          <EntitySetMapping Name="DenominacionMoneda">
+            <EntityTypeMapping TypeName="SIFOPModel.DenominacionMoneda">
+              <MappingFragment StoreEntitySet="DenominacionMoneda">
+                <ScalarProperty Name="UsuarioCreacion" ColumnName="UsuarioCreacion" />
+                <ScalarProperty Name="FechaCreacion" ColumnName="FechaCreacion" />
+                <ScalarProperty Name="Moneda" ColumnName="Moneda" />
+                <ScalarProperty Name="Denominacion" ColumnName="Denominacion" />
+                <ScalarProperty Name="IdDenominacionMoneda" ColumnName="IdDenominacionMoneda" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ArqueoEfectivo">
+            <EntityTypeMapping TypeName="SIFOPModel.ArqueoEfectivo">
+              <MappingFragment StoreEntitySet="ArqueoEfectivo">
+                <ScalarProperty Name="Cantidad" ColumnName="Cantidad" />
+                <ScalarProperty Name="Denominacion" ColumnName="Denominacion" />
+                <ScalarProperty Name="IdMoneda" ColumnName="IdMoneda" />
+                <ScalarProperty Name="IdArqueo" ColumnName="IdArqueo" />
+                <ScalarProperty Name="IdArqueoEfectivo" ColumnName="IdArqueoEfectivo" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="vw_Aranceles">
+            <EntityTypeMapping TypeName="SIFOPModel.vw_Aranceles">
+              <MappingFragment StoreEntitySet="vw_Aranceles">
+                <ScalarProperty Name="Area" ColumnName="Area" />
+                <ScalarProperty Name="IdArea" ColumnName="IdArea" />
+                <ScalarProperty Name="Moneda" ColumnName="Moneda" />
+                <ScalarProperty Name="IdMoneda" ColumnName="IdMoneda" />
+                <ScalarProperty Name="Precio" ColumnName="Precio" />
+                <ScalarProperty Name="IdPrecio" ColumnName="IdPrecio" />
+                <ScalarProperty Name="Tipo" ColumnName="Tipo" />
+                <ScalarProperty Name="IdTipo" ColumnName="IdTipo" />
+                <ScalarProperty Name="Arancel" ColumnName="Arancel" />
+                <ScalarProperty Name="IdArancel" ColumnName="IdArancel" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="vw_Prematricula1Set">
+            <EntityTypeMapping TypeName="SIFOPModel.vw_Prematricula1">
+              <MappingFragment StoreEntitySet="vw_Prematricula">
+                <ScalarProperty Name="isBecado" ColumnName="isBecado" />
+                <ScalarProperty Name="SegundaOpcion" ColumnName="SegundaOpcion" />
+                <ScalarProperty Name="PrimeraOpcion" ColumnName="PrimeraOpcion" />
+                <ScalarProperty Name="ESTipo" ColumnName="ESTipo" />
+                <ScalarProperty Name="Nombre" ColumnName="Nombre" />
+                <ScalarProperty Name="Carnet" ColumnName="Carnet" />
+                <ScalarProperty Name="AñoLectivo" ColumnName="AñoLectivo" />
+                <ScalarProperty Name="IdPrematricula" ColumnName="IdPrematricula" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
         </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>
