@@ -24,7 +24,7 @@ namespace PruebaWPF.Views.AgenteExterno
         private Operacion operacion;
         public static Boolean Cambios = false;
 
-        public Model.Pantalla pantalla;
+        private Model.Pantalla pantalla;
 
         public AgenteExterno()
         {

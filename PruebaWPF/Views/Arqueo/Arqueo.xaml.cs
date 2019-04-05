@@ -29,5 +29,20 @@ namespace PruebaWPF.Views.Arqueo
         {
 
         }
+
+        private void btn_Exportar_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void tblAperturas_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+
+        }
+
+        private void txtFind_KeyUp(object sender, KeyEventArgs e)
+        {
+
+        }
     }
 }

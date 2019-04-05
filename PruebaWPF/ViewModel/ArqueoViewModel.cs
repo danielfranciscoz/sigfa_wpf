@@ -10,7 +10,7 @@ namespace PruebaWPF.ViewModel
 {
     class ArqueoViewModel : IGestiones<Arqueo>
     {
-
+        SIFOPEntities db = new SIFOPEntities();
         public void Eliminar(Arqueo Obj)
         {
             throw new NotImplementedException();
@@ -18,7 +18,7 @@ namespace PruebaWPF.ViewModel
 
         public List<Arqueo> FindAll()
         {
-            throw new NotImplementedException();
+            return db.Arqueo.ToList();
         }
 
         public Arqueo FindById(int Id)

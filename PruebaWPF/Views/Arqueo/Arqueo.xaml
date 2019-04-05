@@ -10,6 +10,7 @@
       mc:Ignorable="d" 
       d:DesignHeight="450" d:DesignWidth="800"
       Loaded="Page_Loaded"
+      Uid="Arqueo"
       Title="Arqueo">
     <Grid Background="White">
         <Grid.RowDefinitions>
@@ -37,8 +38,6 @@
                         <ColumnDefinition Width="*"/>
                     </Grid.ColumnDefinitions>
                     <StackPanel Grid.Column="0" Orientation="Horizontal">
-                        <Button BorderBrush="Transparent" Tag="{StaticResource Permiso_Guardar}" Background="{StaticResource Save_Button}" Margin="5 5 5 5" Click="Button_Click">APERTURAR CAJAS</Button>
-                        <Button x:Name="btnCerrar" BorderBrush="Transparent" Tag="{StaticResource Permiso_CerrarCaja}" Background="{StaticResource Edit_Button}" Margin="5 5 5 5" Click="Button_Click_1">CERRAR CAJA</Button>
                         <Button x:Name="btn_Exportar" Tag="{StaticResource Permiso_Exportar}" BorderBrush="Transparent" Background="{StaticResource Export_Button}" Margin="5" Click="btn_Exportar_Click" Height="Auto" Content="{StaticResource Text_Export_Button}"></Button>
                     </StackPanel>
                     <StackPanel HorizontalAlignment="Right" Grid.Column="1" Orientation="Horizontal">
@@ -49,14 +48,13 @@
             </StackPanel>
 
             <DockPanel  Grid.Row="1" x:Name="panelGrid" VerticalAlignment="Stretch">
-                <DataGrid Name="tblAperturas" CanUserDeleteRows="False" CanUserAddRows="False" AutoGenerateColumns="False" SelectionUnit="FullRow" SelectionMode="Single" SelectionChanged="tblAperturas_SelectionChanged">
-
+                <DataGrid Name="tblArqueos" CanUserDeleteRows="False" CanUserAddRows="False" AutoGenerateColumns="False" SelectionUnit="FullRow" SelectionMode="Single" SelectionChanged="tblAperturas_SelectionChanged">
                     <DataGrid.Columns>
                         <DataGridTemplateColumn CanUserResize="False" Width="50" Header="">
                             <DataGridTemplateColumn.CellTemplate>
                                 <DataTemplate>
                                     <StackPanel>
-                                        <Button x:Name="btnInformeCierre" Tag="{StaticResource Permiso_Eliminar}" Background="{StaticResource Delete_Button}" Height="20" Width="20" BorderBrush="Transparent" ToolTip="Ver Informe de Cierre" Click="btnInformeCierre_Click">
+                                        <Button x:Name="btnInformeCierre" Tag="{StaticResource Permiso_Eliminar}" Background="{StaticResource Delete_Button}" Height="20" Width="20" BorderBrush="Transparent" ToolTip="Ver Informe de Cierre" >
                                             <Button.Resources>
                                                 <l:IsNullConverter x:Key="isNullConverter" />
                                             </Button.Resources>

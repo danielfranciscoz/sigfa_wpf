@@ -1,0 +1,149 @@
+﻿<Window x:Class="PruebaWPF.Views.Arqueo.ArquearApertura"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:PruebaWPF.Views.Arqueo"
+        xmlns:mde="clr-namespace:MaterialDesignExtensions.Controls;assembly=MaterialDesignExtensions"
+      xmlns:model="clr-namespace:MaterialDesignExtensions.Model;assembly=MaterialDesignExtensions"
+        mc:Ignorable="d"
+        WindowStyle="None"
+        Uid="ArquearApertura"
+        Title="ArquearApertura" Height="700" Width="1000">
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="auto"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <materialDesign:Card  Grid.Column="1" Grid.Row="1" Height="650" Width="900">
+            <Grid >
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="auto"/>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="auto"/>
+                </Grid.RowDefinitions>
+
+                <Grid Grid.Row="0" Margin="20 15 20 15">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"></ColumnDefinition>
+                        <ColumnDefinition Width="auto"></ColumnDefinition>
+                    </Grid.ColumnDefinitions>
+                    <StackPanel  Grid.Column="0" HorizontalAlignment="Left" VerticalAlignment="Center">
+                        <TextBlock x:Name="txtTitle" Width="320" FontSize="18" FontWeight="Bold" Text="Arqueo de Caja"></TextBlock>
+                    </StackPanel>
+                    <StackPanel Grid.Column="1" HorizontalAlignment="Right">
+                        <Button x:Name="btnClose" Foreground="Black" Style="{DynamicResource MaterialDesignToolButton}"  Width="auto" BorderBrush="Transparent"  Background="Transparent" Padding="0" Click="btnClose_Click">
+                            <materialDesign:PackIcon Width="25" Height="25" Kind="WindowClose"></materialDesign:PackIcon>
+                        </Button>
+                    </StackPanel>
+                </Grid>
+
+                <StackPanel Grid.Row="1" VerticalAlignment="Top" Height="auto" Margin="20 0 20 15">
+                    <mde:TabControlStepper IsLinear="True" Layout="Horizontal">
+                        <TabItem>
+                            <TabItem.Header>
+                                <model:StepTitleHeader FirstLevelTitle="Caja y Apertura" />
+                            </TabItem.Header>
+                            <Grid>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="*"/>
+                                    <RowDefinition  Height="auto"/>
+                                </Grid.RowDefinitions>
+                                <StackPanel Grid.Row="0">
+                                    <TextBlock Text="Vamos a validar que el dinero encontrado en caja corresponda a lo ingresado en el sistema; es posible que existan discrepancias entre las monedas ingresadas y las encontradas, nosotros nos encargaremos totalizar los montos equivalentes para cada moneda, para asi poder evaluar la existencia de faltantes o sobrantes." TextWrapping="WrapWithOverflow" />
+
+                                    <Separator Margin="0 20 0 20"></Separator>
+
+
+                                    <StackPanel x:Name="panelMensaje" Background="{StaticResource ErrorAlert}" Visibility="Collapsed">
+                                        <TextBlock x:Name="lblErrorMesaje" Padding="20 20 0 20" Foreground="{StaticResource ErrorMsj}" FontWeight="Bold" TextWrapping="Wrap" Text="{Binding Mensaje}"></TextBlock>
+                                    </StackPanel>
+
+                                    <StackPanel x:Name="panelInfo">
+                                        <TextBlock FontWeight="Bold" Margin="0 0 0 10" Text="Datos Iniciales:"></TextBlock>
+                                        <Grid >
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="120"/>
+                                                <ColumnDefinition/>
+                                            </Grid.ColumnDefinitions>
+                                            <Grid.RowDefinitions>
+                                                <RowDefinition/>
+                                                <RowDefinition/>
+                                                <RowDefinition/>
+                                                <RowDefinition/>
+                                                <RowDefinition/>
+                                            </Grid.RowDefinitions>
+                                            <TextBlock Grid.Column="0" Grid.Row="0" Text="No.Apertura:"/>
+                                            <TextBlock Grid.Column="1" Grid.Row="0" Text="2"/>
+                                            <TextBlock Grid.Column="0" Grid.Row="1" Text="Fecha de Apertura:"/>
+                                            <TextBlock Grid.Column="1" Grid.Row="1" Text="21/12/2019 12:10 pm"/>
+                                            <TextBlock Grid.Column="0" Grid.Row="2" Text="Fecha de Cierre:"/>
+                                            <TextBlock Grid.Column="1" Grid.Row="2" Text="21/12/2019 19:10 pm"/>
+                                            <TextBlock Grid.Column="0" Grid.Row="3" Text="Recibos Generados:"/>
+                                            <TextBlock Grid.Column="1" Grid.Row="3" Text="500"/>
+                                            <TextBlock Grid.Column="0" Grid.Row="4" Text="Caja:"/>
+                                            <TextBlock Grid.Column="1" Grid.Row="4" Text="Ventanilla"/>
+                                        </Grid>
+
+                                        <TextBlock Foreground="{StaticResource DarkGray}" Margin="0 20 0 0" Text="La información presentada es detectada mediante la dirección MAC del equipo en el cual se encuentra iniciada la sesión actual."></TextBlock>
+                                    </StackPanel>
+                                </StackPanel>
+                                <mde:StepButtonBar Grid.Row="1" Continue="INICIAR ARQUEO" Cancel="CANCELAR" />
+                            </Grid>
+                        </TabItem>
+                        <TabItem>
+                            <TabItem.Header>
+                                <model:StepTitleHeader FirstLevelTitle="Recibos Impresos" />
+                            </TabItem.Header>
+                            <StackPanel Orientation="Vertical">
+                                <TextBlock Text="There a two layouts for a Stepper, namely horizontal and vertical. It can be set by using the Layout property." TextWrapping="WrapWithOverflow" />
+                                <TextBlock Margin="0,16,0,0" Text="Additionally the Stepper will be in linear mode by setting the IsLinear property to true. This means that the user can only edit the steps in their fixed order. A non-linear Stepper allows the user to edit the steps in any order." TextWrapping="WrapWithOverflow" />
+                                <TextBlock Margin="0,16,0,0" Text="The basic navigation inside a stepper will be accomplished by using simple back and continue buttons. They allow the user to browse through the steps in their order. Just use the StepButtonBar like this tutorial to avoid the nasty reimplementation on your own. The user may also switch the steps of a non-linear Stepper by clicking on the headers. " TextWrapping="WrapWithOverflow" />
+
+                                <mde:StepButtonBar Continue="SIGUIENTE" Cancel="CANCELAR" />
+                            </StackPanel>
+                        </TabItem>
+                        <TabItem>
+                            <TabItem.Header>
+                                <model:StepTitleHeader FirstLevelTitle="Conteo de Efectivo" />
+                            </TabItem.Header>
+                            <StackPanel>
+                                <TextBlock Text="Well, that's all to say about this simple stepper version." />
+
+                                <mde:StepButtonBar Back="REGRESAR" Continue="SIGUIENTE" Cancel="CANCELAR" />
+                            </StackPanel>
+                        </TabItem>
+                        <TabItem>
+                            <TabItem.Header>
+                                <model:StepTitleHeader FirstLevelTitle="Documentos de Efectivo" />
+                            </TabItem.Header>
+                            <StackPanel>
+                                <TextBlock Text="Well, that's all to say about this simple stepper version." />
+
+                                <mde:StepButtonBar Back="REGRESAR" Continue="FINALIZAR" Cancel="CANCELAR" />
+                            </StackPanel>
+                        </TabItem>
+                    </mde:TabControlStepper>
+                </StackPanel>
+
+                <!--<StackPanel Grid.Row="2" Height="auto" Margin="20 0 20 10">
+                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
+                        <Button x:Name="btnCancel" Style="{DynamicResource MaterialDesignFlatButton}" Foreground="{StaticResource Save_Button}"  Margin="0 2 0 2" Click="btnClose_Click" Content="{StaticResource Text_Cancel_Button}"></Button>
+                        <Button Tag="{StaticResource Permiso_Editar}" x:Name="btnEdit" Visibility="Collapsed" Style="{DynamicResource MaterialDesignFlatButton}" Foreground="{StaticResource Save_Button}"  Margin="0 2 0 2" Click="btnSave_Click" Content="{StaticResource Text_Edit_Button}"></Button>
+                        <Button Tag="{StaticResource Permiso_Guardar}" x:Name="btnSave" Style="{DynamicResource MaterialDesignFlatButton}" Foreground="{StaticResource Save_Button}"  Margin="0 2 0 2" Click="btnSave_Click" Content="{StaticResource Text_Save_Button}"></Button>
+                    </StackPanel>
+                </StackPanel>-->
+
+            </Grid>
+        </materialDesign:Card>
+
+    </Grid>
+</Window>
