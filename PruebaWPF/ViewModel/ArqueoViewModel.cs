@@ -1,4 +1,5 @@
-﻿using PruebaWPF.Interface;
+﻿using PruebaWPF.Helper;
+using PruebaWPF.Interface;
 using PruebaWPF.Model;
 using System;
 using System.Collections.Generic;
@@ -10,10 +11,60 @@ namespace PruebaWPF.ViewModel
 {
     class ArqueoViewModel : IGestiones<Arqueo>
     {
+
+        private SecurityViewModel seguridad;
+        private Pantalla pantalla;
+
+        public ArqueoViewModel(Pantalla pantalla)
+        {
+            seguridad = new SecurityViewModel();
+            this.pantalla = pantalla;
+        }
+
         SIFOPEntities db = new SIFOPEntities();
         public void Eliminar(Arqueo Obj)
         {
             throw new NotImplementedException();
+        }
+
+        public DetAperturaCaja DetectarApertura()
+        {
+            DetAperturaCaja apertura = new DetAperturaCaja();
+            Caja c = db.Caja.Where(w => w.MAC == clsSessionHelper.MACMemory && w.regAnulado == false).First();
+
+            if (c == null)
+            {
+                throw new Exception("No hemos podido detectar la caja a la cual pertenece este equipo, los arqueos solo se pueden realizar en los equipos destinados como cajas de la Universidad.");
+            }
+
+            List<DetAperturaCaja> aperturas = db.DetAperturaCaja.Where(w => w.IdCaja == c.IdCaja && w.FechaCierre != null).ToList();
+
+            if (!aperturas.Any())
+            {
+                throw new Exception("Esta caja no posee cierres, por lo tanto no puede ser arqueada");
+            }
+
+            List<Arqueo> enProceso = aperturas.Where(w => w.Arqueo != null).Select(w => w.Arqueo).ToList();
+
+            if (enProceso.Any())
+            {
+                if (enProceso.Where(w => w.isFinalizado == false).Any()) // El arqueo sin finalizar debe ser retornado hasta que se finalice
+                {
+                    return enProceso.Where(w => w.isFinalizado == false).First().DetAperturaCaja;
+                }
+            }
+
+            List<DetAperturaCaja> noArqueadas = aperturas.Where(w => w.Arqueo == null).ToList();
+
+            if (!noArqueadas.Any())
+            {
+                throw new Exception("Esta caja ya se encuentra arqueada");
+            }
+
+            return noArqueadas.First();
+
+
+
         }
 
         public List<Arqueo> FindAll()

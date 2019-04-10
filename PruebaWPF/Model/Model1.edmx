@@ -2399,10 +2399,9 @@ advertencia 6002: La tabla o vista 'SIFOP.dbo.TmpSolicitudesArchivo' no tiene de
         </EntityType>
         <EntityType Name="Arqueo">
           <Key>
-            <PropertyRef Name="IdArqueo" />
+            <PropertyRef Name="IdArqueoDetApertura" />
           </Key>
-          <Property Name="IdArqueo" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="IdDetApertura" Type="int" Nullable="false" />
+          <Property Name="IdArqueoDetApertura" Type="int" Nullable="false" />
           <Property Name="FechaArqueo" Type="datetime" Nullable="false" />
           <Property Name="UsuarioArqueador" Type="nvarchar" MaxLength="20" Nullable="false" />
           <Property Name="Observaciones" Type="varchar(max)" />
@@ -2709,9 +2708,9 @@ advertencia 6002: La tabla o vista 'SIFOP.cat.vw_Aranceles' no tiene definida ni
 advertencia 6002: La tabla o vista 'SIFOP.cat.vw_Areas' no tiene definida ninguna clave principal. Se ha inferido la clave y la definición se creado como una vista o tabla de solo lectura.-->
         <EntityType Name="vw_Areas">
           <Key>
-            <PropertyRef Name="codigo" />
+            <PropertyRef Name="strtipo_area" />
           </Key>
-          <Property Name="codigo" Type="char" MaxLength="3" Nullable="false" />
+          <Property Name="codigo" Type="char" MaxLength="3" />
           <Property Name="cod_padre" Type="char" MaxLength="3" />
           <Property Name="tipo_area" Type="char" MaxLength="1" />
           <Property Name="descripcion" Type="varchar" MaxLength="200" />
@@ -4944,13 +4943,13 @@ advertencia 6002: La tabla o vista 'SIFOP.dbo.w_LibroMayorAcumulado_Vlast' no ti
         </Association>
         <Association Name="FK_Arqueo_DetAperturaCaja">
           <End Role="DetAperturaCaja" Type="Self.DetAperturaCaja" Multiplicity="1" />
-          <End Role="Arqueo" Type="Self.Arqueo" Multiplicity="*" />
+          <End Role="Arqueo" Type="Self.Arqueo" Multiplicity="0..1" />
           <ReferentialConstraint>
             <Principal Role="DetAperturaCaja">
               <PropertyRef Name="IdDetAperturaCaja" />
             </Principal>
             <Dependent Role="Arqueo">
-              <PropertyRef Name="IdDetApertura" />
+              <PropertyRef Name="IdArqueoDetApertura" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -4971,7 +4970,7 @@ advertencia 6002: La tabla o vista 'SIFOP.dbo.w_LibroMayorAcumulado_Vlast' no ti
           <End Role="ArqueoEfectivo" Type="Self.ArqueoEfectivo" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Arqueo">
-              <PropertyRef Name="IdArqueo" />
+              <PropertyRef Name="IdArqueoDetApertura" />
             </Principal>
             <Dependent Role="ArqueoEfectivo">
               <PropertyRef Name="IdArqueo" />
@@ -4995,7 +4994,7 @@ advertencia 6002: La tabla o vista 'SIFOP.dbo.w_LibroMayorAcumulado_Vlast' no ti
           <End Role="ArqueoRecibo" Type="Self.ArqueoRecibo" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Arqueo">
-              <PropertyRef Name="IdArqueo" />
+              <PropertyRef Name="IdArqueoDetApertura" />
             </Principal>
             <Dependent Role="ArqueoRecibo">
               <PropertyRef Name="IdArqueo" />
@@ -15705,10 +15704,9 @@ advertencia 6002: La tabla o vista 'SIFOP.dbo.w_LibroMayorAcumulado_Vlast' no ti
         </EntityType>
         <EntityType Name="Arqueo">
           <Key>
-            <PropertyRef Name="IdArqueo" />
+            <PropertyRef Name="IdArqueoDetApertura" />
           </Key>
-          <Property Name="IdArqueo" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="IdDetApertura" Type="Int32" Nullable="false" />
+          <Property Name="IdArqueoDetApertura" Type="Int32" Nullable="false" />
           <Property Name="FechaArqueo" Type="DateTime" Nullable="false" Precision="3" />
           <Property Name="UsuarioArqueador" Type="String" MaxLength="20" FixedLength="false" Unicode="true" Nullable="false" />
           <Property Name="Observaciones" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
@@ -16192,9 +16190,9 @@ advertencia 6002: La tabla o vista 'SIFOP.dbo.w_LibroMayorAcumulado_Vlast' no ti
         </EntityType>
         <EntityType Name="vw_Areas">
           <Key>
-            <PropertyRef Name="codigo" />
+            <PropertyRef Name="strtipo_area" />
           </Key>
-          <Property Name="codigo" Type="String" MaxLength="3" FixedLength="true" Unicode="false" Nullable="false" />
+          <Property Name="codigo" Type="String" MaxLength="3" FixedLength="true" Unicode="false" />
           <Property Name="cod_padre" Type="String" MaxLength="3" FixedLength="true" Unicode="false" />
           <Property Name="tipo_area" Type="String" MaxLength="1" FixedLength="true" Unicode="false" />
           <Property Name="descripcion" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
@@ -20240,13 +20238,13 @@ advertencia 6002: La tabla o vista 'SIFOP.dbo.w_LibroMayorAcumulado_Vlast' no ti
         </Association>
         <Association Name="FK_Arqueo_DetAperturaCaja">
           <End Role="DetAperturaCaja" Type="Self.DetAperturaCaja" Multiplicity="1" />
-          <End Role="Arqueo" Type="Self.Arqueo" Multiplicity="*" />
+          <End Role="Arqueo" Type="Self.Arqueo" Multiplicity="0..1" />
           <ReferentialConstraint>
             <Principal Role="DetAperturaCaja">
               <PropertyRef Name="IdDetAperturaCaja" />
             </Principal>
             <Dependent Role="Arqueo">
-              <PropertyRef Name="IdDetApertura" />
+              <PropertyRef Name="IdArqueoDetApertura" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -20255,7 +20253,7 @@ advertencia 6002: La tabla o vista 'SIFOP.dbo.w_LibroMayorAcumulado_Vlast' no ti
           <End Role="ArqueoEfectivo" Type="Self.ArqueoEfectivo" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Arqueo">
-              <PropertyRef Name="IdArqueo" />
+              <PropertyRef Name="IdArqueoDetApertura" />
             </Principal>
             <Dependent Role="ArqueoEfectivo">
               <PropertyRef Name="IdArqueo" />
@@ -20267,7 +20265,7 @@ advertencia 6002: La tabla o vista 'SIFOP.dbo.w_LibroMayorAcumulado_Vlast' no ti
           <End Role="ArqueoRecibo" Type="Self.ArqueoRecibo" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Arqueo">
-              <PropertyRef Name="IdArqueo" />
+              <PropertyRef Name="IdArqueoDetApertura" />
             </Principal>
             <Dependent Role="ArqueoRecibo">
               <PropertyRef Name="IdArqueo" />
@@ -25023,8 +25021,7 @@ advertencia 6002: La tabla o vista 'SIFOP.dbo.w_LibroMayorAcumulado_Vlast' no ti
           <EntitySetMapping Name="Arqueo">
             <EntityTypeMapping TypeName="SIFOPModel.Arqueo">
               <MappingFragment StoreEntitySet="Arqueo">
-                <ScalarProperty Name="IdArqueo" ColumnName="IdArqueo" />
-                <ScalarProperty Name="IdDetApertura" ColumnName="IdDetApertura" />
+                <ScalarProperty Name="IdArqueoDetApertura" ColumnName="IdArqueoDetApertura" />
                 <ScalarProperty Name="FechaArqueo" ColumnName="FechaArqueo" />
                 <ScalarProperty Name="UsuarioArqueador" ColumnName="UsuarioArqueador" />
                 <ScalarProperty Name="Observaciones" ColumnName="Observaciones" />

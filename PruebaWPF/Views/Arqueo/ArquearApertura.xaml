@@ -6,11 +6,16 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:PruebaWPF.Views.Arqueo"
         xmlns:mde="clr-namespace:MaterialDesignExtensions.Controls;assembly=MaterialDesignExtensions"
-      xmlns:model="clr-namespace:MaterialDesignExtensions.Model;assembly=MaterialDesignExtensions"
+        xmlns:model="clr-namespace:MaterialDesignExtensions.Model;assembly=MaterialDesignExtensions"
+        xmlns:l="clr-namespace:PruebaWPF.Clases"
         mc:Ignorable="d"
         WindowStyle="None"
         Uid="ArquearApertura"
+        Loaded="Window_Loaded"
         Title="ArquearApertura" Height="700" Width="1000">
+    <Window.Resources>
+        <l:BoolToStringConverter x:Key="convertidor" />
+    </Window.Resources>
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="*"/>
@@ -47,7 +52,7 @@
                 </Grid>
 
                 <StackPanel Grid.Row="1" VerticalAlignment="Top" Height="auto" Margin="20 0 20 15">
-                    <mde:TabControlStepper IsLinear="True" Layout="Horizontal">
+                    <mde:TabControlStepper IsLinear="True" Layout="Horizontal" ContentAnimationsEnabled="False">
                         <TabItem>
                             <TabItem.Header>
                                 <model:StepTitleHeader FirstLevelTitle="Caja y Apertura" />
@@ -58,7 +63,7 @@
                                     <RowDefinition  Height="auto"/>
                                 </Grid.RowDefinitions>
                                 <StackPanel Grid.Row="0">
-                                    <TextBlock Text="Vamos a validar que el dinero encontrado en caja corresponda a lo ingresado en el sistema; es posible que existan discrepancias entre las monedas ingresadas y las encontradas, nosotros nos encargaremos totalizar los montos equivalentes para cada moneda, para asi poder evaluar la existencia de faltantes o sobrantes." TextWrapping="WrapWithOverflow" />
+                                    <TextBlock Text="Vamos a validar que el dinero encontrado en caja corresponda a lo ingresado en el sistema; es posible que existan discrepancias entre las monedas ingresadas y las encontradas, nos encargaremos de totalizar los montos equivalentes para cada moneda, para asi poder evaluar la existencia de faltantes o sobrantes de efectivo." TextWrapping="WrapWithOverflow" />
 
                                     <Separator Margin="0 20 0 20"></Separator>
 
@@ -68,8 +73,9 @@
                                     </StackPanel>
 
                                     <StackPanel x:Name="panelInfo">
+                                        <TextBlock FontWeight="Bold" FontSize="18" Margin="0 0 0 10" Text="Por favor, verifique la siguiente información con el Informe de Cierre de Caja."></TextBlock>
                                         <TextBlock FontWeight="Bold" Margin="0 0 0 10" Text="Datos Iniciales:"></TextBlock>
-                                        <Grid >
+                                        <Grid x:Name="datosIniciales">
                                             <Grid.ColumnDefinitions>
                                                 <ColumnDefinition Width="120"/>
                                                 <ColumnDefinition/>
@@ -82,34 +88,106 @@
                                                 <RowDefinition/>
                                             </Grid.RowDefinitions>
                                             <TextBlock Grid.Column="0" Grid.Row="0" Text="No.Apertura:"/>
-                                            <TextBlock Grid.Column="1" Grid.Row="0" Text="2"/>
+                                            <TextBlock Grid.Column="1" Grid.Row="0" Text="{Binding IdDetAperturaCaja}"/>
                                             <TextBlock Grid.Column="0" Grid.Row="1" Text="Fecha de Apertura:"/>
-                                            <TextBlock Grid.Column="1" Grid.Row="1" Text="21/12/2019 12:10 pm"/>
+                                            <TextBlock Grid.Column="1" Grid.Row="1" Text="{Binding AperturaCaja.FechaApertura,StringFormat={}{0:dd/MM/yyyy HH:mmmm:ss tt}}"/>
                                             <TextBlock Grid.Column="0" Grid.Row="2" Text="Fecha de Cierre:"/>
-                                            <TextBlock Grid.Column="1" Grid.Row="2" Text="21/12/2019 19:10 pm"/>
+                                            <TextBlock Grid.Column="1" Grid.Row="2" Text="{Binding FechaCierre,StringFormat={}{0:dd/MM/yyyy HH:mmmm:ss tt}}"/>
                                             <TextBlock Grid.Column="0" Grid.Row="3" Text="Recibos Generados:"/>
-                                            <TextBlock Grid.Column="1" Grid.Row="3" Text="500"/>
+                                            <TextBlock Grid.Column="1" Grid.Row="3" Text="{Binding Recibo1.Count}"/>
                                             <TextBlock Grid.Column="0" Grid.Row="4" Text="Caja:"/>
-                                            <TextBlock Grid.Column="1" Grid.Row="4" Text="Ventanilla"/>
+                                            <TextBlock Grid.Column="1" Grid.Row="4" Text="{Binding Caja.Nombre}"/>
                                         </Grid>
 
                                         <TextBlock Foreground="{StaticResource DarkGray}" Margin="0 20 0 0" Text="La información presentada es detectada mediante la dirección MAC del equipo en el cual se encuentra iniciada la sesión actual."></TextBlock>
                                     </StackPanel>
                                 </StackPanel>
-                                <mde:StepButtonBar Grid.Row="1" Continue="INICIAR ARQUEO" Cancel="CANCELAR" />
+                                <mde:StepButtonBar Grid.Row="1" Continue="INICIAR ARQUEO" Cancel="CANCELAR"/>
                             </Grid>
                         </TabItem>
                         <TabItem>
                             <TabItem.Header>
                                 <model:StepTitleHeader FirstLevelTitle="Recibos Impresos" />
                             </TabItem.Header>
-                            <StackPanel Orientation="Vertical">
-                                <TextBlock Text="There a two layouts for a Stepper, namely horizontal and vertical. It can be set by using the Layout property." TextWrapping="WrapWithOverflow" />
-                                <TextBlock Margin="0,16,0,0" Text="Additionally the Stepper will be in linear mode by setting the IsLinear property to true. This means that the user can only edit the steps in their fixed order. A non-linear Stepper allows the user to edit the steps in any order." TextWrapping="WrapWithOverflow" />
-                                <TextBlock Margin="0,16,0,0" Text="The basic navigation inside a stepper will be accomplished by using simple back and continue buttons. They allow the user to browse through the steps in their order. Just use the StepButtonBar like this tutorial to avoid the nasty reimplementation on your own. The user may also switch the steps of a non-linear Stepper by clicking on the headers. " TextWrapping="WrapWithOverflow" />
+                            <Grid>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="400"/>
+                                    <RowDefinition  Height="auto"/>
+                                </Grid.RowDefinitions>
 
-                                <mde:StepButtonBar Continue="SIGUIENTE" Cancel="CANCELAR" />
-                            </StackPanel>
+                                <Grid Grid.Row="0">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*"/>
+                                        <ColumnDefinition Width="10"/>
+                                        <ColumnDefinition Width="*"/>
+                                    </Grid.ColumnDefinitions>
+
+                                    <DockPanel Grid.Column="0">
+                                        <StackPanel x:Name="panelErrorRecibo" Visibility="Hidden" Background="{StaticResource ErrorAlert}"  DockPanel.Dock="Bottom" Height="100">
+                                            <TextBlock Margin="10" TextWrapping="Wrap" x:Name="lblErrorRecibo" Foreground="{StaticResource ErrorMsj}" FontWeight="SemiBold"></TextBlock>
+                                            
+                                        </StackPanel>
+                                        <DockPanel>
+                                            <StackPanel Orientation="Vertical" VerticalAlignment="Center" HorizontalAlignment="Center">
+                                            <StackPanel Orientation="Horizontal"  Margin="0 0 0 10">
+                                                <materialDesign:PackIcon Kind="BarcodeScan" Width="50" Height="50" HorizontalAlignment="Center"  VerticalAlignment="Center" Margin="0 0 20 0"></materialDesign:PackIcon>
+                                                <TextBox x:Name="codrecibo" KeyDown="codrecibo_KeyDown" Width="270" CharacterCasing="Upper" FontSize="30" TextAlignment="Center" ></TextBox>
+                                            </StackPanel>
+                                            <TextBlock TextWrapping="Wrap" Foreground="{StaticResource DarkGray}">
+                                                    <TextBlock.Inlines>
+                                                        <Run Text="Ingrese el código de recibo, utilice el lector de código de barras, si no posee esta herramienta por favor ingrese el recibo manualmente bajo la siguiente nomensclatura "></Run>
+                                                        <Run FontWeight="Bold" Text="[No.Recibo]-[Serie]."></Run>
+                                                        <Run Text="No usar corchetes."></Run>
+                                                    </TextBlock.Inlines>
+                                            </TextBlock>
+                                        </StackPanel>
+                                        
+                                        </DockPanel>
+                                    </DockPanel>
+
+                                    <Separator Grid.Column="1">
+                                        <Separator.LayoutTransform>
+                                            <RotateTransform Angle="90" />
+                                        </Separator.LayoutTransform>
+                                    </Separator>
+
+                                    <DockPanel Grid.Column="2">
+                                        <StackPanel  DockPanel.Dock="Top" Height="auto" HorizontalAlignment="Left">
+                                            <TextBlock x:Name="lblRecuento" Margin="10" TextWrapping="Wrap" FontWeight="SemiBold" FontSize="25">
+                                                <TextBlock.Inlines>
+                                                    <Run Text="Recuento de recibos:"></Run>
+                                                    <Run Text="{Binding ElementName=lstRecibos,Path=Items.Count,Mode=OneWay}"></Run>
+                                                    <Run Text="de"></Run>
+                                                    <Run Text="{Binding Recibo1.Count,Mode=OneWay}"></Run>
+                                                </TextBlock.Inlines>
+                                            </TextBlock>
+                                        </StackPanel>
+                                        <StackPanel  DockPanel.Dock="Bottom" Height="auto" HorizontalAlignment="Left">
+                                            <TextBlock Text="Los registros tachados corresponden a recibos anulados." Foreground="{StaticResource DarkGray}"></TextBlock>
+                                        </StackPanel>
+                                        <DockPanel x:Name="panelListaRecibos" Background="{StaticResource Gray_BackgroundDisabled}">
+                                            <ListBox x:Name="lstRecibos">
+                                                <ListBox.ItemTemplate>
+                                                    <DataTemplate>
+                                                        <StackPanel Orientation="Horizontal">
+                                                            <TextBlock Margin="0 0 10 0" TextDecorations="{Binding regAnulado, Converter={StaticResource convertidor},ConverterParameter='Strikethrough;'}">
+                                                                <TextBlock.Inlines>
+                                                                    <Run Text="{Binding Path=IdRecibo}" ></Run>
+                                                                    <Run Text="{Binding Path=Serie}"></Run>
+                                                                </TextBlock.Inlines>
+                                                            </TextBlock>
+                                                           
+                                                        </StackPanel>
+                                                    </DataTemplate>
+                                                </ListBox.ItemTemplate>
+                                            </ListBox>
+                                        </DockPanel>
+                                    </DockPanel>
+                                    
+                                </Grid> 
+                                
+                                <mde:StepButtonBar Grid.Row="1" Back="REGRESAR" Continue="CONTINUAR"/>
+                            </Grid>
                         </TabItem>
                         <TabItem>
                             <TabItem.Header>
@@ -118,7 +196,7 @@
                             <StackPanel>
                                 <TextBlock Text="Well, that's all to say about this simple stepper version." />
 
-                                <mde:StepButtonBar Back="REGRESAR" Continue="SIGUIENTE" Cancel="CANCELAR" />
+                                <mde:StepButtonBar Back="REGRESAR" Continue="SIGUIENTE"  />
                             </StackPanel>
                         </TabItem>
                         <TabItem>
@@ -128,19 +206,11 @@
                             <StackPanel>
                                 <TextBlock Text="Well, that's all to say about this simple stepper version." />
 
-                                <mde:StepButtonBar Back="REGRESAR" Continue="FINALIZAR" Cancel="CANCELAR" />
+                                <mde:StepButtonBar Back="REGRESAR" Continue="FINALIZAR" />
                             </StackPanel>
                         </TabItem>
                     </mde:TabControlStepper>
                 </StackPanel>
-
-                <!--<StackPanel Grid.Row="2" Height="auto" Margin="20 0 20 10">
-                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
-                        <Button x:Name="btnCancel" Style="{DynamicResource MaterialDesignFlatButton}" Foreground="{StaticResource Save_Button}"  Margin="0 2 0 2" Click="btnClose_Click" Content="{StaticResource Text_Cancel_Button}"></Button>
-                        <Button Tag="{StaticResource Permiso_Editar}" x:Name="btnEdit" Visibility="Collapsed" Style="{DynamicResource MaterialDesignFlatButton}" Foreground="{StaticResource Save_Button}"  Margin="0 2 0 2" Click="btnSave_Click" Content="{StaticResource Text_Edit_Button}"></Button>
-                        <Button Tag="{StaticResource Permiso_Guardar}" x:Name="btnSave" Style="{DynamicResource MaterialDesignFlatButton}" Foreground="{StaticResource Save_Button}"  Margin="0 2 0 2" Click="btnSave_Click" Content="{StaticResource Text_Save_Button}"></Button>
-                    </StackPanel>
-                </StackPanel>-->
 
             </Grid>
         </materialDesign:Card>

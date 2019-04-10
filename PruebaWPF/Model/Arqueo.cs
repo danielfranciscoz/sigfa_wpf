@@ -21,8 +21,7 @@ namespace PruebaWPF.Model
             this.ArqueoRecibo = new HashSet<ArqueoRecibo>();
         }
     
-        public int IdArqueo { get; set; }
-        public int IdDetApertura { get; set; }
+        public int IdArqueoDetApertura { get; set; }
         public System.DateTime FechaArqueo { get; set; }
         public string UsuarioArqueador { get; set; }
         public string Observaciones { get; set; }

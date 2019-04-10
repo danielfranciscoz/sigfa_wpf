@@ -4,7 +4,7 @@
 
     <SolidColorBrush x:Key="PrimaryDark" Color="#0D47A1" />
     <SolidColorBrush x:Key="Primary" Color="#1565C0" />
-
+    
     <SolidColorBrush x:Key="OkMsj" Color="#01579B" />
     <SolidColorBrush x:Key="ErrorMsj" Color="#d50000" />
     <SolidColorBrush x:Key="WarningMsj" Color="#E65100" />
@@ -60,4 +60,5 @@
     <sys:String x:Key="Permiso_Imprimir">Imprimir</sys:String>
     <sys:String x:Key="Permiso_CerrarCaja">Cerrar Caja</sys:String>
 
+    <SolidColorBrush x:Key="PrimaryHueMidBrush" Color="#fafafa"/>
 </ResourceDictionary>

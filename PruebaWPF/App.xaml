@@ -14,6 +14,8 @@
                 <ResourceDictionary Source="Resources/Temas.xaml" />
             </ResourceDictionary.MergedDictionaries>
 
+            <SolidColorBrush x:Key="PrimaryHueMidBrush" Color="#1565C0"/>
+            <!--<SolidColorBrush x:Key="PrimaryHueMidForegroundBrush" Color="Black"/>-->
         </ResourceDictionary>
 
     </Application.Resources>
