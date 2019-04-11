@@ -26,7 +26,6 @@ namespace PruebaWPF.Model
         public string UsuarioArqueador { get; set; }
         public string Observaciones { get; set; }
         public string CajeroEntrega { get; set; }
-        public string JefeCajero { get; set; }
         public bool isFinalizado { get; set; }
     
         public virtual Usuario Usuario { get; set; }

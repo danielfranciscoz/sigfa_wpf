@@ -26,8 +26,12 @@ namespace PruebaWPF.Views.Arqueo
         private ArqueoViewModel controller;
         private Operacion operacion;
         private Pantalla pantalla;
+        private DetAperturaCaja apertura;
+        private Model.Arqueo arqueo;
 
         private ObservableCollection<Recibo1> recibos;
+        MaterialDesignExtensions.Controllers.StepperController tabmaterial;
+
 
         public ArquearApertura()
         {
@@ -40,10 +44,9 @@ namespace PruebaWPF.Views.Arqueo
             this.pantalla = pantalla;
             controller = new ArqueoViewModel(pantalla);
             operacion = new Operacion();
-            recibos = new ObservableCollection<Recibo1>();
-
             InitializeComponent();
             Diseñar();
+            tabmaterial = tabParent.Controller.ActiveStepViewModel.Controller;
         }
 
         private void Diseñar()
@@ -60,17 +63,36 @@ namespace PruebaWPF.Views.Arqueo
         {
             try
             {
-                DetAperturaCaja apertura = controller.DetectarApertura();
+                Object[] datos = controller.DetectarApertura();
+
+                apertura = (DetAperturaCaja)datos[0];
+
+
+                if (datos.Length > 1)
+                {
+                    panelWarningRecibo.Visibility = Visibility.Visible;
+                    lblWarning.Text = "El proceso de arqueo se encuentra iniciado, continúe con las siguientes operaciones para finalizarlo.";
+                    txtPleaseVerify.Visibility = Visibility.Collapsed;
+                    btnArqueo.Content = "CONTINUAR ARQUEO";
+                    arqueo = (Model.Arqueo)datos[1];
+                }
+                else
+                {
+                    arqueo = new Model.Arqueo();
+                    arqueo.IdArqueoDetApertura = apertura.IdDetAperturaCaja;
+                }
+
+
                 datosIniciales.DataContext = apertura;
                 lblRecuento.DataContext = apertura;
 
-                lstRecibos.ItemsSource = recibos;
+
             }
             catch (Exception ex)
             {
                 panelInfo.Visibility = Visibility.Collapsed;
 
-                lblErrorMesaje.Text = ex.Message;
+                lblErrorMesaje.Text = new clsException(ex).ErrorMessage();
                 panelMensaje.Visibility = Visibility.Visible;
             }
 
@@ -87,26 +109,112 @@ namespace PruebaWPF.Views.Arqueo
         private void AddRecibo()
         {
             string codigo = codrecibo.Text;
-
-            if (codigo.Contains("-"))
+            try
             {
+                Recibo1 agregado = controller.ContabilizarRecibo(codigo, apertura);
+                recibos.Insert(0, agregado);
 
-                Recibo1 r = new Recibo1();
-                String[] valores = codigo.Split('-');
-
-                r.IdRecibo = int.Parse(valores[0]);
-                r.Serie = valores[1];
-
-                r.regAnulado = new Random().Next(100) <= 50 ? true : false;
-                recibos.Insert(0,r);
-
-                panelErrorRecibo.Visibility = Visibility.Hidden;
+                if (panelErrorRecibo.Visibility == Visibility.Visible)
+                {
+                    panelErrorRecibo.Visibility = Visibility.Hidden;
+                }
             }
-            else
+            catch (Exception ex)
             {
-                lblErrorRecibo.Text = "El código de recibo ingresado no es válido, por favor asegúrese de ingresar [No.Recibo]-[Serie]. No use corchetes y recuerde el guión de separación";
-                panelErrorRecibo.Visibility = Visibility.Visible;
+                lblErrorRecibo.Text = new clsException(ex).ErrorMessage();
+                panelErrorRecibo.Visibility = Visibility.Visible; ;
             }
+
+        }
+
+
+        private void btnArqueo_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                if (arqueo.UsuarioArqueador.Equals(""))
+                {
+                    controller.Guardar(arqueo);
+
+                }
+                CargarRecibosContabilizados();
+                tabmaterial.Continue();
+            }
+            catch (Exception ex)
+            {
+                lblErrorMesaje.Text = new clsException(ex).ErrorMessage();
+                panelMensaje.Visibility = Visibility.Visible;
+            }
+        }
+
+        private void btnBack_Click(object sender, RoutedEventArgs e)
+        {
+            tabmaterial.Back();
+        }
+
+        private void btnConteoRecibos_Click(object sender, RoutedEventArgs e)
+        {
+            tabmaterial.Continue();
+        }
+
+        private void CargarRecibosContabilizados()
+        {
+            if (recibos == null)
+            {
+                recibos = new ObservableCollection<Recibo1>(controller.FindRecibosContabilizados(arqueo));
+                lstRecibos.ItemsSource = recibos;
+            }
+
+
         }
     }
 }
+
+/*
+   private void TabControlStepper_ContinueNavigation(object sender, MaterialDesignExtensions.Controls.StepperNavigationEventArgs args)
+        {
+
+
+            //int currentStep = controller.Number;
+            //int? nextStep = controller.IsLastStep ? -1 : controller.Number + 1;
+            //int previewStep = controller.IsFirstStep ? -1 : controller.Number - 1;
+
+            //controller.Controller.Continue();
+            //GuardarCambios(currentStep);
+
+        }
+
+        private void GuardarCambios(int currentStep)
+        {
+            switch (currentStep)
+            {
+
+                case 1:
+                    {
+                        try
+                        {
+                            controller.Guardar(arqueo);
+                        }
+                        catch (Exception ex)
+                        {
+                            lblErrorMesaje.Text = new clsException(ex).ErrorMessage();
+                            panelMensaje.Visibility = Visibility.Visible;
+                        }
+                    }
+                    break;
+                case 2:
+                    {
+
+                    }
+                    break;
+                case 3:
+                    {
+
+                    }
+                    break;
+
+                default:
+                    break;
+            }
+        }
+     */

@@ -11,6 +11,7 @@
     <SolidColorBrush x:Key="QuestionMsj" Color="#33691E" />
     
     <SolidColorBrush x:Key="ErrorAlert" Color="#ffebee" />
+    <SolidColorBrush x:Key="WarningAlert" Color="#FFF3E0" />
 
     <SolidColorBrush x:Key="ADPerfil" Color="#1565C0" />
 
@@ -28,7 +29,8 @@
     <SolidColorBrush x:Key="DarkGray" Color="#616161"/>
     <SolidColorBrush x:Key="DarkGray_TextAccent" Color="#212121"/>
     <SolidColorBrush x:Key="Gray_BackgroundDisabled" Color="#F5F5F5"/>
-    
+
+    <SolidColorBrush x:Key="Back_Button" Color="#616161"/>
     <SolidColorBrush x:Key="Export_Button" Color="#2E7D32"/>
     <SolidColorBrush x:Key="Save_Button" Color="#1565C0"/>
     <SolidColorBrush x:Key="Edit_Button" Color="#D84315"/>

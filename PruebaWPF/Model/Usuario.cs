@@ -57,7 +57,6 @@ namespace PruebaWPF.Model
             this.ArancelArea = new HashSet<ArancelArea>();
             this.ArancelPrecio = new HashSet<ArancelPrecio>();
             this.ArancelTipoDeposito = new HashSet<ArancelTipoDeposito>();
-            this.Arqueo = new HashSet<Arqueo>();
             this.Caja = new HashSet<Caja>();
             this.Configuracion = new HashSet<Configuracion>();
             this.DetAperturaCaja = new HashSet<DetAperturaCaja>();
@@ -77,6 +76,7 @@ namespace PruebaWPF.Model
             this.UsuarioPerfil = new HashSet<UsuarioPerfil>();
             this.UsuarioPrograma = new HashSet<UsuarioPrograma>();
             this.VariacionCambiaria = new HashSet<VariacionCambiaria>();
+            this.Arqueo = new HashSet<Arqueo>();
         }
     
         public string Login { get; set; }
@@ -182,8 +182,6 @@ namespace PruebaWPF.Model
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<ArancelTipoDeposito> ArancelTipoDeposito { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Arqueo> Arqueo { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Caja> Caja { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Configuracion> Configuracion { get; set; }
@@ -221,5 +219,7 @@ namespace PruebaWPF.Model
         public virtual ICollection<UsuarioPrograma> UsuarioPrograma { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<VariacionCambiaria> VariacionCambiaria { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Arqueo> Arqueo { get; set; }
     }
 }

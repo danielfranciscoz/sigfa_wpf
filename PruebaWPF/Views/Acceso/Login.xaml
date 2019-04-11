@@ -134,7 +134,7 @@
                     <Run Text="UNI - DTIC."/>
 
                 </TextBlock>-->
-                    <TextBlock TextAlignment="Center" Padding="10 10 10 10" Text="Desarrollado por: División de Tecnologías de Información y la Comunicación"></TextBlock>
+                    <TextBlock TextAlignment="Center" Padding="10 10 10 10" Text="Copyright © 2019. Todos Los Derechos Reservados UNI"></TextBlock>
                 </materialDesign:ColorZone>
             </Grid>
 

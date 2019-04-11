@@ -27,7 +27,12 @@ namespace PruebaWPF.ViewModel
             throw new NotImplementedException();
         }
 
-        public DetAperturaCaja DetectarApertura()
+        /// <summary>
+        /// Detecta la apertura no arqueada por medio del MAC de la computadora, en la primera posición retorna la apertura, en la segunda posición el arqueo que no ha sido finalizado (si y solamente si existe algún arqueno no terminado)
+        /// Siempre retorna la información en orden ascendente, es decir de la apertura mas antigua a la mas reciente.
+        /// </summary>
+        /// <returns>object[DetAperturaCaja,Arqueo]</returns>
+        public object[] DetectarApertura()
         {
             DetAperturaCaja apertura = new DetAperturaCaja();
             Caja c = db.Caja.Where(w => w.MAC == clsSessionHelper.MACMemory && w.regAnulado == false).First();
@@ -50,7 +55,9 @@ namespace PruebaWPF.ViewModel
             {
                 if (enProceso.Where(w => w.isFinalizado == false).Any()) // El arqueo sin finalizar debe ser retornado hasta que se finalice
                 {
-                    return enProceso.Where(w => w.isFinalizado == false).First().DetAperturaCaja;
+                    Arqueo a = enProceso.Where(w => w.isFinalizado == false).First();
+
+                    return new Object[] { a.DetAperturaCaja, a };
                 }
             }
 
@@ -61,7 +68,7 @@ namespace PruebaWPF.ViewModel
                 throw new Exception("Esta caja ya se encuentra arqueada");
             }
 
-            return noArqueadas.First();
+            return new Object[] { noArqueadas.First() };
 
 
 
@@ -71,6 +78,69 @@ namespace PruebaWPF.ViewModel
         {
             return db.Arqueo.ToList();
         }
+
+        #region Paso 2, creando el registro de arqueo
+        public Recibo1 ContabilizarRecibo(string codigo, DetAperturaCaja apertura)
+        {
+            Recibo1 r;
+            if (codigo.Contains("-")) //valido el formato, que contenga el guión
+            {
+                String[] valores = codigo.Split('-');
+
+                int recibo;
+
+                if (int.TryParse(valores[0], out recibo)) //valido que la primera parte de la cadena corresponda al numero del recibo
+                {
+                    r = db.Recibo1.Find(recibo, valores[1]);
+
+                    if (r != null) //valido que el recibo exista en la base de datos
+                    {
+                        if (r.IdDetAperturaCaja == apertura.IdDetAperturaCaja) //valido que el recibo pertenezca a la apertura que se esta arqueando
+                        {
+                            if (!db.ArqueoRecibo.Any(a => a.IdRecibo == r.IdRecibo && a.Serie == r.Serie)) //Valido que el recibo no haya sido agregado
+                            {
+                                ArqueoRecibo arqueo = new ArqueoRecibo();
+                                arqueo.IdArqueo = apertura.IdDetAperturaCaja; //El id IdDetAperturaCaja es el mismo Id de arqueo porque tienen una relación de uno-uno
+                                arqueo.IdRecibo = r.IdRecibo;
+                                arqueo.Serie = r.Serie;
+                                arqueo.FechaCreacion = System.DateTime.Now;
+
+                                db.ArqueoRecibo.Add(arqueo);
+                                db.SaveChanges();
+                            }
+                            else
+                            {
+                                throw new Exception("El recibo ya se encuentra contabilizado.");
+                            }
+                        }
+                        else
+                        {
+                            throw new Exception("El recibo no es parte del arqueo que se está realizando, los recibos pertenecientes a este arqueo se encuentran en el informe de cierre de caja.");
+                        }
+                    }
+                    else
+                    {
+                        throw new Exception("El Recibo ingresado no existe, por favor verifique que el número y la serie sean correctos con respecto al documento impreso.");
+                    }
+                }
+                else
+                {
+                    throw new Exception("El código de recibo ingresado no es válido, debe escribirlo de la siguiente manera: Número Guión Letra (No usar espacios es blanco).");
+                }
+            }
+            else
+            {
+                throw new Exception("El código de recibo ingresado no es válido, por favor asegúrese de ingresar [No.Recibo]-[Serie]. No use corchetes y recuerde el guión de separación.");
+            }
+
+            return r;
+        }
+
+        public List<Recibo1> FindRecibosContabilizados(Arqueo arqueo)
+        {
+            return db.ArqueoRecibo.Where(w => w.IdArqueo == arqueo.IdArqueoDetApertura).Select(s => s.Recibo1).ToList();
+        }
+        #endregion
 
         public Arqueo FindById(int Id)
         {
@@ -84,7 +154,15 @@ namespace PruebaWPF.ViewModel
 
         public void Guardar(Arqueo Obj)
         {
-            throw new NotImplementedException();
+            if (db.Arqueo.Find(Obj.IdArqueoDetApertura) == null)//Valido que el arqueo no haya sido registrado
+            {
+                Obj.FechaArqueo = System.DateTime.Now;
+                Obj.UsuarioArqueador = clsSessionHelper.usuario.Login;
+                //las observaciones y el cajero que entrega, son agregados hasta que se finalice el arqueo
+
+                db.Arqueo.Add(Obj);
+                db.SaveChanges();
+            }
         }
 
         public void Modificar(Arqueo Obj)

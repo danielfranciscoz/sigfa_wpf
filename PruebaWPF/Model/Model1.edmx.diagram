@@ -143,7 +143,6 @@
         <EntityTypeShape EntityType="SIFOPModel.OrdenPago" Width="1.5" PointX="5.25" PointY="214.375" IsExpanded="true" />
         <EntityTypeShape EntityType="SIFOPModel.TipoArancel" Width="1.5" PointX="3" PointY="197.625" IsExpanded="true" />
         <EntityTypeShape EntityType="SIFOPModel.AperturaCaja" Width="1.5" PointX="3" PointY="200.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="SIFOPModel.Arqueo" Width="1.5" PointX="21.5" PointY="153.375" IsExpanded="true" />
         <EntityTypeShape EntityType="SIFOPModel.ArqueoEfectivo" Width="1.5" PointX="5.25" PointY="127.125" IsExpanded="true" />
         <EntityTypeShape EntityType="SIFOPModel.ArqueoNoEfectivo" Width="1.5" PointX="22.75" PointY="22.75" IsExpanded="true" />
         <EntityTypeShape EntityType="SIFOPModel.ArqueoRecibo" Width="1.5" PointX="23.75" PointY="166.5" IsExpanded="true" />
@@ -398,7 +397,6 @@
         <AssociationConnector Association="SIFOPModel.FK_ArancelArea_Usuario" ManuallyRouted="false" />
         <AssociationConnector Association="SIFOPModel.FK_ArancelPrecio_Usuario" ManuallyRouted="false" />
         <AssociationConnector Association="SIFOPModel.FK_ArancelTipoDeposito_Usuario" ManuallyRouted="false" />
-        <AssociationConnector Association="SIFOPModel.FK_Arqueo_Usuario" ManuallyRouted="false" />
         <AssociationConnector Association="SIFOPModel.FK_Caja_Usuario" ManuallyRouted="false" />
         <AssociationConnector Association="SIFOPModel.FK_Configuracion_Usuario" ManuallyRouted="false" />
         <AssociationConnector Association="SIFOPModel.FK_DetAperturaCaja_Usuario" ManuallyRouted="false" />
@@ -433,9 +431,6 @@
         <AssociationConnector Association="SIFOPModel.FK_Recibo_OrdenPago" ManuallyRouted="false" />
         <AssociationConnector Association="SIFOPModel.FK_ReciboAnulado_OrdenPago" ManuallyRouted="false" />
         <AssociationConnector Association="SIFOPModel.FK_DetAperturaCaja_AperturaCaja" ManuallyRouted="false" />
-        <AssociationConnector Association="SIFOPModel.FK_Arqueo_DetAperturaCaja" ManuallyRouted="false" />
-        <AssociationConnector Association="SIFOPModel.FK_ArqueoEfectivo_Arqueo" ManuallyRouted="false" />
-        <AssociationConnector Association="SIFOPModel.FK_ArqueoRecibo_Arqueo" ManuallyRouted="false" />
         <AssociationConnector Association="SIFOPModel.FK_ArqueoRecibo_Recibo" ManuallyRouted="false" />
         <AssociationConnector Association="SIFOPModel.FK_Caja_SerieRecibo" ManuallyRouted="false" />
         <AssociationConnector Association="SIFOPModel.FK_DetAperturaCaja_Caja" ManuallyRouted="false" />
@@ -455,6 +450,11 @@
         <AssociationConnector Association="SIFOPModel.FK_AccesoDirectoUsuario_Pantalla" ManuallyRouted="false" />
         <AssociationConnector Association="SIFOPModel.FK_Permiso_Pantalla" ManuallyRouted="false" />
         <AssociationConnector Association="SIFOPModel.FK_Permiso_PermisoName" ManuallyRouted="false" />
+        <EntityTypeShape EntityType="SIFOPModel.Arqueo" Width="1.5" PointX="21.5" PointY="153.5" />
+        <AssociationConnector Association="SIFOPModel.FK_Arqueo_Usuario" />
+        <AssociationConnector Association="SIFOPModel.FK_Arqueo_DetAperturaCaja" />
+        <AssociationConnector Association="SIFOPModel.FK_ArqueoEfectivo_Arqueo" />
+        <AssociationConnector Association="SIFOPModel.FK_ArqueoRecibo_Arqueo" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>
