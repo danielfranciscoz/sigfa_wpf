@@ -45,8 +45,8 @@ namespace PruebaWPF.ViewModel
                 IdSerie = s.IdSerie,
                 regAnulado = s.regAnulado,
                 FechaCreacion = s.FechaCreacion,
-                Recinto = clsSessionHelper.recintosMemory.Where(w => w.IdRecinto == s.IdRecinto).Select(a => a.Siglas).FirstOrDefault().ToString(),                
-            }).Where(b =>r.Any(a => b.IdRecinto == a.IdRecinto)).ToList();
+                Recinto = clsSessionHelper.recintosMemory.Where(w => w.IdRecinto == s.IdRecinto).Select(a => a.Siglas).FirstOrDefault().ToString(),
+            }).Where(b => r.Any(a => b.IdRecinto == a.IdRecinto)).ToList();
         }
 
         public string FindMacActual()
@@ -113,6 +113,18 @@ namespace PruebaWPF.ViewModel
 
         }
 
+        /// <summary>
+        /// Verifica que la caja tenga todas las aperturas arqueadas
+        /// </summary>
+        /// <param name="caja"></param>
+        /// <returns> si todas las aperturas se encuentran arqueadas, False en caso contrario</returns>
+        public bool VeriricarAperturasArquedas(Caja caja)
+        {
+            List<DetAperturaCaja> aperturas = db.DetAperturaCaja.Where(w => w.IdCaja == caja.IdCaja).ToList();
+            var asd = db.Arqueo.ToList().Where(w => aperturas.Any(a => a.IdDetAperturaCaja == w.IdArqueoDetApertura && w.isFinalizado));
+            return db.Arqueo.ToList().Where(w => aperturas.Any(a => a.IdDetAperturaCaja == w.IdArqueoDetApertura && w.isFinalizado)).Count() == aperturas.Count();
+        }
+
         private void ExcepcionCaja()
         {
             throw new Exception("No es posible agregar una caja con el mismo nombre o la misma direccón MAC, por favor verifique la información. Es posible que el MAC haya sido utilizado para otro recinto de la Universidad.");
@@ -129,6 +141,10 @@ namespace PruebaWPF.ViewModel
         public void EliminarCaja(CajaSon c)
         {
             Caja caja = db.Caja.Find(c.IdCaja);
+            if (VeriricarAperturasArquedas(caja))
+            {
+
+            }
             caja.regAnulado = true;
             db.Entry(caja).State = System.Data.Entity.EntityState.Modified;
             db.SaveChanges();
@@ -558,7 +574,7 @@ namespace PruebaWPF.ViewModel
     public class CajaSon : Caja, ICloneable
     {
         public string Recinto { get; set; }
-  
+
         public object Clone()
         {
             return MemberwiseClone();

@@ -4,13 +4,17 @@ using PruebaWPF.ViewModel;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Collections.Specialized;
+using System.ComponentModel;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Documents;
+
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
@@ -28,6 +32,8 @@ namespace PruebaWPF.Views.Arqueo
         private Pantalla pantalla;
         private DetAperturaCaja apertura;
         private Model.Arqueo arqueo;
+        private BindingList<ArqueoEfectivoSon> efectivo;
+        private System.Windows.Forms.BindingSource ArqueoEfectivoBindingSource = new System.Windows.Forms.BindingSource();
 
         private ObservableCollection<Recibo1> recibos;
         MaterialDesignExtensions.Controllers.StepperController tabmaterial;
@@ -67,7 +73,6 @@ namespace PruebaWPF.Views.Arqueo
 
                 apertura = (DetAperturaCaja)datos[0];
 
-
                 if (datos.Length > 1)
                 {
                     panelWarningRecibo.Visibility = Visibility.Visible;
@@ -82,10 +87,8 @@ namespace PruebaWPF.Views.Arqueo
                     arqueo.IdArqueoDetApertura = apertura.IdDetAperturaCaja;
                 }
 
-
                 datosIniciales.DataContext = apertura;
                 lblRecuento.DataContext = apertura;
-
 
             }
             catch (Exception ex)
@@ -108,7 +111,7 @@ namespace PruebaWPF.Views.Arqueo
 
         private void AddRecibo()
         {
-            string codigo = codrecibo.Text;
+            string codigo = txtcodrecibo.Text;
             try
             {
                 Recibo1 agregado = controller.ContabilizarRecibo(codigo, apertura);
@@ -154,6 +157,7 @@ namespace PruebaWPF.Views.Arqueo
 
         private void btnConteoRecibos_Click(object sender, RoutedEventArgs e)
         {
+            CargarEfectivoContabilizado();
             tabmaterial.Continue();
         }
 
@@ -162,59 +166,73 @@ namespace PruebaWPF.Views.Arqueo
             if (recibos == null)
             {
                 recibos = new ObservableCollection<Recibo1>(controller.FindRecibosContabilizados(arqueo));
+                recibos.CollectionChanged += new System.Collections.Specialized.NotifyCollectionChangedEventHandler(Recibos_CollectionChanged);
                 lstRecibos.ItemsSource = recibos;
+                VerificarConteoFinalizado();
             }
 
 
+        }
+
+        private void Recibos_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
+        {
+            if (e.Action == System.Collections.Specialized.NotifyCollectionChangedAction.Add)
+            {
+                VerificarConteoFinalizado();
+            }
+        }
+
+        private void Efectivo_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
+        {
+            if (e.Action == System.Collections.Specialized.NotifyCollectionChangedAction.Add)
+            {
+                tblEfectivo.Items.Refresh();
+            }
+        }
+
+       
+
+        private void VerificarConteoFinalizado()
+        {
+
+            if (recibos.Count == apertura.Recibo1.Count)
+            {
+                txtcodrecibo.IsEnabled = false;
+                btnConteoRecibos.IsEnabled = true;
+            }
+
+        }
+
+        private void btnConteoEfectivo_Click(object sender, RoutedEventArgs e)
+        {
+            //BindingList<DemoCustomer> customerList =
+            //   this.customersBindingSource.DataSource as BindingList<DemoCustomer>;
+
+            //// Change the value of the CompanyName property for the 
+            //// first item in the list.
+            //customerList[0].CustomerName = "Tailspin Toys";
+            //customerList[0].PhoneNumber = "(708)555-0150";
+        }
+
+        private void CargarEfectivoContabilizado()
+        {
+            if (efectivo == null)
+            {
+                efectivo = new BindingList<ArqueoEfectivoSon>(controller.FindConteoEfectivo(apertura));
+                ArqueoEfectivoBindingSource.DataSource = efectivo;
+                tblEfectivo.ItemsSource = ArqueoEfectivoBindingSource;
+                efectivo.ListChanged += new ListChangedEventHandler(Ef_CollectionChanged);
+
+            }
+        }
+
+        private void Ef_CollectionChanged(object sender, ListChangedEventArgs e)
+        {
+            //TODO aun no se actualiza la vista cuando hago el cambio en la cantidad
+            var s = sender;
+            var a = e;
+            BindingList<ArqueoEfectivoSon> customerList = ArqueoEfectivoBindingSource.DataSource as BindingList<ArqueoEfectivoSon>;
         }
     }
+
 }
-
-/*
-   private void TabControlStepper_ContinueNavigation(object sender, MaterialDesignExtensions.Controls.StepperNavigationEventArgs args)
-        {
-
-
-            //int currentStep = controller.Number;
-            //int? nextStep = controller.IsLastStep ? -1 : controller.Number + 1;
-            //int previewStep = controller.IsFirstStep ? -1 : controller.Number - 1;
-
-            //controller.Controller.Continue();
-            //GuardarCambios(currentStep);
-
-        }
-
-        private void GuardarCambios(int currentStep)
-        {
-            switch (currentStep)
-            {
-
-                case 1:
-                    {
-                        try
-                        {
-                            controller.Guardar(arqueo);
-                        }
-                        catch (Exception ex)
-                        {
-                            lblErrorMesaje.Text = new clsException(ex).ErrorMessage();
-                            panelMensaje.Visibility = Visibility.Visible;
-                        }
-                    }
-                    break;
-                case 2:
-                    {
-
-                    }
-                    break;
-                case 3:
-                    {
-
-                    }
-                    break;
-
-                default:
-                    break;
-            }
-        }
-     */

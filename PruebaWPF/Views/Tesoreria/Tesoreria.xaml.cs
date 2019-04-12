@@ -388,11 +388,19 @@ namespace PruebaWPF.Views.Tesoreria
         {
             try
             {
-                if (controller().Autorice_Recinto(((Button)sender).Tag.ToString(), ((CajaSon)tblCajas.CurrentItem).IdRecinto))
+                CajaSon son = ((CajaSon)tblCajas.CurrentItem);
+                if (controller().Autorice_Recinto(((Button)sender).Tag.ToString(), son.IdRecinto))
                 {
-                    if (clsutilidades.OpenDeleteQuestionMessage())
+                    if (controller().VeriricarAperturasArquedas(son))
                     {
-                        clsutilidades.OpenMessage(EliminarCaja());
+                        if (clsutilidades.OpenDeleteQuestionMessage())
+                        {
+                            clsutilidades.OpenMessage(EliminarCaja());
+                        }
+                    }
+                    else
+                    {
+                        clsutilidades.OpenMessage(new Operacion() {Mensaje= "La caja no puede ser eliminada debido a que aun existen arqueos pendientes en el equipo",OperationType=clsReferencias.TYPE_MESSAGE_Advertencia });
                     }
 
                 }

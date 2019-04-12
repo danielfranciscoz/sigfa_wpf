@@ -53,12 +53,13 @@
 
                 <StackPanel Grid.Row="1" VerticalAlignment="Top" Height="auto" Margin="20 0 20 15">
                     <mde:TabControlStepper x:Name="tabParent"  IsLinear="True" Layout="Horizontal" ContentAnimationsEnabled="False">
+                        <!--Reconocimiento Inicial-->
                         <TabItem>
                             <TabItem.Header>
                                 <model:StepTitleHeader FirstLevelTitle="Reconocimiento Inicial" x:Name="paso1"/>
                                
                             </TabItem.Header>
-                            <Grid>
+                            <Grid Height="480">
                                 <Grid.RowDefinitions>
                                     <RowDefinition Height="*"/>
                                     <RowDefinition  Height="auto"/>
@@ -111,13 +112,15 @@
                                 </StackPanel>
                             </Grid>
                         </TabItem>
+
+                        <!--Recibos Impresos-->
                         <TabItem>
                             <TabItem.Header>
                                 <model:StepTitleHeader FirstLevelTitle="Recibos Impresos" x:Name="paso2"/>
                             </TabItem.Header>
-                            <Grid>
+                            <Grid Height="480" >
                                 <Grid.RowDefinitions>
-                                    <RowDefinition Height="400"/>
+                                    <RowDefinition Height="*"/>
                                     <RowDefinition  Height="auto"/>
                                 </Grid.RowDefinitions>
 
@@ -138,7 +141,7 @@
                                             <StackPanel Orientation="Vertical" VerticalAlignment="Center" HorizontalAlignment="Center">
                                             <StackPanel Orientation="Horizontal"  Margin="0 0 0 10">
                                                 <materialDesign:PackIcon Kind="BarcodeScan" Width="50" Height="50" HorizontalAlignment="Center"  VerticalAlignment="Center" Margin="0 0 20 0"></materialDesign:PackIcon>
-                                                <TextBox x:Name="codrecibo" KeyDown="codrecibo_KeyDown" Width="270" CharacterCasing="Upper" FontSize="30" TextAlignment="Center" ></TextBox>
+                                                <TextBox x:Name="txtcodrecibo" KeyDown="codrecibo_KeyDown" Width="270" CharacterCasing="Upper" FontSize="30" TextAlignment="Center" ></TextBox>
                                             </StackPanel>
                                             <TextBlock TextWrapping="Wrap" Foreground="{StaticResource DarkGray}">
                                                     <TextBlock.Inlines>
@@ -200,27 +203,61 @@
                                         </Grid.ColumnDefinitions>
                                         <Button HorizontalAlignment="Left" Grid.Column="0" Style="{DynamicResource MaterialDesignFlatButton}" Foreground="{StaticResource Back_Button}"  Margin="0 2 0 2" Click="btnBack_Click" Content="{StaticResource Text_Back_Button}"></Button>
                                         <StackPanel Grid.Column="1" Orientation="Horizontal" HorizontalAlignment="Right">
-                                            <Button Tag="{StaticResource Permiso_Guardar}" x:Name="btnConteoRecibos" Style="{DynamicResource MaterialDesignFlatButton}" Foreground="{StaticResource Save_Button}"  Margin="0 2 0 2" Click="btnConteoRecibos_Click" Content="{StaticResource Text_Next_Button}"></Button>
+                                            <Button x:Name="btnConteoRecibos" Style="{DynamicResource MaterialDesignFlatButton}" Foreground="{StaticResource Save_Button}"  Margin="0 2 0 2" Click="btnConteoRecibos_Click" Content="{StaticResource Text_Next_Button}" IsEnabled="False"></Button>
                                         </StackPanel>
                                     </Grid>
                                 </StackPanel>
                             </Grid>
                         </TabItem>
+
+                        <!--Conteo de Efectivo-->
                         <TabItem>
                             <TabItem.Header>
                                 <model:StepTitleHeader FirstLevelTitle="Conteo de Efectivo" />
                             </TabItem.Header>
-                            <StackPanel>
-                                <TextBlock Text="Well, that's all to say about this simple stepper version." />
 
-                                <mde:StepButtonBar Back="REGRESAR" Continue="SIGUIENTE"  />
-                            </StackPanel>
+                            <Grid Height="480" >
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="*"/>
+                                    <RowDefinition  Height="auto"/>
+                                </Grid.RowDefinitions>
+
+                                <Grid Grid.Row="0">
+                                    <DockPanel VerticalAlignment="Top" Margin="20 0 20 15" Height="400">
+                                        <DataGrid Name="tblEfectivo"  CanUserDeleteRows="False" CanUserAddRows="False" AutoGenerateColumns="False" SelectionUnit="FullRow" SelectionMode="Single" >
+                                            <DataGrid.Columns>
+
+                                                <DataGridTextColumn CanUserReorder="False" CanUserResize="False" IsReadOnly="True" Header="Moneda" Width="auto" Binding="{Binding Moneda.Moneda1}"></DataGridTextColumn>
+                                                <DataGridTextColumn CanUserReorder="False" CanUserResize="False" IsReadOnly="True" Header="Denominación" Width="auto" Binding="{Binding Denominacion}"></DataGridTextColumn>
+                                                <DataGridTextColumn CanUserReorder="False" CanUserResize="False" IsReadOnly="False"  Header="Cantidad" Width="auto" Binding="{Binding Cantidad,Mode=TwoWay}"></DataGridTextColumn>
+                                                <DataGridTextColumn CanUserReorder="False" CanUserResize="False" IsReadOnly="True" Header="Total" Width="auto" Binding="{Binding Total,UpdateSourceTrigger=PropertyChanged}"></DataGridTextColumn>
+                                            </DataGrid.Columns>
+                                        </DataGrid>
+
+
+                                    </DockPanel>
+                                </Grid>
+                                <StackPanel Grid.Row="1" Height="auto">
+                                    <Grid>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="auto"/>
+                                            <ColumnDefinition Width="*"/>
+                                        </Grid.ColumnDefinitions>
+                                        <Button HorizontalAlignment="Left" Grid.Column="0" Style="{DynamicResource MaterialDesignFlatButton}" Foreground="{StaticResource Back_Button}"  Margin="0 2 0 2" Click="btnBack_Click" Content="{StaticResource Text_Back_Button}"></Button>
+                                        <StackPanel Grid.Column="1" Orientation="Horizontal" HorizontalAlignment="Right">
+                                            <Button x:Name="btnConteoEfectivo" Style="{DynamicResource MaterialDesignFlatButton}" Foreground="{StaticResource Save_Button}"  Margin="0 2 0 2" Click="btnConteoEfectivo_Click" Content="{StaticResource Text_Next_Button}"></Button>
+                                        </StackPanel>
+                                    </Grid>
+                                </StackPanel>
+                            </Grid>
                         </TabItem>
+
+                        <!--Documentos de efectivo-->
                         <TabItem>
                             <TabItem.Header>
                                 <model:StepTitleHeader FirstLevelTitle="Documentos de Efectivo" />
                             </TabItem.Header>
-                            <StackPanel>
+                            <StackPanel Height="480">
                                 <TextBlock Text="Well, that's all to say about this simple stepper version." />
 
                                 <mde:StepButtonBar Back="REGRESAR" Continue="FINALIZAR" />

@@ -33,7 +33,7 @@ namespace PruebaWPF.Views.Tesoreria
             InitializeComponent();
 
             Inicializar(PermisoName);
-            
+
         }
 
         public GestionarCaja(CajaSon caja, Pantalla pantalla, String PermisoName)
@@ -70,7 +70,7 @@ namespace PruebaWPF.Views.Tesoreria
 
             cboSerie.ItemsSource = controller.FindAddSeries(caja.IdSerie);
             cboSerie.SelectedValue = caja.IdSerie;
-           
+
         }
 
         private void Diseñar()
@@ -145,6 +145,16 @@ namespace PruebaWPF.Views.Tesoreria
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
+            if (caja.IdCaja > 0)
+            {
+                bool MacEditable = controller.VeriricarAperturasArquedas(caja);
+                txtMAC.IsEnabled = MacEditable;
+                if (!MacEditable)
+                {
+                    panelMAC.Visibility = Visibility.Collapsed;
+                    lblInfo.Visibility = Visibility.Visible;
+                }
+            }
             lblMac.Text = clsSessionHelper.MACMemory;
         }
 

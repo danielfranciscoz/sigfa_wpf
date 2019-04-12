@@ -3,7 +3,9 @@ using PruebaWPF.Interface;
 using PruebaWPF.Model;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -14,6 +16,7 @@ namespace PruebaWPF.ViewModel
 
         private SecurityViewModel seguridad;
         private Pantalla pantalla;
+        SIFOPEntities db = new SIFOPEntities();
 
         public ArqueoViewModel(Pantalla pantalla)
         {
@@ -21,11 +24,12 @@ namespace PruebaWPF.ViewModel
             this.pantalla = pantalla;
         }
 
-        SIFOPEntities db = new SIFOPEntities();
         public void Eliminar(Arqueo Obj)
         {
             throw new NotImplementedException();
         }
+
+        #region Paso 1, creando el arqueo
 
         /// <summary>
         /// Detecta la apertura no arqueada por medio del MAC de la computadora, en la primera posición retorna la apertura, en la segunda posición el arqueo que no ha sido finalizado (si y solamente si existe algún arqueno no terminado)
@@ -35,7 +39,7 @@ namespace PruebaWPF.ViewModel
         public object[] DetectarApertura()
         {
             DetAperturaCaja apertura = new DetAperturaCaja();
-            Caja c = db.Caja.Where(w => w.MAC == clsSessionHelper.MACMemory && w.regAnulado == false).First();
+            Caja c = db.Caja.Where(w => w.MAC == clsSessionHelper.MACMemory && w.regAnulado == false).FirstOrDefault();
 
             if (c == null)
             {
@@ -78,8 +82,22 @@ namespace PruebaWPF.ViewModel
         {
             return db.Arqueo.ToList();
         }
+        public void Guardar(Arqueo Obj)
+        {
+            if (db.Arqueo.Find(Obj.IdArqueoDetApertura) == null)//Valido que el arqueo no haya sido registrado
+            {
+                Obj.FechaArqueo = System.DateTime.Now;
+                Obj.UsuarioArqueador = clsSessionHelper.usuario.Login;
+                //las observaciones y el cajero que entrega, son agregados hasta que se finalice el arqueo
 
-        #region Paso 2, creando el registro de arqueo
+                db.Arqueo.Add(Obj);
+                db.SaveChanges();
+            }
+        }
+
+        #endregion
+
+        #region Paso 2, contabilizando recibos
         public Recibo1 ContabilizarRecibo(string codigo, DetAperturaCaja apertura)
         {
             Recibo1 r;
@@ -142,6 +160,27 @@ namespace PruebaWPF.ViewModel
         }
         #endregion
 
+        #region Paso 3, conteo de efectivo
+
+        public List<ArqueoEfectivoSon> FindConteoEfectivo(DetAperturaCaja apertura)
+        {
+            List<ArqueoEfectivoSon> resultados = (from denominacion in db.DenominacionMoneda
+                                                  join efectivo in db.ArqueoEfectivo on new { moneda = denominacion.Moneda, denominacion = denominacion.Denominacion } equals new { moneda = efectivo.IdMoneda, denominacion = efectivo.Denominacion } into jointTable
+                                                  from jointRecord in jointTable.DefaultIfEmpty()
+                                                  select new ArqueoEfectivoSon()
+                                                  {
+                                                      IdArqueoEfectivo = jointRecord.IdArqueoEfectivo,
+                                                      IdArqueo = jointRecord.IdArqueo,
+                                                      Moneda = denominacion.Moneda1,
+                                                      Denominacion = denominacion.Denominacion,
+                                                      Cantidad = jointRecord.Cantidad
+                                                  }).ToList();
+
+            return resultados;
+        }
+
+        #endregion
+
         public Arqueo FindById(int Id)
         {
             throw new NotImplementedException();
@@ -150,19 +189,6 @@ namespace PruebaWPF.ViewModel
         public List<Arqueo> FindByText(string text)
         {
             throw new NotImplementedException();
-        }
-
-        public void Guardar(Arqueo Obj)
-        {
-            if (db.Arqueo.Find(Obj.IdArqueoDetApertura) == null)//Valido que el arqueo no haya sido registrado
-            {
-                Obj.FechaArqueo = System.DateTime.Now;
-                Obj.UsuarioArqueador = clsSessionHelper.usuario.Login;
-                //las observaciones y el cajero que entrega, son agregados hasta que se finalice el arqueo
-
-                db.Arqueo.Add(Obj);
-                db.SaveChanges();
-            }
         }
 
         public void Modificar(Arqueo Obj)
@@ -180,5 +206,39 @@ namespace PruebaWPF.ViewModel
             throw new NotImplementedException();
         }
 
+    }
+
+    public class ArqueoEfectivoSon : ArqueoEfectivo, INotifyPropertyChanged
+    {
+        public new int? IdArqueoEfectivo { get; set; }
+        public new int? IdArqueo { get; set; }
+        private double? CantidadValue { get; set; }
+        public double? Total => Cantidad == null ? Cantidad : Denominacion * double.Parse(Cantidad.Value.ToString());
+
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        private void NotifyPropertyChanged([CallerMemberName] String propertyName = "")
+        {
+            if (PropertyChanged != null)
+            {
+                PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+            }
+        }
+
+        public new double? Cantidad
+        {
+            get
+            {
+                return CantidadValue;
+            }
+            set
+            {
+                if (value != CantidadValue)
+                {
+                    CantidadValue = value;
+                    NotifyPropertyChanged();
+                }
+            }
+        }
     }
 }
