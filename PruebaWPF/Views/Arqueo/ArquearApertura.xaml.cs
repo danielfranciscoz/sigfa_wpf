@@ -33,7 +33,9 @@ namespace PruebaWPF.Views.Arqueo
         private DetAperturaCaja apertura;
         private Model.Arqueo arqueo;
         private BindingList<ArqueoEfectivoSon> efectivo;
+        private BindingList<DocumentosEfectivo> documentos;
         private System.Windows.Forms.BindingSource ArqueoEfectivoBindingSource = new System.Windows.Forms.BindingSource();
+        private System.Windows.Forms.BindingSource DocumentosEfectivoBindingSource = new System.Windows.Forms.BindingSource();
 
         private ObservableCollection<Recibo1> recibos;
         MaterialDesignExtensions.Controllers.StepperController tabmaterial;
@@ -157,7 +159,11 @@ namespace PruebaWPF.Views.Arqueo
 
         private void btnConteoRecibos_Click(object sender, RoutedEventArgs e)
         {
-            CargarEfectivoContabilizado();
+            if (efectivo == null)
+            {
+                CargarEfectivoContabilizado();
+            }
+
             tabmaterial.Continue();
         }
 
@@ -173,6 +179,10 @@ namespace PruebaWPF.Views.Arqueo
 
 
         }
+
+
+
+
 
         private void Recibos_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
         {
@@ -190,7 +200,7 @@ namespace PruebaWPF.Views.Arqueo
             }
         }
 
-       
+
 
         private void VerificarConteoFinalizado()
         {
@@ -205,13 +215,24 @@ namespace PruebaWPF.Views.Arqueo
 
         private void btnConteoEfectivo_Click(object sender, RoutedEventArgs e)
         {
-            //BindingList<DemoCustomer> customerList =
-            //   this.customersBindingSource.DataSource as BindingList<DemoCustomer>;
+            try
+            {
+                controller.GuardarEfectivo(efectivo.ToList(), arqueo);
+                efectivo = null;
+                CargarEfectivoContabilizado();
 
-            //// Change the value of the CompanyName property for the 
-            //// first item in the list.
-            //customerList[0].CustomerName = "Tailspin Toys";
-            //customerList[0].PhoneNumber = "(708)555-0150";
+                if (documentos == null)
+                {
+                    CargarDocumentosEfectivo();
+                }
+
+                tabmaterial.Continue();
+            }
+            catch (Exception ex)
+            {
+                lblErrorEfectivo.Text = new clsException(ex).ErrorMessage();
+                panelErrorEfectivo.Visibility = Visibility.Visible;
+            }
         }
 
         private void CargarEfectivoContabilizado()
@@ -220,18 +241,49 @@ namespace PruebaWPF.Views.Arqueo
             {
                 efectivo = new BindingList<ArqueoEfectivoSon>(controller.FindConteoEfectivo(apertura));
                 ArqueoEfectivoBindingSource.DataSource = efectivo;
+
                 tblEfectivo.ItemsSource = ArqueoEfectivoBindingSource;
                 efectivo.ListChanged += new ListChangedEventHandler(Ef_CollectionChanged);
+                CalcularTotales();
+            }
+        }
 
+        private void CargarDocumentosEfectivo()
+        {
+            if (documentos == null)
+            {
+                documentos = new BindingList<DocumentosEfectivo>(controller.FindDocumentosEfectivo(apertura));
+                DocumentosEfectivoBindingSource.DataSource = documentos;
+
+                tblDocumentosEfectivo.ItemsSource = DocumentosEfectivoBindingSource;
+                documentos.ListChanged += new ListChangedEventHandler(Doc_CollectionChanged);
+                //CalcularTotales();
             }
         }
 
         private void Ef_CollectionChanged(object sender, ListChangedEventArgs e)
         {
-            //TODO aun no se actualiza la vista cuando hago el cambio en la cantidad
-            var s = sender;
-            var a = e;
-            BindingList<ArqueoEfectivoSon> customerList = ArqueoEfectivoBindingSource.DataSource as BindingList<ArqueoEfectivoSon>;
+            CalcularTotales();
+            tblEfectivo.CommitEdit();
+            tblEfectivo.Items.Refresh();
+        }
+
+        private void Doc_CollectionChanged(object sender, ListChangedEventArgs e)
+        {
+
+            tblEfectivo.CommitEdit();
+            tblEfectivo.Items.Refresh();
+        }
+
+        private void CalcularTotales()
+        {
+            var total = efectivo.GroupBy(g => new { g.Moneda.Moneda1, g.Moneda.Simbolo }).Select(s1 => new { TotalMoneda = s1.Key.Moneda1, TotalSimbolo = s1.Key.Simbolo, TotalEfectivo = s1.Sum(s => s.Total) });
+
+            lstTotales.ItemsSource = total;
+        }
+
+        private void btnConteoNoEfectivo_Click(object sender, RoutedEventArgs e)
+        {
         }
     }
 

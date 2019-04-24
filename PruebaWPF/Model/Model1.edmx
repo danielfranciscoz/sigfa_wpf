@@ -2363,7 +2363,8 @@ advertencia 6002: La tabla o vista 'SIFOP.dbo.TmpSolicitudesArchivo' no tiene de
             <PropertyRef Name="IdArqueoDetApertura" />
           </Key>
           <Property Name="IdArqueoDetApertura" Type="int" Nullable="false" />
-          <Property Name="FechaArqueo" Type="datetime" Nullable="false" />
+          <Property Name="FechaInicioArqueo" Type="datetime" Nullable="false" />
+          <Property Name="FechaFinArqueo" Type="datetime" />
           <Property Name="UsuarioArqueador" Type="nvarchar" MaxLength="20" Nullable="false" />
           <Property Name="Observaciones" Type="varchar(max)" />
           <Property Name="CajeroEntrega" Type="nvarchar" MaxLength="20" />
@@ -2377,7 +2378,9 @@ advertencia 6002: La tabla o vista 'SIFOP.dbo.TmpSolicitudesArchivo' no tiene de
           <Property Name="IdArqueo" Type="int" Nullable="false" />
           <Property Name="IdMoneda" Type="int" Nullable="false" />
           <Property Name="Denominacion" Type="float" Nullable="false" />
-          <Property Name="Cantidad" Type="tinyint" Nullable="false" />
+          <Property Name="Cantidad" Type="int" Nullable="false" />
+          <Property Name="FechaCreacion" Type="datetime" Nullable="false" />
+          <Property Name="UsuarioCreacion" Type="nvarchar" MaxLength="20" Nullable="false" />
         </EntityType>
         <EntityType Name="ArqueoNoEfectivo">
           <Key>
@@ -2668,8 +2671,8 @@ advertencia 6002: La tabla o vista 'SIFOP.cat.vw_Aranceles' no tiene definida ni
 advertencia 6002: La tabla o vista 'SIFOP.cat.vw_Areas' no tiene definida ninguna clave principal. Se ha inferido la clave y la definición se creado como una vista o tabla de solo lectura.-->
         <EntityType Name="vw_Areas">
           <Key>
-            
             <PropertyRef Name="codigo" />
+            <PropertyRef Name="strtipo_area" />
           </Key>
           <Property Name="codigo" Type="char" MaxLength="3" Nullable="false" />
           <Property Name="cod_padre" Type="char" MaxLength="3" />
@@ -15665,8 +15668,10 @@ advertencia 6002: La tabla o vista 'SIFOP.dbo.w_LibroMayorAcumulado_Vlast' no ti
           <Property Name="IdArqueo" Type="Int32" Nullable="false" />
           <Property Name="IdMoneda" Type="Int32" Nullable="false" />
           <Property Name="Denominacion" Type="Double" Nullable="false" />
-          <Property Name="Cantidad" Type="Byte" Nullable="false" />
+          <Property Name="Cantidad" Type="Int32" Nullable="false" />
           <NavigationProperty Name="Moneda" Relationship="Self.FK_ArqueoEfectivo_Moneda" FromRole="ArqueoEfectivo" ToRole="Moneda" />
+          <Property Name="FechaCreacion" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="UsuarioCreacion" Type="String" Nullable="false" MaxLength="20" FixedLength="false" Unicode="true" />
           <NavigationProperty Name="Arqueo" Relationship="SIFOPModel.FK_ArqueoEfectivo_Arqueo" FromRole="ArqueoEfectivo" ToRole="Arqueo" />
         </EntityType>
         <EntityType Name="ArqueoNoEfectivo">
@@ -16126,18 +16131,6 @@ advertencia 6002: La tabla o vista 'SIFOP.dbo.w_LibroMayorAcumulado_Vlast' no ti
           <Property Name="Moneda" Type="String" MaxLength="20" FixedLength="false" Unicode="false" Nullable="false" />
           <Property Name="IdArea" Type="String" MaxLength="4" FixedLength="false" Unicode="false" Nullable="false" />
           <Property Name="Area" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
-        </EntityType>
-        <EntityType Name="vw_Areas">
-          <Key>
-            <PropertyRef Name="codigo" />
-          </Key>
-          <Property Name="codigo" Type="String" MaxLength="3" FixedLength="true" Unicode="false" Nullable="false" />
-          <Property Name="cod_padre" Type="String" MaxLength="3" FixedLength="true" Unicode="false" />
-          <Property Name="tipo_area" Type="String" MaxLength="1" FixedLength="true" Unicode="false" />
-          <Property Name="descripcion" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
-          <Property Name="estado" Type="String" MaxLength="1" FixedLength="true" Unicode="false" />
-          <Property Name="nombre" Type="String" MaxLength="300" FixedLength="false" Unicode="false" />
-          <Property Name="strtipo_area" Type="String" MaxLength="14" FixedLength="false" Unicode="false" Nullable="false" />
         </EntityType>
         <EntityType Name="vw_FuentesSIPPSI">
           <Key>
@@ -20569,7 +20562,6 @@ advertencia 6002: La tabla o vista 'SIFOP.dbo.w_LibroMayorAcumulado_Vlast' no ti
           <EntitySet Name="TmpComprobantePrint" EntityType="Self.TmpComprobantePrint" />
           <EntitySet Name="TmpSolicitudesArchivo" EntityType="Self.TmpSolicitudesArchivo" />
           <EntitySet Name="vw_Aranceles" EntityType="Self.vw_Aranceles" />
-          <EntitySet Name="vw_Areas" EntityType="Self.vw_Areas" />
           <EntitySet Name="vw_FuentesSIPPSI" EntityType="Self.vw_FuentesSIPPSI" />
           <EntitySet Name="vw_Prematricula" EntityType="Self.vw_Prematricula" />
           <EntitySet Name="vw_ProveedoresSISCOM" EntityType="Self.vw_ProveedoresSISCOM" />
@@ -22599,6 +22591,7 @@ advertencia 6002: La tabla o vista 'SIFOP.dbo.w_LibroMayorAcumulado_Vlast' no ti
           <FunctionImport Name="fn_ObtenerInfoUsuario">
           <Parameter Name="NoInterno" Mode="In" Type="String" />
           </FunctionImport>
+          <EntitySet Name="vw_Areas" EntityType="SIFOPModel.vw_Areas" />
           <EntitySet Name="Arqueo" EntityType="SIFOPModel.Arqueo" />
           <AssociationSet Name="FK_Arqueo_Usuario" Association="SIFOPModel.FK_Arqueo_Usuario">
             <End Role="Usuario" EntitySet="Usuario" />
@@ -22687,12 +22680,26 @@ advertencia 6002: La tabla o vista 'SIFOP.dbo.w_LibroMayorAcumulado_Vlast' no ti
           <Property Type="Decimal" Name="Haber" Nullable="false" Precision="18" Scale="2" />
           <Property Type="Decimal" Name="Saldo" Nullable="true" Precision="19" Scale="2" />
         </ComplexType>
+        <EntityType Name="vw_Areas">
+          <Key>
+            <PropertyRef Name="codigo" />
+            <PropertyRef Name="strtipo_area" />
+          </Key>
+          <Property Name="codigo" Type="String" Nullable="false" MaxLength="3" FixedLength="true" Unicode="false" />
+          <Property Name="cod_padre" Type="String" MaxLength="3" FixedLength="true" Unicode="false" />
+          <Property Name="tipo_area" Type="String" MaxLength="1" FixedLength="true" Unicode="false" />
+          <Property Name="descripcion" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
+          <Property Name="estado" Type="String" MaxLength="1" FixedLength="true" Unicode="false" />
+          <Property Name="nombre" Type="String" MaxLength="300" FixedLength="false" Unicode="false" />
+          <Property Name="strtipo_area" Type="String" Nullable="false" MaxLength="14" FixedLength="false" Unicode="false" />
+        </EntityType>
         <EntityType Name="Arqueo">
           <Key>
             <PropertyRef Name="IdArqueoDetApertura" />
           </Key>
           <Property Name="IdArqueoDetApertura" Type="Int32" Nullable="false" />
-          <Property Name="FechaArqueo" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="FechaInicioArqueo" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="FechaFinArqueo" Type="DateTime" Precision="3" />
           <Property Name="UsuarioArqueador" Type="String" Nullable="false" MaxLength="20" FixedLength="false" Unicode="true" />
           <Property Name="Observaciones" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
           <Property Name="CajeroEntrega" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
@@ -24975,6 +24982,8 @@ advertencia 6002: La tabla o vista 'SIFOP.dbo.w_LibroMayorAcumulado_Vlast' no ti
           <EntitySetMapping Name="ArqueoEfectivo">
             <EntityTypeMapping TypeName="SIFOPModel.ArqueoEfectivo">
               <MappingFragment StoreEntitySet="ArqueoEfectivo">
+                <ScalarProperty Name="UsuarioCreacion" ColumnName="UsuarioCreacion" />
+                <ScalarProperty Name="FechaCreacion" ColumnName="FechaCreacion" />
                 <ScalarProperty Name="IdArqueoEfectivo" ColumnName="IdArqueoEfectivo" />
                 <ScalarProperty Name="IdArqueo" ColumnName="IdArqueo" />
                 <ScalarProperty Name="IdMoneda" ColumnName="IdMoneda" />
@@ -25369,19 +25378,6 @@ advertencia 6002: La tabla o vista 'SIFOP.dbo.w_LibroMayorAcumulado_Vlast' no ti
                 <ScalarProperty Name="Moneda" ColumnName="Moneda" />
                 <ScalarProperty Name="IdArea" ColumnName="IdArea" />
                 <ScalarProperty Name="Area" ColumnName="Area" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="vw_Areas">
-            <EntityTypeMapping TypeName="SIFOPModel.vw_Areas">
-              <MappingFragment StoreEntitySet="vw_Areas">
-                <ScalarProperty Name="codigo" ColumnName="codigo" />
-                <ScalarProperty Name="cod_padre" ColumnName="cod_padre" />
-                <ScalarProperty Name="tipo_area" ColumnName="tipo_area" />
-                <ScalarProperty Name="descripcion" ColumnName="descripcion" />
-                <ScalarProperty Name="estado" ColumnName="estado" />
-                <ScalarProperty Name="nombre" ColumnName="nombre" />
-                <ScalarProperty Name="strtipo_area" ColumnName="strtipo_area" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -28280,6 +28276,19 @@ advertencia 6002: La tabla o vista 'SIFOP.dbo.w_LibroMayorAcumulado_Vlast' no ti
           <FunctionImportMapping FunctionImportName="sproc_VincularDocumentos" FunctionName="SIFOPModel.Store.sproc_VincularDocumentos" />
           <FunctionImportMapping FunctionImportName="sp_InsertarOrdenPago" FunctionName="SIFOPModel.Store.sp_InsertarOrdenPago" />
           <FunctionImportMapping FunctionImportName="fn_ObtenerInfoUsuario" FunctionName="SIFOPModel.Store.fn_ObtenerInfoUsuario" />
+          <EntitySetMapping Name="vw_Areas">
+            <EntityTypeMapping TypeName="SIFOPModel.vw_Areas">
+              <MappingFragment StoreEntitySet="vw_Areas">
+                <ScalarProperty Name="strtipo_area" ColumnName="strtipo_area" />
+                <ScalarProperty Name="nombre" ColumnName="nombre" />
+                <ScalarProperty Name="estado" ColumnName="estado" />
+                <ScalarProperty Name="descripcion" ColumnName="descripcion" />
+                <ScalarProperty Name="tipo_area" ColumnName="tipo_area" />
+                <ScalarProperty Name="cod_padre" ColumnName="cod_padre" />
+                <ScalarProperty Name="codigo" ColumnName="codigo" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
           <EntitySetMapping Name="Arqueo">
             <EntityTypeMapping TypeName="SIFOPModel.Arqueo">
               <MappingFragment StoreEntitySet="Arqueo">
@@ -28287,7 +28296,8 @@ advertencia 6002: La tabla o vista 'SIFOP.dbo.w_LibroMayorAcumulado_Vlast' no ti
                 <ScalarProperty Name="CajeroEntrega" ColumnName="CajeroEntrega" />
                 <ScalarProperty Name="Observaciones" ColumnName="Observaciones" />
                 <ScalarProperty Name="UsuarioArqueador" ColumnName="UsuarioArqueador" />
-                <ScalarProperty Name="FechaArqueo" ColumnName="FechaArqueo" />
+                <ScalarProperty Name="FechaFinArqueo" ColumnName="FechaFinArqueo" />
+                <ScalarProperty Name="FechaInicioArqueo" ColumnName="FechaInicioArqueo" />
                 <ScalarProperty Name="IdArqueoDetApertura" ColumnName="IdArqueoDetApertura" />
               </MappingFragment>
             </EntityTypeMapping>

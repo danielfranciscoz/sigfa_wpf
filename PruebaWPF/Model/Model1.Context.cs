@@ -196,7 +196,6 @@ namespace PruebaWPF.Model
         public virtual DbSet<TmpComprobantePrint> TmpComprobantePrint { get; set; }
         public virtual DbSet<TmpSolicitudesArchivo> TmpSolicitudesArchivo { get; set; }
         public virtual DbSet<vw_Aranceles> vw_Aranceles { get; set; }
-        public virtual DbSet<vw_Areas> vw_Areas { get; set; }
         public virtual DbSet<vw_FuentesSIPPSI> vw_FuentesSIPPSI { get; set; }
         public virtual DbSet<vw_Prematricula> vw_Prematricula { get; set; }
         public virtual DbSet<vw_ProveedoresSISCOM> vw_ProveedoresSISCOM { get; set; }
@@ -270,6 +269,7 @@ namespace PruebaWPF.Model
         public virtual DbSet<w_LibroMayorAcumulado_VA> w_LibroMayorAcumulado_VA { get; set; }
         public virtual DbSet<w_LibroMayorAcumulado_VEP> w_LibroMayorAcumulado_VEP { get; set; }
         public virtual DbSet<w_LibroMayorAcumulado_Vlast> w_LibroMayorAcumulado_Vlast { get; set; }
+        public virtual DbSet<vw_Areas> vw_Areas { get; set; }
         public virtual DbSet<Arqueo> Arqueo { get; set; }
     
         [DbFunction("SIFOPEntities", "fn_ConsultarInfoExterna")]

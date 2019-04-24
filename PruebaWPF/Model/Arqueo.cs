@@ -22,7 +22,8 @@ namespace PruebaWPF.Model
         }
     
         public int IdArqueoDetApertura { get; set; }
-        public System.DateTime FechaArqueo { get; set; }
+        public System.DateTime FechaInicioArqueo { get; set; }
+        public Nullable<System.DateTime> FechaFinArqueo { get; set; }
         public string UsuarioArqueador { get; set; }
         public string Observaciones { get; set; }
         public string CajeroEntrega { get; set; }

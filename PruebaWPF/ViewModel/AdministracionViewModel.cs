@@ -92,7 +92,7 @@ namespace PruebaWPF.ViewModel
             {
                 p.Add(new SqlParameter("@NoInterno", u.noInterno));
 
-                info = db.Database.SqlQuery<InfoUsuario>("seg.fn_ObtenerInfoUsuario @NoInterno", p.ToArray()).First();
+                info = db.Database.SqlQuery<InfoUsuario>("seg.fn_ObtenerInfoUsuario @NoInterno", p.ToArray()).FirstOrDefault();
                 info.usuario = u;
             }
             else

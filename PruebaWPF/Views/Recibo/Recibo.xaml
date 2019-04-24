@@ -179,7 +179,7 @@
                                     <DataGrid.Columns>
                                         <DataGridTextColumn CanUserReorder="False" CanUserResize="True" IsReadOnly="True" Header="Forma de Pago" Width="auto" Binding="{Binding FormaPago.FormaPago1}"></DataGridTextColumn>
                                         <DataGridTextColumn CanUserReorder="False" CanUserResize="False" IsReadOnly="True" Header="" Width="auto" Binding="{Binding Moneda.Simbolo}"></DataGridTextColumn>
-                                        <DataGridTextColumn CanUserReorder="False" CanUserResize="True" IsReadOnly="True" Header="Monto" Width="auto" Binding="{Binding Monto}"></DataGridTextColumn>
+                                            <DataGridTextColumn CanUserReorder="False" CanUserResize="True" IsReadOnly="True" Header="Monto" Width="auto" Binding="{Binding Monto, StringFormat={}{0:n2}}"></DataGridTextColumn>
                                         <DataGridTextColumn CanUserReorder="False" CanUserResize="True" IsReadOnly="True" Header="" Width="auto" Binding="{Binding InfoAdicional}"></DataGridTextColumn>
                                     </DataGrid.Columns>
 

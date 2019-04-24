@@ -18,7 +18,9 @@ namespace PruebaWPF.Model
         public int IdArqueo { get; set; }
         public int IdMoneda { get; set; }
         public double Denominacion { get; set; }
-        public byte Cantidad { get; set; }
+        public int Cantidad { get; set; }
+        public System.DateTime FechaCreacion { get; set; }
+        public string UsuarioCreacion { get; set; }
     
         public virtual Moneda Moneda { get; set; }
         public virtual Arqueo Arqueo { get; set; }

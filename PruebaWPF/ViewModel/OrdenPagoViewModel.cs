@@ -64,7 +64,7 @@ namespace PruebaWPF.ViewModel
                 IdArea = a.IdArea,
                 DetOrdenPagoArancel = a.DetOrdenPagoArancel,
                 CantidadPagos = a.DetOrdenPagoArancel.Where(w => w.IdOrdenPago == a.IdOrdenPago && w.regAnulado == false).Count(),
-                Area = clsSessionHelper.areasMemory.Where(w => w.codigo == a.IdArea).Select(s => s.descripcion).FirstOrDefault().ToString().ToUpper(),
+                Area = clsSessionHelper.areasMemory.Where(w => w.codigo == a.IdArea).FirstOrDefault().descripcion.ToUpper(),
                 Recinto = clsSessionHelper.recintosMemory.Where(w => w.IdRecinto == a.IdRecinto).Select(s => s.Siglas).FirstOrDefault().ToString()
             }
             ).Where(b => r.Any(a => b.IdRecinto == a.IdRecinto)).ToList();
@@ -85,7 +85,7 @@ namespace PruebaWPF.ViewModel
             {
                 string[] busqueda = text.Trim().Split(' ');
 
-                return db.OrdenPago.Select(a => new OrdenPagoSon
+                return db.OrdenPago.ToList().Select(a => new OrdenPagoSon
                 {
                     IdOrdenPago = a.IdOrdenPago,
                     NoOrdenPago = a.NoOrdenPago,
@@ -102,7 +102,7 @@ namespace PruebaWPF.ViewModel
                     IdArea = a.IdArea,
                     DetOrdenPagoArancel = a.DetOrdenPagoArancel,
                     CantidadPagos = db.DetOrdenPagoArancel.Where(w => w.IdOrdenPago == a.IdOrdenPago && w.regAnulado == false).Count(),
-                    Area = clsSessionHelper.areasMemory.Find(w => w.codigo == a.IdArea).descripcion.ToUpper(),
+                    Area = clsSessionHelper.areasMemory.Where(w => w.codigo == a.IdArea).FirstOrDefault().descripcion.ToUpper(),
                     Recinto = clsSessionHelper.recintosMemory.Find(w => w.IdRecinto == a.IdRecinto).Siglas
                 }).Where(
                    w => busqueda.All(a => w.Recibimos.Contains(a))

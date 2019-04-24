@@ -12,7 +12,7 @@
         WindowStyle="None"
         Uid="ArquearApertura"
         Loaded="Window_Loaded"
-        Title="ArquearApertura" Height="700" Width="1000">
+        Title="ArquearApertura" Height="700" Width="1200">
     <Window.Resources>
         <l:BoolToStringConverter x:Key="convertidor" />
     </Window.Resources>
@@ -28,7 +28,7 @@
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
 
-        <materialDesign:Card  Grid.Column="1" Grid.Row="1" Height="650" Width="900">
+        <materialDesign:Card  Grid.Column="1" Grid.Row="1" Height="650" Width="1020">
             <Grid >
                 <Grid.RowDefinitions>
                     <RowDefinition Height="auto"/>
@@ -223,20 +223,65 @@
                                 </Grid.RowDefinitions>
 
                                 <Grid Grid.Row="0">
-                                    <DockPanel VerticalAlignment="Top" Margin="20 0 20 15" Height="400">
-                                        <DataGrid Name="tblEfectivo"  CanUserDeleteRows="False" CanUserAddRows="False" AutoGenerateColumns="False" SelectionUnit="FullRow" SelectionMode="Single" >
-                                            <DataGrid.Columns>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*"/>
+                                        <ColumnDefinition Width="10"/>
+                                        <ColumnDefinition Width="380"/>
+                                    </Grid.ColumnDefinitions>
+                               
+                                    <Grid Grid.Row="0">
+                                        
+                                    <DockPanel VerticalAlignment="Top" Margin="0 0 0 0" Height="444">
+                                            <DataGrid Name="tblEfectivo"  CanUserDeleteRows="False" CanUserAddRows="False" AutoGenerateColumns="False" SelectionUnit="FullRow" SelectionMode="Single" >
+                                                <DataGrid.Columns>
+                                                    <DataGridTextColumn CanUserReorder="False" CanUserResize="False" IsReadOnly="True" Header="Moneda" Width="auto" Binding="{Binding Moneda.Moneda1}"></DataGridTextColumn>
+                                                    <DataGridTextColumn CanUserReorder="False" CanUserResize="False" IsReadOnly="True" Header="Denominación" Width="auto" Binding="{Binding Denominacion, StringFormat={}{0:n2}}"></DataGridTextColumn>
+                                                    <DataGridTextColumn CanUserReorder="False" CanUserResize="False" IsReadOnly="False"  Header="Cantidad" Width="*"  Binding="{Binding Cantidad,Mode=TwoWay}"></DataGridTextColumn>
+                                                    <DataGridTextColumn CanUserReorder="False" CanUserResize="False" IsReadOnly="True" Header="Total" Width="*" Binding="{Binding Total, StringFormat={}{0:n2},UpdateSourceTrigger=PropertyChanged}"></DataGridTextColumn>
+                                                </DataGrid.Columns>
+                                            </DataGrid>
 
-                                                <DataGridTextColumn CanUserReorder="False" CanUserResize="False" IsReadOnly="True" Header="Moneda" Width="auto" Binding="{Binding Moneda.Moneda1}"></DataGridTextColumn>
-                                                <DataGridTextColumn CanUserReorder="False" CanUserResize="False" IsReadOnly="True" Header="Denominación" Width="auto" Binding="{Binding Denominacion}"></DataGridTextColumn>
-                                                <DataGridTextColumn CanUserReorder="False" CanUserResize="False" IsReadOnly="False"  Header="Cantidad" Width="auto" Binding="{Binding Cantidad,Mode=TwoWay}"></DataGridTextColumn>
-                                                <DataGridTextColumn CanUserReorder="False" CanUserResize="False" IsReadOnly="True" Header="Total" Width="auto" Binding="{Binding Total,UpdateSourceTrigger=PropertyChanged}"></DataGridTextColumn>
-                                            </DataGrid.Columns>
-                                        </DataGrid>
-
-
-                                    </DockPanel>
+                                        </DockPanel>
                                 </Grid>
+                                    
+                                    <Separator Grid.Column="1">
+                                        <Separator.LayoutTransform>
+                                            <RotateTransform Angle="90" />
+                                        </Separator.LayoutTransform>
+                                    </Separator>
+
+                                    <DockPanel Grid.Column="2">
+                                        <StackPanel  DockPanel.Dock="Top" Height="auto" HorizontalAlignment="Left">
+                                            <TextBlock Margin="10" TextWrapping="Wrap" Text="Total en Efectivo" FontWeight="SemiBold" FontSize="25">
+                                            </TextBlock>
+                                        </StackPanel>
+                                        
+                                        <StackPanel DockPanel.Dock="Bottom" x:Name="panelErrorEfectivo" Visibility="Hidden" Background="{StaticResource ErrorAlert}"  Height="200">
+                                            <TextBlock Margin="10" TextWrapping="Wrap" x:Name="lblErrorEfectivo" Foreground="{StaticResource ErrorMsj}" FontWeight="SemiBold"></TextBlock>
+
+                                        </StackPanel>
+                                        <DockPanel Background="White">
+                                            <ListBox x:Name="lstTotales"  HorizontalContentAlignment="Stretch" HorizontalAlignment="Stretch" FontSize="20"  IsHitTestVisible="False">
+                                                <ListBox.ItemTemplate >
+                                                    <DataTemplate >
+                                                        <Grid >
+                                                            <Grid.ColumnDefinitions>
+                                                                <ColumnDefinition Width="*"/>
+                                                                <ColumnDefinition Width="auto"/>
+                                                                <ColumnDefinition Width="auto" MinWidth="120"/>
+                                                            </Grid.ColumnDefinitions>
+                                                            <TextBlock Grid.Column="0" Text="{Binding Path=TotalMoneda,Mode=OneWay}" ></TextBlock>
+                                                            <TextBlock Grid.Column="1"  Text="{Binding Path=TotalSimbolo,Mode=OneWay}"></TextBlock>
+                                                            <TextBlock HorizontalAlignment="Right" Grid.Column="2" Text="{Binding Path=TotalEfectivo, StringFormat={}{0:n2},Mode=OneWay}"></TextBlock>
+                                                        </Grid>
+                                                    </DataTemplate>
+                                                </ListBox.ItemTemplate>
+                                            </ListBox>
+                                        </DockPanel>
+                                    </DockPanel>
+                                    
+                                </Grid>
+                                
                                 <StackPanel Grid.Row="1" Height="auto">
                                     <Grid>
                                         <Grid.ColumnDefinitions>
@@ -249,6 +294,7 @@
                                         </StackPanel>
                                     </Grid>
                                 </StackPanel>
+                                
                             </Grid>
                         </TabItem>
 
@@ -257,12 +303,145 @@
                             <TabItem.Header>
                                 <model:StepTitleHeader FirstLevelTitle="Documentos de Efectivo" />
                             </TabItem.Header>
-                            <StackPanel Height="480">
-                                <TextBlock Text="Well, that's all to say about this simple stepper version." />
+                            <Grid Height="480" >
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="*"/>
+                                    <RowDefinition  Height="auto"/>
+                                </Grid.RowDefinitions>
 
-                                <mde:StepButtonBar Back="REGRESAR" Continue="FINALIZAR" />
-                            </StackPanel>
+                                <Grid Grid.Row="0">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*"/>
+                                        <ColumnDefinition Width="10"/>
+                                        <ColumnDefinition Width="350"/>
+                                    </Grid.ColumnDefinitions>
+
+                                    <Grid Grid.Row="0">
+
+                                        <DockPanel VerticalAlignment="Top" Margin="0 0 0 0" Height="444">
+                                            <DataGrid x:Name="tblDocumentosEfectivo"  CanUserDeleteRows="False" CanUserAddRows="False" AutoGenerateColumns="False" SelectionUnit="FullRow" SelectionMode="Single" >
+                                                <DataGrid.Columns>
+                                                    <DataGridTextColumn CanUserReorder="False" CanUserResize="False" IsReadOnly="True" Header="Moneda" Width="auto" Binding="{Binding Moneda.Moneda1}"></DataGridTextColumn>
+                                                    <DataGridTextColumn CanUserReorder="False" CanUserResize="False" IsReadOnly="True" Header="Denominación" Width="auto" Binding="{Binding Denominacion, StringFormat={}{0:n2}}"></DataGridTextColumn>
+                                                    <DataGridTextColumn CanUserReorder="False" CanUserResize="False" IsReadOnly="False"  Header="Cantidad" Width="*"  Binding="{Binding Cantidad,Mode=TwoWay}"></DataGridTextColumn>
+                                                    <DataGridTextColumn CanUserReorder="False" CanUserResize="False" IsReadOnly="True" Header="Total" Width="*" Binding="{Binding Total, StringFormat={}{0:n2},UpdateSourceTrigger=PropertyChanged}"></DataGridTextColumn>
+                                                </DataGrid.Columns>
+                                            </DataGrid>
+
+                                        </DockPanel>
+                                    </Grid>
+
+                                    <Separator Grid.Column="1">
+                                        <Separator.LayoutTransform>
+                                            <RotateTransform Angle="90" />
+                                        </Separator.LayoutTransform>
+                                    </Separator>
+
+                                    <DockPanel Grid.Column="2">
+                                        <StackPanel  DockPanel.Dock="Top" Height="auto" HorizontalAlignment="Left">
+                                            <TextBlock Margin="10" TextWrapping="Wrap" Text="Total en Efectivo" FontWeight="SemiBold" FontSize="25">
+                                            </TextBlock>
+                                        </StackPanel>
+
+                                        <StackPanel DockPanel.Dock="Bottom" x:Name="panelErrorDocumentos" Visibility="Hidden" Background="{StaticResource ErrorAlert}"  Height="200">
+                                            <TextBlock Margin="10" TextWrapping="Wrap" x:Name="lblErrorDocumentos" Foreground="{StaticResource ErrorMsj}" FontWeight="SemiBold"></TextBlock>
+
+                                        </StackPanel>
+                                        <DockPanel Background="White">
+                                            <ListBox HorizontalContentAlignment="Stretch" HorizontalAlignment="Stretch" FontSize="20"  IsHitTestVisible="False">
+                                                <ListBox.ItemTemplate >
+                                                    <DataTemplate >
+                                                        <Grid >
+                                                            <Grid.ColumnDefinitions>
+                                                                <ColumnDefinition Width="*"/>
+                                                                <ColumnDefinition Width="auto"/>
+                                                                <ColumnDefinition Width="auto" MinWidth="120"/>
+                                                            </Grid.ColumnDefinitions>
+                                                            <TextBlock Grid.Column="0" Text="{Binding Path=TotalMoneda,Mode=OneWay}" ></TextBlock>
+                                                            <TextBlock Grid.Column="1"  Text="{Binding Path=TotalSimbolo,Mode=OneWay}"></TextBlock>
+                                                            <TextBlock HorizontalAlignment="Right" Grid.Column="2" Text="{Binding Path=TotalEfectivo, StringFormat={}{0:n2},Mode=OneWay}"></TextBlock>
+                                                        </Grid>
+                                                    </DataTemplate>
+                                                </ListBox.ItemTemplate>
+                                            </ListBox>
+                                        </DockPanel>
+                                    </DockPanel>
+
+                                </Grid>
+
+                                <StackPanel Grid.Row="1" Height="auto">
+                                    <Grid>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="auto"/>
+                                            <ColumnDefinition Width="*"/>
+                                        </Grid.ColumnDefinitions>
+                                        <Button HorizontalAlignment="Left" Grid.Column="0" Style="{DynamicResource MaterialDesignFlatButton}" Foreground="{StaticResource Back_Button}"  Margin="0 2 0 2" Click="btnBack_Click" Content="{StaticResource Text_Back_Button}"></Button>
+                                        <StackPanel Grid.Column="1" Orientation="Horizontal" HorizontalAlignment="Right">
+                                            <Button x:Name="btnConteoNoEfectivo" Style="{DynamicResource MaterialDesignFlatButton}" Foreground="{StaticResource Save_Button}"  Margin="0 2 0 2" Click="btnConteoNoEfectivo_Click" Content="{StaticResource Text_Next_Button}"></Button>
+                                        </StackPanel>
+                                    </Grid>
+                                </StackPanel>
+
+                            </Grid>
                         </TabItem>
+
+                        <!--Finalizando-->
+                        <TabItem>
+                            <TabItem.Header>
+                                <model:StepTitleHeader FirstLevelTitle="Finalizando" />
+                            </TabItem.Header>
+                            <Grid Height="480" >
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="*"/>
+                                    <RowDefinition  Height="auto"/>
+                                </Grid.RowDefinitions>
+
+                                <StackPanel Grid.Row="0">
+                                    <!--<TextBlock FontWeight="Bold" Margin="0 10 0 10" Text="Datos Iniciales"></TextBlock>-->
+                                    <TextBox FontSize="14" Language="es-419" SpellCheck.IsEnabled="True" materialDesign:HintAssist.Hint="Observaciones" materialDesign:HintAssist.IsFloating="True" materialDesign:HintAssist.FloatingScale="1" AcceptsReturn="True" MaxLines="15"></TextBox>
+                                    <!--<Grid>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="120"/>
+                                            <ColumnDefinition/>
+                                        </Grid.ColumnDefinitions>
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition/>
+                                            <RowDefinition/>
+                                            <RowDefinition/>
+                                            <RowDefinition/>
+                                            <RowDefinition/>
+                                        </Grid.RowDefinitions>
+                                        <TextBlock Grid.Column="0" Grid.Row="0" Text="No.Apertura:"/>
+                                        <TextBlock Grid.Column="1" Grid.Row="0" Text="{Binding IdDetAperturaCaja}"/>
+                                        <TextBlock Grid.Column="0" Grid.Row="1" Text="Fecha de Apertura:"/>
+                                        <TextBlock Grid.Column="1" Grid.Row="1" Text="{Binding AperturaCaja.FechaApertura,StringFormat={}{0:dd/MM/yyyy HH:mmmm:ss tt}}"/>
+                                        <TextBlock Grid.Column="0" Grid.Row="2" Text="Fecha de Cierre:"/>
+                                        <TextBlock Grid.Column="1" Grid.Row="2" Text="{Binding FechaCierre,StringFormat={}{0:dd/MM/yyyy HH:mmmm:ss tt}}"/>
+                                        <TextBlock Grid.Column="0" Grid.Row="3" Text="Recibos Generados:"/>
+                                        <TextBlock Grid.Column="1" Grid.Row="3" Text="{Binding Recibo1.Count}"/>
+                                        <TextBlock Grid.Column="0" Grid.Row="4" Text="Caja:"/>
+                                        <TextBlock Grid.Column="1" Grid.Row="4" Text="{Binding Caja.Nombre}"/>
+                                    </Grid>-->
+
+                                </StackPanel>
+
+                                <StackPanel Grid.Row="1" Height="auto">
+                                    <Grid>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="auto"/>
+                                            <ColumnDefinition Width="*"/>
+                                        </Grid.ColumnDefinitions>
+                                        <Button HorizontalAlignment="Left" Grid.Column="0" Style="{DynamicResource MaterialDesignFlatButton}" Foreground="{StaticResource Back_Button}"  Margin="0 2 0 2" Click="btnBack_Click" Content="{StaticResource Text_Back_Button}"></Button>
+                                        <StackPanel Grid.Column="1" Orientation="Horizontal" HorizontalAlignment="Right">
+                                            <Button x:Name="btnFinalizar" Style="{DynamicResource MaterialDesignFlatButton}" Foreground="{StaticResource Save_Button}"  Margin="0 2 0 2" Click="btnConteoEfectivo_Click" Content="FINALIZAR ARQUEO"></Button>
+                                        </StackPanel>
+                                    </Grid>
+                                </StackPanel>
+
+                            </Grid>
+                        </TabItem>
+
+                        
                     </mde:TabControlStepper>
                 </StackPanel>
 

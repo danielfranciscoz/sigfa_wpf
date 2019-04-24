@@ -86,9 +86,9 @@ namespace PruebaWPF.ViewModel
         {
             if (db.Arqueo.Find(Obj.IdArqueoDetApertura) == null)//Valido que el arqueo no haya sido registrado
             {
-                Obj.FechaArqueo = System.DateTime.Now;
+                Obj.FechaInicioArqueo = System.DateTime.Now;
                 Obj.UsuarioArqueador = clsSessionHelper.usuario.Login;
-                //las observaciones y el cajero que entrega, son agregados hasta que se finalice el arqueo
+                //las observaciones, Fecha de Finalizacion del Arqueo y el cajero que entrega, son agregados hasta que se finalice el arqueo
 
                 db.Arqueo.Add(Obj);
                 db.SaveChanges();
@@ -179,6 +179,108 @@ namespace PruebaWPF.ViewModel
             return resultados;
         }
 
+        public void GuardarEfectivo(List<ArqueoEfectivoSon> efectivo, Arqueo arqueo)
+        {
+
+            using (var transaction = db.Database.BeginTransaction())
+            {
+                try
+                {
+                    ArqueoEfectivo ae;
+                    foreach (ArqueoEfectivoSon a in efectivo)
+                    {
+                        if (a.IdArqueoEfectivo == null)
+                        {
+                            if (a.Total != null && a.Total > 0)
+                            {
+                                ae = new ArqueoEfectivo
+                                {
+                                    IdArqueo = arqueo.IdArqueoDetApertura,
+                                    IdMoneda = a.Moneda.IdMoneda,
+                                    Denominacion = a.Denominacion,
+                                    Cantidad = a.Cantidad.Value,
+                                    FechaCreacion = System.DateTime.Now,
+                                    UsuarioCreacion = clsSessionHelper.usuario.Login
+                                };
+                                db.ArqueoEfectivo.Add(ae);
+                            }
+                        }
+                        else
+                        {
+                            ae = db.ArqueoEfectivo.Find(a.IdArqueoEfectivo);
+                            if (a.Cantidad == 0)
+                            {
+                                db.Entry(ae).State = System.Data.Entity.EntityState.Deleted;
+                            }
+                            else
+                            {
+                                if (ae.Cantidad != a.Cantidad)
+                                {
+                                    ae.Cantidad = a.Cantidad.Value;
+                                    db.Entry(ae).State = System.Data.Entity.EntityState.Modified;
+
+                                }
+                            }
+                        }
+                    }
+
+                    db.SaveChanges();
+                    transaction.Commit();
+
+                }
+                catch (Exception ex)
+                {
+                    transaction.Rollback();
+                    throw ex;
+                }
+            }
+
+        }
+
+        #endregion
+
+        #region Paso 4, Conteo de Documentos de Efectivo
+
+        public List<DocumentosEfectivo> FindDocumentosEfectivo(DetAperturaCaja apertura)
+        {
+            List<DocumentosEfectivo> bonos = db.ReciboPago.Where(w => w.Recibo1.IdDetAperturaCaja == apertura.IdDetAperturaCaja)
+                .Select(s => new DocumentosEfectivo { NoDocumento = s.ReciboPagoBono.Numero, Observacion = "Número de Bono" }).ToList();
+
+            List<DocumentosEfectivo> cheque = db.ReciboPago.Where(w => w.Recibo1.IdDetAperturaCaja == apertura.IdDetAperturaCaja)
+        .Select(s => new DocumentosEfectivo { NoDocumento = s.ReciboPagoCheque.NumeroCK.ToString(), Observacion = "Número de Cheque" }).ToList();
+
+            List<DocumentosEfectivo> deposito = db.ReciboPago.Where(w => w.Recibo1.IdDetAperturaCaja == apertura.IdDetAperturaCaja)
+        .Select(s => new DocumentosEfectivo { NoDocumento = s.ReciboPagoDeposito.Transaccion, Observacion = "Número de Transacción de Minuta o Transferencia" }).ToList();
+
+            List<DocumentosEfectivo> tarjeta = db.ReciboPago.Where(w => w.Recibo1.IdDetAperturaCaja == apertura.IdDetAperturaCaja)
+        .Select(s => new DocumentosEfectivo { NoDocumento = s.ReciboPagoTarjeta.Autorizacion.ToString(), Observacion = "Número de Autorización" }).ToList();
+
+            return bonos.Union(cheque).Union(deposito).Union(tarjeta).ToList();
+        }
+        #endregion
+
+        #region Paso 5, Finalizando el arqueo
+
+        public List<String> CajeroEntrega(DetAperturaCaja apertura)
+        {
+            return db.Recibo1.Where(w => w.IdDetAperturaCaja == apertura.IdDetAperturaCaja).Select(s => s.UsuarioCreacion).Distinct().ToList();
+        }
+
+        public void FinalizarArqueo(Arqueo Obj)
+        {
+            Arqueo arqueo = db.Arqueo.Find(Obj.IdArqueoDetApertura);
+            arqueo.UsuarioArqueador = clsSessionHelper.usuario.Login;
+
+            arqueo.FechaFinArqueo = System.DateTime.Now;
+            arqueo.Observaciones = Obj.Observaciones;
+            arqueo.CajeroEntrega = Obj.CajeroEntrega;
+            arqueo.isFinalizado = true;
+
+            db.Entry(arqueo).State = System.Data.Entity.EntityState.Modified;
+            db.SaveChanges();
+
+        }
+
         #endregion
 
         public Arqueo FindById(int Id)
@@ -208,12 +310,12 @@ namespace PruebaWPF.ViewModel
 
     }
 
-    public class ArqueoEfectivoSon : ArqueoEfectivo, INotifyPropertyChanged
+    public class DocumentosEfectivo : ReciboPago, INotifyPropertyChanged
     {
-        public new int? IdArqueoEfectivo { get; set; }
-        public new int? IdArqueo { get; set; }
-        private double? CantidadValue { get; set; }
-        public double? Total => Cantidad == null ? Cantidad : Denominacion * double.Parse(Cantidad.Value.ToString());
+        public string NoDocumento { get; set; }
+        public string Informacion { get; set; }
+
+        private string observacion { get; set; }
 
         public event PropertyChangedEventHandler PropertyChanged;
 
@@ -225,7 +327,42 @@ namespace PruebaWPF.ViewModel
             }
         }
 
-        public new double? Cantidad
+        public string Observacion
+        {
+            get
+            {
+                return observacion;
+            }
+            set
+            {
+                if (value != observacion)
+                {
+                    observacion = value;
+                    NotifyPropertyChanged();
+                }
+            }
+        }
+
+    }
+
+    public class ArqueoEfectivoSon : ArqueoEfectivo, INotifyPropertyChanged
+    {
+        public new int? IdArqueoEfectivo { get; set; }
+        public new int? IdArqueo { get; set; }
+        private int? CantidadValue { get; set; }
+        public double? Total => Cantidad == null ? (double?)null : Denominacion * double.Parse(Cantidad.Value.ToString());
+
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        private void NotifyPropertyChanged([CallerMemberName] String propertyName = "")
+        {
+            if (PropertyChanged != null)
+            {
+                PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+            }
+        }
+
+        public new int? Cantidad
         {
             get
             {
@@ -235,8 +372,11 @@ namespace PruebaWPF.ViewModel
             {
                 if (value != CantidadValue)
                 {
-                    CantidadValue = value;
-                    NotifyPropertyChanged();
+                    if (value >= 0)
+                    {
+                        CantidadValue = value;
+                        NotifyPropertyChanged();
+                    }
                 }
             }
         }
