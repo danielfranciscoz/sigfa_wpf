@@ -6,8 +6,6 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 using System.Runtime.CompilerServices;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace PruebaWPF.ViewModel
 {
@@ -243,19 +241,55 @@ namespace PruebaWPF.ViewModel
 
         public List<DocumentosEfectivo> FindDocumentosEfectivo(DetAperturaCaja apertura)
         {
-            List<DocumentosEfectivo> bonos = db.ReciboPago.Where(w => w.Recibo1.IdDetAperturaCaja == apertura.IdDetAperturaCaja)
-                .Select(s => new DocumentosEfectivo { NoDocumento = s.ReciboPagoBono.Numero, Observacion = "Número de Bono" }).ToList();
+            List<ReciboPago> pagos = db.ReciboPago.Where(w => w.Recibo1.IdDetAperturaCaja == apertura.IdDetAperturaCaja).ToList();
 
-            List<DocumentosEfectivo> cheque = db.ReciboPago.Where(w => w.Recibo1.IdDetAperturaCaja == apertura.IdDetAperturaCaja)
-        .Select(s => new DocumentosEfectivo { NoDocumento = s.ReciboPagoCheque.NumeroCK.ToString(), Observacion = "Número de Cheque" }).ToList();
+            //List<DocumentosEfectivo> bonos1 = (from arqueo in db.ReciboPago
+            //                                   join doc in db.ArqueoNoEfectivo on new {
 
-            List<DocumentosEfectivo> deposito = db.ReciboPago.Where(w => w.Recibo1.IdDetAperturaCaja == apertura.IdDetAperturaCaja)
-        .Select(s => new DocumentosEfectivo { NoDocumento = s.ReciboPagoDeposito.Transaccion, Observacion = "Número de Transacción de Minuta o Transferencia" }).ToList();
+            //                                   });
 
-            List<DocumentosEfectivo> tarjeta = db.ReciboPago.Where(w => w.Recibo1.IdDetAperturaCaja == apertura.IdDetAperturaCaja)
-        .Select(s => new DocumentosEfectivo { NoDocumento = s.ReciboPagoTarjeta.Autorizacion.ToString(), Observacion = "Número de Autorización" }).ToList();
+            List<DocumentosEfectivo> bonos = pagos.Where(w => w.ReciboPagoBono != null)
+                .Select(s => new DocumentosEfectivo { IdRecibo = s.IdRecibo, Serie = s.Serie, IdReciboPago = s.IdReciboPago, FormaPago = s.FormaPago, Moneda = s.Moneda, Monto = s.Monto, NoDocumento = s.ReciboPagoBono.Numero, Informacion = "No.Bono" }).ToList();
+
+            List<DocumentosEfectivo> cheque = pagos.Where(w => w.ReciboPagoCheque != null)
+                .Select(s => new DocumentosEfectivo { IdRecibo = s.IdRecibo, Serie = s.Serie, IdReciboPago = s.IdReciboPago, FormaPago = s.FormaPago, Moneda = s.Moneda, Monto = s.Monto, NoDocumento = s.ReciboPagoCheque.NumeroCK.ToString(), Informacion = "No.Cheque" }).ToList();
+
+            List<DocumentosEfectivo> deposito = pagos.Where(w => w.ReciboPagoDeposito != null)
+                .Select(s => new DocumentosEfectivo { IdRecibo = s.IdRecibo, Serie = s.Serie, IdReciboPago = s.IdReciboPago, FormaPago = s.FormaPago, Moneda = s.Moneda, Monto = s.Monto, NoDocumento = s.ReciboPagoDeposito.Transaccion, Informacion = "No.Transacción" }).ToList();
+
+            List<DocumentosEfectivo> tarjeta = pagos.Where(w => w.ReciboPagoTarjeta != null)
+                .Select(s => new DocumentosEfectivo { IdRecibo = s.IdRecibo, Serie = s.Serie, IdReciboPago = s.IdReciboPago, FormaPago = s.FormaPago, Moneda = s.Moneda, Monto = s.Monto, NoDocumento = s.ReciboPagoTarjeta.Autorizacion.ToString(), Informacion = "No.Autorización" }).ToList();
 
             return bonos.Union(cheque).Union(deposito).Union(tarjeta).ToList();
+        }
+
+        public void GuardarNoEfectivo(List<DocumentosEfectivo> documentos, Arqueo arqueo)
+        {
+
+            using (var transaction = db.Database.BeginTransaction())
+            {
+                try
+                {
+                    ArqueoNoEfectivo an;
+
+                    foreach (DocumentosEfectivo doc in documentos)
+                    {
+                        //if (doc.i)
+                        //{
+
+                        //}
+                    }
+
+                    db.SaveChanges();
+                    transaction.Commit();
+
+                }
+                catch (Exception ex)
+                {
+                    transaction.Rollback();
+                    throw ex;
+                }
+            }
         }
         #endregion
 
@@ -312,6 +346,8 @@ namespace PruebaWPF.ViewModel
 
     public class DocumentosEfectivo : ReciboPago, INotifyPropertyChanged
     {
+        public int IdArqueoNoEfectivo { get; set; }
+        public string Recibo => string.Format("{0}-{1}", IdRecibo, Serie);
         public string NoDocumento { get; set; }
         public string Informacion { get; set; }
 
@@ -327,7 +363,7 @@ namespace PruebaWPF.ViewModel
             }
         }
 
-        public string Observacion
+        public string No_Documento
         {
             get
             {

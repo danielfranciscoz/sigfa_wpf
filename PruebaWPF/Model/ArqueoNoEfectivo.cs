@@ -15,10 +15,16 @@ namespace PruebaWPF.Model
     public partial class ArqueoNoEfectivo
     {
         public int IdArqueoNoEfectivo { get; set; }
-        public int IdArqueo { get; set; }
-        public int IdFormaPago { get; set; }
         public int IdReciboPago { get; set; }
-        public string Observacion { get; set; }
+        public string NoDocumento { get; set; }
+        public double MontoFisico { get; set; }
+        public int MonedaFisica { get; set; }
+        public string Observaciones { get; set; }
         public System.DateTime FechaCreacion { get; set; }
+        public string UsuarioCreacion { get; set; }
+    
+        public virtual Moneda Moneda { get; set; }
+        public virtual Usuario Usuario { get; set; }
+        public virtual ReciboPago ReciboPago { get; set; }
     }
 }

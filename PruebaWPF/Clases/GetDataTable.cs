@@ -1,7 +1,5 @@
 ﻿
 using System;
-using System.Collections;
-using System.Collections.Generic;
 using System.Data;
 using System.Windows;
 using System.Windows.Controls;
@@ -62,6 +60,9 @@ namespace PruebaWPF.Clases
             dataGrid.SelectionMode = DataGridSelectionMode.Extended;
             dataGrid.SelectAllCells();
             dataGrid.ClipboardCopyMode = DataGridClipboardCopyMode.IncludeHeader;
+
+            var aas = dataGrid.Columns.GetType();
+
             ApplicationCommands.Copy.Execute(null, dataGrid);
 
             dataGrid.UnselectAllCells();
@@ -76,16 +77,19 @@ namespace PruebaWPF.Clases
 
             string result = (string)Clipboard.GetData(DataFormats.Text);
             Clipboard.Clear();
+
             string[] Lines = result.Split(new string[] { "\r\n", "\n" }, StringSplitOptions.None);
             string[] Columns, Fields;
 
             Columns = Lines[0].Split(new char[] { '\t' });
             int Cols = Columns.GetLength(0);
             DataTable dt = new DataTable();
+
             for (int i = 0; i < Cols; i++)
             {
                 dt.Columns.Add(Columns[i] == "" ? ("Not_TextC01umn_@_" + i) : Columns[i], typeof(string));
             }
+
 
             DataRow Row;
             for (int r = 1; r < Lines.GetLength(0) - 1; r++)

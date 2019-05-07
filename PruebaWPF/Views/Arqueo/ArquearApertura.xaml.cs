@@ -2,23 +2,13 @@
 using PruebaWPF.Model;
 using PruebaWPF.ViewModel;
 using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Collections.Specialized;
 using System.ComponentModel;
 using System.Linq;
-using System.Runtime.CompilerServices;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
 
 using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
 
 namespace PruebaWPF.Views.Arqueo
 {
@@ -39,7 +29,7 @@ namespace PruebaWPF.Views.Arqueo
 
         private ObservableCollection<Recibo1> recibos;
         MaterialDesignExtensions.Controllers.StepperController tabmaterial;
-
+        private int conteoDocEfectivo = 0;
 
         public ArquearApertura()
         {
@@ -257,22 +247,39 @@ namespace PruebaWPF.Views.Arqueo
 
                 tblDocumentosEfectivo.ItemsSource = DocumentosEfectivoBindingSource;
                 documentos.ListChanged += new ListChangedEventHandler(Doc_CollectionChanged);
-                //CalcularTotales();
+
+                CalcularDocumentosNoConfirmados();
             }
+        }
+
+        private void CalcularDocumentosNoConfirmados()
+        {
+            conteoDocEfectivo = documentos.Where(w => w.No_Documento != null && w.No_Documento != "").Count();
+            panelConteoDocumentos.Text = "" + conteoDocEfectivo;
         }
 
         private void Ef_CollectionChanged(object sender, ListChangedEventArgs e)
         {
-            CalcularTotales();
             tblEfectivo.CommitEdit();
+            CalcularTotales();
             tblEfectivo.Items.Refresh();
         }
 
         private void Doc_CollectionChanged(object sender, ListChangedEventArgs e)
         {
 
+
             tblEfectivo.CommitEdit();
+            CalcularDocumentosNoConfirmados();
+            CalcularTotalesDocumento();
             tblEfectivo.Items.Refresh();
+        }
+
+        private void CalcularTotalesDocumento()
+        {
+            var total = documentos.Where(w => w.No_Documento != "" && w.No_Documento != null).GroupBy(g => new { g.FormaPago.FormaPago1, g.Moneda.Moneda1, g.Moneda.Simbolo }).Select(s1 => new { s1.Key.FormaPago1, TotalMoneda = s1.Key.Moneda1, TotalSimbolo = s1.Key.Simbolo, TotalEfectivo = s1.Sum(s => s.Monto) });
+
+            lstDocumentos.ItemsSource = total;
         }
 
         private void CalcularTotales()
@@ -284,6 +291,29 @@ namespace PruebaWPF.Views.Arqueo
 
         private void btnConteoNoEfectivo_Click(object sender, RoutedEventArgs e)
         {
+            try
+            {
+                controller.GuardarEfectivo(efectivo.ToList(), arqueo);
+                efectivo = null;
+                CargarEfectivoContabilizado();
+
+                if (documentos == null)
+                {
+                    CargarResumenTotales();
+                }
+
+                tabmaterial.Continue();
+            }
+            catch (Exception ex)
+            {
+                lblErrorDocumentos.Text = new clsException(ex).ErrorMessage();
+                panelErrorDocumentos.Visibility = Visibility.Visible;
+            }
+        }
+
+        private void CargarResumenTotales()
+        {
+            throw new NotImplementedException();
         }
     }
 

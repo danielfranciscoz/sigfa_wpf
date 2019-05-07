@@ -144,7 +144,6 @@
         <EntityTypeShape EntityType="SIFOPModel.TipoArancel" Width="1.5" PointX="3" PointY="197.5" IsExpanded="true" />
         <EntityTypeShape EntityType="SIFOPModel.AperturaCaja" Width="1.5" PointX="3" PointY="200.625" IsExpanded="true" />
         <EntityTypeShape EntityType="SIFOPModel.ArqueoEfectivo" Width="1.5" PointX="5.25" PointY="127.125" IsExpanded="true" />
-        <EntityTypeShape EntityType="SIFOPModel.ArqueoNoEfectivo" Width="1.5" PointX="22.75" PointY="22.75" IsExpanded="true" />
         <EntityTypeShape EntityType="SIFOPModel.ArqueoRecibo" Width="1.5" PointX="23.75" PointY="166.375" IsExpanded="true" />
         <EntityTypeShape EntityType="SIFOPModel.Caja" Width="1.5" PointX="11" PointY="139.875" IsExpanded="true" />
         <EntityTypeShape EntityType="SIFOPModel.DetAperturaCaja" Width="1.5" PointX="8.25" PointY="169.625" IsExpanded="true" />
@@ -455,6 +454,10 @@
         <AssociationConnector Association="SIFOPModel.FK_Arqueo_DetAperturaCaja" />
         <AssociationConnector Association="SIFOPModel.FK_ArqueoEfectivo_Arqueo" />
         <AssociationConnector Association="SIFOPModel.FK_ArqueoRecibo_Arqueo" />
+        <EntityTypeShape EntityType="SIFOPModel.ArqueoNoEfectivo" Width="1.5" PointX="16.5" PointY="137" />
+        <AssociationConnector Association="SIFOPModel.FK_ArqueoNoEfectivo_Moneda" />
+        <AssociationConnector Association="SIFOPModel.FK_ArqueoNoEfectivo_Usuario" />
+        <AssociationConnector Association="SIFOPModel.FK_ArqueoNoEfectivo_ReciboPago" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

@@ -1,12 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Globalization;
-using System.Linq;
-using System.Text;
 using System.Text.RegularExpressions;
-using System.Threading.Tasks;
 using System.Windows.Controls;
-using System.Windows.Input;
 using System.Windows.Media;
 
 namespace PruebaWPF.Clases
@@ -59,6 +55,7 @@ namespace PruebaWPF.Clases
             for (int i = 0; i < campos.Length; i++)
             {
                 TextBox txt = null;
+                PasswordBox pss = null;
                 ComboBox cbo = null;
 
                 if (campos[i] is TextBox)
@@ -77,6 +74,14 @@ namespace PruebaWPF.Clases
                     cbo.SelectionChanged += (sender, e) =>
                     {
                         cbo.BorderBrush = c;
+                    };
+                }
+                else if (campos[i] is PasswordBox)
+                {
+                    pss = (PasswordBox)campos[i];
+                    pss.GotFocus += (sender, e) =>
+                    {
+                        pss.BorderBrush = c;
                     };
                 }
             }
@@ -104,6 +109,7 @@ namespace PruebaWPF.Clases
         {
             bool flag = true;
             TextBox txt;
+            PasswordBox pss;
             ComboBox cbo;
             for (int i = 0; i < campos.Length; i++)
             {
@@ -116,13 +122,21 @@ namespace PruebaWPF.Clases
                         txt.BorderBrush = clsutilidades.BorderError();
                     }
                 }
-                else
-                if (campos[i] is ComboBox)
+                else if (campos[i] is ComboBox)
                 {
                     cbo = (ComboBox)campos[i];
                     if (!ValidarSeleccion(cbo))
                     {
                         flag = false;
+                    }
+                }
+                else if (campos[i] is PasswordBox)
+                {
+                    pss = (PasswordBox)campos[i];
+                    if (pss.Password.Equals(""))
+                    {
+                        flag = false;
+                        pss.BorderBrush = clsutilidades.BorderError();
                     }
                 }
             }

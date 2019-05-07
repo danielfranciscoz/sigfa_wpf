@@ -2387,11 +2387,13 @@ advertencia 6002: La tabla o vista 'SIFOP.dbo.TmpSolicitudesArchivo' no tiene de
             <PropertyRef Name="IdArqueoNoEfectivo" />
           </Key>
           <Property Name="IdArqueoNoEfectivo" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="IdArqueo" Type="int" Nullable="false" />
-          <Property Name="IdFormaPago" Type="int" Nullable="false" />
           <Property Name="IdReciboPago" Type="int" Nullable="false" />
-          <Property Name="Observacion" Type="varchar" MaxLength="100" />
+          <Property Name="NoDocumento" Type="varchar" MaxLength="100" Nullable="false" />
+          <Property Name="MontoFisico" Type="float" Nullable="false" />
+          <Property Name="MonedaFisica" Type="int" Nullable="false" />
+          <Property Name="Observaciones" Type="varchar" MaxLength="50" />
           <Property Name="FechaCreacion" Type="datetime" Nullable="false" />
+          <Property Name="UsuarioCreacion" Type="nvarchar" MaxLength="20" Nullable="false" />
         </EntityType>
         <EntityType Name="ArqueoRecibo">
           <Key>
@@ -4945,6 +4947,42 @@ advertencia 6002: La tabla o vista 'SIFOP.dbo.w_LibroMayorAcumulado_Vlast' no ti
             </Principal>
             <Dependent Role="ArqueoEfectivo">
               <PropertyRef Name="IdMoneda" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ArqueoNoEfectivo_Moneda">
+          <End Role="Moneda" Type="Self.Moneda" Multiplicity="1" />
+          <End Role="ArqueoNoEfectivo" Type="Self.ArqueoNoEfectivo" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Moneda">
+              <PropertyRef Name="IdMoneda" />
+            </Principal>
+            <Dependent Role="ArqueoNoEfectivo">
+              <PropertyRef Name="MonedaFisica" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ArqueoNoEfectivo_ReciboPago">
+          <End Role="ReciboPago" Type="Self.ReciboPago" Multiplicity="1" />
+          <End Role="ArqueoNoEfectivo" Type="Self.ArqueoNoEfectivo" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ReciboPago">
+              <PropertyRef Name="IdReciboPago" />
+            </Principal>
+            <Dependent Role="ArqueoNoEfectivo">
+              <PropertyRef Name="IdReciboPago" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ArqueoNoEfectivo_Usuario">
+          <End Role="Usuario" Type="Self.Usuario" Multiplicity="1" />
+          <End Role="ArqueoNoEfectivo" Type="Self.ArqueoNoEfectivo" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Usuario">
+              <PropertyRef Name="Login" />
+            </Principal>
+            <Dependent Role="ArqueoNoEfectivo">
+              <PropertyRef Name="UsuarioCreacion" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -11365,6 +11403,18 @@ advertencia 6002: La tabla o vista 'SIFOP.dbo.w_LibroMayorAcumulado_Vlast' no ti
             <End Role="Moneda" EntitySet="Moneda" />
             <End Role="ArqueoEfectivo" EntitySet="ArqueoEfectivo" />
           </AssociationSet>
+          <AssociationSet Name="FK_ArqueoNoEfectivo_Moneda" Association="Self.FK_ArqueoNoEfectivo_Moneda">
+            <End Role="Moneda" EntitySet="Moneda" />
+            <End Role="ArqueoNoEfectivo" EntitySet="ArqueoNoEfectivo" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ArqueoNoEfectivo_ReciboPago" Association="Self.FK_ArqueoNoEfectivo_ReciboPago">
+            <End Role="ReciboPago" EntitySet="ReciboPago" />
+            <End Role="ArqueoNoEfectivo" EntitySet="ArqueoNoEfectivo" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ArqueoNoEfectivo_Usuario" Association="Self.FK_ArqueoNoEfectivo_Usuario">
+            <End Role="Usuario" EntitySet="Usuario" />
+            <End Role="ArqueoNoEfectivo" EntitySet="ArqueoNoEfectivo" />
+          </AssociationSet>
           <AssociationSet Name="FK_ArqueoRecibo_Arqueo" Association="Self.FK_ArqueoRecibo_Arqueo">
             <End Role="Arqueo" EntitySet="Arqueo" />
             <End Role="ArqueoRecibo" EntitySet="ArqueoRecibo" />
@@ -13146,6 +13196,7 @@ advertencia 6002: La tabla o vista 'SIFOP.dbo.w_LibroMayorAcumulado_Vlast' no ti
           <NavigationProperty Name="Usuario" Relationship="Self.FK_Moneda_Usuario" FromRole="Moneda" ToRole="Usuario" />
           <NavigationProperty Name="ReciboPago" Relationship="Self.FK_ReciboPago_Moneda" FromRole="Moneda" ToRole="ReciboPago" />
           <NavigationProperty Name="VariacionCambiaria" Relationship="Self.FK_VariacionCambiaria_Moneda" FromRole="Moneda" ToRole="VariacionCambiaria" />
+          <NavigationProperty Name="ArqueoNoEfectivo" Relationship="SIFOPModel.FK_ArqueoNoEfectivo_Moneda" FromRole="Moneda" ToRole="ArqueoNoEfectivo" />
         </EntityType>
         <EntityType Name="Actividad">
           <Key>
@@ -15447,6 +15498,7 @@ advertencia 6002: La tabla o vista 'SIFOP.dbo.w_LibroMayorAcumulado_Vlast' no ti
           <NavigationProperty Name="UsuarioPrograma" Relationship="Self.FK_UsuarioPrograma_Usuario" FromRole="Usuario" ToRole="UsuarioPrograma" />
           <NavigationProperty Name="VariacionCambiaria" Relationship="Self.FK_VariacionCambiaria_Usuario" FromRole="Usuario" ToRole="VariacionCambiaria" />
           <NavigationProperty Name="Arqueo" Relationship="SIFOPModel.FK_Arqueo_Usuario" FromRole="Usuario" ToRole="Arqueo" />
+          <NavigationProperty Name="ArqueoNoEfectivo" Relationship="SIFOPModel.FK_ArqueoNoEfectivo_Usuario" FromRole="Usuario" ToRole="ArqueoNoEfectivo" />
         </EntityType>
         <EntityType Name="UsuarioArea">
           <Key>
@@ -15674,17 +15726,6 @@ advertencia 6002: La tabla o vista 'SIFOP.dbo.w_LibroMayorAcumulado_Vlast' no ti
           <Property Name="UsuarioCreacion" Type="String" Nullable="false" MaxLength="20" FixedLength="false" Unicode="true" />
           <NavigationProperty Name="Arqueo" Relationship="SIFOPModel.FK_ArqueoEfectivo_Arqueo" FromRole="ArqueoEfectivo" ToRole="Arqueo" />
         </EntityType>
-        <EntityType Name="ArqueoNoEfectivo">
-          <Key>
-            <PropertyRef Name="IdArqueoNoEfectivo" />
-          </Key>
-          <Property Name="IdArqueoNoEfectivo" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="IdArqueo" Type="Int32" Nullable="false" />
-          <Property Name="IdFormaPago" Type="Int32" Nullable="false" />
-          <Property Name="IdReciboPago" Type="Int32" Nullable="false" />
-          <Property Name="Observacion" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
-          <Property Name="FechaCreacion" Type="DateTime" Nullable="false" Precision="3" />
-        </EntityType>
         <EntityType Name="ArqueoRecibo">
           <Key>
             <PropertyRef Name="IdArqueoRecibo" />
@@ -15841,6 +15882,7 @@ advertencia 6002: La tabla o vista 'SIFOP.dbo.w_LibroMayorAcumulado_Vlast' no ti
           <NavigationProperty Name="ReciboPagoCheque" Relationship="Self.FK_ReciboPagoCheque_ReciboPago" FromRole="ReciboPago" ToRole="ReciboPagoCheque" />
           <NavigationProperty Name="ReciboPagoDeposito" Relationship="Self.FK_ReciboPagoDeposito_ReciboPago" FromRole="ReciboPago" ToRole="ReciboPagoDeposito" />
           <NavigationProperty Name="ReciboPagoTarjeta" Relationship="Self.FK_RecPagoTarjeta_ReciboPago" FromRole="ReciboPago" ToRole="ReciboPagoTarjeta" />
+          <NavigationProperty Name="ArqueoNoEfectivo" Relationship="SIFOPModel.FK_ArqueoNoEfectivo_ReciboPago" FromRole="ReciboPago" ToRole="ArqueoNoEfectivo" />
         </EntityType>
         <EntityType Name="ReciboPagoBono">
           <Key>
@@ -20532,7 +20574,6 @@ advertencia 6002: La tabla o vista 'SIFOP.dbo.w_LibroMayorAcumulado_Vlast' no ti
           <EntitySet Name="TipoArancel" EntityType="Self.TipoArancel" />
           <EntitySet Name="AperturaCaja" EntityType="Self.AperturaCaja" />
           <EntitySet Name="ArqueoEfectivo" EntityType="Self.ArqueoEfectivo" />
-          <EntitySet Name="ArqueoNoEfectivo" EntityType="Self.ArqueoNoEfectivo" />
           <EntitySet Name="ArqueoRecibo" EntityType="Self.ArqueoRecibo" />
           <EntitySet Name="Caja" EntityType="Self.Caja" />
           <EntitySet Name="DetAperturaCaja" EntityType="Self.DetAperturaCaja" />
@@ -22609,6 +22650,19 @@ advertencia 6002: La tabla o vista 'SIFOP.dbo.w_LibroMayorAcumulado_Vlast' no ti
             <End Role="Arqueo" EntitySet="Arqueo" />
             <End Role="ArqueoRecibo" EntitySet="ArqueoRecibo" />
           </AssociationSet>
+          <EntitySet Name="ArqueoNoEfectivo" EntityType="SIFOPModel.ArqueoNoEfectivo" />
+          <AssociationSet Name="FK_ArqueoNoEfectivo_Moneda" Association="SIFOPModel.FK_ArqueoNoEfectivo_Moneda">
+            <End Role="Moneda" EntitySet="Moneda" />
+            <End Role="ArqueoNoEfectivo" EntitySet="ArqueoNoEfectivo" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ArqueoNoEfectivo_Usuario" Association="SIFOPModel.FK_ArqueoNoEfectivo_Usuario">
+            <End Role="Usuario" EntitySet="Usuario" />
+            <End Role="ArqueoNoEfectivo" EntitySet="ArqueoNoEfectivo" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ArqueoNoEfectivo_ReciboPago" Association="SIFOPModel.FK_ArqueoNoEfectivo_ReciboPago">
+            <End Role="ReciboPago" EntitySet="ReciboPago" />
+            <End Role="ArqueoNoEfectivo" EntitySet="ArqueoNoEfectivo" />
+          </AssociationSet>
         </EntityContainer>
         <ComplexType Name="dt_getpropertiesbyid_Result">
           <Property Type="String" Name="property" Nullable="false" MaxLength="64" />
@@ -22754,6 +22808,58 @@ advertencia 6002: La tabla o vista 'SIFOP.dbo.w_LibroMayorAcumulado_Vlast' no ti
             </Principal>
             <Dependent Role="ArqueoRecibo">
               <PropertyRef Name="IdArqueo" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="ArqueoNoEfectivo">
+          <Key>
+            <PropertyRef Name="IdArqueoNoEfectivo" />
+          </Key>
+          <Property Name="IdArqueoNoEfectivo" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="IdReciboPago" Type="Int32" Nullable="false" />
+          <Property Name="NoDocumento" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="MontoFisico" Type="Double" Nullable="false" />
+          <Property Name="MonedaFisica" Type="Int32" Nullable="false" />
+          <Property Name="Observaciones" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="FechaCreacion" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="UsuarioCreacion" Type="String" Nullable="false" MaxLength="20" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="Moneda" Relationship="SIFOPModel.FK_ArqueoNoEfectivo_Moneda" FromRole="ArqueoNoEfectivo" ToRole="Moneda" />
+          <NavigationProperty Name="Usuario" Relationship="SIFOPModel.FK_ArqueoNoEfectivo_Usuario" FromRole="ArqueoNoEfectivo" ToRole="Usuario" />
+          <NavigationProperty Name="ReciboPago" Relationship="SIFOPModel.FK_ArqueoNoEfectivo_ReciboPago" FromRole="ArqueoNoEfectivo" ToRole="ReciboPago" />
+        </EntityType>
+        <Association Name="FK_ArqueoNoEfectivo_Moneda">
+          <End Type="SIFOPModel.Moneda" Role="Moneda" Multiplicity="1" />
+          <End Type="SIFOPModel.ArqueoNoEfectivo" Role="ArqueoNoEfectivo" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Moneda">
+              <PropertyRef Name="IdMoneda" />
+            </Principal>
+            <Dependent Role="ArqueoNoEfectivo">
+              <PropertyRef Name="MonedaFisica" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ArqueoNoEfectivo_Usuario">
+          <End Type="SIFOPModel.Usuario" Role="Usuario" Multiplicity="1" />
+          <End Type="SIFOPModel.ArqueoNoEfectivo" Role="ArqueoNoEfectivo" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Usuario">
+              <PropertyRef Name="Login" />
+            </Principal>
+            <Dependent Role="ArqueoNoEfectivo">
+              <PropertyRef Name="UsuarioCreacion" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ArqueoNoEfectivo_ReciboPago">
+          <End Type="SIFOPModel.ReciboPago" Role="ReciboPago" Multiplicity="1" />
+          <End Type="SIFOPModel.ArqueoNoEfectivo" Role="ArqueoNoEfectivo" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ReciboPago">
+              <PropertyRef Name="IdReciboPago" />
+            </Principal>
+            <Dependent Role="ArqueoNoEfectivo">
+              <PropertyRef Name="IdReciboPago" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -24989,18 +25095,6 @@ advertencia 6002: La tabla o vista 'SIFOP.dbo.w_LibroMayorAcumulado_Vlast' no ti
                 <ScalarProperty Name="IdMoneda" ColumnName="IdMoneda" />
                 <ScalarProperty Name="Denominacion" ColumnName="Denominacion" />
                 <ScalarProperty Name="Cantidad" ColumnName="Cantidad" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="ArqueoNoEfectivo">
-            <EntityTypeMapping TypeName="SIFOPModel.ArqueoNoEfectivo">
-              <MappingFragment StoreEntitySet="ArqueoNoEfectivo">
-                <ScalarProperty Name="IdArqueoNoEfectivo" ColumnName="IdArqueoNoEfectivo" />
-                <ScalarProperty Name="IdArqueo" ColumnName="IdArqueo" />
-                <ScalarProperty Name="IdFormaPago" ColumnName="IdFormaPago" />
-                <ScalarProperty Name="IdReciboPago" ColumnName="IdReciboPago" />
-                <ScalarProperty Name="Observacion" ColumnName="Observacion" />
-                <ScalarProperty Name="FechaCreacion" ColumnName="FechaCreacion" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -28299,6 +28393,20 @@ advertencia 6002: La tabla o vista 'SIFOP.dbo.w_LibroMayorAcumulado_Vlast' no ti
                 <ScalarProperty Name="FechaFinArqueo" ColumnName="FechaFinArqueo" />
                 <ScalarProperty Name="FechaInicioArqueo" ColumnName="FechaInicioArqueo" />
                 <ScalarProperty Name="IdArqueoDetApertura" ColumnName="IdArqueoDetApertura" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ArqueoNoEfectivo">
+            <EntityTypeMapping TypeName="SIFOPModel.ArqueoNoEfectivo">
+              <MappingFragment StoreEntitySet="ArqueoNoEfectivo">
+                <ScalarProperty Name="UsuarioCreacion" ColumnName="UsuarioCreacion" />
+                <ScalarProperty Name="FechaCreacion" ColumnName="FechaCreacion" />
+                <ScalarProperty Name="Observaciones" ColumnName="Observaciones" />
+                <ScalarProperty Name="MonedaFisica" ColumnName="MonedaFisica" />
+                <ScalarProperty Name="MontoFisico" ColumnName="MontoFisico" />
+                <ScalarProperty Name="NoDocumento" ColumnName="NoDocumento" />
+                <ScalarProperty Name="IdReciboPago" ColumnName="IdReciboPago" />
+                <ScalarProperty Name="IdArqueoNoEfectivo" ColumnName="IdArqueoNoEfectivo" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

@@ -313,23 +313,36 @@
                                     <Grid.ColumnDefinitions>
                                         <ColumnDefinition Width="*"/>
                                         <ColumnDefinition Width="10"/>
-                                        <ColumnDefinition Width="350"/>
+                                        <ColumnDefinition Width="265"/>
                                     </Grid.ColumnDefinitions>
 
-                                    <Grid Grid.Row="0">
-
+                                    <DockPanel Grid.Row="0">
+                                        <StackPanel DockPanel.Dock="Bottom" >
+                                            <TextBlock Foreground="{StaticResource DarkGray}">
+                                                <TextBlock.Inlines>
+                                                    <Run Text="Se han confirmado:"></Run>
+                                                    <Run x:Name="panelConteoDocumentos" ></Run>
+                                                    <Run Text="de"></Run>
+                                                    <Run Text="{Binding ElementName=tblDocumentosEfectivo,Path=Items.Count,Mode=OneWay}"></Run>
+                                                    <Run Text="documentos"></Run>
+                                                </TextBlock.Inlines>
+                                            </TextBlock>
+                                        </StackPanel>
                                         <DockPanel VerticalAlignment="Top" Margin="0 0 0 0" Height="444">
                                             <DataGrid x:Name="tblDocumentosEfectivo"  CanUserDeleteRows="False" CanUserAddRows="False" AutoGenerateColumns="False" SelectionUnit="FullRow" SelectionMode="Single" >
                                                 <DataGrid.Columns>
-                                                    <DataGridTextColumn CanUserReorder="False" CanUserResize="False" IsReadOnly="True" Header="Moneda" Width="auto" Binding="{Binding Moneda.Moneda1}"></DataGridTextColumn>
-                                                    <DataGridTextColumn CanUserReorder="False" CanUserResize="False" IsReadOnly="True" Header="Denominación" Width="auto" Binding="{Binding Denominacion, StringFormat={}{0:n2}}"></DataGridTextColumn>
-                                                    <DataGridTextColumn CanUserReorder="False" CanUserResize="False" IsReadOnly="False"  Header="Cantidad" Width="*"  Binding="{Binding Cantidad,Mode=TwoWay}"></DataGridTextColumn>
-                                                    <DataGridTextColumn CanUserReorder="False" CanUserResize="False" IsReadOnly="True" Header="Total" Width="*" Binding="{Binding Total, StringFormat={}{0:n2},UpdateSourceTrigger=PropertyChanged}"></DataGridTextColumn>
+                                                    <DataGridTextColumn CanUserReorder="False" CanUserResize="False" IsReadOnly="False" Header="Doc. Encontrado" Width="auto" Binding="{Binding No_Documento}"></DataGridTextColumn>
+                                                    <DataGridTextColumn CanUserReorder="False" CanUserResize="False" IsReadOnly="True" Header="Identificador" Width="auto" Binding="{Binding Informacion}"></DataGridTextColumn>
+                                                    <DataGridTextColumn CanUserReorder="False" CanUserResize="False" IsReadOnly="True" Header="No.Documento" Width="auto" Binding="{Binding NoDocumento}"></DataGridTextColumn>
+                                                    <DataGridTextColumn CanUserReorder="False" CanUserResize="False" IsReadOnly="True"  Header="" Width="auto"  Binding="{Binding Moneda.Simbolo}"></DataGridTextColumn>
+                                                    <DataGridTextColumn CanUserReorder="False" CanUserResize="False" IsReadOnly="True" Header="Monto" Width="auto" Binding="{Binding Monto, StringFormat={}{0:n2}}"></DataGridTextColumn>
+                                                    <DataGridTextColumn CanUserReorder="False" CanUserResize="False" IsReadOnly="True" Header="Documento" Width="auto" Binding="{Binding FormaPago.FormaPago1}"></DataGridTextColumn>
+                                                    <DataGridTextColumn CanUserReorder="False" CanUserResize="False" IsReadOnly="True" Header="Recibo" Width="auto" Binding="{Binding Recibo}"></DataGridTextColumn>
                                                 </DataGrid.Columns>
                                             </DataGrid>
 
                                         </DockPanel>
-                                    </Grid>
+                                    </DockPanel>
 
                                     <Separator Grid.Column="1">
                                         <Separator.LayoutTransform>
@@ -339,16 +352,16 @@
 
                                     <DockPanel Grid.Column="2">
                                         <StackPanel  DockPanel.Dock="Top" Height="auto" HorizontalAlignment="Left">
-                                            <TextBlock Margin="10" TextWrapping="Wrap" Text="Total en Efectivo" FontWeight="SemiBold" FontSize="25">
+                                            <TextBlock Margin="10" TextWrapping="Wrap" Text="Total en Documentos de Efectivo" FontWeight="SemiBold" FontSize="25">
                                             </TextBlock>
                                         </StackPanel>
 
-                                        <StackPanel DockPanel.Dock="Bottom" x:Name="panelErrorDocumentos" Visibility="Hidden" Background="{StaticResource ErrorAlert}"  Height="200">
+                                        <StackPanel DockPanel.Dock="Bottom" x:Name="panelErrorDocumentos" Visibility="Hidden" Background="{StaticResource ErrorAlert}"  Height="150">
                                             <TextBlock Margin="10" TextWrapping="Wrap" x:Name="lblErrorDocumentos" Foreground="{StaticResource ErrorMsj}" FontWeight="SemiBold"></TextBlock>
 
                                         </StackPanel>
                                         <DockPanel Background="White">
-                                            <ListBox HorizontalContentAlignment="Stretch" HorizontalAlignment="Stretch" FontSize="20"  IsHitTestVisible="False">
+                                            <ListBox x:Name="lstDocumentos" HorizontalContentAlignment="Stretch" HorizontalAlignment="Stretch" FontSize="15"  IsHitTestVisible="False">
                                                 <ListBox.ItemTemplate >
                                                     <DataTemplate >
                                                         <Grid >
@@ -357,9 +370,9 @@
                                                                 <ColumnDefinition Width="auto"/>
                                                                 <ColumnDefinition Width="auto" MinWidth="120"/>
                                                             </Grid.ColumnDefinitions>
-                                                            <TextBlock Grid.Column="0" Text="{Binding Path=TotalMoneda,Mode=OneWay}" ></TextBlock>
-                                                            <TextBlock Grid.Column="1"  Text="{Binding Path=TotalSimbolo,Mode=OneWay}"></TextBlock>
-                                                            <TextBlock HorizontalAlignment="Right" Grid.Column="2" Text="{Binding Path=TotalEfectivo, StringFormat={}{0:n2},Mode=OneWay}"></TextBlock>
+                                                            <TextBlock Grid.Column="0" Text="{Binding Path=FormaPago1,Mode=OneWay}" ></TextBlock>
+                                                            <TextBlock Grid.Column="1" Text="{Binding Path=TotalSimbolo,Mode=OneWay}"></TextBlock>
+                                                            <TextBlock Grid.Column="2" HorizontalAlignment="Right" Text="{Binding Path=TotalEfectivo, StringFormat={}{0:n2},Mode=OneWay}"></TextBlock>
                                                         </Grid>
                                                     </DataTemplate>
                                                 </ListBox.ItemTemplate>

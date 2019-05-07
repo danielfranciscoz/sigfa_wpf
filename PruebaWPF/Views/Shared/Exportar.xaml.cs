@@ -1,5 +1,7 @@
 ﻿using Microsoft.Win32;
+using OfficeOpenXml;
 using PruebaWPF.Clases;
+using PruebaWPF.Helper;
 using PruebaWPF.Model;
 using PruebaWPF.Referencias;
 using PruebaWPF.ViewModel;
@@ -7,6 +9,7 @@ using PruebaWPF.Views.Main;
 using System;
 using System.Collections.ObjectModel;
 using System.Data;
+using System.IO;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
@@ -110,79 +113,35 @@ namespace PruebaWPF.Views.Shared
         {
             ObtenerColumnasExportar();
 
-            Microsoft.Office.Interop.Excel._Application excel = new Microsoft.Office.Interop.Excel.Application();
-
-            Microsoft.Office.Interop.Excel._Workbook workbook = excel.Workbooks.Add(Type.Missing);
-
-            Microsoft.Office.Interop.Excel._Worksheet worksheet = null;
-
             try
             {
 
-                worksheet = workbook.ActiveSheet;
-                worksheet.Name = "Registros";
-
-                int ColumnIndex = 1;
-
-                System.Drawing.Color primary = System.Drawing.Color.FromArgb(78, 129, 189);
-                System.Drawing.Color background1 = System.Drawing.Color.FromArgb(184, 204, 228);
-                System.Drawing.Color background2 = System.Drawing.Color.FromArgb(220, 230, 241);
-
-                foreach (DataColumn item in data.Columns)
+                using (ExcelPackage excel = new ExcelPackage())
                 {
-                    //Agrego el encabezado
-                    worksheet.Cells[1, ColumnIndex] = item.Caption;
 
-                    //Estilo de la celda
-                    ((Microsoft.Office.Interop.Excel.Range)worksheet.Cells[1, ColumnIndex]).Font.Bold = true;
-                    ((Microsoft.Office.Interop.Excel.Range)worksheet.Cells[1, ColumnIndex]).Interior.Color = System.Drawing.ColorTranslator.ToOle(primary);
-                    ((Microsoft.Office.Interop.Excel.Range)worksheet.Cells[1, ColumnIndex]).Font.ColorIndex = 2;
+                    excel.Workbook.Worksheets.Add("Hoja 1");
 
-                    //Agrego la fila
+                    var worksheet = excel.Workbook.Worksheets["Hoja 1"];
 
-                    int i = 0;
-                    foreach (DataRow row in data.Rows)
-                    {
-                        double value;
-                        if (!double.TryParse(row[item].ToString(), out value))
-                        {
-                            worksheet.Cells[i + 2, ColumnIndex].NumberFormat = "@";
-                        }
-                        worksheet.Cells[i + 2, ColumnIndex] = row[item];
+                    excel.Workbook.Properties.Author = clsSessionHelper.usuario.Login;
+                    excel.Workbook.Properties.Created = DateTime.Now;
 
-                        //Estilo de la celda
-                        //Borde
-                        ((Microsoft.Office.Interop.Excel.Range)worksheet.Cells[i + 2, ColumnIndex]).Borders.ColorIndex = 2;
-                        //Relleno
-                        ((Microsoft.Office.Interop.Excel.Range)worksheet.Cells[i + 2, ColumnIndex]).Interior.Color = System.Drawing.ColorTranslator.ToOle(background1);
+                    worksheet.Cells["A1"].LoadFromDataTable(data, true, OfficeOpenXml.Table.TableStyles.Medium2);
 
-                        if ((i % 2) > 0)
-                        {
-                            //Relleno
-                            ((Microsoft.Office.Interop.Excel.Range)worksheet.Cells[i + 2, ColumnIndex]).Interior.Color = System.Drawing.ColorTranslator.ToOle(background2);
-                        }
-                        i++;
-                    }
+                    worksheet.Cells[worksheet.Dimension.Address].AutoFitColumns();
 
-                    ColumnIndex++;
+                    FileInfo excelFile = new FileInfo(ruta);
+                    excel.SaveAs(excelFile);
+                    Operacion = new Operacion(clsReferencias.TYPE_MESSAGE_Exito, clsReferencias.MESSAGE_Exito_Export);
                 }
-
-                worksheet.Columns.AutoFit(); // Todas las columnas auto redimensionadas
-                excel.DisplayAlerts = false; // Esto es para evitar el cuadro de dialogo de sobreescribir archivo
-                workbook.SaveAs(ruta, Local: true);
-                Operacion = new Operacion(clsReferencias.TYPE_MESSAGE_Exito, clsReferencias.MESSAGE_Exito_Export);
             }
             catch (Exception ex)
             {
                 //Enviar esta información para otro lado
                 Operacion = new Operacion(clsReferencias.TYPE_MESSAGE_Error, new clsException(ex).ErrorMessage(), clsReferencias.MESSAGE_Error_Title);
             }
-            finally
-            {
-                excel.Quit();
-                workbook = null;
-                excel = null;
-            }
+
+
         }
 
         private void ObtenerColumnasExportar()
@@ -235,7 +194,7 @@ namespace PruebaWPF.Views.Shared
             {
                 try
                 {
-                System.Diagnostics.Process.Start(FileName);
+                    System.Diagnostics.Process.Start(FileName);
                 }
                 catch (Exception ex)
                 {

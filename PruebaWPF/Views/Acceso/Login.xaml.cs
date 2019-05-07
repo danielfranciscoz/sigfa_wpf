@@ -8,9 +8,9 @@ using PruebaWPF.Views.Main;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Controls;
 using System.Windows.Input;
 
 
@@ -23,12 +23,29 @@ namespace PruebaWPF.Views.Acceso
     public partial class MainWindow : Window
     {
         LoginViewModel controller = new LoginViewModel();
+        clsValidateInput validate = new clsValidateInput();
+
         public MainWindow()
         {
             InitializeComponent();
             txtUsuario.Text = clsConfiguration.Actual().userRemember;
             txtPassword.Password = "zamora2112u";
+            CamposNormales();
+        }
 
+        private void CamposNormales()
+        {
+            validate.AsignarBorderNormal(new Control[] { txtUsuario, txtPassword, cboPeriodo, cboPrograma });
+        }
+
+        private bool ValidarCamposCredenciales()
+        {
+            return clsValidateInput.ValidateALL(new Control[] { txtUsuario, txtPassword });
+        }
+
+        private bool ValidarCombos()
+        {
+            return clsValidateInput.ValidateALL(new Control[] { cboPeriodo, cboPrograma });
         }
 
         private void Border_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
@@ -74,9 +91,8 @@ namespace PruebaWPF.Views.Acceso
         private async void Iniciar()
         {
 
-            if (txtUsuario.Text.Length > 0 && txtPassword.Password.Length > 0)
+            if (ValidarCamposCredenciales())
             {
-
                 progressbar.Visibility = Visibility.Visible;
                 btnAceptar.IsEnabled = false;
                 bool result = await ValidarCredenciales(txtUsuario.Text, txtPassword.Password);
@@ -93,11 +109,7 @@ namespace PruebaWPF.Views.Acceso
                 btnAceptar.IsEnabled = true;
                 progressbar.Visibility = Visibility.Hidden;
             }
-            else
-            {
-                txtMensaje.Text = InformacionNecesaria((txtUsuario.Text.Length == 0) ? "Usuario" : "Contraseña");
-                msgDialog.IsOpen = true;
-            }
+
 
         }
 
@@ -180,28 +192,18 @@ namespace PruebaWPF.Views.Acceso
 
         private bool verficarProgramaPeriodo()
         {
-            if (cboPeriodo.SelectedIndex == -1 || cboPrograma.SelectedIndex == -1)
-            {
-                return false;
-            }
-            else
+            if (ValidarCombos())
             {
                 //Asigno a la sesión el programa y periodo específico seleccionado
                 controller.SeleccionarPrograma(cboPrograma.SelectedValue.ToString());
                 controller.SeleccionarPeriodo(cboPeriodo.SelectedValue.ToString());
-
                 return true;
             }
-        }
+            else
+            {
+                return false;
 
-        private string InformacionNecesaria(String campo)
-        {
-            return "Debe completar el campo " + campo + " para poder continuar";
-        }
-
-        private string SeleccionNecesaria(String campo)
-        {
-            return "Debe seleccionar el " + campo + " para poder continuar";
+            }
         }
 
         private void WrongUserPass()
@@ -226,13 +228,6 @@ namespace PruebaWPF.Views.Acceso
             {
                 IniciarMain();
             }
-            else
-            {
-                txtMensaje.Text = SeleccionNecesaria((cboPrograma.SelectedIndex == -1) ? "Programa" : "Periodo");
-                msgDialog.IsOpen = true;
-            }
-
-
         }
 
         private void IniciarMain()

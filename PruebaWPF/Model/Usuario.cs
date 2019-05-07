@@ -77,6 +77,7 @@ namespace PruebaWPF.Model
             this.UsuarioPrograma = new HashSet<UsuarioPrograma>();
             this.VariacionCambiaria = new HashSet<VariacionCambiaria>();
             this.Arqueo = new HashSet<Arqueo>();
+            this.ArqueoNoEfectivo = new HashSet<ArqueoNoEfectivo>();
         }
     
         public string Login { get; set; }
@@ -221,5 +222,7 @@ namespace PruebaWPF.Model
         public virtual ICollection<VariacionCambiaria> VariacionCambiaria { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Arqueo> Arqueo { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<ArqueoNoEfectivo> ArqueoNoEfectivo { get; set; }
     }
 }

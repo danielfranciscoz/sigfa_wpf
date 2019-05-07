@@ -14,6 +14,12 @@ namespace PruebaWPF.Model
     
     public partial class ReciboPago
     {
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
+        public ReciboPago()
+        {
+            this.ArqueoNoEfectivo = new HashSet<ArqueoNoEfectivo>();
+        }
+    
         public int IdReciboPago { get; set; }
         public int IdRecibo { get; set; }
         public string Serie { get; set; }
@@ -32,5 +38,7 @@ namespace PruebaWPF.Model
         public virtual ReciboPagoCheque ReciboPagoCheque { get; set; }
         public virtual ReciboPagoDeposito ReciboPagoDeposito { get; set; }
         public virtual ReciboPagoTarjeta ReciboPagoTarjeta { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<ArqueoNoEfectivo> ArqueoNoEfectivo { get; set; }
     }
 }
