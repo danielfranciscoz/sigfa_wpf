@@ -1,18 +1,18 @@
 ﻿using PruebaWPF.Clases;
+using PruebaWPF.Helper;
 using PruebaWPF.Model;
 using PruebaWPF.Referencias;
 using PruebaWPF.ViewModel;
+using PruebaWPF.Views.Main;
 using PruebaWPF.Views.Shared;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Collections.Specialized;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
-using System.Collections.Specialized;
-using PruebaWPF.Helper;
-using PruebaWPF.Views.Main;
 
 namespace PruebaWPF.Views.Recibo
 {
@@ -186,7 +186,7 @@ namespace PruebaWPF.Views.Recibo
                 CargarFuentesFinanciamiento();
                 CargarMonedas();
                 CargarFormasPago();
-                CargarTiposDeposito();
+
                 if (isOrdenPago)
                 {
                     cboTipoDeposito.SelectedValue = orden.IdTipoDeposito;
@@ -203,9 +203,9 @@ namespace PruebaWPF.Views.Recibo
 
         }
 
-        private void CargarTiposDeposito()
+        private void CargarTiposDeposito(string IdArea)
         {
-            cboTipoDeposito.ItemsSource = controller.ObtenerTipoCuenta();
+            cboTipoDeposito.ItemsSource = controller.ObtenerTipoCuenta(IdArea);
         }
 
 
@@ -447,6 +447,7 @@ namespace PruebaWPF.Views.Recibo
                 txtArea.Focus();
                 cboTipoDeposito.Focus();
                 CargarAranceles(orden.IdArea, orden.IdTipoDeposito);
+                CargarTiposDeposito(orden.IdArea);
             }
 
         }
@@ -722,9 +723,13 @@ namespace PruebaWPF.Views.Recibo
                 {
                     orden.Identificador = "";
                     orden.PorCuenta = "";
-                    orden.IdTipoDeposito = int.Parse(cboTipoDeposito.SelectedValue.ToString());
+                    if (cboTipoDeposito.SelectedValue != null)
+                    {
+                        orden.IdTipoDeposito = int.Parse(cboTipoDeposito.SelectedValue.ToString());
+                        CargarAranceles(orden.IdArea, orden.IdTipoDeposito);
+
+                    }
                     ActualizarCampo(new TextBox[] { txtIdentificador, txtPorCuenta, txtRecibimos });
-                    CargarAranceles(orden.IdArea, orden.IdTipoDeposito);
                     items.Clear(); //Limpio los detalles a pagar porque se ha cambiado al tipo de depositante, y estos no poseen los mismos aranceles de pago
                 }
                 else

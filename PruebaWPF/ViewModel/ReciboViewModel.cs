@@ -5,8 +5,6 @@ using PruebaWPF.Model;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace PruebaWPF.ViewModel
 {
@@ -622,9 +620,11 @@ namespace PruebaWPF.ViewModel
             return db.CiaTarjetaCredito.Where(w => w.RegAnulado == false).OrderBy(o => o.Nombre).ToList();
         }
 
-        public List<TipoDeposito> ObtenerTipoCuenta()
+        public List<TipoDeposito> ObtenerTipoCuenta(string IdArea)
         {
-            return db.TipoDeposito.OrderBy(w => w.Nombre).ToList();
+            var aranceles = db.ArancelArea.Where(w => w.IdArea == IdArea).Select(s => s.IdArancel);
+            var depositantes = db.ArancelTipoDeposito.Where(a => aranceles.Any(b => a.IdArancel == b)).Select(s => s.TipoDeposito).Distinct();
+            return depositantes.OrderBy(w => w.Nombre).ToList();
         }
 
         public List<Moneda> ObtenerMonedas()

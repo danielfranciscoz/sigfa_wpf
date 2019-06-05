@@ -2674,7 +2674,6 @@ advertencia 6002: La tabla o vista 'SIFOP.cat.vw_Areas' no tiene definida ningun
         <EntityType Name="vw_Areas">
           <Key>
             <PropertyRef Name="codigo" />
-            <PropertyRef Name="strtipo_area" />
           </Key>
           <Property Name="codigo" Type="char" MaxLength="3" Nullable="false" />
           <Property Name="cod_padre" Type="char" MaxLength="3" />
@@ -22737,7 +22736,6 @@ advertencia 6002: La tabla o vista 'SIFOP.dbo.w_LibroMayorAcumulado_Vlast' no ti
         <EntityType Name="vw_Areas">
           <Key>
             <PropertyRef Name="codigo" />
-            <PropertyRef Name="strtipo_area" />
           </Key>
           <Property Name="codigo" Type="String" Nullable="false" MaxLength="3" FixedLength="true" Unicode="false" />
           <Property Name="cod_padre" Type="String" MaxLength="3" FixedLength="true" Unicode="false" />

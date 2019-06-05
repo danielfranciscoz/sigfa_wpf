@@ -1418,6 +1418,7 @@
     <EmbeddedResource Include="Reportes\Recibo\Recibo.rdlc">
       <SubType>Designer</SubType>
     </EmbeddedResource>
+    <None Include="ClassDiagram1.cd" />
     <None Include="Connected Services\wsLDAP\LDAP.wsdl" />
     <None Include="Connected Services\wsLDAP\PruebaWPF.wsLDAP.BuscarPersonaResponse.datasource">
       <DependentUpon>Reference.svcmap</DependentUpon>
