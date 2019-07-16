@@ -131,7 +131,7 @@ namespace PruebaWPF.Views.Administracion
             }
             catch (Exception ex)
             {
-                clsutilidades.OpenMessage(new Operacion() { Mensaje = new clsException(ex).ErrorMessage(), OperationType = clsReferencias.TYPE_MESSAGE_Error });
+                clsUtilidades.OpenMessage(new Operacion() { Mensaje = new clsException(ex).ErrorMessage(), OperationType = clsReferencias.TYPE_MESSAGE_Error });
             }
             Cambios = false;
         }
@@ -148,7 +148,7 @@ namespace PruebaWPF.Views.Administracion
             }
             catch (Exception ex)
             {
-                clsutilidades.OpenMessage(new Operacion() { Mensaje = new clsException(ex).ErrorMessage(), OperationType = clsReferencias.TYPE_MESSAGE_Error });
+                clsUtilidades.OpenMessage(new Operacion() { Mensaje = new clsException(ex).ErrorMessage(), OperationType = clsReferencias.TYPE_MESSAGE_Error });
             }
             Cambios = false;
         }
@@ -173,7 +173,7 @@ namespace PruebaWPF.Views.Administracion
             }
             catch (Exception ex)
             {
-                clsutilidades.OpenMessage(new Operacion() { Mensaje = new clsException(ex).ErrorMessage(), OperationType = clsReferencias.TYPE_MESSAGE_Error });
+                clsUtilidades.OpenMessage(new Operacion() { Mensaje = new clsException(ex).ErrorMessage(), OperationType = clsReferencias.TYPE_MESSAGE_Error });
             }
             Cambios = false;
         }
@@ -276,21 +276,21 @@ namespace PruebaWPF.Views.Administracion
                 //{
                 if (tblRolesUsuario.Items.Count > 1)
                 {
-                    if (clsutilidades.OpenDeleteQuestionMessage())
+                    if (clsUtilidades.OpenDeleteQuestionMessage())
                     {
-                        clsutilidades.OpenMessage(EliminarRolUsuario(usuarioPerfil));
+                        clsUtilidades.OpenMessage(EliminarRolUsuario(usuarioPerfil));
                     }
                 }
                 else
                 {
-                    clsutilidades.OpenMessage(new Operacion() { Mensaje = "No podemos eliminar este perfil, debido a que es el único con el que cuenta el usuario", OperationType = clsReferencias.TYPE_MESSAGE_Advertencia });
+                    clsUtilidades.OpenMessage(new Operacion() { Mensaje = "No podemos eliminar este perfil, debido a que es el único con el que cuenta el usuario", OperationType = clsReferencias.TYPE_MESSAGE_Advertencia });
                 }
 
                 //}
             }
             catch (Exception ex)
             {
-                clsutilidades.OpenMessage(new Operacion() { Mensaje = new clsException(ex).ErrorMessage(), OperationType = clsReferencias.TYPE_MESSAGE_Error });
+                clsUtilidades.OpenMessage(new Operacion() { Mensaje = new clsException(ex).ErrorMessage(), OperationType = clsReferencias.TYPE_MESSAGE_Error });
 
             }
         }
@@ -316,23 +316,23 @@ namespace PruebaWPF.Views.Administracion
             {
                 if (selectedUser.RegAnulado)
                 {
-                    if (clsutilidades.OpenDeleteQuestionMessage("Esta a punto de Reactivar el inicio de sesión del usuario " + selectedUser.Login + ", ¿Realmente desea continuar con esta acción?"))
+                    if (clsUtilidades.OpenDeleteQuestionMessage("Esta a punto de Reactivar el inicio de sesión del usuario " + selectedUser.Login + ", ¿Realmente desea continuar con esta acción?"))
                     {
-                        clsutilidades.OpenMessage(ActivaDesactivaUsuario(selectedUser));
+                        clsUtilidades.OpenMessage(ActivaDesactivaUsuario(selectedUser));
                     }
                 }
                 else
                 {
-                    if (clsutilidades.OpenDeleteQuestionMessage("Esta a punto de desactivar la cuenta del usuario " + selectedUser.Login + ", por lo tanto no podrá volver a iniciar sesión, ¿Realmente desea continuar con esta acción?"))
+                    if (clsUtilidades.OpenDeleteQuestionMessage("Esta a punto de desactivar la cuenta del usuario " + selectedUser.Login + ", por lo tanto no podrá volver a iniciar sesión, ¿Realmente desea continuar con esta acción?"))
                     {
-                        clsutilidades.OpenMessage(ActivaDesactivaUsuario(selectedUser));
+                        clsUtilidades.OpenMessage(ActivaDesactivaUsuario(selectedUser));
                     }
                 }
 
             }
             catch (Exception ex)
             {
-                clsutilidades.OpenMessage(new Operacion() { Mensaje = new clsException(ex).ErrorMessage(), OperationType = clsReferencias.TYPE_MESSAGE_Error });
+                clsUtilidades.OpenMessage(new Operacion() { Mensaje = new clsException(ex).ErrorMessage(), OperationType = clsReferencias.TYPE_MESSAGE_Error });
 
             }
         }
@@ -547,14 +547,14 @@ namespace PruebaWPF.Views.Administracion
             {
                 AccesoDirectoPerfil accesoDirecto = (AccesoDirectoPerfil)((Button)sender).DataContext;
 
-                if (clsutilidades.OpenDeleteQuestionMessage())
+                if (clsUtilidades.OpenDeleteQuestionMessage())
                 {
-                    clsutilidades.OpenMessage(EliminarAccesoDirecto(accesoDirecto));
+                    clsUtilidades.OpenMessage(EliminarAccesoDirecto(accesoDirecto));
                 }
             }
             catch (Exception ex)
             {
-                clsutilidades.OpenMessage(new Operacion() { Mensaje = new clsException(ex).ErrorMessage(), OperationType = clsReferencias.TYPE_MESSAGE_Error });
+                clsUtilidades.OpenMessage(new Operacion() { Mensaje = new clsException(ex).ErrorMessage(), OperationType = clsReferencias.TYPE_MESSAGE_Error });
             }
         }
 
@@ -573,7 +573,7 @@ namespace PruebaWPF.Views.Administracion
             }
             else
             {
-                clsutilidades.OpenMessage(new Operacion() { Mensaje = clsReferencias.MESSAGE_NoSelection, OperationType = clsReferencias.TYPE_MESSAGE_Advertencia });
+                clsUtilidades.OpenMessage(new Operacion() { Mensaje = clsReferencias.MESSAGE_NoSelection, OperationType = clsReferencias.TYPE_MESSAGE_Advertencia });
             }
         }
 
@@ -587,29 +587,29 @@ namespace PruebaWPF.Views.Administracion
 
                     if (roles.Count() > 0)
                     {
-                        if (clsutilidades.OpenDeleteQuestionMessage(string.Format("Atención, hemos detectado que este perfil se encuentra asociado a {0} usuario(s), tenga en cuenta que si lo elimina hará que a estos usuarios les sea eliminado el acceso mediante este perfil y posiblemente no podrán ingresar al sistema, ¿Realmente desea continuar con esta acción?", roles.Count())))
+                        if (clsUtilidades.OpenDeleteQuestionMessage(string.Format("Atención, hemos detectado que este perfil se encuentra asociado a {0} usuario(s), tenga en cuenta que si lo elimina hará que a estos usuarios les sea eliminado el acceso mediante este perfil y posiblemente no podrán ingresar al sistema, ¿Realmente desea continuar con esta acción?", roles.Count())))
                         {
-                            clsutilidades.OpenMessage(EliminarRol(selectedPerfil));
+                            clsUtilidades.OpenMessage(EliminarRol(selectedPerfil));
                         }
                     }
                     else
                     {
-                        if (clsutilidades.OpenDeleteQuestionMessage())
+                        if (clsUtilidades.OpenDeleteQuestionMessage())
                         {
-                            clsutilidades.OpenMessage(EliminarRol(selectedPerfil));
+                            clsUtilidades.OpenMessage(EliminarRol(selectedPerfil));
                         }
 
                     }
                 }
                 else
                 {
-                    clsutilidades.OpenMessage(new Operacion() { Mensaje = clsReferencias.MESSAGE_NoSelection, OperationType = clsReferencias.TYPE_MESSAGE_Advertencia });
+                    clsUtilidades.OpenMessage(new Operacion() { Mensaje = clsReferencias.MESSAGE_NoSelection, OperationType = clsReferencias.TYPE_MESSAGE_Advertencia });
                 }
 
             }
             catch (Exception ex)
             {
-                clsutilidades.OpenMessage(new Operacion() { Mensaje = new clsException(ex).ErrorMessage(), OperationType = clsReferencias.TYPE_MESSAGE_Error });
+                clsUtilidades.OpenMessage(new Operacion() { Mensaje = new clsException(ex).ErrorMessage(), OperationType = clsReferencias.TYPE_MESSAGE_Error });
 
             }
         }
@@ -640,7 +640,7 @@ namespace PruebaWPF.Views.Administracion
             }
             else
             {
-                clsutilidades.OpenMessage(new Operacion() { Mensaje = clsReferencias.MESSAGE_NoSelection, OperationType = clsReferencias.TYPE_MESSAGE_Advertencia });
+                clsUtilidades.OpenMessage(new Operacion() { Mensaje = clsReferencias.MESSAGE_NoSelection, OperationType = clsReferencias.TYPE_MESSAGE_Advertencia });
             }
         }
 
@@ -653,7 +653,7 @@ namespace PruebaWPF.Views.Administracion
             }
             else
             {
-                clsutilidades.OpenMessage(new Operacion() { Mensaje = clsReferencias.MESSAGE_NoSelection, OperationType = clsReferencias.TYPE_MESSAGE_Advertencia });
+                clsUtilidades.OpenMessage(new Operacion() { Mensaje = clsReferencias.MESSAGE_NoSelection, OperationType = clsReferencias.TYPE_MESSAGE_Advertencia });
             }
         }
 
@@ -671,12 +671,12 @@ namespace PruebaWPF.Views.Administracion
 
                 if (MensajeConfirmacion(permiso))
                 {
-                    clsutilidades.OpenMessage(EliminarPermiso(permiso));
+                    clsUtilidades.OpenMessage(EliminarPermiso(permiso));
                 }
             }
             catch (Exception ex)
             {
-                clsutilidades.OpenMessage(new Operacion() { Mensaje = new clsException(ex).ErrorMessage(), OperationType = clsReferencias.TYPE_MESSAGE_Error });
+                clsUtilidades.OpenMessage(new Operacion() { Mensaje = new clsException(ex).ErrorMessage(), OperationType = clsReferencias.TYPE_MESSAGE_Error });
 
             }
         }
@@ -689,16 +689,16 @@ namespace PruebaWPF.Views.Administracion
                 if (permisos.Where(w => w.IdPermisoName == 1).Count() == 1)
                 {
                     isLastAccesDelete = true;
-                    return clsutilidades.OpenDeleteQuestionMessage("Esta a punto de Eliminar por completo el acceso a esta pantalla, por lo tanto, también serán eliminados los accesos directos de esta pantalla en este perfil, ¿Realmente desea continuar con esta acción?");
+                    return clsUtilidades.OpenDeleteQuestionMessage("Esta a punto de Eliminar por completo el acceso a esta pantalla, por lo tanto, también serán eliminados los accesos directos de esta pantalla en este perfil, ¿Realmente desea continuar con esta acción?");
                 }
                 else
                 {
-                    return clsutilidades.OpenDeleteQuestionMessage("Esta a punto de Eliminar por completo el acceso a esta pantalla, por lo tanto, los usuarios con este Perfil no podrán acceder a ella, ¿Realmente desea continuar con esta acción?");
+                    return clsUtilidades.OpenDeleteQuestionMessage("Esta a punto de Eliminar por completo el acceso a esta pantalla, por lo tanto, los usuarios con este Perfil no podrán acceder a ella, ¿Realmente desea continuar con esta acción?");
                 }
             }
             else
             {
-                return clsutilidades.OpenDeleteQuestionMessage();
+                return clsUtilidades.OpenDeleteQuestionMessage();
             }
         }
 
@@ -746,7 +746,7 @@ namespace PruebaWPF.Views.Administracion
             }
             else
             {
-                clsutilidades.OpenMessage(new Operacion() { Mensaje = clsReferencias.MESSAGE_NoSelection, OperationType = clsReferencias.TYPE_MESSAGE_Advertencia });
+                clsUtilidades.OpenMessage(new Operacion() { Mensaje = clsReferencias.MESSAGE_NoSelection, OperationType = clsReferencias.TYPE_MESSAGE_Advertencia });
             }
         }
 
@@ -756,19 +756,19 @@ namespace PruebaWPF.Views.Administracion
             {
                 if (tblPantallas.SelectedItem != null)
                 {
-                    if (clsutilidades.OpenDeleteQuestionMessage())
+                    if (clsUtilidades.OpenDeleteQuestionMessage())
                     {
-                        clsutilidades.OpenMessage(EliminarPantalla((Pantalla)tblPantallas.SelectedItem));
+                        clsUtilidades.OpenMessage(EliminarPantalla((Pantalla)tblPantallas.SelectedItem));
                     }
                 }
                 else
                 {
-                    clsutilidades.OpenMessage(new Operacion() { Mensaje = clsReferencias.MESSAGE_NoSelection, OperationType = clsReferencias.TYPE_MESSAGE_Advertencia });
+                    clsUtilidades.OpenMessage(new Operacion() { Mensaje = clsReferencias.MESSAGE_NoSelection, OperationType = clsReferencias.TYPE_MESSAGE_Advertencia });
                 }
             }
             catch (Exception ex)
             {
-                clsutilidades.OpenMessage(new Operacion() { Mensaje = new clsException(ex).ErrorMessage(), OperationType = clsReferencias.TYPE_MESSAGE_Error });
+                clsUtilidades.OpenMessage(new Operacion() { Mensaje = new clsException(ex).ErrorMessage(), OperationType = clsReferencias.TYPE_MESSAGE_Error });
             }
         }
 

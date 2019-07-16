@@ -113,7 +113,7 @@ namespace PruebaWPF.Views.Tesoreria
             }
             catch (Exception ex)
             {
-                clsutilidades.OpenMessage(new Operacion() { Mensaje = new clsException(ex).ErrorMessage(), OperationType = clsReferencias.TYPE_MESSAGE_Error });
+                clsUtilidades.OpenMessage(new Operacion() { Mensaje = new clsException(ex).ErrorMessage(), OperationType = clsReferencias.TYPE_MESSAGE_Error });
             }
         }
 
@@ -206,7 +206,7 @@ namespace PruebaWPF.Views.Tesoreria
             }
             catch (Exception ex)
             {
-                clsutilidades.OpenMessage(new Operacion() { Mensaje = new clsException(ex).ErrorMessage(), OperationType = clsReferencias.TYPE_MESSAGE_Error });
+                clsUtilidades.OpenMessage(new Operacion() { Mensaje = new clsException(ex).ErrorMessage(), OperationType = clsReferencias.TYPE_MESSAGE_Error });
             }
         }
 
@@ -220,7 +220,7 @@ namespace PruebaWPF.Views.Tesoreria
             }
             catch (Exception ex)
             {
-                clsutilidades.OpenMessage(new Operacion() { Mensaje = new clsException(ex).ErrorMessage(), OperationType = clsReferencias.TYPE_MESSAGE_Error });
+                clsUtilidades.OpenMessage(new Operacion() { Mensaje = new clsException(ex).ErrorMessage(), OperationType = clsReferencias.TYPE_MESSAGE_Error });
             }
         }
 
@@ -242,7 +242,7 @@ namespace PruebaWPF.Views.Tesoreria
             }
             catch (Exception ex)
             {
-                clsutilidades.OpenMessage(new Operacion() { Mensaje = new clsException(ex).ErrorMessage(), OperationType = clsReferencias.TYPE_MESSAGE_Error });
+                clsUtilidades.OpenMessage(new Operacion() { Mensaje = new clsException(ex).ErrorMessage(), OperationType = clsReferencias.TYPE_MESSAGE_Error });
             }
         }
 
@@ -264,7 +264,7 @@ namespace PruebaWPF.Views.Tesoreria
             }
             catch (Exception ex)
             {
-                clsutilidades.OpenMessage(new Operacion() { Mensaje = new clsException(ex).ErrorMessage(), OperationType = clsReferencias.TYPE_MESSAGE_Error });
+                clsUtilidades.OpenMessage(new Operacion() { Mensaje = new clsException(ex).ErrorMessage(), OperationType = clsReferencias.TYPE_MESSAGE_Error });
             }
         }
 
@@ -286,7 +286,7 @@ namespace PruebaWPF.Views.Tesoreria
             }
             catch (Exception ex)
             {
-                clsutilidades.OpenMessage(new Operacion() { Mensaje = new clsException(ex).ErrorMessage(), OperationType = clsReferencias.TYPE_MESSAGE_Error });
+                clsUtilidades.OpenMessage(new Operacion() { Mensaje = new clsException(ex).ErrorMessage(), OperationType = clsReferencias.TYPE_MESSAGE_Error });
             }
 
         }
@@ -301,7 +301,7 @@ namespace PruebaWPF.Views.Tesoreria
             }
             catch (Exception ex)
             {
-                clsutilidades.OpenMessage(new Operacion() { Mensaje = new clsException(ex).ErrorMessage(), OperationType = clsReferencias.TYPE_MESSAGE_Error });
+                clsUtilidades.OpenMessage(new Operacion() { Mensaje = new clsException(ex).ErrorMessage(), OperationType = clsReferencias.TYPE_MESSAGE_Error });
             }
         }
 
@@ -315,7 +315,7 @@ namespace PruebaWPF.Views.Tesoreria
             }
             catch (Exception ex)
             {
-                clsutilidades.OpenMessage(new Operacion() { Mensaje = new clsException(ex).ErrorMessage(), OperationType = clsReferencias.TYPE_MESSAGE_Error });
+                clsUtilidades.OpenMessage(new Operacion() { Mensaje = new clsException(ex).ErrorMessage(), OperationType = clsReferencias.TYPE_MESSAGE_Error });
             }
         }
 
@@ -329,7 +329,7 @@ namespace PruebaWPF.Views.Tesoreria
             }
             catch (Exception ex)
             {
-                clsutilidades.OpenMessage(new Operacion() { Mensaje = new clsException(ex).ErrorMessage(), OperationType = clsReferencias.TYPE_MESSAGE_Error });
+                clsUtilidades.OpenMessage(new Operacion() { Mensaje = new clsException(ex).ErrorMessage(), OperationType = clsReferencias.TYPE_MESSAGE_Error });
             }
         }
 
@@ -337,7 +337,7 @@ namespace PruebaWPF.Views.Tesoreria
         {
             try
             {
-                if (controller().Autorice(((Button)sender).Tag.ToString()))
+                if (controller().Authorize(((Button)sender).Tag.ToString()))
                 {
                     Exportar export = new Exportar(GetDataTable.GetDataGridRows(tblCajas));
                     export.ShowDialog();
@@ -345,7 +345,7 @@ namespace PruebaWPF.Views.Tesoreria
             }
             catch (Exception ex)
             {
-                clsutilidades.OpenMessage(new Operacion() { Mensaje = new clsException(ex).ErrorMessage(), OperationType = clsReferencias.TYPE_MESSAGE_Error });
+                clsUtilidades.OpenMessage(new Operacion() { Mensaje = new clsException(ex).ErrorMessage(), OperationType = clsReferencias.TYPE_MESSAGE_Error });
             }
         }
 
@@ -358,7 +358,7 @@ namespace PruebaWPF.Views.Tesoreria
         {
             try
             {
-                if (controller().Autorice(((Button)sender).Tag.ToString()))
+                if (controller().Authorize(((Button)sender).Tag.ToString()))
                 {
                     GestionarCaja gc = new GestionarCaja(pantalla, btnNew.Tag.ToString());
                     gc.ShowDialog();
@@ -366,14 +366,14 @@ namespace PruebaWPF.Views.Tesoreria
             }
             catch (Exception ex)
             {
-                clsutilidades.OpenMessage(new Operacion() { Mensaje = new clsException(ex).ErrorMessage(), OperationType = clsReferencias.TYPE_MESSAGE_Error });
+                clsUtilidades.OpenMessage(new Operacion() { Mensaje = new clsException(ex).ErrorMessage(), OperationType = clsReferencias.TYPE_MESSAGE_Error });
             }
         }
         private void btnNewSerie_Click(object sender, RoutedEventArgs e)
         {
             try
             {
-                if (controller().Autorice(((Button)sender).Tag.ToString()))
+                if (controller().Authorize(((Button)sender).Tag.ToString()))
                 {
                     AddSerie ad = new AddSerie(pantalla);
                     ad.ShowDialog();
@@ -381,7 +381,7 @@ namespace PruebaWPF.Views.Tesoreria
             }
             catch (Exception ex)
             {
-                clsutilidades.OpenMessage(new Operacion() { Mensaje = new clsException(ex).ErrorMessage(), OperationType = clsReferencias.TYPE_MESSAGE_Error });
+                clsUtilidades.OpenMessage(new Operacion() { Mensaje = new clsException(ex).ErrorMessage(), OperationType = clsReferencias.TYPE_MESSAGE_Error });
             }
         }
         private void btnDelete_Click(object sender, RoutedEventArgs e)
@@ -389,25 +389,25 @@ namespace PruebaWPF.Views.Tesoreria
             try
             {
                 CajaSon son = ((CajaSon)tblCajas.CurrentItem);
-                if (controller().Autorice_Recinto(((Button)sender).Tag.ToString(), son.IdRecinto))
+                if (controller().Authorize_Recinto(((Button)sender).Tag.ToString(), son.IdRecinto))
                 {
                     if (controller().VeriricarAperturasArquedas(son))
                     {
-                        if (clsutilidades.OpenDeleteQuestionMessage())
+                        if (clsUtilidades.OpenDeleteQuestionMessage())
                         {
-                            clsutilidades.OpenMessage(EliminarCaja());
+                            clsUtilidades.OpenMessage(EliminarCaja());
                         }
                     }
                     else
                     {
-                        clsutilidades.OpenMessage(new Operacion() {Mensaje= "La caja no puede ser eliminada debido a que aun existen arqueos pendientes en el equipo",OperationType=clsReferencias.TYPE_MESSAGE_Advertencia });
+                        clsUtilidades.OpenMessage(new Operacion() {Mensaje= "La caja no puede ser eliminada debido a que aun existen arqueos pendientes en el equipo",OperationType=clsReferencias.TYPE_MESSAGE_Advertencia });
                     }
 
                 }
             }
             catch (Exception ex)
             {
-                clsutilidades.OpenMessage(new Operacion() { Mensaje = new clsException(ex).ErrorMessage(), OperationType = clsReferencias.TYPE_MESSAGE_Error });
+                clsUtilidades.OpenMessage(new Operacion() { Mensaje = new clsException(ex).ErrorMessage(), OperationType = clsReferencias.TYPE_MESSAGE_Error });
 
             }
         }
@@ -461,7 +461,7 @@ namespace PruebaWPF.Views.Tesoreria
                 string permiso = ((Button)sender).Tag.ToString();
                 CajaSon item = (CajaSon)tblCajas.CurrentItem;
 
-                if (controller().Autorice_Recinto(permiso, item.IdRecinto))
+                if (controller().Authorize_Recinto(permiso, item.IdRecinto))
                 {
                     CajaSon Objeto = (CajaSon)item.Clone();
 
@@ -471,7 +471,7 @@ namespace PruebaWPF.Views.Tesoreria
             }
             catch (Exception ex)
             {
-                clsutilidades.OpenMessage(new Operacion() { Mensaje = new clsException(ex).ErrorMessage(), OperationType = clsReferencias.TYPE_MESSAGE_Error });
+                clsUtilidades.OpenMessage(new Operacion() { Mensaje = new clsException(ex).ErrorMessage(), OperationType = clsReferencias.TYPE_MESSAGE_Error });
 
             }
 
@@ -481,18 +481,18 @@ namespace PruebaWPF.Views.Tesoreria
         {
             try
             {
-                if (controller().Autorice(((Button)sender).Tag.ToString()))
+                if (controller().Authorize(((Button)sender).Tag.ToString()))
                 {
-                    if (clsutilidades.OpenDeleteQuestionMessage("Esta a punto de Inactivar un registro, el proceso es irreversible y ya no será posible crear recibos con esta serie, tenga en cuenta que tampoco será posible volver a crear esta serie aún cuando se haya inactivado, ¿Realmente desea continuar?"))
+                    if (clsUtilidades.OpenDeleteQuestionMessage("Esta a punto de Inactivar un registro, el proceso es irreversible y ya no será posible crear recibos con esta serie, tenga en cuenta que tampoco será posible volver a crear esta serie aún cuando se haya inactivado, ¿Realmente desea continuar?"))
                     {
-                        clsutilidades.OpenMessage(EliminarSerie());
+                        clsUtilidades.OpenMessage(EliminarSerie());
                     }
 
                 }
             }
             catch (Exception ex)
             {
-                clsutilidades.OpenMessage(new Operacion() { Mensaje = new clsException(ex).ErrorMessage(), OperationType = clsReferencias.TYPE_MESSAGE_Error });
+                clsUtilidades.OpenMessage(new Operacion() { Mensaje = new clsException(ex).ErrorMessage(), OperationType = clsReferencias.TYPE_MESSAGE_Error });
 
             }
         }
@@ -506,7 +506,7 @@ namespace PruebaWPF.Views.Tesoreria
         {
             try
             {
-                if (controller().Autorice(((Button)sender).Tag.ToString()))
+                if (controller().Authorize(((Button)sender).Tag.ToString()))
                 {
                     GestionarT_B_FP gt = new GestionarT_B_FP(new CiaTarjetaCredito(), pantalla);
                     gt.ShowDialog();
@@ -514,7 +514,7 @@ namespace PruebaWPF.Views.Tesoreria
             }
             catch (Exception ex)
             {
-                clsutilidades.OpenMessage(new Operacion() { Mensaje = new clsException(ex).ErrorMessage(), OperationType = clsReferencias.TYPE_MESSAGE_Error });
+                clsUtilidades.OpenMessage(new Operacion() { Mensaje = new clsException(ex).ErrorMessage(), OperationType = clsReferencias.TYPE_MESSAGE_Error });
             }
         }
 
@@ -522,7 +522,7 @@ namespace PruebaWPF.Views.Tesoreria
         {
             try
             {
-                if (controller().Autorice(((Button)sender).Tag.ToString()))
+                if (controller().Authorize(((Button)sender).Tag.ToString()))
                 {
                     if (lstTarjeta.SelectedItem != null)
                     {
@@ -538,13 +538,13 @@ namespace PruebaWPF.Views.Tesoreria
                     }
                     else
                     {
-                        clsutilidades.OpenMessage(new Operacion() { Mensaje = clsReferencias.MESSAGE_NoSelection, OperationType = clsReferencias.TYPE_MESSAGE_Advertencia });
+                        clsUtilidades.OpenMessage(new Operacion() { Mensaje = clsReferencias.MESSAGE_NoSelection, OperationType = clsReferencias.TYPE_MESSAGE_Advertencia });
                     }
                 }
             }
             catch (Exception ex)
             {
-                clsutilidades.OpenMessage(new Operacion() { Mensaje = new clsException(ex).ErrorMessage(), OperationType = clsReferencias.TYPE_MESSAGE_Error });
+                clsUtilidades.OpenMessage(new Operacion() { Mensaje = new clsException(ex).ErrorMessage(), OperationType = clsReferencias.TYPE_MESSAGE_Error });
             }
         }
 
@@ -552,18 +552,18 @@ namespace PruebaWPF.Views.Tesoreria
         {
             try
             {
-                if (controller().Autorice(((Button)sender).Tag.ToString()))
+                if (controller().Authorize(((Button)sender).Tag.ToString()))
                 {
                     if (lstTarjeta.SelectedItem != null)
                     {
-                        if (clsutilidades.OpenDeleteQuestionMessage())
+                        if (clsUtilidades.OpenDeleteQuestionMessage())
                         {
-                            clsutilidades.OpenMessage(EliminarTarjeta());
+                            clsUtilidades.OpenMessage(EliminarTarjeta());
                         }
                     }
                     else
                     {
-                        clsutilidades.OpenMessage(new Operacion() { Mensaje = clsReferencias.MESSAGE_NoSelection, OperationType = clsReferencias.TYPE_MESSAGE_Advertencia });
+                        clsUtilidades.OpenMessage(new Operacion() { Mensaje = clsReferencias.MESSAGE_NoSelection, OperationType = clsReferencias.TYPE_MESSAGE_Advertencia });
                     }
 
 
@@ -571,7 +571,7 @@ namespace PruebaWPF.Views.Tesoreria
             }
             catch (Exception ex)
             {
-                clsutilidades.OpenMessage(new Operacion() { Mensaje = new clsException(ex).ErrorMessage(), OperationType = clsReferencias.TYPE_MESSAGE_Error });
+                clsUtilidades.OpenMessage(new Operacion() { Mensaje = new clsException(ex).ErrorMessage(), OperationType = clsReferencias.TYPE_MESSAGE_Error });
 
             }
         }
@@ -599,7 +599,7 @@ namespace PruebaWPF.Views.Tesoreria
         {
             try
             {
-                if (controller().Autorice(((Button)sender).Tag.ToString()))
+                if (controller().Authorize(((Button)sender).Tag.ToString()))
                 {
                     GestionarT_B_FP gt = new GestionarT_B_FP(new Banco(), pantalla);
                     gt.ShowDialog();
@@ -607,7 +607,7 @@ namespace PruebaWPF.Views.Tesoreria
             }
             catch (Exception ex)
             {
-                clsutilidades.OpenMessage(new Operacion() { Mensaje = new clsException(ex).ErrorMessage(), OperationType = clsReferencias.TYPE_MESSAGE_Error });
+                clsUtilidades.OpenMessage(new Operacion() { Mensaje = new clsException(ex).ErrorMessage(), OperationType = clsReferencias.TYPE_MESSAGE_Error });
             }
         }
 
@@ -615,7 +615,7 @@ namespace PruebaWPF.Views.Tesoreria
         {
             try
             {
-                if (controller().Autorice(((Button)sender).Tag.ToString()))
+                if (controller().Authorize(((Button)sender).Tag.ToString()))
                 {
                     if (lstBanco.SelectedItem != null)
                     {
@@ -631,13 +631,13 @@ namespace PruebaWPF.Views.Tesoreria
                     }
                     else
                     {
-                        clsutilidades.OpenMessage(new Operacion() { Mensaje = clsReferencias.MESSAGE_NoSelection, OperationType = clsReferencias.TYPE_MESSAGE_Advertencia });
+                        clsUtilidades.OpenMessage(new Operacion() { Mensaje = clsReferencias.MESSAGE_NoSelection, OperationType = clsReferencias.TYPE_MESSAGE_Advertencia });
                     }
                 }
             }
             catch (Exception ex)
             {
-                clsutilidades.OpenMessage(new Operacion() { Mensaje = new clsException(ex).ErrorMessage(), OperationType = clsReferencias.TYPE_MESSAGE_Error });
+                clsUtilidades.OpenMessage(new Operacion() { Mensaje = new clsException(ex).ErrorMessage(), OperationType = clsReferencias.TYPE_MESSAGE_Error });
             }
         }
 
@@ -645,18 +645,18 @@ namespace PruebaWPF.Views.Tesoreria
         {
             try
             {
-                if (controller().Autorice(((Button)sender).Tag.ToString()))
+                if (controller().Authorize(((Button)sender).Tag.ToString()))
                 {
                     if (lstBanco.SelectedItem != null)
                     {
-                        if (clsutilidades.OpenDeleteQuestionMessage())
+                        if (clsUtilidades.OpenDeleteQuestionMessage())
                         {
-                            clsutilidades.OpenMessage(EliminarBanco());
+                            clsUtilidades.OpenMessage(EliminarBanco());
                         }
                     }
                     else
                     {
-                        clsutilidades.OpenMessage(new Operacion() { Mensaje = clsReferencias.MESSAGE_NoSelection, OperationType = clsReferencias.TYPE_MESSAGE_Advertencia });
+                        clsUtilidades.OpenMessage(new Operacion() { Mensaje = clsReferencias.MESSAGE_NoSelection, OperationType = clsReferencias.TYPE_MESSAGE_Advertencia });
                     }
 
 
@@ -664,7 +664,7 @@ namespace PruebaWPF.Views.Tesoreria
             }
             catch (Exception ex)
             {
-                clsutilidades.OpenMessage(new Operacion() { Mensaje = new clsException(ex).ErrorMessage(), OperationType = clsReferencias.TYPE_MESSAGE_Error });
+                clsUtilidades.OpenMessage(new Operacion() { Mensaje = new clsException(ex).ErrorMessage(), OperationType = clsReferencias.TYPE_MESSAGE_Error });
 
             }
         }
@@ -692,7 +692,7 @@ namespace PruebaWPF.Views.Tesoreria
         {
             try
             {
-                if (controller().Autorice(((Button)sender).Tag.ToString()))
+                if (controller().Authorize(((Button)sender).Tag.ToString()))
                 {
                     GestionarT_B_FP gt = new GestionarT_B_FP(new FormaPago(), pantalla);
                     gt.ShowDialog();
@@ -700,7 +700,7 @@ namespace PruebaWPF.Views.Tesoreria
             }
             catch (Exception ex)
             {
-                clsutilidades.OpenMessage(new Operacion() { Mensaje = new clsException(ex).ErrorMessage(), OperationType = clsReferencias.TYPE_MESSAGE_Error });
+                clsUtilidades.OpenMessage(new Operacion() { Mensaje = new clsException(ex).ErrorMessage(), OperationType = clsReferencias.TYPE_MESSAGE_Error });
             }
         }
 
@@ -708,7 +708,7 @@ namespace PruebaWPF.Views.Tesoreria
         {
             try
             {
-                if (controller().Autorice(((Button)sender).Tag.ToString()))
+                if (controller().Authorize(((Button)sender).Tag.ToString()))
                 {
                     if (lstFormaPago.SelectedItem != null)
                     {
@@ -723,13 +723,13 @@ namespace PruebaWPF.Views.Tesoreria
                     }
                     else
                     {
-                        clsutilidades.OpenMessage(new Operacion() { Mensaje = clsReferencias.MESSAGE_NoSelection, OperationType = clsReferencias.TYPE_MESSAGE_Advertencia });
+                        clsUtilidades.OpenMessage(new Operacion() { Mensaje = clsReferencias.MESSAGE_NoSelection, OperationType = clsReferencias.TYPE_MESSAGE_Advertencia });
                     }
                 }
             }
             catch (Exception ex)
             {
-                clsutilidades.OpenMessage(new Operacion() { Mensaje = new clsException(ex).ErrorMessage(), OperationType = clsReferencias.TYPE_MESSAGE_Error });
+                clsUtilidades.OpenMessage(new Operacion() { Mensaje = new clsException(ex).ErrorMessage(), OperationType = clsReferencias.TYPE_MESSAGE_Error });
             }
         }
 
@@ -737,24 +737,24 @@ namespace PruebaWPF.Views.Tesoreria
         {
             try
             {
-                if (controller().Autorice(((Button)sender).Tag.ToString()))
+                if (controller().Authorize(((Button)sender).Tag.ToString()))
                 {
                     if (lstFormaPago.SelectedItem != null)
                     {
-                        if (clsutilidades.OpenDeleteQuestionMessage())
+                        if (clsUtilidades.OpenDeleteQuestionMessage())
                         {
-                            clsutilidades.OpenMessage(EliminarFormaPago());
+                            clsUtilidades.OpenMessage(EliminarFormaPago());
                         }
                     }
                     else
                     {
-                        clsutilidades.OpenMessage(new Operacion() { Mensaje = clsReferencias.MESSAGE_NoSelection, OperationType = clsReferencias.TYPE_MESSAGE_Advertencia });
+                        clsUtilidades.OpenMessage(new Operacion() { Mensaje = clsReferencias.MESSAGE_NoSelection, OperationType = clsReferencias.TYPE_MESSAGE_Advertencia });
                     }
                 }
             }
             catch (Exception ex)
             {
-                clsutilidades.OpenMessage(new Operacion() { Mensaje = new clsException(ex).ErrorMessage(), OperationType = clsReferencias.TYPE_MESSAGE_Error });
+                clsUtilidades.OpenMessage(new Operacion() { Mensaje = new clsException(ex).ErrorMessage(), OperationType = clsReferencias.TYPE_MESSAGE_Error });
 
             }
         }
@@ -782,7 +782,7 @@ namespace PruebaWPF.Views.Tesoreria
         {
             try
             {
-                if (controller().Autorice(((Button)sender).Tag.ToString()))
+                if (controller().Authorize(((Button)sender).Tag.ToString()))
                 {
                     GestionarT_B_FP gt = new GestionarT_B_FP(new FuenteFinanciamiento(), pantalla);
                     gt.ShowDialog();
@@ -790,7 +790,7 @@ namespace PruebaWPF.Views.Tesoreria
             }
             catch (Exception ex)
             {
-                clsutilidades.OpenMessage(new Operacion() { Mensaje = new clsException(ex).ErrorMessage(), OperationType = clsReferencias.TYPE_MESSAGE_Error });
+                clsUtilidades.OpenMessage(new Operacion() { Mensaje = new clsException(ex).ErrorMessage(), OperationType = clsReferencias.TYPE_MESSAGE_Error });
             }
         }
 
@@ -798,7 +798,7 @@ namespace PruebaWPF.Views.Tesoreria
         {
             try
             {
-                if (controller().Autorice(((Button)sender).Tag.ToString()))
+                if (controller().Authorize(((Button)sender).Tag.ToString()))
                 {
                     if (lstFF.SelectedItem != null)
                     {
@@ -819,13 +819,13 @@ namespace PruebaWPF.Views.Tesoreria
                     }
                     else
                     {
-                        clsutilidades.OpenMessage(new Operacion() { Mensaje = clsReferencias.MESSAGE_NoSelection, OperationType = clsReferencias.TYPE_MESSAGE_Advertencia });
+                        clsUtilidades.OpenMessage(new Operacion() { Mensaje = clsReferencias.MESSAGE_NoSelection, OperationType = clsReferencias.TYPE_MESSAGE_Advertencia });
                     }
                 }
             }
             catch (Exception ex)
             {
-                clsutilidades.OpenMessage(new Operacion() { Mensaje = new clsException(ex).ErrorMessage(), OperationType = clsReferencias.TYPE_MESSAGE_Error });
+                clsUtilidades.OpenMessage(new Operacion() { Mensaje = new clsException(ex).ErrorMessage(), OperationType = clsReferencias.TYPE_MESSAGE_Error });
             }
         }
 
@@ -833,24 +833,24 @@ namespace PruebaWPF.Views.Tesoreria
         {
             try
             {
-                if (controller().Autorice(((Button)sender).Tag.ToString()))
+                if (controller().Authorize(((Button)sender).Tag.ToString()))
                 {
                     if (lstFF.SelectedItem != null)
                     {
-                        if (clsutilidades.OpenDeleteQuestionMessage())
+                        if (clsUtilidades.OpenDeleteQuestionMessage())
                         {
-                            clsutilidades.OpenMessage(EliminarFF());
+                            clsUtilidades.OpenMessage(EliminarFF());
                         }
                     }
                     else
                     {
-                        clsutilidades.OpenMessage(new Operacion() { Mensaje = clsReferencias.MESSAGE_NoSelection, OperationType = clsReferencias.TYPE_MESSAGE_Advertencia });
+                        clsUtilidades.OpenMessage(new Operacion() { Mensaje = clsReferencias.MESSAGE_NoSelection, OperationType = clsReferencias.TYPE_MESSAGE_Advertencia });
                     }
                 }
             }
             catch (Exception ex)
             {
-                clsutilidades.OpenMessage(new Operacion() { Mensaje = new clsException(ex).ErrorMessage(), OperationType = clsReferencias.TYPE_MESSAGE_Error });
+                clsUtilidades.OpenMessage(new Operacion() { Mensaje = new clsException(ex).ErrorMessage(), OperationType = clsReferencias.TYPE_MESSAGE_Error });
 
             }
         }
@@ -878,7 +878,7 @@ namespace PruebaWPF.Views.Tesoreria
         {
             try
             {
-                if (controller().Autorice(((Button)sender).Tag.ToString()))
+                if (controller().Authorize(((Button)sender).Tag.ToString()))
                 {
                     GestionarT_B_FP gt = new GestionarT_B_FP(new Moneda(), pantalla);
                     gt.ShowDialog();
@@ -886,7 +886,7 @@ namespace PruebaWPF.Views.Tesoreria
             }
             catch (Exception ex)
             {
-                clsutilidades.OpenMessage(new Operacion() { Mensaje = new clsException(ex).ErrorMessage(), OperationType = clsReferencias.TYPE_MESSAGE_Error });
+                clsUtilidades.OpenMessage(new Operacion() { Mensaje = new clsException(ex).ErrorMessage(), OperationType = clsReferencias.TYPE_MESSAGE_Error });
             }
         }
 
@@ -894,7 +894,7 @@ namespace PruebaWPF.Views.Tesoreria
         {
             try
             {
-                if (controller().Autorice(((Button)sender).Tag.ToString()))
+                if (controller().Authorize(((Button)sender).Tag.ToString()))
                 {
                     if (lstMoneda.SelectedItem != null)
                     {
@@ -911,13 +911,13 @@ namespace PruebaWPF.Views.Tesoreria
                     }
                     else
                     {
-                        clsutilidades.OpenMessage(new Operacion() { Mensaje = clsReferencias.MESSAGE_NoSelection, OperationType = clsReferencias.TYPE_MESSAGE_Advertencia });
+                        clsUtilidades.OpenMessage(new Operacion() { Mensaje = clsReferencias.MESSAGE_NoSelection, OperationType = clsReferencias.TYPE_MESSAGE_Advertencia });
                     }
                 }
             }
             catch (Exception ex)
             {
-                clsutilidades.OpenMessage(new Operacion() { Mensaje = new clsException(ex).ErrorMessage(), OperationType = clsReferencias.TYPE_MESSAGE_Error });
+                clsUtilidades.OpenMessage(new Operacion() { Mensaje = new clsException(ex).ErrorMessage(), OperationType = clsReferencias.TYPE_MESSAGE_Error });
             }
         }
 
@@ -925,24 +925,24 @@ namespace PruebaWPF.Views.Tesoreria
         {
             try
             {
-                if (controller().Autorice(((Button)sender).Tag.ToString()))
+                if (controller().Authorize(((Button)sender).Tag.ToString()))
                 {
                     if (lstMoneda.SelectedItem != null)
                     {
-                        if (clsutilidades.OpenDeleteQuestionMessage())
+                        if (clsUtilidades.OpenDeleteQuestionMessage())
                         {
-                            clsutilidades.OpenMessage(EliminarMoneda());
+                            clsUtilidades.OpenMessage(EliminarMoneda());
                         }
                     }
                     else
                     {
-                        clsutilidades.OpenMessage(new Operacion() { Mensaje = clsReferencias.MESSAGE_NoSelection, OperationType = clsReferencias.TYPE_MESSAGE_Advertencia });
+                        clsUtilidades.OpenMessage(new Operacion() { Mensaje = clsReferencias.MESSAGE_NoSelection, OperationType = clsReferencias.TYPE_MESSAGE_Advertencia });
                     }
                 }
             }
             catch (Exception ex)
             {
-                clsutilidades.OpenMessage(new Operacion() { Mensaje = new clsException(ex).ErrorMessage(), OperationType = clsReferencias.TYPE_MESSAGE_Error });
+                clsUtilidades.OpenMessage(new Operacion() { Mensaje = new clsException(ex).ErrorMessage(), OperationType = clsReferencias.TYPE_MESSAGE_Error });
 
             }
         }
@@ -970,7 +970,7 @@ namespace PruebaWPF.Views.Tesoreria
         {
             try
             {
-                if (controller().Autorice(((Button)sender).Tag.ToString()))
+                if (controller().Authorize(((Button)sender).Tag.ToString()))
                 {
                     GestionarT_B_FP gt = new GestionarT_B_FP(new IdentificacionAgenteExterno(), pantalla);
                     gt.ShowDialog();
@@ -978,7 +978,7 @@ namespace PruebaWPF.Views.Tesoreria
             }
             catch (Exception ex)
             {
-                clsutilidades.OpenMessage(new Operacion() { Mensaje = new clsException(ex).ErrorMessage(), OperationType = clsReferencias.TYPE_MESSAGE_Error });
+                clsUtilidades.OpenMessage(new Operacion() { Mensaje = new clsException(ex).ErrorMessage(), OperationType = clsReferencias.TYPE_MESSAGE_Error });
             }
         }
 
@@ -986,7 +986,7 @@ namespace PruebaWPF.Views.Tesoreria
         {
             try
             {
-                if (controller().Autorice(((Button)sender).Tag.ToString()))
+                if (controller().Authorize(((Button)sender).Tag.ToString()))
                 {
                     if (lstIdentificacion.SelectedItem != null)
                     {
@@ -1003,13 +1003,13 @@ namespace PruebaWPF.Views.Tesoreria
                     }
                     else
                     {
-                        clsutilidades.OpenMessage(new Operacion() { Mensaje = clsReferencias.MESSAGE_NoSelection, OperationType = clsReferencias.TYPE_MESSAGE_Advertencia });
+                        clsUtilidades.OpenMessage(new Operacion() { Mensaje = clsReferencias.MESSAGE_NoSelection, OperationType = clsReferencias.TYPE_MESSAGE_Advertencia });
                     }
                 }
             }
             catch (Exception ex)
             {
-                clsutilidades.OpenMessage(new Operacion() { Mensaje = new clsException(ex).ErrorMessage(), OperationType = clsReferencias.TYPE_MESSAGE_Error });
+                clsUtilidades.OpenMessage(new Operacion() { Mensaje = new clsException(ex).ErrorMessage(), OperationType = clsReferencias.TYPE_MESSAGE_Error });
             }
         }
 
@@ -1017,24 +1017,24 @@ namespace PruebaWPF.Views.Tesoreria
         {
             try
             {
-                if (controller().Autorice(((Button)sender).Tag.ToString()))
+                if (controller().Authorize(((Button)sender).Tag.ToString()))
                 {
                     if (lstIdentificacion.SelectedItem != null)
                     {
-                        if (clsutilidades.OpenDeleteQuestionMessage())
+                        if (clsUtilidades.OpenDeleteQuestionMessage())
                         {
-                            clsutilidades.OpenMessage(EliminarIdentificacion());
+                            clsUtilidades.OpenMessage(EliminarIdentificacion());
                         }
                     }
                     else
                     {
-                        clsutilidades.OpenMessage(new Operacion() { Mensaje = clsReferencias.MESSAGE_NoSelection, OperationType = clsReferencias.TYPE_MESSAGE_Advertencia });
+                        clsUtilidades.OpenMessage(new Operacion() { Mensaje = clsReferencias.MESSAGE_NoSelection, OperationType = clsReferencias.TYPE_MESSAGE_Advertencia });
                     }
                 }
             }
             catch (Exception ex)
             {
-                clsutilidades.OpenMessage(new Operacion() { Mensaje = new clsException(ex).ErrorMessage(), OperationType = clsReferencias.TYPE_MESSAGE_Error });
+                clsUtilidades.OpenMessage(new Operacion() { Mensaje = new clsException(ex).ErrorMessage(), OperationType = clsReferencias.TYPE_MESSAGE_Error });
 
             }
         }
@@ -1063,7 +1063,7 @@ namespace PruebaWPF.Views.Tesoreria
             try
             {
                 string Permiso = ((Button)sender).Tag.ToString();
-                if (controller().Autorice(((Button)sender).Tag.ToString()))
+                if (controller().Authorize(((Button)sender).Tag.ToString()))
                 {
                     GestionarT_B_FP gt = new GestionarT_B_FP(new InfoRecibo(), null, pantalla, Permiso);
                     gt.ShowDialog();
@@ -1071,7 +1071,7 @@ namespace PruebaWPF.Views.Tesoreria
             }
             catch (Exception ex)
             {
-                clsutilidades.OpenMessage(new Operacion() { Mensaje = new clsException(ex).ErrorMessage(), OperationType = clsReferencias.TYPE_MESSAGE_Error });
+                clsUtilidades.OpenMessage(new Operacion() { Mensaje = new clsException(ex).ErrorMessage(), OperationType = clsReferencias.TYPE_MESSAGE_Error });
             }
         }
 
@@ -1080,7 +1080,7 @@ namespace PruebaWPF.Views.Tesoreria
             try
             {
                 string Permiso = ((Button)sender).Tag.ToString();
-                if (controller().Autorice(Permiso))
+                if (controller().Authorize(Permiso))
                 {
                     if (tblInfoRecibo.SelectedItem != null)
                     {
@@ -1098,13 +1098,13 @@ namespace PruebaWPF.Views.Tesoreria
                     }
                     else
                     {
-                        clsutilidades.OpenMessage(new Operacion() { Mensaje = clsReferencias.MESSAGE_NoSelection, OperationType = clsReferencias.TYPE_MESSAGE_Advertencia });
+                        clsUtilidades.OpenMessage(new Operacion() { Mensaje = clsReferencias.MESSAGE_NoSelection, OperationType = clsReferencias.TYPE_MESSAGE_Advertencia });
                     }
                 }
             }
             catch (Exception ex)
             {
-                clsutilidades.OpenMessage(new Operacion() { Mensaje = new clsException(ex).ErrorMessage(), OperationType = clsReferencias.TYPE_MESSAGE_Error });
+                clsUtilidades.OpenMessage(new Operacion() { Mensaje = new clsException(ex).ErrorMessage(), OperationType = clsReferencias.TYPE_MESSAGE_Error });
             }
         }
     }

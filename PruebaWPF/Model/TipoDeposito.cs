@@ -20,6 +20,7 @@ namespace PruebaWPF.Model
             this.ArancelTipoDeposito = new HashSet<ArancelTipoDeposito>();
             this.Exoneracion = new HashSet<Exoneracion>();
             this.OrdenPago = new HashSet<OrdenPago>();
+            this.TipoArancel = new HashSet<TipoArancel>();
             this.Recibo1 = new HashSet<Recibo1>();
         }
     
@@ -36,6 +37,8 @@ namespace PruebaWPF.Model
         public virtual ICollection<Exoneracion> Exoneracion { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<OrdenPago> OrdenPago { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<TipoArancel> TipoArancel { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Recibo1> Recibo1 { get; set; }
     }

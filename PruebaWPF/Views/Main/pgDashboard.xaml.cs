@@ -63,7 +63,7 @@ namespace PruebaWPF.Views.Main
         {
             Card_AccesoDirecto ad = new Card_AccesoDirecto();
             ad.txtTitulo.Text = titulo;
-            ad.icon.Kind = clsutilidades.GetIconFromString(icon);
+            ad.icon.Kind = clsUtilidades.GetIconFromString(icon);
 
             ad.txtAbreviacion.Text = abreviacion;
 

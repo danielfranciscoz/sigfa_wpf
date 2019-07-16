@@ -20,7 +20,7 @@ namespace PruebaWPF.Model
         public int IdPrecioArancel { get; set; }
         public string Concepto { get; set; }
         public decimal Monto { get; set; }
-        public decimal Descuento { get; set; }
+        public Nullable<int> IdExoneracion { get; set; }
         public string IdAreaIngreso { get; set; }
         public string UsuarioCreacion { get; set; }
         public System.DateTime FechaCreacion { get; set; }
@@ -28,6 +28,7 @@ namespace PruebaWPF.Model
     
         public virtual Usuario Usuario { get; set; }
         public virtual ArancelPrecio ArancelPrecio { get; set; }
+        public virtual Exoneracion Exoneracion { get; set; }
         public virtual Recibo1 Recibo1 { get; set; }
     }
 }

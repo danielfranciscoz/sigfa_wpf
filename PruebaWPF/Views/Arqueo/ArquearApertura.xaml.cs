@@ -49,7 +49,7 @@ namespace PruebaWPF.Views.Arqueo
 
         private void Diseñar()
         {
-            clsutilidades.Dialog_ModalDesign(this);
+            clsUtilidades.Dialog_ModalDesign(this);
         }
 
         private void btnClose_Click(object sender, RoutedEventArgs e)

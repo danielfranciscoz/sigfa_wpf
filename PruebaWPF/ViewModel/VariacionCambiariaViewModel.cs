@@ -4,10 +4,7 @@ using PruebaWPF.Interface;
 using PruebaWPF.Model;
 using System;
 using System.Collections.Generic;
-using System.Data.Entity.SqlServer;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace PruebaWPF.ViewModel
 {
@@ -17,6 +14,10 @@ namespace PruebaWPF.ViewModel
 
         public void Eliminar(VariacionCambiariaSon variacion)
         {
+            if (variacion.Fecha < DateTime.Now)
+            {
+                throw new Exception("No es posible eliminar la tasa cambiaria de una fecha pasada");
+            }
             db.VariacionCambiaria.Remove(db.VariacionCambiaria.Find(variacion.IdVariacionCambiaria));
             db.SaveChanges();
         }
@@ -88,7 +89,42 @@ namespace PruebaWPF.ViewModel
         public List<Moneda> ObtenerMonedas()
         {
             //Solo se obtienen las monedas que poseen servicio web asociado, esta información la obtengo por medio de una configuración
-            return db.Moneda.ToList().Where(w => w.WebService).ToList();
+            return db.Moneda.Where(w => w.WebService).ToList();
+        }
+
+        public void VariacionAutomatica()
+        {
+            //La verificacion se hará a partir del 25 de cada mes
+            DateTime diaActual = System.DateTime.Now.Date;
+
+            if (diaActual.Day >= 25 && diaActual.Day <= 31)
+            {
+                diaActual = diaActual.AddMonths(1);
+
+                if (!db.VariacionCambiaria.Any(w => w.Fecha.Month == diaActual.Month && w.Fecha.Year == diaActual.Year && w.RegAnulado == false))
+                {
+                    GuardarAutoAllCoins(diaActual.Year, diaActual.Month);
+                }
+            }
+            else
+            {
+                int diasMes = DateTime.DaysInMonth(diaActual.Year, diaActual.Month);
+
+                //Verifico que todos los dias del mes se encuentren ingresados en el sistema
+                if (db.VariacionCambiaria.Where(w => w.Fecha.Month == diaActual.Month && w.Fecha.Year == diaActual.Year && w.RegAnulado == false).Count() < diasMes)
+                {
+                    GuardarAutoAllCoins(diaActual.Year, diaActual.Month);
+                }
+            }
+        }
+
+        private void GuardarAutoAllCoins(int año, int mes)
+        {
+            foreach (Moneda moneda in ObtenerMonedas())
+            {
+                List<VariacionCambiariaSon> variaciones = GetTCPeriodoBCN(año, mes, moneda);
+                Guardar(variaciones);
+            }
         }
 
         public List<VariacionCambiariaSon> FindByText(string text)
@@ -153,21 +189,23 @@ namespace PruebaWPF.ViewModel
             throw new NotImplementedException();
         }
 
-        public bool Autorice_Recinto(string PermisoName, int IdRecinto)
+        public bool Authorize_Recinto(string PermisoName, int IdRecinto)
         {
             throw new NotImplementedException();
         }
 
-        public bool Autorice(string PermisoName)
+        public bool Authorize(string PermisoName)
         {
             throw new NotImplementedException();
         }
     }
 
-    public class VariacionCambiariaSon : VariacionCambiaria {
+    public class VariacionCambiariaSon : VariacionCambiaria
+    {
 
 
         //Estos campos son creados para el reporte
         public string SimboloMoneda => Moneda.Simbolo;
+        public Boolean CanDelete => !(Fecha.Date < System.DateTime.Now.Date);
     }
 }

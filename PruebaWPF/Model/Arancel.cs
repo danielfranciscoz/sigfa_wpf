@@ -18,7 +18,6 @@ namespace PruebaWPF.Model
         public Arancel()
         {
             this.ArancelArea = new HashSet<ArancelArea>();
-            this.ArancelPrecio = new HashSet<ArancelPrecio>();
             this.ArancelTipoDeposito = new HashSet<ArancelTipoDeposito>();
         }
     
@@ -37,8 +36,6 @@ namespace PruebaWPF.Model
         public virtual TipoArancel TipoArancel { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<ArancelArea> ArancelArea { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<ArancelPrecio> ArancelPrecio { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<ArancelTipoDeposito> ArancelTipoDeposito { get; set; }
     }

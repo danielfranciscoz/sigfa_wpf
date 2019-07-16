@@ -2,11 +2,8 @@
 using PruebaWPF.Helper;
 using PruebaWPF.Interface;
 using PruebaWPF.Model;
-using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace PruebaWPF.ViewModel
 {
@@ -26,9 +23,9 @@ namespace PruebaWPF.ViewModel
             seguridad = new SecurityViewModel();
             this.pantalla = pantalla;
         }
-        public bool Autorice(string PermisoName)
+        public bool Authorize(string PermisoName)
         {
-            if (seguridad.Autorize(pantalla, PermisoName))
+            if (seguridad.Authorize(pantalla, PermisoName))
             {
                 return true;
             }
@@ -38,9 +35,9 @@ namespace PruebaWPF.ViewModel
             }
         }
 
-        public bool Autorice_Recinto(string PermisoName, int IdRecinto)
+        public bool Authorize_Recinto(string PermisoName, int IdRecinto)
         {
-            if (seguridad.Autorize(pantalla, PermisoName, IdRecinto))
+            if (seguridad.Authorize(pantalla, PermisoName, IdRecinto))
             {
                 return true;
             }
@@ -66,7 +63,7 @@ namespace PruebaWPF.ViewModel
 
         public AgenteExternoCat FindById(int Id)
         {
-            throw new NotImplementedException();
+            return db.AgenteExternoCat.Find(Id);
         }
 
         public List<AgenteExternoCat> FindByText(string text)

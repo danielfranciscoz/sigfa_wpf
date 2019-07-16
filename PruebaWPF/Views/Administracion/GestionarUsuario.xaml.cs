@@ -84,7 +84,7 @@ namespace PruebaWPF.Views.Administracion
 
         private void Diseñar()
         {
-            clsutilidades.Dialog_ModalDesign(this);
+            clsUtilidades.Dialog_ModalDesign(this);
         }
 
         private void CargarCombo()
@@ -176,12 +176,12 @@ namespace PruebaWPF.Views.Administracion
                 {
                     if (uperfiles.Count > 0)
                     {
-                        clsutilidades.OpenMessage(Guardar(), this);
+                        clsUtilidades.OpenMessage(Guardar(), this);
                         Finalizar();
                     }
                     else
                     {
-                        clsutilidades.OpenMessage(new Operacion() { Mensaje = clsReferencias.MESSAGE_Cero_Registro_Table, OperationType = clsReferencias.TYPE_MESSAGE_Error });
+                        clsUtilidades.OpenMessage(new Operacion() { Mensaje = clsReferencias.MESSAGE_Cero_Registro_Table, OperationType = clsReferencias.TYPE_MESSAGE_Error });
                     }
                 }
                 else
@@ -195,7 +195,7 @@ namespace PruebaWPF.Views.Administracion
                             {
                                 if (lastVerifyUserEmail())
                                 {
-                                    clsutilidades.OpenMessage(Guardar(), this);
+                                    clsUtilidades.OpenMessage(Guardar(), this);
                                     Finalizar();
                                 }
                             }
@@ -205,14 +205,14 @@ namespace PruebaWPF.Views.Administracion
                                 {
                                     if (lastVerifyUserEmail())
                                     {
-                                        clsutilidades.OpenMessage(Guardar(), this);
+                                        clsUtilidades.OpenMessage(Guardar(), this);
                                         Finalizar();
                                     }
 
                                 }
                                 else
                                 {
-                                    clsutilidades.OpenMessage(new Operacion() { Mensaje = clsReferencias.MESSAGE_Cero_Registro_Table, OperationType = clsReferencias.TYPE_MESSAGE_Error });
+                                    clsUtilidades.OpenMessage(new Operacion() { Mensaje = clsReferencias.MESSAGE_Cero_Registro_Table, OperationType = clsReferencias.TYPE_MESSAGE_Error });
                                 }
                             }
 
@@ -222,7 +222,7 @@ namespace PruebaWPF.Views.Administracion
             }
             catch (Exception ex)
             {
-                clsutilidades.OpenMessage(new Operacion() { Mensaje = new clsException(ex).ErrorMessage(), OperationType = clsReferencias.TYPE_MESSAGE_Error });
+                clsUtilidades.OpenMessage(new Operacion() { Mensaje = new clsException(ex).ErrorMessage(), OperationType = clsReferencias.TYPE_MESSAGE_Error });
             }
         }
 
@@ -230,11 +230,11 @@ namespace PruebaWPF.Views.Administracion
         {
             if (string.IsNullOrEmpty(usuario.LoginCreacion))
             {
-                return clsutilidades.OpenDeleteQuestionMessage(string.Format("Estamos listos para crear el nuevo usuario, pero antes por favor verifique si la siguiente información es correcta:\n\nUsuario:\t{0}\t(Este campo no podrá ser editado)\nCorreo:\t{1}\n\n¿Los datos son correctos?", usuario.Login, usuario.LoginEmail));
+                return clsUtilidades.OpenDeleteQuestionMessage(string.Format("Estamos listos para crear el nuevo usuario, pero antes por favor verifique si la siguiente información es correcta:\n\nUsuario:\t{0}\t(Este campo no podrá ser editado)\nCorreo:\t{1}\n\n¿Los datos son correctos?", usuario.Login, usuario.LoginEmail));
             }
             else
             {
-                return clsutilidades.OpenDeleteQuestionMessage(string.Format("Por favor verifique si la siguiente información es correcta:\n\nCorreo:\t{0}\n\n¿Los datos son correctos?", usuario.LoginEmail));
+                return clsUtilidades.OpenDeleteQuestionMessage(string.Format("Por favor verifique si la siguiente información es correcta:\n\nCorreo:\t{0}\n\n¿Los datos son correctos?", usuario.LoginEmail));
             }
         }
 
@@ -258,13 +258,13 @@ namespace PruebaWPF.Views.Administracion
                 vwEmpleadosRH trabajador = controller.ObtenerTrabajador(txtcodigoEmpleado.Text);
                 usuario.Nombre = string.Format("{0} {1}", trabajador.Nombres, trabajador.Apellidos);
                 usuario.noInterno = int.Parse(trabajador.Cod_Interno.ToString());
-                clsutilidades.UpdateControl(txtNombreCompleto);
+                clsUtilidades.UpdateControl(txtNombreCompleto);
                 txtNombreCompleto.Focus();
                 cboRecinto.Focus();
             }
             catch (Exception ex)
             {
-                clsutilidades.OpenMessage(new Operacion() { Mensaje = new clsException(ex).ErrorMessage(), OperationType = clsReferencias.TYPE_MESSAGE_Error });
+                clsUtilidades.OpenMessage(new Operacion() { Mensaje = new clsException(ex).ErrorMessage(), OperationType = clsReferencias.TYPE_MESSAGE_Error });
             }
         }
 
@@ -283,7 +283,7 @@ namespace PruebaWPF.Views.Administracion
                 if (!string.IsNullOrEmpty(usuario.Nombre))
                 {
                     usuario.Nombre = "";
-                    clsutilidades.UpdateControl(txtNombreCompleto);
+                    clsUtilidades.UpdateControl(txtNombreCompleto);
                 }
             }
 

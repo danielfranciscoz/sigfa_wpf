@@ -65,7 +65,7 @@ namespace PruebaWPF.Views.Administracion
 
         private void Diseñar()
         {
-            clsutilidades.Dialog_ModalDesign(this);
+            clsUtilidades.Dialog_ModalDesign(this);
         }
 
         private void CargarCombo()
@@ -108,13 +108,13 @@ namespace PruebaWPF.Views.Administracion
                         pantalla.Orden = byte.Parse(cboOrden.SelectedValue.ToString());
                     }
 
-                    clsutilidades.OpenMessage(Guardar(), this);
+                    clsUtilidades.OpenMessage(Guardar(), this);
                     Finalizar();
                 }
             }
             catch (Exception ex)
             {
-                clsutilidades.OpenMessage(new Operacion() { Mensaje = new clsException(ex).ErrorMessage(), OperationType = clsReferencias.TYPE_MESSAGE_Error });
+                clsUtilidades.OpenMessage(new Operacion() { Mensaje = new clsException(ex).ErrorMessage(), OperationType = clsReferencias.TYPE_MESSAGE_Error });
             }
         }
 
@@ -195,14 +195,14 @@ namespace PruebaWPF.Views.Administracion
             if (!string.IsNullOrEmpty(i.selectedIcon))
             {
                 pantalla.Icon = i.selectedIcon;
-                clsutilidades.UpdateControl(txtIcono);
+                clsUtilidades.UpdateControl(txtIcono);
             }
         }
 
         private void btnRemoveIcon_Click(object sender, RoutedEventArgs e)
         {
             pantalla.Icon = "";
-            clsutilidades.UpdateControl(txtIcono);
+            clsUtilidades.UpdateControl(txtIcono);
         }
     }
 

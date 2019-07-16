@@ -12,12 +12,12 @@ namespace PruebaWPF.ViewModel
     {
         private SIFOPEntities db = new SIFOPEntities();
 
-        public bool Autorice(string PermisoName)
+        public bool Authorize(string PermisoName)
         {
             throw new NotImplementedException();
         }
 
-        public bool Autorice_Recinto(string PermisoName, int IdRecinto)
+        public bool Authorize_Recinto(string PermisoName, int IdRecinto)
         {
             throw new NotImplementedException();
         }

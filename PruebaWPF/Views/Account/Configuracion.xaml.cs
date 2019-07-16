@@ -38,7 +38,7 @@ namespace PruebaWPF.Views.Account
 
         private void Diseñar()
         {
-            clsutilidades.Dialog_ModalDesign(this);
+            clsUtilidades.Dialog_ModalDesign(this);
 
         }
 
@@ -57,13 +57,13 @@ namespace PruebaWPF.Views.Account
 
                 if (ValidarNumericos(c))
                 {
-                    clsutilidades.OpenMessage(Guardar(), this);
+                    clsUtilidades.OpenMessage(Guardar(), this);
                     Finalizar();
                 }
             }
             catch (Exception ex)
             {
-                clsutilidades.OpenMessage(new Operacion() { Mensaje = new clsException(ex).ErrorMessage(), OperationType = clsReferencias.TYPE_MESSAGE_Error });
+                clsUtilidades.OpenMessage(new Operacion() { Mensaje = new clsException(ex).ErrorMessage(), OperationType = clsReferencias.TYPE_MESSAGE_Error });
             }
         }
 
@@ -88,10 +88,10 @@ namespace PruebaWPF.Views.Account
             cf.Sleep = defaultConf.Sleep;
             cf.AutoLoad = defaultConf.rememberMe;
 
-            clsutilidades.UpdateControl(txtTopRow);
-            clsutilidades.UpdateControl(Autoload);
-            clsutilidades.UpdateControl(RememberMe);
-            clsutilidades.UpdateControl(sldSleep);
+            clsUtilidades.UpdateControl(txtTopRow);
+            clsUtilidades.UpdateControl(Autoload);
+            clsUtilidades.UpdateControl(RememberMe);
+            clsUtilidades.UpdateControl(sldSleep);
         }
 
         private void ActivarValidadorCampos()

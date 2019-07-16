@@ -52,7 +52,12 @@ namespace PruebaWPF.Clases
         public enum Llaves
         {
             Consecutivo_Recibo,
-            Saldo_Inicial_Cajas
+            IdMatricula,
+            IdPrematricula,
+            Perfil_Cajero,
+            Saldo_Inicial_Cajas,
+            IdAgenteExterno
+
         };
 
         public void Save()

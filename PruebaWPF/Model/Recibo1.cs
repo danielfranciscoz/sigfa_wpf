@@ -25,16 +25,18 @@ namespace PruebaWPF.Model
         public int IdRecibo { get; set; }
         public string Serie { get; set; }
         public int IdDetAperturaCaja { get; set; }
-        public byte IdPeriodoEspecifico { get; set; }
+        public Nullable<byte> IdPeriodoEspecifico { get; set; }
         public string IdArea { get; set; }
         public byte IdFuenteFinanciamiento { get; set; }
         public Nullable<int> IdTipoDeposito { get; set; }
         public string Identificador { get; set; }
+        public string TextoIdentificador { get; set; }
         public string Recibimos { get; set; }
         public System.DateTime Fecha { get; set; }
         public int IdInfoRecibo { get; set; }
         public Nullable<int> IdOrdenPago { get; set; }
         public string UsuarioCreacion { get; set; }
+        public bool isRecibimosPorCuenta { get; set; }
         public bool regAnulado { get; set; }
     
         public virtual FuenteFinanciamiento FuenteFinanciamiento { get; set; }
@@ -52,5 +54,6 @@ namespace PruebaWPF.Model
         public virtual ICollection<ReciboDet> ReciboDet { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<ReciboPago> ReciboPago { get; set; }
+        public virtual ReciboSIRA ReciboSIRA { get; set; }
     }
 }

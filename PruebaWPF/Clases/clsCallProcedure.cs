@@ -1,4 +1,5 @@
-﻿using System;
+﻿using PruebaWPF.Model;
+using System;
 using System.Collections.Generic;
 using System.Configuration;
 using System.Data;
@@ -7,10 +8,10 @@ using System.Data.SqlClient;
 
 namespace PruebaWPF.Clases
 {
-    public class clsCallProcedure
+    public class clsCallProcedure<T>
     {
-
-        public DataTable CallDT(String ProcedureName, Dictionary<String, String> parametros)
+        //Lo dejo protejido para que no sea visible desde los otros paquetes, este método no es usado sin embargo mantengo el código porque es funcional y funciona como una segunda opción
+        protected DataTable CallDT(String ProcedureName, Dictionary<String, String> parametros)
         {
             SqlConnection conexion = null;
             try
@@ -22,7 +23,7 @@ namespace PruebaWPF.Clases
                 SqlConnectionStringBuilder conexionString = new SqlConnectionStringBuilder(ConectionEF);
 
                 String TableName = "resultados";
-                conexion = new SqlConnection(string.Format("data source={0};initial catalog={1};user id={2};password={3};MultipleActiveResultSets=True;App=EntityFramework", conexionString.DataSource,conexionString.InitialCatalog,conexionString.UserID,conexionString.Password));
+                conexion = new SqlConnection(string.Format("data source={0};initial catalog={1};user id={2};password={3};MultipleActiveResultSets=True;App=EntityFramework", conexionString.DataSource, conexionString.InitialCatalog, conexionString.UserID, conexionString.Password));
                 SqlCommand comando = new SqlCommand(ProcedureName, conexion);
 
                 SqlParameter parametro;
@@ -57,5 +58,13 @@ namespace PruebaWPF.Clases
                 return null;
             }
         }
+
+
+        public static List<T> GetFromProcedure(SIFOPEntities db, string query, List<SqlParameter> parameters)
+        {
+            return new List<T>(db.Database.SqlQuery<T>(query, parameters.ToArray()));
+        }
     }
+
+
 }

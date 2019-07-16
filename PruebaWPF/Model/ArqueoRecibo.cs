@@ -20,7 +20,7 @@ namespace PruebaWPF.Model
         public string Serie { get; set; }
         public System.DateTime FechaCreacion { get; set; }
     
-        public virtual Recibo1 Recibo1 { get; set; }
         public virtual Arqueo Arqueo { get; set; }
+        public virtual Recibo1 Recibo1 { get; set; }
     }
 }

@@ -60,7 +60,7 @@ namespace PruebaWPF.Views.VariacionCambiaria
             }
             catch (Exception ex)
             {
-                clsutilidades.OpenMessage(new Operacion() { Mensaje = ex.Message, OperationType = clsReferencias.TYPE_MESSAGE_Error });
+                clsUtilidades.OpenMessage(new Operacion() { Mensaje = ex.Message, OperationType = clsReferencias.TYPE_MESSAGE_Error });
             }
         }
 
@@ -113,7 +113,7 @@ namespace PruebaWPF.Views.VariacionCambiaria
             export.ShowDialog();
             operacion = Exportar.Operacion;
 
-            clsutilidades.OpenMessage(operacion);
+            clsUtilidades.OpenMessage(operacion);
         }
 
         private void txtFindText(object sender, KeyEventArgs e)
@@ -136,9 +136,9 @@ namespace PruebaWPF.Views.VariacionCambiaria
 
         private void btnDelete_Click(object sender, RoutedEventArgs e)
         {
-            if (clsutilidades.OpenDeleteQuestionMessage())
+            if (clsUtilidades.OpenDeleteQuestionMessage())
             {
-                clsutilidades.OpenMessage(Eliminar());
+                clsUtilidades.OpenMessage(Eliminar());
             }
         }
 

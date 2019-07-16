@@ -56,7 +56,7 @@ namespace PruebaWPF.Views.Recibo
             }
             catch (Exception ex)
             {
-                clsutilidades.OpenMessage(new Operacion() { Mensaje = new clsException(ex).ErrorMessage(), OperationType = clsReferencias.TYPE_MESSAGE_Error });
+                clsUtilidades.OpenMessage(new Operacion() { Mensaje = new clsException(ex).ErrorMessage(), OperationType = clsReferencias.TYPE_MESSAGE_Error });
                 Close();
             }
         }
@@ -64,7 +64,7 @@ namespace PruebaWPF.Views.Recibo
         private void VerPreview()
         {
             List<ReciboSon> recibos = new List<ReciboSon>();
-            recibos.Add(new ReciboSon() { UsuarioCreacion=clsSessionHelper.usuario.Login,Serie="VISTA PREVIA",Recibimos="XXXXXXXX"});
+            recibos.Add(new ReciboSon() { UsuarioCreacion = clsSessionHelper.usuario.Login, Serie = "VISTA PREVIA", Recibimos = "XXXXXXXX" });
 
             List<Model.OrdenPago> ordenPago = new List<Model.OrdenPago>();
             ordenPago.Add(new Model.OrdenPago());
@@ -76,20 +76,20 @@ namespace PruebaWPF.Views.Recibo
             barcode.Add(new clsBarCode() { texto = "CBR-0000" });
 
             List<fn_ConsultarInfoExterna_Result> cuenta = new List<fn_ConsultarInfoExterna_Result>();
-            cuenta.Add(new fn_ConsultarInfoExterna_Result() { Id="ESTO NO ES UN RECIBO OFICIAL DE CAJA"});
+            cuenta.Add(new fn_ConsultarInfoExterna_Result() { Id = "ESTO NO ES UN RECIBO OFICIAL DE CAJA" });
 
             List<DetReciboSon> detrecibo = new List<DetReciboSon>();
-            detrecibo.Add(new DetReciboSon() { Concepto="",Descuento=0,Monto=0,ArancelPrecio= new ArancelPrecio() { Arancel=new Arancel(),Moneda=new Moneda()} });
+            detrecibo.Add(new DetReciboSon() { Concepto = "", Monto = 0, ArancelPrecio = new ArancelPrecio() { ArancelArea = new ArancelArea() { Arancel = new Arancel() { Nombre = "Arancel pagado" } }, Moneda = new Moneda() } });
 
             List<ReciboPagoSon> formaPago = new List<ReciboPagoSon>();
-            formaPago.Add(new ReciboPagoSon() {Monto=0,InfoAdicional="",DetalleAdicional="",Moneda=new Moneda(),FormaPago=new FormaPago()});
+            formaPago.Add(new ReciboPagoSon() { Monto = 0, InfoAdicional = "", DetalleAdicional = "", Moneda = new Moneda(), FormaPago = new FormaPago() { FormaPago1 = "Forma de pago 1" } });
 
             List<VariacionCambiariaSon> variacionCambiarias = new List<VariacionCambiariaSon>();
-            variacionCambiarias.Add(new VariacionCambiariaSon() { Valor=0,Moneda=new Moneda()});
+            variacionCambiarias.Add(new VariacionCambiariaSon() { Valor = 0, Moneda = new Moneda() });
 
             CargarVisor(recibos, ordenPago, barcode, infos, cuenta, detrecibo, formaPago, variacionCambiarias);
         }
- 
+
         private void VerRecibo()
         {
             //   SqlServerTypes.Utilities.LoadNativeAssemblies(AppDomain.CurrentDomain.BaseDirectory);
@@ -109,12 +109,38 @@ namespace PruebaWPF.Views.Recibo
             List<clsBarCode> barcode = new List<clsBarCode>();
             barcode.Add(new clsBarCode() { texto = "CBR-" + recibo.IdRecibo + "-" + recibo.Serie });
 
-            List<fn_ConsultarInfoExterna_Result> cuenta = new SearchTipoDepositoViewModel().ObtenerTipoDeposito(string.IsNullOrEmpty(recibo.IdTipoDeposito.Value.ToString()) ? 0 : recibo.IdTipoDeposito.Value, recibo.Identificador, true, "", 1);
+            List<fn_ConsultarInfoExterna_Result> cuenta = new List<fn_ConsultarInfoExterna_Result>();
+
+            fn_ConsultarInfoExterna_Result info = new fn_ConsultarInfoExterna_Result();
+
+            info.Nombre = recibo.TextoIdentificador;
+            if (modeloRecibo.isAgenteExterno(recibo.IdTipoDeposito.Value))
+            {
+                AgenteExternoCat agente = new AgenteExternoViewModel().FindById(int.Parse(recibo.Identificador));
+                if (agente != null)
+                {
+                    info.Id = agente.Identificacion;
+                    info.IdentificatorType = agente.IdentificacionAgenteExterno.Identificacion;
+                }
+                else
+                {
+                    info.Id = "XXX-XXX";
+                    info.IdentificatorType = "XXXXXX";
+                }
+            }
+            else
+            {
+                info.Id = recibo.Identificador;
+                info.IdentificatorType = recibo.TipoDeposito.TextHint;
+            }
+
+            cuenta.Add(info);
+            //  new SearchTipoDepositoViewModel().ObtenerTipoDeposito(string.IsNullOrEmpty(recibo.IdTipoDeposito.Value.ToString()) ? 0 : recibo.IdTipoDeposito.Value, recibo.Identificador, true, "", 1,null);
 
             List<DetReciboSon> detrecibo = modeloRecibo.DetallesRecibo(recibo);
             List<ReciboPagoSon> formaPago = modeloRecibo.ReciboFormaPago(recibo);
 
-            List<VariacionCambiariaSon> variacionCambiarias = modeloRecibo.FindTipoCambio(recibo);
+            List<VariacionCambiariaSon> variacionCambiarias = modeloRecibo.FindTipoCambio(recibo, detrecibo);
 
             CargarVisor(recibos, ordenPago, barcode, infos, cuenta, detrecibo, formaPago, variacionCambiarias);
         }

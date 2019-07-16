@@ -2,21 +2,12 @@
 using PruebaWPF.Model;
 using PruebaWPF.Referencias;
 using PruebaWPF.ViewModel;
-using PruebaWPF.Views.Main;
 using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
 
 namespace PruebaWPF.Views.Shared
 {
@@ -29,12 +20,20 @@ namespace PruebaWPF.Views.Shared
         private SharedViewModel controller;
 
         public vw_Areas SelectedArea = null;
-
+        private int idTipoArancel;
         public AreasRRHH()
         {
             InitializeComponent();
             Inicializar();
             Diseñar();
+        }
+
+        public AreasRRHH(int idTipoArancel)
+        {
+            InitializeComponent();
+            Inicializar();
+            Diseñar();
+            this.idTipoArancel = idTipoArancel;
         }
 
         private void Inicializar()
@@ -45,7 +44,7 @@ namespace PruebaWPF.Views.Shared
         }
         private void Diseñar()
         {
-            clsutilidades.Dialog_Perfomance(this);
+            clsUtilidades.Dialog_Perfomance(this);
         }
         private void Border_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
@@ -93,7 +92,7 @@ namespace PruebaWPF.Views.Shared
             {
                 return Task.Run(() =>
                 {
-                    return new ObservableCollection<vw_Areas>(controller.ObtenerAreasRH());
+                    return new ObservableCollection<vw_Areas>(controller.ObtenerAreasRH(idTipoArancel));
                 }
     );
             }
@@ -101,7 +100,7 @@ namespace PruebaWPF.Views.Shared
             {
                 return Task.Run(() =>
                 {
-                    return new ObservableCollection<vw_Areas>(controller.FindAreaByText(text)); ;
+                    return new ObservableCollection<vw_Areas>(controller.FindAreaByText(text,idTipoArancel)); ;
                 });
             }
         }
@@ -136,7 +135,7 @@ namespace PruebaWPF.Views.Shared
             }
             else
             {
-                clsutilidades.OpenMessage(new Operacion() { Mensaje = clsReferencias.MESSAGE_NoSelection, OperationType = clsReferencias.TYPE_MESSAGE_Advertencia });
+                clsUtilidades.OpenMessage(new Operacion() { Mensaje = clsReferencias.MESSAGE_NoSelection, OperationType = clsReferencias.TYPE_MESSAGE_Advertencia });
             }
         }
 

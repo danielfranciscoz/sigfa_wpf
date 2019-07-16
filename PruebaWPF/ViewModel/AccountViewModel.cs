@@ -20,7 +20,7 @@ namespace PruebaWPF.ViewModel
             List<Perfil> perfiles = clsSessionHelper.perfiles.Select(s => s.Perfil).ToList();
             List<Permiso> permisos = db.Permiso.ToList().Where(w => perfiles.Any(a => a.IdPerfil == w.IdPerfil) && w.Pantalla.isMenu && w.IdPermisoName == 1 && w.Pantalla.isWeb == false && w.Pantalla.regAnulado == false).ToList();
 
-            List<Pantalla> hijos = permisos.Where(w => w.Pantalla.Uid != null).Select(s => s.Pantalla).Distinct().ToList();
+            List<Pantalla> hijos = permisos.Where(w => w.Pantalla.Uid != null).Select(s => s.Pantalla).Distinct().OrderBy(o=>o.Orden).ToList();
             List<Pantalla> padres = FindPadres(hijos);
 
             return padres;

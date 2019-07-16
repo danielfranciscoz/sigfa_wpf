@@ -56,7 +56,7 @@ namespace PruebaWPF.Views.Administracion
 
         private void Diseñar()
         {
-            clsutilidades.Dialog_ModalDesign(this);
+            clsUtilidades.Dialog_ModalDesign(this);
         }
 
         private void CargarCombo()
@@ -112,17 +112,17 @@ namespace PruebaWPF.Views.Administracion
             {
                 if (validarPermisosTabla())
                 {
-                    clsutilidades.OpenMessage(Guardar(), this);
+                    clsUtilidades.OpenMessage(Guardar(), this);
                     Finalizar();
                 }
                 else
                 {
-                    clsutilidades.OpenMessage(new Operacion() { Mensaje = "Para poder continuar, deberá agregar al menos un permiso a la tabla.", OperationType = clsReferencias.TYPE_MESSAGE_Error });
+                    clsUtilidades.OpenMessage(new Operacion() { Mensaje = "Para poder continuar, deberá agregar al menos un permiso a la tabla.", OperationType = clsReferencias.TYPE_MESSAGE_Error });
                 }
             }
             catch (Exception ex)
             {
-                clsutilidades.OpenMessage(new Operacion() { Mensaje = new clsException(ex).ErrorMessage(), OperationType = clsReferencias.TYPE_MESSAGE_Error });
+                clsUtilidades.OpenMessage(new Operacion() { Mensaje = new clsException(ex).ErrorMessage(), OperationType = clsReferencias.TYPE_MESSAGE_Error });
             }
         }
 

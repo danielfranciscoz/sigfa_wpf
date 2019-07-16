@@ -78,7 +78,7 @@ namespace PruebaWPF.Views.OrdenPago
             }
             catch (Exception ex)
             {
-                clsutilidades.OpenMessage(new Operacion() { Mensaje = new clsException(ex).ErrorMessage(), OperationType = clsReferencias.TYPE_MESSAGE_Error });
+                clsUtilidades.OpenMessage(new Operacion() { Mensaje = new clsException(ex).ErrorMessage(), OperationType = clsReferencias.TYPE_MESSAGE_Error });
             }
         }
 
@@ -133,7 +133,7 @@ namespace PruebaWPF.Views.OrdenPago
         {
             try
             {
-                if (controller.Autorice(((Button)sender).Tag.ToString()))
+                if (controller.Authorize(((Button)sender).Tag.ToString()))
                 {
                     Exportar export = new Exportar(GetDataTable.GetDataGridRows(tblOrdenPago));
                     export.ShowDialog();
@@ -141,7 +141,7 @@ namespace PruebaWPF.Views.OrdenPago
             }
             catch (Exception ex)
             {
-                clsutilidades.OpenMessage(new Operacion() { Mensaje = new clsException(ex).ErrorMessage(), OperationType = clsReferencias.TYPE_MESSAGE_Error });
+                clsUtilidades.OpenMessage(new Operacion() { Mensaje = new clsException(ex).ErrorMessage(), OperationType = clsReferencias.TYPE_MESSAGE_Error });
             }
         }
 
@@ -156,7 +156,7 @@ namespace PruebaWPF.Views.OrdenPago
             else
             {
                 operacion = new Operacion(clsReferencias.TYPE_MESSAGE_Advertencia, clsReferencias.MESSAGE_NoSelection);
-                clsutilidades.OpenMessage(operacion);
+                clsUtilidades.OpenMessage(operacion);
             }
             //}
             //catch (Exception ex)
@@ -194,7 +194,7 @@ namespace PruebaWPF.Views.OrdenPago
             }
             catch (Exception ex)
             {
-                clsutilidades.OpenMessage(new Operacion() { Mensaje = new clsException(ex).ErrorMessage(), OperationType = clsReferencias.TYPE_MESSAGE_Error });
+                clsUtilidades.OpenMessage(new Operacion() { Mensaje = new clsException(ex).ErrorMessage(), OperationType = clsReferencias.TYPE_MESSAGE_Error });
             }
         }
 

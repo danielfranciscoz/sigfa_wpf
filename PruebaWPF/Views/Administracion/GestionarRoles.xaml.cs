@@ -79,7 +79,7 @@ namespace PruebaWPF.Views.Administracion
         }
         private void Diseñar()
         {
-            clsutilidades.Dialog_ModalDesign(this);
+            clsUtilidades.Dialog_ModalDesign(this);
         }
 
         private void CamposNormales()
@@ -102,23 +102,23 @@ namespace PruebaWPF.Views.Administracion
                     {
                         if (validarSeleccionPantallas())
                         {
-                            clsutilidades.OpenMessage(Guardar(), this);
+                            clsUtilidades.OpenMessage(Guardar(), this);
                             Finalizar();
                         }
                         else
                         {
-                            clsutilidades.OpenMessage(new Operacion() { Mensaje = "Para poder continuar, deberá conceder acceso al menos a una de las pantallas que se muestran en la tabla.", OperationType = clsReferencias.TYPE_MESSAGE_Error });
+                            clsUtilidades.OpenMessage(new Operacion() { Mensaje = "Para poder continuar, deberá conceder acceso al menos a una de las pantallas que se muestran en la tabla.", OperationType = clsReferencias.TYPE_MESSAGE_Error });
                         }
                     }
                     else
                     {
-                        clsutilidades.OpenMessage(new Operacion() { Mensaje = "Para poder continuar, deberá seleccionar al menos un recinto al cual se le crearán los accesos.", OperationType = clsReferencias.TYPE_MESSAGE_Error });
+                        clsUtilidades.OpenMessage(new Operacion() { Mensaje = "Para poder continuar, deberá seleccionar al menos un recinto al cual se le crearán los accesos.", OperationType = clsReferencias.TYPE_MESSAGE_Error });
                     }
                 }
             }
             catch (Exception ex)
             {
-                clsutilidades.OpenMessage(new Operacion() { Mensaje = new clsException(ex).ErrorMessage(), OperationType = clsReferencias.TYPE_MESSAGE_Error });
+                clsUtilidades.OpenMessage(new Operacion() { Mensaje = new clsException(ex).ErrorMessage(), OperationType = clsReferencias.TYPE_MESSAGE_Error });
             }
         }
 

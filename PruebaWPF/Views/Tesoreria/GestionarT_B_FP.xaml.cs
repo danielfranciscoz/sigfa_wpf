@@ -139,7 +139,7 @@ namespace PruebaWPF.Views.Tesoreria
 
         private void Diseñar()
         {
-            clsutilidades.Dialog_ModalDesign(this);
+            clsUtilidades.Dialog_ModalDesign(this);
         }
 
         private void CargarCombo()
@@ -224,13 +224,13 @@ namespace PruebaWPF.Views.Tesoreria
             {
                 if (ValidarCampos())
                 {
-                    clsutilidades.OpenMessage(Guardar(), this);
+                    clsUtilidades.OpenMessage(Guardar(), this);
                     Finalizar();
                 }
             }
             catch (Exception ex)
             {
-                clsutilidades.OpenMessage(new Operacion() { Mensaje = new clsException(ex).ErrorMessage(), OperationType = clsReferencias.TYPE_MESSAGE_Error });
+                clsUtilidades.OpenMessage(new Operacion() { Mensaje = new clsException(ex).ErrorMessage(), OperationType = clsReferencias.TYPE_MESSAGE_Error });
             }
         }
 
@@ -308,7 +308,7 @@ namespace PruebaWPF.Views.Tesoreria
                     {
                         if (identificacion.MaxCaracteres == 0)
                         {
-                            txtMaxCaracteres.BorderBrush = clsutilidades.BorderError();
+                            txtMaxCaracteres.BorderBrush = clsUtilidades.BorderError();
                             flag = false;
                         }
                     }
@@ -357,7 +357,7 @@ namespace PruebaWPF.Views.Tesoreria
                 case "Encabezado y Pie de Recibo":
                     if (cboRecinto.Items.Count == 0)
                     {
-                        clsutilidades.OpenMessage(new Operacion() { Mensaje = "Actualmente no puede agregar un nuevo registro debido a que no se ha encontrado un nuevo recinto al cual crear el encabezado y pie de recibo, esta información es basada en sus permisos de usuario.", OperationType = clsReferencias.TYPE_MESSAGE_Advertencia });
+                        clsUtilidades.OpenMessage(new Operacion() { Mensaje = "Actualmente no puede agregar un nuevo registro debido a que no se ha encontrado un nuevo recinto al cual crear el encabezado y pie de recibo, esta información es basada en sus permisos de usuario.", OperationType = clsReferencias.TYPE_MESSAGE_Advertencia });
                         Close();
                     }
                     break;

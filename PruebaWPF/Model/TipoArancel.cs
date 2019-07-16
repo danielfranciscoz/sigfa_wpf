@@ -22,6 +22,7 @@ namespace PruebaWPF.Model
     
         public int IdTipoArancel { get; set; }
         public string TipoArancel1 { get; set; }
+        public Nullable<int> IdDepositanteUnico { get; set; }
         public string UsuarioCreacion { get; set; }
         public System.DateTime FechaCreacion { get; set; }
         public bool regAnulado { get; set; }
@@ -29,5 +30,6 @@ namespace PruebaWPF.Model
         public virtual Usuario Usuario { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Arancel> Arancel { get; set; }
+        public virtual TipoDeposito TipoDeposito { get; set; }
     }
 }

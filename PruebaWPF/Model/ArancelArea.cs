@@ -14,15 +14,28 @@ namespace PruebaWPF.Model
     
     public partial class ArancelArea
     {
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
+        public ArancelArea()
+        {
+            this.ArancelPrecio = new HashSet<ArancelPrecio>();
+            this.AreaPagoDelegado = new HashSet<AreaPagoDelegado>();
+            this.UsuarioArancel = new HashSet<UsuarioArancel>();
+        }
+    
         public int IdArancelArea { get; set; }
         public int IdArancel { get; set; }
         public string IdArea { get; set; }
-        public string IdAreaIngreso { get; set; }
-        public int IdRecinto { get; set; }
         public System.DateTime FechaCreacion { get; set; }
         public string UsuarioCreacion { get; set; }
+        public bool regAnulado { get; set; }
     
         public virtual Usuario Usuario { get; set; }
         public virtual Arancel Arancel { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<ArancelPrecio> ArancelPrecio { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<AreaPagoDelegado> AreaPagoDelegado { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<UsuarioArancel> UsuarioArancel { get; set; }
     }
 }

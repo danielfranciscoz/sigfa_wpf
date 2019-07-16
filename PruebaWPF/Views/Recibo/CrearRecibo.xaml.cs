@@ -1,5 +1,4 @@
 ﻿using PruebaWPF.Clases;
-using PruebaWPF.Helper;
 using PruebaWPF.Model;
 using PruebaWPF.Referencias;
 using PruebaWPF.ViewModel;
@@ -23,7 +22,6 @@ namespace PruebaWPF.Views.Recibo
     {
         private ObservableCollection<DetOrdenPagoSon> items { get; set; }
         private ReciboViewModel controller;
-        private Operacion o;
         private OrdenPagoSon orden;
         private List<Moneda> monedas;
         private ObservableCollection<ReciboPagoSon> formaPago;
@@ -31,7 +29,9 @@ namespace PruebaWPF.Views.Recibo
         private ReciboSon recibo;
         List<MonedaMonto> aPagar;
         List<MonedaMonto> pendiente;
+        private ObservableCollection<ArancelPrecio> aranceles;
         private fn_ConsultarInfoExterna_Result infoExterna;
+        private TipoArancel tipoArancel;
 
         //TODO Cambiar la forma de los recibos, ya no serán series sino recintos
 
@@ -62,6 +62,7 @@ namespace PruebaWPF.Views.Recibo
             Inicializar();
             DataContext = op;
             BloqueoOrdenPago();
+            CargarTiposDeposito(op.IdArea);
             isOrdenPago = true;
             Diseñar();
         }
@@ -71,7 +72,7 @@ namespace PruebaWPF.Views.Recibo
             txtRecibimos.IsEnabled = false;
             txtConcepto.IsEnabled = false;
             txtMonto.IsEnabled = false;
-            txtExonerado.IsEnabled = false;
+            cboTipoArancel.IsEnabled = false;
             txtArea.IsEnabled = false;
             txtPorCuenta.IsEnabled = false;
             txtIdentificador.IsEnabled = false;
@@ -81,7 +82,7 @@ namespace PruebaWPF.Views.Recibo
             cboTipoDeposito.IsEnabled = false;
 
             btnSelectArea.IsEnabled = false;
-            btnFindTipoDeposito.IsEnabled = false;
+            //btnFindTipoDeposito.IsEnabled = false;
             btnSelectTipoDeposito.IsEnabled = false;
             btnAdd.IsEnabled = false;
 
@@ -105,14 +106,27 @@ namespace PruebaWPF.Views.Recibo
 
         private void Diseñar()
         {
-            clsutilidades.Dialog_ModalDesign(this);
+            clsUtilidades.Dialog_ModalDesign(this);
         }
+
+
         private void CargarAranceles(string idarea, int idtipodeposito)
         {
             if (idarea != null && (idtipodeposito != -1 && idtipodeposito != 0))
             {
-                cboArancel.ItemsSource = controller.ObtenerAranceles(idarea, idtipodeposito).ToList();
+                tipoArancel = (TipoArancel)cboTipoArancel.SelectedItem;
+
+                if (tipoArancel != null)
+                {
+                    aranceles = new ObservableCollection<ArancelPrecio>(controller.ObtenerAranceles(idarea, idtipodeposito, tipoArancel.IdTipoArancel, txtIdentificador.Text).ToList());
+                    cboArancel.ItemsSource = aranceles;
+                }
             }
+        }
+
+        private void CargarTipoAranceles()
+        {
+            cboTipoArancel.ItemsSource = controller.ObtenerTipoArancel();
         }
 
 
@@ -124,17 +138,40 @@ namespace PruebaWPF.Views.Recibo
             clsValidateInput.Validate(txtAutorizacion, clsValidateInput.OnlyNumber);
             clsValidateInput.Validate(txtTarjeta, clsValidateInput.OnlyNumber);
 
-            validate.AsignarBorderNormal(new Control[] { txtArea, cboTipoDeposito, txtIdentificador, txtPorCuenta, txtRecibimos, cboFuenteFinanciamiento, cboArancel, txtMonto, cboMonedaDeuda, cboFormaPago, txtMontoPago, cboMonedaPago, txtEmisor, txtBono, cboBanco, txtCuenta, txtNumeroCK, cboTarjeta, txtAutorizacion, txtTarjeta, cboTipo, txtTransaccion });
+            validate.AsignarBorderNormal(new Control[] { txtArea, cboTipoDeposito, txtIdentificador, txtPorCuenta, txtRecibimos, cboFuenteFinanciamiento, cboTipoArancel, cboArancel, txtMonto, cboMonedaDeuda, cboFormaPago, txtMontoPago, cboMonedaPago, txtEmisor, txtBono, cboBanco, txtCuenta, txtNumeroCK, cboTarjeta, txtAutorizacion, txtTarjeta, cboTipo, txtTransaccion });
 
         }
 
         void Categories_CollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
         {
-            if (e.Action == System.Collections.Specialized.NotifyCollectionChangedAction.Remove)
+            if (e.Action == System.Collections.Specialized.NotifyCollectionChangedAction.Remove || e.Action == System.Collections.Specialized.NotifyCollectionChangedAction.Add)
             {
-
+                if (items.Any())
+                {
+                    CamposReciboEnable(false);
+                }
+                else
+                {
+                    CamposReciboEnable(true);
+                }
             }
-            ContarRegistros();
+            //ContarRegistros();
+        }
+
+        private void CamposReciboEnable(bool v)
+        {
+            cboTipoArancel.IsEnabled = v;
+            cboTipoDeposito.IsEnabled = v;
+            txtIdentificador.IsEnabled = v;
+
+            if (tipoArancel.IdDepositanteUnico == null)
+            {
+                btnSelectArea.IsEnabled = v;
+            }
+            else
+            {
+                btnSelectTipoDeposito.IsEnabled = v;
+            }
         }
 
         private void Pagos_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
@@ -154,10 +191,10 @@ namespace PruebaWPF.Views.Recibo
 
         }
 
-        private void ContarRegistros()
-        {
-            lblCantidadRegistros.Text = items.Count.ToString();
-        }
+        //private void ContarRegistros()
+        //{
+        //    lblCantidadRegistros.Text = items.Count.ToString();
+        //}
 
         private void ContarRegistrosPay()
         {
@@ -180,22 +217,23 @@ namespace PruebaWPF.Views.Recibo
                 }
 
                 items.CollectionChanged += new System.Collections.Specialized.NotifyCollectionChangedEventHandler(Categories_CollectionChanged);
-                ContarRegistros();
+                //ContarRegistros();
                 tblDetalles.ItemsSource = items;
 
                 CargarFuentesFinanciamiento();
                 CargarMonedas();
                 CargarFormasPago();
-
+                CargarTipoAranceles();
                 if (isOrdenPago)
                 {
                     cboTipoDeposito.SelectedValue = orden.IdTipoDeposito;
                     AsignarDatos(InformacionResult(orden.IdTipoDeposito, orden.Identificador, true));
+                    cboTipoArancel.SelectedValue = orden.DetOrdenPagoArancel.First().ArancelPrecio.ArancelArea.Arancel.IdTipoArancel; //Selecciono el primero TipoArancel debido a que todos los aranceles deberan en una orden de pago deben perternecer al mismo tipo de arancel
                 }
             }
             catch (Exception ex)
             {
-                clsutilidades.OpenMessage(new Operacion() { Mensaje = new clsException(ex).ErrorMessage(), OperationType = clsReferencias.TYPE_MESSAGE_Error });
+                clsUtilidades.OpenMessage(new Operacion() { Mensaje = new clsException(ex).ErrorMessage(), OperationType = clsReferencias.TYPE_MESSAGE_Error });
                 Close();
             }
 
@@ -205,7 +243,11 @@ namespace PruebaWPF.Views.Recibo
 
         private void CargarTiposDeposito(string IdArea)
         {
-            cboTipoDeposito.ItemsSource = controller.ObtenerTipoCuenta(IdArea);
+            if (cboTipoArancel.SelectedIndex != -1)
+            {
+                tipoArancel = (TipoArancel)cboTipoArancel.SelectedItem;
+                cboTipoDeposito.ItemsSource = controller.ObtenerTipoCuenta(IdArea, tipoArancel);
+            }
         }
 
 
@@ -247,7 +289,7 @@ namespace PruebaWPF.Views.Recibo
                 recibo.IdRecibo = int.Parse(codigo[0]);
                 recibo.Serie = codigo[1];
                 recibo.IdDetAperturaCaja = int.Parse(codigo[2]);
-                recibo.IdPeriodoEspecifico = clsSessionHelper.periodoEspecifico.IdPeriodoEspecifico;
+                //recibo.IdPeriodoEspecifico = clsSessionHelper.periodoEspecifico.IdPeriodoEspecifico;
                 recibo.IdInfoRecibo = int.Parse(codigo[3]);
                 recibo.IdOrdenPago = orden.IdOrdenPago;
                 txtCodRecibo.Text = codigo[0] + codigo[1];
@@ -426,17 +468,23 @@ namespace PruebaWPF.Views.Recibo
 
         private void btnDelete_Click(object sender, RoutedEventArgs e)
         {
+            aranceles.Add(((DetOrdenPagoSon)tblDetalles.CurrentItem).ArancelPrecio);
             items.Remove((DetOrdenPagoSon)tblDetalles.CurrentItem);
+
         }
 
         private void btnSelectArea_Click(object sender, RoutedEventArgs e)
         {
-            SeleccionarArea();
+            if (clsValidateInput.ValidarSeleccion(cboTipoArancel))
+            {
+                tipoArancel = (TipoArancel)cboTipoArancel.SelectedItem;
+                SeleccionarArea(tipoArancel.IdTipoArancel);
+            }
         }
 
-        private void SeleccionarArea()
+        private void SeleccionarArea(int idTipoArancel)
         {
-            AreasRRHH areas = new AreasRRHH();
+            AreasRRHH areas = new AreasRRHH(idTipoArancel);
             areas.ShowDialog();
 
             if (areas.SelectedArea != null)
@@ -445,9 +493,9 @@ namespace PruebaWPF.Views.Recibo
                 orden.IdArea = areas.SelectedArea.codigo;
                 ActualizarCampo(new TextBox[] { txtArea });
                 txtArea.Focus();
-                cboTipoDeposito.Focus();
-                CargarAranceles(orden.IdArea, orden.IdTipoDeposito);
+                cboTipoArancel.Focus();
                 CargarTiposDeposito(orden.IdArea);
+                CargarAranceles(orden.IdArea, orden.IdTipoDeposito);
             }
 
         }
@@ -456,7 +504,7 @@ namespace PruebaWPF.Views.Recibo
         {
             for (int i = 0; i < textbox.Length; i++)
             {
-                clsutilidades.UpdateControl(textbox[i]);
+                clsUtilidades.UpdateControl(textbox[i]);
             }
         }
 
@@ -493,15 +541,22 @@ namespace PruebaWPF.Views.Recibo
 
         private void AddArancel()
         {
+            ArancelPrecio a = (ArancelPrecio)cboArancel.SelectedItem;
+            Exoneracion exoneracion = controller.FindExoneracionArancel(orden.Identificador,orden.IdTipoDeposito,a.IdArancelPrecio);
             items.Add(new DetOrdenPagoSon()
             {
                 PrecioVariable = Decimal.Parse(txtMonto.Text.ToString()),
                 Concepto = txtConcepto.Text,
-                Descuento = Decimal.Parse(txtExonerado.Text.Equals("") ? "0.00" : txtExonerado.Text),
-                ArancelPrecio = (ArancelPrecio)cboArancel.SelectedItem
+                Exoneracion = exoneracion,
+                ArancelPrecio = a
             });
 
-            LimpiarCampos(new Control[] { cboArancel, txtMonto, cboMonedaDeuda, txtConcepto, txtExonerado });
+            aranceles.Remove((ArancelPrecio)cboArancel.SelectedItem);
+            //aranceles.RemoveAt(cboArancel.SelectedIndex);
+            //cboArancel.ItemsSource = null;
+            //cboArancel.ItemsSource = aranceles;
+
+            LimpiarCampos(new Control[] { cboArancel, txtMonto, cboMonedaDeuda, txtConcepto });
             txtMonto.IsEnabled = true;
         }
 
@@ -697,17 +752,17 @@ namespace PruebaWPF.Views.Recibo
             orden.Identificador = selectedResult.Id;
             orden.PorCuenta = selectedResult.Nombre;
 
-            //if (string.IsNullOrEmpty(orden.Recibimos)) //Esta validación era para cuando el campo "Recibimos de" era visible
-            //{
-            orden.Recibimos = selectedResult.Nombre;
-            //}
+            if (string.IsNullOrEmpty(orden.Recibimos))
+            {
+                orden.Recibimos = selectedResult.Nombre;
+            }
 
             ActualizarCampo(new TextBox[] { txtIdentificador, txtPorCuenta, txtRecibimos });
 
             //Si los campos estan rojos entonces les paso el foco para que cambien a azul
             txtIdentificador.Focus();
             txtPorCuenta.Focus();
-            //txtRecibimos.Focus(); //Este campo pasa a ser dejado de usar visualmente
+            txtRecibimos.Focus();
         }
 
         private void cboTipoDeposito_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -726,7 +781,7 @@ namespace PruebaWPF.Views.Recibo
                     if (cboTipoDeposito.SelectedValue != null)
                     {
                         orden.IdTipoDeposito = int.Parse(cboTipoDeposito.SelectedValue.ToString());
-                        CargarAranceles(orden.IdArea, orden.IdTipoDeposito);
+                        //CargarAranceles(orden.IdArea, orden.IdTipoDeposito);
 
                     }
                     ActualizarCampo(new TextBox[] { txtIdentificador, txtPorCuenta, txtRecibimos });
@@ -740,10 +795,6 @@ namespace PruebaWPF.Views.Recibo
             }
         }
 
-        private void btnFindTipoDeposito_Click(object sender, RoutedEventArgs e)
-        {
-            BuscarInformacion();
-        }
 
         private void txtIdentificador_KeyDown(object sender, KeyEventArgs e)
         {
@@ -755,7 +806,16 @@ namespace PruebaWPF.Views.Recibo
 
         private fn_ConsultarInfoExterna_Result InformacionResult(int id, string Identificador, bool BusquedaInterna)
         {
-            return (new SearchTipoDepositoViewModel().ObtenerTipoDeposito(id, Identificador, BusquedaInterna, "", 1).FirstOrDefault());
+            if (cboTipoArancel.SelectedIndex != -1)
+            {
+                tipoArancel = (TipoArancel)cboTipoArancel.SelectedItem;
+                return (new SearchTipoDepositoViewModel().ObtenerTipoDeposito(id, Identificador, BusquedaInterna, "", 1, tipoArancel.IdTipoArancel).FirstOrDefault());
+            }
+            else
+            {
+                return (new SearchTipoDepositoViewModel().ObtenerTipoDeposito(id, Identificador, BusquedaInterna, "", 1, null).FirstOrDefault());
+
+            }
         }
 
         private void BuscarInformacion()
@@ -765,11 +825,16 @@ namespace PruebaWPF.Views.Recibo
                 try
                 {
                     fn_ConsultarInfoExterna_Result data = InformacionResult(int.Parse(cboTipoDeposito.SelectedValue.ToString()), txtIdentificador.Text, false);
-                    AsignarDatos(data);
+                    if (data != null)
+                    {
+                        CargarAranceles(orden.IdArea, orden.IdTipoDeposito);
+                        AsignarDatos(data);
+                    }
                 }
                 catch (Exception ex)
                 {
-                    clsutilidades.OpenMessage(new Operacion() { Mensaje = new clsException(ex).ErrorMessage(), OperationType = clsReferencias.TYPE_MESSAGE_Error });
+                    cboArancel.ItemsSource = null;
+                    clsUtilidades.OpenMessage(new Operacion() { Mensaje = new clsException(ex).ErrorMessage(), OperationType = clsReferencias.TYPE_MESSAGE_Error });
                 }
             }
         }
@@ -779,7 +844,7 @@ namespace PruebaWPF.Views.Recibo
             try
             {
                 //Validación de controles vacíos
-                if (clsValidateInput.ValidateALL(new Control[] { txtArea, cboTipoDeposito, txtIdentificador, txtPorCuenta, txtRecibimos, cboFuenteFinanciamiento }))
+                if (clsValidateInput.ValidateALL(new Control[] { (btnSelectArea.IsEnabled ? txtArea : null), cboTipoDeposito, txtIdentificador, txtPorCuenta, txtRecibimos, cboFuenteFinanciamiento, cboTipoArancel }))
                 {
                     //validación de tabla vacía
                     if (items.Count > 0)
@@ -798,7 +863,7 @@ namespace PruebaWPF.Views.Recibo
                                     {
                                         info = item.Moneda + "\t" + item.Valor + "\t" + (item.Valor < 0 ? "(Debe restar esta cantidad a alguna forma de pago)" : "El usuario aún debe entregar esta cantidad a la caja") + "\n" + info;
                                     }
-                                    clsutilidades.OpenMessage(new Operacion()
+                                    clsUtilidades.OpenMessage(new Operacion()
                                     {
                                         Mensaje = "\nPara generar el recibo se requiere que los saldos de la columna PENDIENTE sean iguales a cero (0.00).\nPor favor corrija la siguiente información: \n\n" + info + "\nEn algunas ocasiones, habrán decimales de mas o de menos, esto se debe a que la conversión\nde moneda genera ciertos variaciones por la cantidad de decimales que se usan en las operaciones.",
                                         OperationType = clsReferencias.TYPE_MESSAGE_Advertencia
@@ -820,25 +885,25 @@ namespace PruebaWPF.Views.Recibo
                         }
                         else
                         {
-                            clsutilidades.OpenMessage(new Operacion() { Mensaje = clsReferencias.MESSAGE_Total_Menor_Cero, OperationType = clsReferencias.TYPE_MESSAGE_Error });
+                            clsUtilidades.OpenMessage(new Operacion() { Mensaje = clsReferencias.MESSAGE_Total_Menor_Cero, OperationType = clsReferencias.TYPE_MESSAGE_Error });
                         }
                     }
                     else
                     {
-                        clsutilidades.OpenMessage(new Operacion() { Mensaje = clsReferencias.MESSAGE_Cero_Registro_Table, OperationType = clsReferencias.TYPE_MESSAGE_Error });
+                        clsUtilidades.OpenMessage(new Operacion() { Mensaje = clsReferencias.MESSAGE_Cero_Registro_Table, OperationType = clsReferencias.TYPE_MESSAGE_Error });
                     }
                 }
             }
             catch (Exception ex)
             {
-                clsutilidades.OpenMessage(new Operacion() { Mensaje = new clsException(ex).ErrorMessage(), OperationType = clsReferencias.TYPE_MESSAGE_Error });
+                clsUtilidades.OpenMessage(new Operacion() { Mensaje = new clsException(ex).ErrorMessage(), OperationType = clsReferencias.TYPE_MESSAGE_Error });
             }
         }
 
         private void GenerarRecibo()
         {
             orden.Identificador = infoExterna.IdInterno; //Le asigno el id interno de las tablas, porque el que tiene asignado previamente es el id visible a los usuarios
-            recibo = controller.GenerarRecibo(recibo, orden, items.ToList(), formaPago.ToList());
+            recibo = controller.GenerarRecibo(tipoArancel, recibo, orden, items.ToList(), formaPago.ToList());
             rptRecibo boucher = new rptRecibo(recibo, true);
             Finalizar();
             boucher.ShowDialog();
@@ -880,7 +945,7 @@ namespace PruebaWPF.Views.Recibo
 
                 txtMonto.IsEnabled = true;
                 txtMonto.Focus();
-                txtMonto.IsEnabled = arancel.Arancel.isPrecioVariable;
+                txtMonto.IsEnabled = arancel.ArancelArea.Arancel.isPrecioVariable;
 
                 //Las 3 lineas anteriores son necesarias para borrar el borde de error en caso de que el campo lo haya estado marcando
                 cboMonedaDeuda.IsEnabled = false;
@@ -914,6 +979,38 @@ namespace PruebaWPF.Views.Recibo
         private void btnClose_Click(object sender, RoutedEventArgs e)
         {
             Close();
+        }
+
+        private void CboTipoArancel_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            BotonBusquedaArea();
+            LimpiarArea();
+            LimpiarCargar();
+        }
+
+        private void BotonBusquedaArea()
+        {
+            if (cboTipoArancel.SelectedIndex != -1)
+            {
+                tipoArancel = (TipoArancel)cboTipoArancel.SelectedItem;
+                if (tipoArancel.IdDepositanteUnico == null)
+                {
+                    btnSelectArea.IsEnabled = true;
+                    cboTipoDeposito.ItemsSource = new List<TipoArancel>();
+                }
+                else
+                {
+                    btnSelectArea.IsEnabled = false;
+                    CargarTiposDeposito("");
+                }
+            }
+        }
+
+        private void LimpiarArea()
+        {
+            orden.IdArea = "";
+            orden.Area = "";
+            ActualizarCampo(new TextBox[] { txtArea });
         }
     }
 

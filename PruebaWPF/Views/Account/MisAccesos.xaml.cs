@@ -40,7 +40,7 @@ namespace PruebaWPF.Views.Account
         }
         private void Diseñar()
         {
-            clsutilidades.Dialog_ModalDesign(this);
+            clsUtilidades.Dialog_ModalDesign(this);
         }
 
         private void btnClose_Click(object sender, RoutedEventArgs e)
@@ -52,12 +52,12 @@ namespace PruebaWPF.Views.Account
         {
             try
             {
-                clsutilidades.OpenMessage(Guardar(), this);
+                clsUtilidades.OpenMessage(Guardar(), this);
                 Finalizar();
             }
             catch (Exception ex)
             {
-                clsutilidades.OpenMessage(new Operacion() { Mensaje = new clsException(ex).ErrorMessage(), OperationType = clsReferencias.TYPE_MESSAGE_Error });
+                clsUtilidades.OpenMessage(new Operacion() { Mensaje = new clsException(ex).ErrorMessage(), OperationType = clsReferencias.TYPE_MESSAGE_Error });
             }
         }
 

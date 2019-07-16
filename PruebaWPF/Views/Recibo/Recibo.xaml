@@ -56,14 +56,14 @@
 
             </StackPanel>
 
-            <DockPanel  Grid.Row="1" VerticalAlignment="Stretch">
+            <DockPanel  Grid.Row="1" HorizontalAlignment="Stretch">
                 <Grid>
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="*"/>
-                        <ColumnDefinition Width="10"/>
-                        <ColumnDefinition Width="350"/>
-                    </Grid.ColumnDefinitions>
-                    <DockPanel Grid.Column="0" x:Name="panelGrid" >
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="10"/>
+                        <RowDefinition Height="200"/>
+                    </Grid.RowDefinitions>
+                    <DockPanel Grid.Row="0" x:Name="panelGrid" >
                         <DataGrid Name="tblRecibo" CanUserDeleteRows="False" CanUserAddRows="False" AutoGenerateColumns="False" SelectionUnit="FullRow" SelectionMode="Single" SelectionChanged="tblRecibo_SelectionChanged">
                             <DataGrid.RowStyle>
 
@@ -115,31 +115,32 @@
 
                         </DataGrid>
                     </DockPanel>
-                    <Separator Grid.Column="1">
-                        <Separator.LayoutTransform>
-                            <RotateTransform Angle="90" />
-                        </Separator.LayoutTransform>
+                    <Separator Grid.Row="1">
+
                     </Separator>
-                    <DockPanel Grid.Column="2" >
+                    <DockPanel Grid.Row="2" >
                         <Grid>
-                            <Grid.RowDefinitions>
-                                <RowDefinition Height="*"/>
-                                <RowDefinition Height="10"/>
-                                <RowDefinition Height="*"/>
-                            </Grid.RowDefinitions>
-                            <Grid Grid.Row="0">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="10"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+                            <Grid Grid.Column="0">
                                 <Grid.RowDefinitions>
                                     <RowDefinition Height="auto"/>
                                     <RowDefinition Height="*"/>
                                 </Grid.RowDefinitions>
 
                                 <StackPanel Grid.Row="0" Orientation="Vertical">
-                                    <StackPanel Orientation="Horizontal">
+                                    <DockPanel Margin="10 0 0 0">
                                         <TextBlock VerticalAlignment="Center" FontWeight="Bold">Cobros realizados</TextBlock>
-                                        <TextBlock VerticalAlignment="Center" Margin="20 0 0 0" Foreground="Gray">
-
+                                        <TextBlock VerticalAlignment="Center" HorizontalAlignment="Right" Margin="20 0 10 0" Foreground="Gray">
+                                            <TextBlock.Inlines>
+                                                <Run Text="{Binding ElementName=tblReciboDet,Path=Items.Count,Mode=OneWay}"></Run>
+                                                <Run Text=" Arancel(es)"></Run>
+                                            </TextBlock.Inlines>
                                         </TextBlock>
-                                    </StackPanel>
+                                    </DockPanel>
                                     <Separator/>
                                 </StackPanel>
                                 <DockPanel Grid.Row="1" HorizontalAlignment="Stretch" x:Name="panelGridDet">
@@ -156,22 +157,27 @@
                                     </DataGrid>
                                 </DockPanel>
                             </Grid>
-                            <Separator Grid.Row="1">
-
+                            <Separator Grid.Column="1">
+                                <Separator.LayoutTransform>
+                                    <RotateTransform Angle="90" />
+                                </Separator.LayoutTransform>
                             </Separator>
-                            <Grid Grid.Row="2">
+                            <Grid Grid.Column="2">
                                 <Grid.RowDefinitions>
                                     <RowDefinition Height="auto"/>
                                     <RowDefinition Height="*"/>
                                 </Grid.RowDefinitions>
                                 
                                 <StackPanel Grid.Row="0" Orientation="Vertical">
-                                    <StackPanel Orientation="Horizontal">
+                                    <DockPanel  Margin="10 0 0 0">
                                         <TextBlock VerticalAlignment="Center" FontWeight="Bold">Detalle de pagos</TextBlock>
-                                        <TextBlock VerticalAlignment="Center" Margin="20 0 0 0" Foreground="Gray">
-
+                                        <TextBlock VerticalAlignment="Center" HorizontalAlignment="Right" Margin="20 0 10 0" Foreground="Gray">
+                                            <TextBlock.Inlines>
+                                                <Run Text="{Binding ElementName=tblReciboPay,Path=Items.Count,Mode=OneWay}"></Run>
+                                                <Run Text="Pago(s)"></Run>
+                                            </TextBlock.Inlines>
                                         </TextBlock>
-                                    </StackPanel>
+                                    </DockPanel>
                                     <Separator/>
                                 </StackPanel>
                                 <DockPanel Grid.Row="1" x:Name="panelGridPay">

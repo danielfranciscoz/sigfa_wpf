@@ -74,7 +74,7 @@ namespace PruebaWPF.Views.Administracion
                 tblPantallasToAccess.Columns[0].Visibility = Visibility.Collapsed;
                 tblPantallasToAccess.Columns[1].Visibility = Visibility.Collapsed;
             }
-            clsutilidades.Dialog_ModalDesign(this);
+            clsUtilidades.Dialog_ModalDesign(this);
         }
 
         private void CargarCombo()
@@ -146,24 +146,24 @@ namespace PruebaWPF.Views.Administracion
                 
                 if (validarSeleccionPantallas())
                 {
-                    clsutilidades.OpenMessage(Guardar(), this);
+                    clsUtilidades.OpenMessage(Guardar(), this);
                     Finalizar();
                 }
                 else
                 {
                     if (OnlyAccesoDirecto)
                     {
-                        clsutilidades.OpenMessage(new Operacion() { Mensaje = "Para poder continuar, deberá crear acceso directo al menos a una de las pantallas que se muestran en la tabla.", OperationType = clsReferencias.TYPE_MESSAGE_Error });
+                        clsUtilidades.OpenMessage(new Operacion() { Mensaje = "Para poder continuar, deberá crear acceso directo al menos a una de las pantallas que se muestran en la tabla.", OperationType = clsReferencias.TYPE_MESSAGE_Error });
                     }
                     else
                     {
-                        clsutilidades.OpenMessage(new Operacion() { Mensaje = "Para poder continuar, deberá conceder acceso al menos a una pantalla.", OperationType = clsReferencias.TYPE_MESSAGE_Error });
+                        clsUtilidades.OpenMessage(new Operacion() { Mensaje = "Para poder continuar, deberá conceder acceso al menos a una pantalla.", OperationType = clsReferencias.TYPE_MESSAGE_Error });
                     }
                 }
             }
             catch (Exception ex)
             {
-                clsutilidades.OpenMessage(new Operacion() { Mensaje = new clsException(ex).ErrorMessage(), OperationType = clsReferencias.TYPE_MESSAGE_Error });
+                clsUtilidades.OpenMessage(new Operacion() { Mensaje = new clsException(ex).ErrorMessage(), OperationType = clsReferencias.TYPE_MESSAGE_Error });
             }
         }
 
@@ -174,7 +174,7 @@ namespace PruebaWPF.Views.Administracion
                 CargarPantallas();
                 if (paccess.Count==0)
                 {
-                    clsutilidades.OpenMessage(new Operacion() { Mensaje = "Actualmente no es posible crear mas accesos directos para este perfil.", OperationType = clsReferencias.TYPE_MESSAGE_Error });
+                    clsUtilidades.OpenMessage(new Operacion() { Mensaje = "Actualmente no es posible crear mas accesos directos para este perfil.", OperationType = clsReferencias.TYPE_MESSAGE_Error });
                     Close();
                 }
             }

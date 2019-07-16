@@ -4,7 +4,9 @@ using PruebaWPF.Interface;
 using PruebaWPF.Model;
 using System;
 using System.Collections.Generic;
+using System.Data.SqlClient;
 using System.Linq;
+using System.Xml.Linq;
 
 namespace PruebaWPF.ViewModel
 {
@@ -14,6 +16,7 @@ namespace PruebaWPF.ViewModel
         private Pantalla pantalla;
         List<vw_RecintosRH> r;
         private SecurityViewModel seguridad;
+
         public ReciboViewModel() { }
 
         public ReciboViewModel(Pantalla pantalla)
@@ -67,10 +70,21 @@ namespace PruebaWPF.ViewModel
             }
         }
 
-        public List<VariacionCambiariaSon> FindTipoCambio(ReciboSon recibo)
+        public List<VariacionCambiariaSon> FindTipoCambio(ReciboSon recibo, List<DetReciboSon> detalleR)
         {
             List<VariacionCambiariaSon> datos = new List<VariacionCambiariaSon>();
-            var monedasDetalles = DetallesRecibo(recibo).Select(s => new VariacionCambiaria() { Moneda = s.ArancelPrecio.Moneda });
+
+            List<VariacionCambiaria> monedasDetalles;
+
+            if (detalleR == null)
+            {
+                monedasDetalles = DetallesRecibo(recibo).Select(s => new VariacionCambiaria() { Moneda = s.ArancelPrecio.Moneda }).ToList();
+            }
+            else
+            {
+                monedasDetalles = detalleR.Select(s => new VariacionCambiaria() { Moneda = s.ArancelPrecio.Moneda }).ToList();
+            }
+
             var monedasPago = recibo.ReciboPago.Select(s => new VariacionCambiaria() { Moneda = s.Moneda });
             var monedas = monedasDetalles.Union(monedasPago).GroupBy(g => g.Moneda).Select(s => new VariacionCambiaria() { Moneda = s.Key }).ToList();
 
@@ -101,6 +115,7 @@ namespace PruebaWPF.ViewModel
                 IdFuenteFinanciamiento = r.IdFuenteFinanciamiento,
                 IdTipoDeposito = r.OrdenPago.IdTipoDeposito,
                 Identificador = r.OrdenPago.Identificador,
+                TextoIdentificador = r.OrdenPago.TextoIdentificador,
                 Recibimos = r.OrdenPago.Recibimos,
                 Fecha = r.Fecha,
                 IdOrdenPago = r.OrdenPago.IdOrdenPago,
@@ -128,6 +143,7 @@ namespace PruebaWPF.ViewModel
                 IdFuenteFinanciamiento = r.IdFuenteFinanciamiento,
                 IdTipoDeposito = r.IdTipoDeposito,
                 Identificador = r.Identificador,
+                TextoIdentificador = r.TextoIdentificador,
                 Recibimos = r.Recibimos,
                 Fecha = r.Fecha,
                 IdOrdenPago = r.IdOrdenPago,
@@ -140,7 +156,7 @@ namespace PruebaWPF.ViewModel
                 TipoDeposito = r.TipoDeposito,
                 UsuarioCreacion = r.UsuarioCreacion,
                 Recinto = clsSessionHelper.recintosMemory.Find(w => w.IdRecinto == r.InfoRecibo.IdRecinto).Siglas,
-                Area = clsSessionHelper.areasMemory.Find(w => w.codigo == r.IdArea).descripcion.ToUpper(),
+                Area = clsSessionHelper.areasMemory.FirstOrDefault(w => w.codigo == r.IdArea).descripcion.ToUpper(),
             }).ToList();
 
             //La información se obtiene de la orden de pago, cuando el recibo está anulado
@@ -154,6 +170,7 @@ namespace PruebaWPF.ViewModel
                 IdFuenteFinanciamiento = r.IdFuenteFinanciamiento,
                 IdTipoDeposito = r.ReciboAnulado.OrdenPago.IdTipoDeposito,
                 Identificador = r.ReciboAnulado.OrdenPago.Identificador,
+                TextoIdentificador = r.TextoIdentificador,
                 Recibimos = r.ReciboAnulado.OrdenPago.Recibimos,
                 Fecha = r.Fecha,
                 IdOrdenPago = r.ReciboAnulado.OrdenPago.IdOrdenPago,
@@ -181,6 +198,7 @@ namespace PruebaWPF.ViewModel
                 IdFuenteFinanciamiento = r.IdFuenteFinanciamiento,
                 IdTipoDeposito = r.IdTipoDeposito,
                 Identificador = r.Identificador,
+                TextoIdentificador = r.TextoIdentificador,
                 Recibimos = r.Recibimos,
                 Fecha = r.Fecha,
                 IdOrdenPago = r.IdOrdenPago,
@@ -201,17 +219,88 @@ namespace PruebaWPF.ViewModel
             return ListaConOrdenes.Union(listaSinOrdenes).Union(ListaAnuladosConOrdenes).Union(ListaAnuladosSinOrdenes).OrderByDescending(o => o.IdRecibo).ThenBy(o => o.Serie).ToList();
         }
 
-        public List<ArancelPrecio> ObtenerAranceles(string IdArea, int IdTipoDeposito)
+        public List<ArancelPrecio> ObtenerAranceles(string IdArea, int IdTipoDeposito, int IdTipoArancel, string criterio)
         {
+
+            List<ArancelSIRAValidate> arancelesSIRA = null;
+
+            //Obtengo los Ids correspondientes a Matricula y Prematricula
+            int IdMatricula = int.Parse(db.Configuracion.First(f => f.Llave == clsConfiguration.Llaves.IdMatricula.ToString()).Valor);
+            int IdPrematricula = int.Parse(db.Configuracion.First(f => f.Llave == clsConfiguration.Llaves.IdPrematricula.ToString()).Valor);
+
+            if (IdTipoArancel == IdMatricula || IdTipoArancel == IdPrematricula) //Si es matricula o prematricula hay que insertar el pago en el SIRA
+            {
+                if (string.IsNullOrEmpty(criterio))
+                {
+                    return new List<ArancelPrecio>();
+                }
+                arancelesSIRA = new List<ArancelSIRAValidate>();
+
+                List<SqlParameter> p = new List<SqlParameter>();
+                p.Add(new SqlParameter("@carnet", criterio));
+                //p.Add(new SqlParameter("@isMatricula", true));
+
+                arancelesSIRA = clsCallProcedure<ArancelSIRAValidate>.GetFromProcedure(db, "cat.sp_ArancelesSIRA @carnet", p).ToList();
+
+                if (!arancelesSIRA.Any())
+                {
+                    if (IdTipoArancel == IdMatricula)
+                    {
+                        throw new Exception("El estudiante no posee aranceles de Matricula por pagar");
+                    }
+                    else
+                    {
+                        throw new Exception("El candidato no posee aranceles de Prematricula por pagar");
+                    }
+                }
+                else if (arancelesSIRA.First().Mensaje != null)
+                {
+                    throw new Exception(arancelesSIRA.First().Mensaje);
+                }
+
+                var arancel = db.ArancelPrecio.ToList().Where(w => arancelesSIRA.Any(a => a.IdArancelPrecio == w.IdArancelPrecio));
+
+                return arancel.ToList();
+            }
+
+
             //Obtengo los Ids de Arancel que estan asociadas tanto al área como al tipo de depósito seleccionado por el usuario
-            var areas = db.ArancelArea.Where(w => w.IdArea.Equals(IdArea)).Select(s => s.IdArancel);
-            var TipoDepositos = db.ArancelTipoDeposito.Where(w => w.IdTipoDeposito == IdTipoDeposito).Select(s => s.IdArancel);
+            IEnumerable<int> areas;
+
+            if (arancelesSIRA != null)
+            {
+                areas = db.ArancelArea.ToList().Where(w => w.IdArea.Equals(IdArea) && arancelesSIRA.Any(a => a.IdArancel == w.IdArancel)).Select(s => s.IdArancel).ToArray();
+            }
+            else
+            {
+                areas = db.ArancelArea.Where(w => w.IdArea.Equals(IdArea)).Select(s => s.IdArancel).ToArray();
+            }
+            var TipoDepositos = db.ArancelTipoDeposito.Where(w => w.IdTipoDeposito == IdTipoDeposito).Select(s => s.IdArancel).ToList();
 
             //Obtengo los Ids en donde se intersecta la información anteriormente obtenida
             var IdIntersect = TipoDepositos.Intersect(areas).ToList();
 
-            //Finalmente con los Ids recuperados por la intersección se obtienen los aranceles.            
-            return db.ArancelPrecio.Where(w => IdIntersect.Any(w1 => w.IdArancel == w1) && w.regAnulado == false && w.Arancel.regAnulado == false).ToList();
+            //Finalmente con los Ids recuperados por la intersección se obtienen los aranceles.     
+            var r = db.ArancelPrecio.Where(w => IdIntersect.Any(w1 => w.ArancelArea.IdArancel == w1) && w.regAnulado == false && w.ArancelArea.Arancel.regAnulado == false && w.ArancelArea.Arancel.IdTipoArancel == IdTipoArancel).ToList();
+
+
+
+            return r;
+        }
+
+
+        public Exoneracion FindExoneracionArancel(string identificador, int idTipoDeposito, int idArancelPrecio)
+        {
+            Exoneracion exoneracion = db.Exoneracion.FirstOrDefault(f => f.Identificador == identificador && f.IdTipoDeposito == idTipoDeposito && f.IdArancelPrecio == idArancelPrecio && f.regAnulado == false && f.Autorizadopor != null && !f.DetOrdenPagoArancel.Any(a => a.OrdenPago.regAnulado == false) && !f.ReciboDet.Any(a => a.Recibo1.regAnulado == false));
+            return exoneracion;
+        }
+        public List<TipoArancel> ObtenerTipoArancel()
+        {
+            //Obtendo todos los aranceles que pueden pagar las áreas 
+            var arancelT = db.ArancelArea.Where(w => w.regAnulado == false && w.Arancel.regAnulado == false).Select(s => s.Arancel).ToList();
+
+            //Filtro por los diferentes tipos de arancel
+            return arancelT.Select(s => s.TipoArancel).Distinct().ToList();
         }
 
         public double ConvertirDivisa(int MonedaConvertir, int MonedaFinal, double Monto)
@@ -234,9 +323,9 @@ namespace PruebaWPF.ViewModel
                 IdDetalleOrdenPago = s.IdDetalleOrdenPago,
                 IdOrdenPago = s.IdOrdenPago,
                 Concepto = s.Concepto,
-                Descuento = s.Descuento,
                 regAnulado = s.regAnulado,
                 ArancelPrecio = s.ArancelPrecio,
+                IdPrecioArancel = s.IdPrecioArancel,
                 PrecioVariable = s.PrecioVariable,
             }).ToList();
         }
@@ -253,6 +342,11 @@ namespace PruebaWPF.ViewModel
             return result;
         }
 
+        public bool isAgenteExterno(int IdTipoDeposito)
+        {
+            return db.Configuracion.First(a => a.Llave == clsConfiguration.Llaves.IdAgenteExterno.ToString()).Valor == IdTipoDeposito.ToString();
+        }
+
         public List<DetReciboSon> DetallesRecibo(ReciboSon recibo)
         {
             List<DetReciboSon> detalles;
@@ -263,9 +357,10 @@ namespace PruebaWPF.ViewModel
                     IdRecibo = s.IdRecibo,
                     Serie = s.Serie,
                     ArancelPrecio = s.ArancelPrecio,
+                    IdPrecioArancel = s.IdPrecioArancel,
                     Concepto = s.Concepto,
                     Monto = s.Monto,
-                    Descuento = s.Descuento,
+                    Exoneracion = s.Exoneracion,
                 }).Where(w => w.IdRecibo == recibo.IdRecibo && w.Serie == recibo.Serie).ToList();
             }
             else
@@ -274,9 +369,10 @@ namespace PruebaWPF.ViewModel
                     s => new DetReciboSon()
                     {
                         ArancelPrecio = s.ArancelPrecio,
+                        IdPrecioArancel = s.IdPrecioArancel,
                         Concepto = s.Concepto,
                         Monto = s.PrecioVariable,
-                        Descuento = s.Descuento,
+                        Exoneracion = s.Exoneracion
                     }).ToList();
             }
 
@@ -382,15 +478,17 @@ namespace PruebaWPF.ViewModel
             throw new NotImplementedException();
         }
 
-        public ReciboSon GenerarRecibo(ReciboSon recibo, OrdenPagoSon ordenPago, List<DetOrdenPagoSon> detalleRecibo, List<ReciboPagoSon> detallePago)
+        public ReciboSon GenerarRecibo(TipoArancel tipoArancel, ReciboSon recibo, OrdenPagoSon ordenPago, List<DetOrdenPagoSon> detalleRecibo, List<ReciboPagoSon> detallePago)
         {
+            bool? isSIRAPagado = null;
+            bool isMatricula = true; //true:Matricula; false:Prematricula
+            Recibo1 roc = new Recibo1();
             using (var transaction = db.Database.BeginTransaction())
             {
                 try
                 {
                     List<ReciboDet> detalles = null;
                     OrdenPago orden;
-                    Recibo1 roc = new Recibo1();
 
                     //Información general del recibo que debe ser almacenada
                     roc.IdRecibo = recibo.IdRecibo;
@@ -401,10 +499,10 @@ namespace PruebaWPF.ViewModel
                     roc.Fecha = System.DateTime.Now;
                     roc.UsuarioCreacion = clsSessionHelper.usuario.Login;
                     roc.IdInfoRecibo = recibo.IdInfoRecibo;
-
                     if (ordenPago.IdOrdenPago == 0) // se crea el recibo sin una orden de pago
                     {
-                        roc.IdArea = ordenPago.IdArea;
+
+                        roc.IdArea = ordenPago.IdArea == "" ? "000" : ordenPago.IdArea;
                         roc.IdTipoDeposito = ordenPago.IdTipoDeposito;
                         roc.Identificador = ordenPago.Identificador;
                         roc.Recibimos = ordenPago.Recibimos;
@@ -416,11 +514,48 @@ namespace PruebaWPF.ViewModel
                             Serie = roc.Serie,
                             IdPrecioArancel = s.ArancelPrecio.IdArancelPrecio,
                             Concepto = s.Concepto,
-                            Monto = s.PrecioVariable,
-                            Descuento = s.Descuento,
+                            Monto = s.Total,
+                            Exoneracion = s.Exoneracion,
                             UsuarioCreacion = clsSessionHelper.usuario.Login,
                             FechaCreacion = System.DateTime.Now
                         }));
+
+                        int IdMatricula = int.Parse(db.Configuracion.First(f => f.Llave == clsConfiguration.Llaves.IdMatricula.ToString()).Valor);
+                        int IdPrematricula = int.Parse(db.Configuracion.First(f => f.Llave == clsConfiguration.Llaves.IdPrematricula.ToString()).Valor);
+
+                        if (tipoArancel.IdTipoArancel == IdMatricula || tipoArancel.IdTipoArancel == IdPrematricula) //Si es matricula o prematricula hay que insertar el pago en el SIRA
+                        {
+                            isSIRAPagado = false; //indico que el valor deja de ser null y pongo en falso el pago
+
+                            var xml = new XElement("Pagos",
+                                from det in detalles
+                                select new XElement("DetallePago",
+                                    new XElement("IdReciboDet", det.IdReciboDet),
+                                    new XElement("IdRecibo", det.IdRecibo),
+                                    new XElement("Serie", det.Serie),
+                                    new XElement("IdPrecioArancel", det.IdPrecioArancel),
+                                    new XElement("Monto", det.Monto),
+                                    new XElement("Exonerado", det.Exoneracion == null ? 0 : det.Exoneracion.Exonerado),
+                                    new XElement("UsuarioCreacion", det.UsuarioCreacion),
+                                    new XElement("FechaCreacion", det.FechaCreacion)
+                                )
+                                );
+
+                            isMatricula = (tipoArancel.IdTipoArancel == IdMatricula); //Si son iguales entonces es una matricula, en caso contrario es una prematricula
+                            db.sp_InsertarPagoSIRA(ordenPago.Identificador, xml.ToString(), isMatricula);
+                            isSIRAPagado = true; //si se ejecuta el pago lo paso a positivo
+
+                            if (isSIRAPagado.Value)
+                            {
+                                ReciboSIRA sira = new ReciboSIRA();
+                                sira.IdRecibo = roc.IdRecibo;
+                                sira.Serie = roc.Serie;
+                                sira.FechaCreacion = roc.Fecha;
+                                sira.isMatricula = isMatricula;
+                                db.ReciboSIRA.Add(sira);
+                            }
+                        }
+
 
 
                     }
@@ -494,6 +629,13 @@ namespace PruebaWPF.ViewModel
                 }
                 catch (Exception ex)
                 {
+                    if (isSIRAPagado.HasValue)
+                    {
+                        if (isSIRAPagado.Value)
+                        {
+                            db.sp_RevertirPagoSIRA(roc.Identificador, roc.IdRecibo, roc.Serie, null, isMatricula);
+                        }
+                    }
                     transaction.Rollback();
                     throw ex;
                 }
@@ -501,6 +643,7 @@ namespace PruebaWPF.ViewModel
             return recibo;
 
         }
+
 
         public void AnularRecibo(ReciboAnulado reciboAnulado)
         {
@@ -526,6 +669,14 @@ namespace PruebaWPF.ViewModel
                     reciboAnulado.FechaAnulacion = System.DateTime.Now;
 
                     db.ReciboAnulado.Add(reciboAnulado);
+
+                    if (r.ReciboDet.Any())
+                    {
+                        if (r.ReciboSIRA != null)
+                        {
+                            db.sp_RevertirPagoSIRA(r.Identificador, r.IdRecibo, r.Serie, reciboAnulado.Motivo, r.ReciboSIRA.isMatricula);
+                        }
+                    }
 
                     db.SaveChanges();
                     transaction.Commit();
@@ -620,11 +771,21 @@ namespace PruebaWPF.ViewModel
             return db.CiaTarjetaCredito.Where(w => w.RegAnulado == false).OrderBy(o => o.Nombre).ToList();
         }
 
-        public List<TipoDeposito> ObtenerTipoCuenta(string IdArea)
+        public List<TipoDeposito> ObtenerTipoCuenta(string IdArea, TipoArancel tipoArancel)
         {
-            var aranceles = db.ArancelArea.Where(w => w.IdArea == IdArea).Select(s => s.IdArancel);
-            var depositantes = db.ArancelTipoDeposito.Where(a => aranceles.Any(b => a.IdArancel == b)).Select(s => s.TipoDeposito).Distinct();
-            return depositantes.OrderBy(w => w.Nombre).ToList();
+            if (tipoArancel.IdDepositanteUnico.HasValue)
+            {
+                List<TipoDeposito> lista = new List<TipoDeposito>();
+                lista.Add(tipoArancel.TipoDeposito);
+
+                return lista;
+            }
+            else
+            {
+                var aranceles = db.ArancelArea.Where(w => w.IdArea == IdArea && w.regAnulado == false).Select(s => s.Arancel).Where(w => w.IdTipoArancel == tipoArancel.IdTipoArancel).ToList();
+                var depositantes = db.ArancelTipoDeposito.ToList().Where(a => aranceles.Any(b => a.IdArancel == b.IdArancel)).Select(s => s.TipoDeposito).Distinct();
+                return depositantes.OrderBy(w => w.Nombre).ToList();
+            }
         }
 
         public List<Moneda> ObtenerMonedas()
@@ -659,9 +820,9 @@ namespace PruebaWPF.ViewModel
             return ObtenerTasaCambio(moneda, null);
         }
 
-        public bool Autorice_Recinto(string PermisoName, int IdRecinto)
+        public bool Authorize_Recinto(string PermisoName, int IdRecinto)
         {
-            if (seguridad.Autorize(pantalla, PermisoName, IdRecinto))
+            if (seguridad.Authorize(pantalla, PermisoName, IdRecinto))
             {
                 return true;
             }
@@ -671,9 +832,9 @@ namespace PruebaWPF.ViewModel
             }
         }
 
-        public bool Autorice(string PermisoName)
+        public bool Authorize(string PermisoName)
         {
-            if (seguridad.Autorize(pantalla, PermisoName))
+            if (seguridad.Authorize(pantalla, PermisoName))
             {
                 return true;
             }
@@ -694,18 +855,21 @@ namespace PruebaWPF.ViewModel
     public class DetReciboSon : ReciboDet
     {
 
-        public decimal MontoVirtual => ArancelPrecio.Arancel.isPrecioVariable == true ? Monto : ArancelPrecio.Precio;
+        public decimal MontoVirtual => ArancelPrecio.ArancelArea.Arancel.isPrecioVariable == true ? Monto : ArancelPrecio.Precio;
+
+        public decimal Descuento => Exoneracion == null ? 0 : Exoneracion.Exonerado;
         public decimal Total => MontoVirtual - Descuento;
 
         //Estos campos son creados para el reporte
-        public string Arancel => ArancelPrecio.Arancel.Nombre;
+        public string Arancel => ArancelPrecio.ArancelArea.Arancel.Nombre;
         public string SimboloMoneda => ArancelPrecio.Moneda.Simbolo;
     }
 
     public class DetOrdenPagoSon : DetOrdenPagoArancel
     {
 
-        public decimal MontoVirtual => ArancelPrecio.Arancel.isPrecioVariable == true ? PrecioVariable : ArancelPrecio.Precio;
+        public decimal MontoVirtual => ArancelPrecio.ArancelArea.Arancel.isPrecioVariable == true ? PrecioVariable : ArancelPrecio.Precio;
+        public decimal Descuento => Exoneracion == null ? 0 : Exoneracion.Exonerado;
         public decimal Total => MontoVirtual - Descuento;
 
 

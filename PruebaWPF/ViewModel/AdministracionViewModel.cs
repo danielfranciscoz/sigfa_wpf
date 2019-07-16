@@ -1,15 +1,11 @@
 ﻿using PruebaWPF.Clases;
 using PruebaWPF.Helper;
-using PruebaWPF.Interface;
 using PruebaWPF.Model;
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace PruebaWPF.ViewModel
 {
@@ -87,12 +83,13 @@ namespace PruebaWPF.ViewModel
 
             InfoUsuario info = new InfoUsuario();
 
-            List<SqlParameter> p = new List<SqlParameter>();
             if (u.noInterno != null)
             {
+                List<SqlParameter> p = new List<SqlParameter>();
                 p.Add(new SqlParameter("@NoInterno", u.noInterno));
 
-                info = db.Database.SqlQuery<InfoUsuario>("seg.fn_ObtenerInfoUsuario @NoInterno", p.ToArray()).FirstOrDefault();
+                //info = db.Database.SqlQuery<InfoUsuario>("seg.fn_ObtenerInfoUsuario @NoInterno", p.ToArray()).FirstOrDefault();
+                info = clsCallProcedure<InfoUsuario>.GetFromProcedure(db, "seg.fn_ObtenerInfoUsuario @NoInterno", p).FirstOrDefault();
                 info.usuario = u;
             }
             else

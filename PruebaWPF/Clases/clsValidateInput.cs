@@ -12,7 +12,7 @@ namespace PruebaWPF.Clases
         public const int OnlyNumber = 0;
         public const int DecimalNumber = 2;
 
-        SolidColorBrush c = clsutilidades.BorderNormal();
+        SolidColorBrush c = clsUtilidades.BorderNormal();
 
         public static void Validate(TextBox textbox, int validationtype)
         {
@@ -93,7 +93,7 @@ namespace PruebaWPF.Clases
             bool flag = true;
             if (combo.SelectedIndex == -1)
             {
-                combo.BorderBrush = clsutilidades.BorderError();
+                combo.BorderBrush = clsUtilidades.BorderError();
                 flag = false;
             }
 
@@ -102,7 +102,7 @@ namespace PruebaWPF.Clases
 
         public static void ActivateBorderError(Control campo)
         {
-            campo.BorderBrush = clsutilidades.BorderError();
+            campo.BorderBrush = clsUtilidades.BorderError();
         }
 
         public static bool ValidateALL(Control[] campos)
@@ -119,7 +119,7 @@ namespace PruebaWPF.Clases
                     if (txt.Text.Equals(""))
                     {
                         flag = false;
-                        txt.BorderBrush = clsutilidades.BorderError();
+                        txt.BorderBrush = clsUtilidades.BorderError();
                     }
                 }
                 else if (campos[i] is ComboBox)
@@ -136,7 +136,7 @@ namespace PruebaWPF.Clases
                     if (pss.Password.Equals(""))
                     {
                         flag = false;
-                        pss.BorderBrush = clsutilidades.BorderError();
+                        pss.BorderBrush = clsUtilidades.BorderError();
                     }
                 }
             }
@@ -154,7 +154,7 @@ namespace PruebaWPF.Clases
                 if (txt.Text.Equals("0"))
                 {
                     flag = false;
-                    txt.BorderBrush = clsutilidades.BorderError();
+                    txt.BorderBrush = clsUtilidades.BorderError();
                 }
             }
 
@@ -169,12 +169,12 @@ namespace PruebaWPF.Clases
             if (campo.Text.Length > MaxLength)
             {
                 flag = false;
-                campo.BorderBrush = clsutilidades.BorderError();
+                campo.BorderBrush = clsUtilidades.BorderError();
             }
             else if (campo.Text.Length < MaxLength && isMaxMin)
             {
                 flag = false;
-                campo.BorderBrush = clsutilidades.BorderError();
+                campo.BorderBrush = clsUtilidades.BorderError();
             }
 
             return flag;
@@ -195,7 +195,7 @@ namespace PruebaWPF.Clases
                         if (!int.TryParse(txt.Text, out valorInt))
                         {
                             flag = false;
-                            txt.BorderBrush = clsutilidades.BorderError();
+                            txt.BorderBrush = clsUtilidades.BorderError();
                         }
                         break;
 
@@ -203,7 +203,7 @@ namespace PruebaWPF.Clases
                         if (!double.TryParse(txt.Text, out valorDouble))
                         {
                             flag = false;
-                            txt.BorderBrush = clsutilidades.BorderError();
+                            txt.BorderBrush = clsUtilidades.BorderError();
                         }
                         break;
                 }
@@ -226,13 +226,13 @@ namespace PruebaWPF.Clases
                 else
                 {
                     flag = false;
-                    campo.BorderBrush = clsutilidades.BorderError();
+                    campo.BorderBrush = clsUtilidades.BorderError();
                 }
             }
             else
             {
                 flag = false;
-                campo.BorderBrush = clsutilidades.BorderError();
+                campo.BorderBrush = clsUtilidades.BorderError();
             }
 
             return flag;

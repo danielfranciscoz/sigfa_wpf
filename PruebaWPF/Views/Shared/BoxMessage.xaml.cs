@@ -35,7 +35,7 @@ namespace PruebaWPF.Views.Shared
 
         private void Diseñar()
         {
-            clsutilidades.Dialog_ModalDesign(this);
+            clsUtilidades.Dialog_ModalDesign(this);
         }
 
         private void InitializeEventsControl()

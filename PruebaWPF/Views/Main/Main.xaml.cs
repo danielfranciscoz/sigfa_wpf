@@ -9,6 +9,7 @@ using PruebaWPF.Views.Account;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 
@@ -116,7 +117,7 @@ namespace PruebaWPF.Views.Main
         private PackIcon getIcon(string icon)
         {
             MaterialDesignThemes.Wpf.PackIcon ico = new PackIcon();
-            ico.Kind = clsutilidades.GetIconFromString(icon);
+            ico.Kind = clsUtilidades.GetIconFromString(icon);
             return ico;
         }
 
@@ -173,7 +174,7 @@ namespace PruebaWPF.Views.Main
                 }
 
                 lblPerfil.Text = perfil;
-                lblPeriodo.Text = clsSessionHelper.periodoEspecifico.FechaInicio.Month.ToString() + "/" + clsSessionHelper.periodoEspecifico.FechaInicio.Year.ToString() + " - " + clsSessionHelper.periodoEspecifico.Periodo;
+                //lblPeriodo.Text = clsSessionHelper.periodoEspecifico.FechaInicio.Month.ToString() + "/" + clsSessionHelper.periodoEspecifico.FechaInicio.Year.ToString() + " - " + clsSessionHelper.periodoEspecifico.Periodo;
                 mnUsuario.Header = clsSessionHelper.usuario.Login;
                 lblTipoCambio.Text = controller.ObtenerTipoCambio();
                 lblMac.Text = clsSessionHelper.MACMemory;
@@ -181,7 +182,7 @@ namespace PruebaWPF.Views.Main
             }
             catch (Exception ex)
             {
-                clsutilidades.OpenMessage(new Operacion() { Mensaje = new clsException(ex).ErrorMessage(), OperationType = clsReferencias.TYPE_MESSAGE_Error });
+                clsUtilidades.OpenMessage(new Operacion() { Mensaje = new clsException(ex).ErrorMessage(), OperationType = clsReferencias.TYPE_MESSAGE_Error });
             }
         }
 
@@ -208,7 +209,7 @@ namespace PruebaWPF.Views.Main
             }
             catch (Exception ex)
             {
-                clsutilidades.OpenMessage(new Operacion { Mensaje = new clsException(ex).ErrorMessage(), OperationType = clsReferencias.TYPE_MESSAGE_Error });
+                clsUtilidades.OpenMessage(new Operacion { Mensaje = new clsException(ex).ErrorMessage(), OperationType = clsReferencias.TYPE_MESSAGE_Error });
             }
         }
 
@@ -290,7 +291,7 @@ namespace PruebaWPF.Views.Main
             btnNotifications_Visibilidad();
             if (o.OperationType != clsReferencias.TYPE_MESSAGE_Exito)
             {
-                clsutilidades.OpenMessage(o);
+                clsUtilidades.OpenMessage(o);
             }
         }
 
@@ -399,5 +400,10 @@ namespace PruebaWPF.Views.Main
         {
             AgregarAccesos();
         }
+
+        //private Task<bool> VariacionCambiariaAuto()
+        //{
+        //    return Task.Run(() => new VariacionCambiariaViewModel().ObtenerMonedas().All();
+        //}
     }
 }

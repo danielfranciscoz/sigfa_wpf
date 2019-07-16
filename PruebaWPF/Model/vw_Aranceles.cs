@@ -18,7 +18,7 @@ namespace PruebaWPF.Model
         public string Arancel { get; set; }
         public int IdTipo { get; set; }
         public string Tipo { get; set; }
-        public int IdPrecio { get; set; }
+        public int IdArancelPrecio { get; set; }
         public decimal Precio { get; set; }
         public int IdMoneda { get; set; }
         public string Moneda { get; set; }

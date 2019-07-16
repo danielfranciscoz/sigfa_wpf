@@ -32,7 +32,7 @@ namespace PruebaWPF.Views.Shared
 
         private void Diseñar()
         {
-            clsutilidades.Dialog_Perfomance(this);
+            clsUtilidades.Dialog_Perfomance(this);
         }
 
         private void Border_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
@@ -106,7 +106,7 @@ namespace PruebaWPF.Views.Shared
             }
             else
             {
-                clsutilidades.OpenMessage(new Operacion() { Mensaje = clsReferencias.MESSAGE_NoSelection, OperationType = clsReferencias.TYPE_MESSAGE_Advertencia });
+                clsUtilidades.OpenMessage(new Operacion() { Mensaje = clsReferencias.MESSAGE_NoSelection, OperationType = clsReferencias.TYPE_MESSAGE_Advertencia });
             }
         }
 

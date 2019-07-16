@@ -7,8 +7,8 @@ namespace PruebaWPF.Interface
   public interface ISecurity
     {
         
-        Boolean Autorice_Recinto(string PermisoName,int IdRecinto);
-        Boolean Autorice(string PermisoName);
+        Boolean Authorize_Recinto(string PermisoName,int IdRecinto);
+        Boolean Authorize(string PermisoName);
 
     }
 }

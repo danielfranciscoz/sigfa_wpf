@@ -12,20 +12,17 @@ namespace PruebaWPF.Model
     using System;
     using System.Collections.Generic;
     
-    public partial class PermisoName
+    public partial class UsuarioArancel
     {
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-        public PermisoName()
-        {
-            this.Permiso = new HashSet<Permiso>();
-        }
-    
-        public int IdPermisoName { get; set; }
-        public string Nombre { get; set; }
-        public string Descripcion { get; set; }
+        public int IdUsuarioArancel { get; set; }
+        public string Usuario { get; set; }
+        public int IdArancelArea { get; set; }
+        public string UsuarioCreacion { get; set; }
         public System.DateTime FechaCreacion { get; set; }
+        public bool regAnulado { get; set; }
     
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Permiso> Permiso { get; set; }
+        public virtual Usuario Usuario1 { get; set; }
+        public virtual Usuario Usuario2 { get; set; }
+        public virtual ArancelArea ArancelArea { get; set; }
     }
 }

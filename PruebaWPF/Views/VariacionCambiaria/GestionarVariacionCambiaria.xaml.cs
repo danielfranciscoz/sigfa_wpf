@@ -1,18 +1,15 @@
-﻿using PruebaWPF.ViewModel;
+﻿using PruebaWPF.Clases;
+using PruebaWPF.Helper;
+using PruebaWPF.Referencias;
+using PruebaWPF.ViewModel;
+using PruebaWPF.Views.Main;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Collections.Specialized;
 using System.Linq;
-using System.Text;
-using System.Text.RegularExpressions;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Documents;
-using System.Collections.Specialized;
-using PruebaWPF.Helper;
-using PruebaWPF.Clases;
-using PruebaWPF.Referencias;
-using PruebaWPF.Views.Main;
 
 namespace PruebaWPF.Views.VariacionCambiaria
 {
@@ -32,17 +29,24 @@ namespace PruebaWPF.Views.VariacionCambiaria
             InitializeComponent();
 
             this.Owner = frmMain.principal;
+            Diseñar();
             CargarMonedas();
             ActivarValidadorCampos();
             items = new ObservableCollection<VariacionCambiariaSon>();
             items.CollectionChanged += new System.Collections.Specialized.NotifyCollectionChangedEventHandler(items_CollectionChanged);
             tblVariaciones.ItemsSource = items;
-            Diseñar();
+            CargarValoresDefecto();
+        }
+
+        private void CargarValoresDefecto()
+        {
+            txtAño.Text = DateTime.Now.Year.ToString();
+            cboMesPeriodo.SelectedValue = DateTime.Now.Month;
         }
 
         private void Diseñar()
         {
-            clsutilidades.Dialog_ModalDesign(this);
+            clsUtilidades.Dialog_ModalDesign(this);
         }
 
         private void ActivarValidadorCampos()
@@ -71,14 +75,14 @@ namespace PruebaWPF.Views.VariacionCambiaria
         {
             if (items.Any())
             {
-                clsutilidades.OpenMessage(Guardar());
+                clsUtilidades.OpenMessage(Guardar());
             }
             else
             {
                 operacion = new Operacion();
                 operacion.Mensaje = clsReferencias.MESSAGE_Cero_Registro;
                 operacion.OperationType = clsReferencias.TYPE_MESSAGE_Advertencia;
-                clsutilidades.OpenMessage(operacion);
+                clsUtilidades.OpenMessage(operacion);
             }
         }
 

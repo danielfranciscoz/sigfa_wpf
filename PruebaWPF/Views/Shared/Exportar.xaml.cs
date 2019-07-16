@@ -43,7 +43,7 @@ namespace PruebaWPF.Views.Shared
 
         private void Diseñar()
         {
-            clsutilidades.Dialog_Perfomance(this);
+            clsUtilidades.Dialog_Perfomance(this);
         }
 
         private void LoadColumns()

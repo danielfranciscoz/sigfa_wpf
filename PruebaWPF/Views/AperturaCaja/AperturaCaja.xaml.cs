@@ -86,7 +86,7 @@ namespace PruebaWPF.Views.AperturaCaja
             }
             catch (Exception ex)
             {
-                clsutilidades.OpenMessage(new Operacion() { Mensaje = ex.Message, OperationType = clsReferencias.TYPE_MESSAGE_Error });
+                clsUtilidades.OpenMessage(new Operacion() { Mensaje = ex.Message, OperationType = clsReferencias.TYPE_MESSAGE_Error });
             }
         }
 
@@ -116,7 +116,7 @@ namespace PruebaWPF.Views.AperturaCaja
             try
             {
                 string PermisoName = ((Button)sender).Tag.ToString();
-                if (controller().Autorice(PermisoName))
+                if (controller().Authorize(PermisoName))
                 {
                     AperturarCajas ac = new AperturarCajas(pantalla, PermisoName);
                     ac.ShowDialog();
@@ -124,7 +124,7 @@ namespace PruebaWPF.Views.AperturaCaja
             }
             catch (Exception ex)
             {
-                clsutilidades.OpenMessage(new Operacion() { Mensaje = new clsException(ex).ErrorMessage(), OperationType = clsReferencias.TYPE_MESSAGE_Error });
+                clsUtilidades.OpenMessage(new Operacion() { Mensaje = new clsException(ex).ErrorMessage(), OperationType = clsReferencias.TYPE_MESSAGE_Error });
             }
         }
 
@@ -132,7 +132,7 @@ namespace PruebaWPF.Views.AperturaCaja
         {
             try
             {
-                if (controller().Autorice(((Button)sender).Tag.ToString()))
+                if (controller().Authorize(((Button)sender).Tag.ToString()))
                 {
                     Exportar export = new Exportar(GetDataTable.GetDataGridRows(tblAperturas));
                     export.ShowDialog();
@@ -140,7 +140,7 @@ namespace PruebaWPF.Views.AperturaCaja
             }
             catch (Exception ex)
             {
-                clsutilidades.OpenMessage(new Operacion() { Mensaje = new clsException(ex).ErrorMessage(), OperationType = clsReferencias.TYPE_MESSAGE_Error });
+                clsUtilidades.OpenMessage(new Operacion() { Mensaje = new clsException(ex).ErrorMessage(), OperationType = clsReferencias.TYPE_MESSAGE_Error });
             }
         }
 
@@ -157,24 +157,24 @@ namespace PruebaWPF.Views.AperturaCaja
                 {
                     int recinto = ((DetAperturaCajaSon)tblAperturas.SelectedItem).AperturaCaja.IdRecinto;
 
-                    if (controller().Autorice_Recinto(((Button)sender).Tag.ToString(), recinto))
+                    if (controller().Authorize_Recinto(((Button)sender).Tag.ToString(), recinto))
                     {
 
-                        if (clsutilidades.OpenDeleteQuestionMessage("Esta a punto de cerrar esta caja, no podrán generarse mas recibos, ¿Realmente desea continuar?"))
+                        if (clsUtilidades.OpenDeleteQuestionMessage("Esta a punto de cerrar esta caja, no podrán generarse mas recibos, ¿Realmente desea continuar?"))
                         {
-                            clsutilidades.OpenMessage(CerrarCaja());
+                            clsUtilidades.OpenMessage(CerrarCaja());
                         }
                     }
                 }
                 else
                 {
                     Operacion operacion = new Operacion(clsReferencias.TYPE_MESSAGE_Advertencia, clsReferencias.MESSAGE_NoSelection);
-                    clsutilidades.OpenMessage(operacion);
+                    clsUtilidades.OpenMessage(operacion);
                 }
             }
             catch (Exception ex)
             {
-                clsutilidades.OpenMessage(new Operacion() { Mensaje = new clsException(ex).ErrorMessage(), OperationType = clsReferencias.TYPE_MESSAGE_Error });
+                clsUtilidades.OpenMessage(new Operacion() { Mensaje = new clsException(ex).ErrorMessage(), OperationType = clsReferencias.TYPE_MESSAGE_Error });
 
             }
         }

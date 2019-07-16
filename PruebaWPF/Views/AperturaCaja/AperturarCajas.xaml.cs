@@ -50,7 +50,7 @@ namespace PruebaWPF.Views.AperturaCaja
         }
         private void Diseñar()
         {
-            clsutilidades.Dialog_ModalDesign(this);
+            clsUtilidades.Dialog_ModalDesign(this);
         }
 
         private void btnCancel_Click(object sender, RoutedEventArgs e)
@@ -64,21 +64,21 @@ namespace PruebaWPF.Views.AperturaCaja
             {
                 if (cajas_aperturar.Count == 0)
                 {
-                    clsutilidades.OpenMessage(new Operacion() { Mensaje = "Debe especificar las cajas que serán aperturadas", OperationType = clsReferencias.TYPE_MESSAGE_Advertencia });
+                    clsUtilidades.OpenMessage(new Operacion() { Mensaje = "Debe especificar las cajas que serán aperturadas", OperationType = clsReferencias.TYPE_MESSAGE_Advertencia });
                 }
                 else
                 {
                     if (cajas.Count > 0)
                     {
-                        if (clsutilidades.OpenDeleteQuestionMessage("No serán aperturadas todas las cajas de este recinto, ¿está seguro que desea continuar?"))
+                        if (clsUtilidades.OpenDeleteQuestionMessage("No serán aperturadas todas las cajas de este recinto, ¿está seguro que desea continuar?"))
                         {
-                            clsutilidades.OpenMessage(Guardar(), this);
+                            clsUtilidades.OpenMessage(Guardar(), this);
                             Finalizar();
                         }
                     }
                     else
                     {
-                        clsutilidades.OpenMessage(Guardar(), this);
+                        clsUtilidades.OpenMessage(Guardar(), this);
                         Finalizar();
                     }
                 }
@@ -86,7 +86,7 @@ namespace PruebaWPF.Views.AperturaCaja
             }
             catch (Exception ex)
             {
-                clsutilidades.OpenMessage(new Operacion() { Mensaje = new clsException(ex).ErrorMessage(), OperationType = clsReferencias.TYPE_MESSAGE_Error });
+                clsUtilidades.OpenMessage(new Operacion() { Mensaje = new clsException(ex).ErrorMessage(), OperationType = clsReferencias.TYPE_MESSAGE_Error });
             }
         }
 
@@ -118,7 +118,7 @@ namespace PruebaWPF.Views.AperturaCaja
         {
             if (cboRecinto.Items.Count == 0)
             {
-                clsutilidades.OpenMessage(new Operacion() { Mensaje = "La apertura no se encuentra disponible debido a que no se han encontrado recintos a los cuales usted tenga permiso de aperturar cajas, esta información es basada en sus permisos de usuario.", OperationType = clsReferencias.TYPE_MESSAGE_Advertencia });
+                clsUtilidades.OpenMessage(new Operacion() { Mensaje = "La apertura no se encuentra disponible debido a que no se han encontrado recintos a los cuales usted tenga permiso de aperturar cajas, esta información es basada en sus permisos de usuario.", OperationType = clsReferencias.TYPE_MESSAGE_Advertencia });
                 Close();
             }
         }

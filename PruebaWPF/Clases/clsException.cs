@@ -14,6 +14,7 @@ namespace PruebaWPF.Clases
 
         public String ErrorMessage() {
             string message = "";
+
             if (ex.InnerException != null)
             {
                 if (ex.InnerException.InnerException != null)

@@ -13,7 +13,7 @@ using System.Windows.Controls.Primitives;
 
 namespace PruebaWPF.Clases
 {
-    class clsutilidades
+    class clsUtilidades
     {
         public static PackIconKind GetIconFromString(string icon)
         {

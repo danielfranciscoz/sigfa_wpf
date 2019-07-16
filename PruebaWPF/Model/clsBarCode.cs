@@ -10,7 +10,7 @@ namespace PruebaWPF.Model
     public class clsBarCode
     {
         public string texto { get; set; }
-        public byte[] barcode => clsutilidades.CodigoBarraRecibo(texto);
+        public byte[] barcode => clsUtilidades.CodigoBarraRecibo(texto);
 
         public clsBarCode() { }
     }

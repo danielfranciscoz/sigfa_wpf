@@ -82,7 +82,7 @@ namespace PruebaWPF.Views.AgenteExterno
                 txtTitle.Text = "Editar Agente Externo";
             }
 
-            clsutilidades.Dialog_ModalDesign(this);
+            clsUtilidades.Dialog_ModalDesign(this);
         }
 
         private void btnClose_Click(object sender, RoutedEventArgs e)
@@ -99,14 +99,14 @@ namespace PruebaWPF.Views.AgenteExterno
                     if (ValidarLength())
                     {
                         agente.IdIdentificacion = int.Parse(cboIdentificacion.SelectedValue.ToString());
-                        clsutilidades.OpenMessage(Guardar(), this);
+                        clsUtilidades.OpenMessage(Guardar(), this);
                         Finalizar();
                     }
                 }
             }
             catch (Exception ex)
             {
-                clsutilidades.OpenMessage(new Operacion() { Mensaje = new clsException(ex).ErrorMessage(), OperationType = clsReferencias.TYPE_MESSAGE_Error });
+                clsUtilidades.OpenMessage(new Operacion() { Mensaje = new clsException(ex).ErrorMessage(), OperationType = clsReferencias.TYPE_MESSAGE_Error });
             }
         }
 

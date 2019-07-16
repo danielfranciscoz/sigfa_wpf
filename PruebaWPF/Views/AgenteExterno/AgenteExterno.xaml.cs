@@ -63,7 +63,7 @@ namespace PruebaWPF.Views.AgenteExterno
             }
             catch (Exception ex)
             {
-                clsutilidades.OpenMessage(new Operacion() { Mensaje = ex.Message, OperationType = clsReferencias.TYPE_MESSAGE_Error });
+                clsUtilidades.OpenMessage(new Operacion() { Mensaje = ex.Message, OperationType = clsReferencias.TYPE_MESSAGE_Error });
             }
         }
 
@@ -104,7 +104,7 @@ namespace PruebaWPF.Views.AgenteExterno
             export.ShowDialog();
             operacion = Exportar.Operacion;
 
-            clsutilidades.OpenMessage(operacion);
+            clsUtilidades.OpenMessage(operacion);
         }
 
         private void txtFindText(object sender, KeyEventArgs e)
@@ -129,17 +129,17 @@ namespace PruebaWPF.Views.AgenteExterno
         {
             try
             {
-                if (controller().Autorice(((Button)sender).Tag.ToString()))
+                if (controller().Authorize(((Button)sender).Tag.ToString()))
                 {
-                    if (clsutilidades.OpenDeleteQuestionMessage())
+                    if (clsUtilidades.OpenDeleteQuestionMessage())
                     {
-                        clsutilidades.OpenMessage(Eliminar());
+                        clsUtilidades.OpenMessage(Eliminar());
                     }
                 }
             }
             catch (Exception ex)
             {
-                clsutilidades.OpenMessage(new Operacion() { Mensaje = new clsException(ex).ErrorMessage(), OperationType = clsReferencias.TYPE_MESSAGE_Error });
+                clsUtilidades.OpenMessage(new Operacion() { Mensaje = new clsException(ex).ErrorMessage(), OperationType = clsReferencias.TYPE_MESSAGE_Error });
             }
         }
 
@@ -168,7 +168,7 @@ namespace PruebaWPF.Views.AgenteExterno
         {
             try
             {
-                if (controller().Autorice(((Button)sender).Tag.ToString()))
+                if (controller().Authorize(((Button)sender).Tag.ToString()))
                 {
                     GestionarAgenteExterno ga = new GestionarAgenteExterno(pantalla, btnSave.Tag.ToString());
                     ga.ShowDialog();
@@ -176,7 +176,7 @@ namespace PruebaWPF.Views.AgenteExterno
             }
             catch (Exception ex)
             {
-                clsutilidades.OpenMessage(new Operacion() { Mensaje = new clsException(ex).ErrorMessage(), OperationType = clsReferencias.TYPE_MESSAGE_Error });
+                clsUtilidades.OpenMessage(new Operacion() { Mensaje = new clsException(ex).ErrorMessage(), OperationType = clsReferencias.TYPE_MESSAGE_Error });
             }
         }
 
@@ -184,7 +184,7 @@ namespace PruebaWPF.Views.AgenteExterno
         {
             try
             {
-                if (controller().Autorice(((Button)sender).Tag.ToString()))
+                if (controller().Authorize(((Button)sender).Tag.ToString()))
                 {
                     AgenteExternoCat item = (AgenteExternoCat)tblAgenteExterno.CurrentItem;
                     //AgenteExternoCat Objeto = (AgenteExternoCat)item.Clone();
@@ -209,7 +209,7 @@ namespace PruebaWPF.Views.AgenteExterno
             }
             catch (Exception ex)
             {
-                clsutilidades.OpenMessage(new Operacion() { Mensaje = new clsException(ex).ErrorMessage(), OperationType = clsReferencias.TYPE_MESSAGE_Error });
+                clsUtilidades.OpenMessage(new Operacion() { Mensaje = new clsException(ex).ErrorMessage(), OperationType = clsReferencias.TYPE_MESSAGE_Error });
             }
         }
     }

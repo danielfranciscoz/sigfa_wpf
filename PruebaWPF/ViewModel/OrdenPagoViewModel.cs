@@ -4,10 +4,7 @@ using PruebaWPF.Interface;
 using PruebaWPF.Model;
 using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace PruebaWPF.ViewModel
 {
@@ -47,7 +44,9 @@ namespace PruebaWPF.ViewModel
         public List<OrdenPagoSon> FindAll()
         {
             //Recuerda igualar las columnas de este select en el FindBytEXT
-            var data = db.OrdenPago.Where(w => string.IsNullOrEmpty(w.CodRecibo) && w.regAnulado == false).OrderByDescending(o => o.IdOrdenPago).Take(clsConfiguration.Actual().TopRow).ToList().Select(a => new OrdenPagoSon
+            using (SIFOPEntities t = new SIFOPEntities())
+            {
+            return t.OrdenPago.Where(w => string.IsNullOrEmpty(w.CodRecibo) && w.regAnulado == false).OrderByDescending(o => o.IdOrdenPago).Take(clsConfiguration.Actual().TopRow).ToList().Select(a => new OrdenPagoSon
             {
                 IdOrdenPago = a.IdOrdenPago,
                 NoOrdenPago = a.NoOrdenPago,
@@ -69,8 +68,8 @@ namespace PruebaWPF.ViewModel
             }
             ).Where(b => r.Any(a => b.IdRecinto == a.IdRecinto)).ToList();
 
+            }
 
-            return data;
         }
 
         public OrdenPagoSon FindById(int Id)
@@ -85,28 +84,32 @@ namespace PruebaWPF.ViewModel
             {
                 string[] busqueda = text.Trim().Split(' ');
 
-                return db.OrdenPago.ToList().Select(a => new OrdenPagoSon
-                {
-                    IdOrdenPago = a.IdOrdenPago,
-                    NoOrdenPago = a.NoOrdenPago,
-                    IdRecinto = a.IdRecinto,
-                    Recibimos = a.Recibimos,
-                    UsuarioRemitente = a.UsuarioRemitente,
-                    Sistema = a.Sistema,
-                    FechaEnvio = a.FechaEnvio,
-                    regAnulado = a.regAnulado,
-                    CodRecibo = a.CodRecibo,
-                    Identificador = a.Identificador,
-                    IdTipoDeposito = a.IdTipoDeposito,
-                    TipoDeposito = a.TipoDeposito,
-                    IdArea = a.IdArea,
-                    DetOrdenPagoArancel = a.DetOrdenPagoArancel,
-                    CantidadPagos = db.DetOrdenPagoArancel.Where(w => w.IdOrdenPago == a.IdOrdenPago && w.regAnulado == false).Count(),
-                    Area = clsSessionHelper.areasMemory.Where(w => w.codigo == a.IdArea).FirstOrDefault().descripcion.ToUpper(),
-                    Recinto = clsSessionHelper.recintosMemory.Find(w => w.IdRecinto == a.IdRecinto).Siglas
-                }).Where(
-                   w => busqueda.All(a => w.Recibimos.Contains(a))
-                && (w.regAnulado == false && string.IsNullOrEmpty(w.CodRecibo))).ToList().Where(b => r.Any(a => b.IdRecinto == a.IdRecinto)).ToList();
+                using (SIFOPEntities t = new SIFOPEntities())
+                {                    
+                    return t.OrdenPago.ToList().Select(a => new OrdenPagoSon
+                    {
+                        IdOrdenPago = a.IdOrdenPago,
+                        NoOrdenPago = a.NoOrdenPago,
+                        IdRecinto = a.IdRecinto,
+                        Recibimos = a.Recibimos,
+                        UsuarioRemitente = a.UsuarioRemitente,
+                        Sistema = a.Sistema,
+                        FechaEnvio = a.FechaEnvio,
+                        regAnulado = a.regAnulado,
+                        CodRecibo = a.CodRecibo,
+                        Identificador = a.Identificador,
+                        IdTipoDeposito = a.IdTipoDeposito,
+                        TipoDeposito = a.TipoDeposito,
+                        IdArea = a.IdArea,
+                        DetOrdenPagoArancel = a.DetOrdenPagoArancel,
+                        CantidadPagos = t.DetOrdenPagoArancel.Where(w => w.IdOrdenPago == a.IdOrdenPago && w.regAnulado == false).Count(),
+                        Area = clsSessionHelper.areasMemory.Where(w => w.codigo == a.IdArea).FirstOrDefault().descripcion.ToUpper(),
+                        Recinto = clsSessionHelper.recintosMemory.Find(w => w.IdRecinto == a.IdRecinto).Siglas
+                    }).Where(
+                       w => busqueda.All(a => w.Recibimos.Contains(a))
+                    && (w.regAnulado == false && string.IsNullOrEmpty(w.CodRecibo))).ToList().Where(b => r.Any(a => b.IdRecinto == a.IdRecinto)).ToList();
+
+                }
             }
             else
             {
@@ -126,9 +129,9 @@ namespace PruebaWPF.ViewModel
             throw new NotImplementedException();
         }
 
-        public bool Autorice_Recinto(string PermisoName, int IdRecinto)
+        public bool Authorize_Recinto(string PermisoName, int IdRecinto)
         {
-            if (seguridad.Autorize(pantalla, PermisoName, IdRecinto))
+            if (seguridad.Authorize(pantalla, PermisoName, IdRecinto))
             {
                 return true;
             }
@@ -138,9 +141,9 @@ namespace PruebaWPF.ViewModel
             }
         }
 
-        public bool Autorice(string PermisoName)
+        public bool Authorize(string PermisoName)
         {
-            if (seguridad.Autorize(pantalla, PermisoName))
+            if (seguridad.Authorize(pantalla, PermisoName))
             {
                 return true;
             }

@@ -137,18 +137,22 @@ namespace PruebaWPF.Views.Acceso
                 return;
             }
 
-            if (VerificaPerfiles == 1) //Si solo tiene perfil de cajero entonces directamente se inicia el sistema
-            {
-                IniciarMain();
-            }
-            else
-            {
-                panel_Credenciales.Visibility = Visibility.Hidden;
-                panel_Periodo.Visibility = Visibility.Visible;
+            IniciarMain();
 
-                CargarProgramas();
-                CargarPeriodosEspecificos();
-            }
+            //Se retira la seleccion de periodo y programa, acordado en reunion el dia 06/06/2019
+
+            //if (VerificaPerfiles == 1) //Si solo tiene perfil de cajero entonces directamente se inicia el sistema
+            //{
+            //    IniciarMain();
+            //}
+            //else
+            //{
+            //    panel_Credenciales.Visibility = Visibility.Hidden;
+            //    panel_Periodo.Visibility = Visibility.Visible;
+
+            //    CargarProgramas();
+            //    CargarPeriodosEspecificos();
+            //}
 
         }
 

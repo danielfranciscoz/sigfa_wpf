@@ -81,7 +81,7 @@ namespace PruebaWPF.Views.Tesoreria
                 btnEdit.Visibility = Visibility.Visible;
                 txtTitle.Text = "Editar Caja";
             }
-            clsutilidades.Dialog_ModalDesign(this);
+            clsUtilidades.Dialog_ModalDesign(this);
         }
 
         private void btnCancel_Click(object sender, RoutedEventArgs e)
@@ -98,9 +98,9 @@ namespace PruebaWPF.Views.Tesoreria
                     {
                         caja.IdRecinto = int.Parse(cboRecinto.SelectedValue.ToString());
                         caja.IdSerie = cboSerie.SelectedValue.ToString();
-                        if (controller.Autorice_Recinto(((Button)sender).Tag.ToString(), caja.IdRecinto))
+                        if (controller.Authorize_Recinto(((Button)sender).Tag.ToString(), caja.IdRecinto))
                         {
-                            clsutilidades.OpenMessage(Guardar(), this);
+                            clsUtilidades.OpenMessage(Guardar(), this);
                             Finalizar();
                         }
                     }
@@ -108,7 +108,7 @@ namespace PruebaWPF.Views.Tesoreria
             }
             catch (Exception ex)
             {
-                clsutilidades.OpenMessage(new Operacion() { Mensaje = new clsException(ex).ErrorMessage(), OperationType = clsReferencias.TYPE_MESSAGE_Error });
+                clsUtilidades.OpenMessage(new Operacion() { Mensaje = new clsException(ex).ErrorMessage(), OperationType = clsReferencias.TYPE_MESSAGE_Error });
             }
         }
 
@@ -161,7 +161,7 @@ namespace PruebaWPF.Views.Tesoreria
         private void btnEstablecer_Click(object sender, RoutedEventArgs e)
         {
             caja.MAC = lblMac.Text;
-            clsutilidades.UpdateControl(txtMAC);
+            clsUtilidades.UpdateControl(txtMAC);
 
 
         }

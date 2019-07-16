@@ -77,7 +77,7 @@ namespace PruebaWPF.Views.Recibo
             }
             catch (Exception ex)
             {
-                clsutilidades.OpenMessage(new Operacion() { Mensaje = new clsException(ex).ErrorMessage(), OperationType = clsReferencias.TYPE_MESSAGE_Error });
+                clsUtilidades.OpenMessage(new Operacion() { Mensaje = new clsException(ex).ErrorMessage(), OperationType = clsReferencias.TYPE_MESSAGE_Error });
             }
         }
 
@@ -85,7 +85,7 @@ namespace PruebaWPF.Views.Recibo
         {
             try
             {
-                if (controller().Autorice(((Button)sender).Tag.ToString()))
+                if (controller().Authorize(((Button)sender).Tag.ToString()))
                 {
                     Exportar export = new Exportar(GetDataTable.GetDataGridRows(tblRecibo));
                     export.ShowDialog();
@@ -93,7 +93,7 @@ namespace PruebaWPF.Views.Recibo
             }
             catch (Exception ex)
             {
-                clsutilidades.OpenMessage(new Operacion() { Mensaje = new clsException(ex).ErrorMessage(), OperationType = clsReferencias.TYPE_MESSAGE_Error });
+                clsUtilidades.OpenMessage(new Operacion() { Mensaje = new clsException(ex).ErrorMessage(), OperationType = clsReferencias.TYPE_MESSAGE_Error });
             }
         }
 
@@ -134,7 +134,7 @@ namespace PruebaWPF.Views.Recibo
             }
             catch (Exception ex)
             {
-                clsutilidades.OpenMessage(new Operacion() { Mensaje = new clsException(ex).ErrorMessage(), OperationType = clsReferencias.TYPE_MESSAGE_Error });
+                clsUtilidades.OpenMessage(new Operacion() { Mensaje = new clsException(ex).ErrorMessage(), OperationType = clsReferencias.TYPE_MESSAGE_Error });
             }
         }
 
@@ -250,7 +250,7 @@ namespace PruebaWPF.Views.Recibo
         {
             try
             {
-                if (controller().Autorice(((Button)sender).Tag.ToString()))
+                if (controller().Authorize(((Button)sender).Tag.ToString()))
                 {
                     if (tblRecibo.SelectedItem != null)
                     {
@@ -260,13 +260,13 @@ namespace PruebaWPF.Views.Recibo
                     else
                     {
                         operacion = new Operacion(clsReferencias.TYPE_MESSAGE_Advertencia, clsReferencias.MESSAGE_NoSelection);
-                        clsutilidades.OpenMessage(operacion);
+                        clsUtilidades.OpenMessage(operacion);
                     }
                 }
             }
             catch (Exception ex)
             {
-                clsutilidades.OpenMessage(new Operacion() { Mensaje = new clsException(ex).ErrorMessage(), OperationType = clsReferencias.TYPE_MESSAGE_Error });
+                clsUtilidades.OpenMessage(new Operacion() { Mensaje = new clsException(ex).ErrorMessage(), OperationType = clsReferencias.TYPE_MESSAGE_Error });
             }
 
         }
@@ -278,7 +278,7 @@ namespace PruebaWPF.Views.Recibo
                 if (tblRecibo.SelectedItem != null)
                 {
                     ReciboSon fila = (ReciboSon)tblRecibo.SelectedItem;
-                    if (controller().Autorice_Recinto(((Button)sender).Tag.ToString(), fila.DetAperturaCaja.Caja.IdRecinto))
+                    if (controller().Authorize_Recinto(((Button)sender).Tag.ToString(), fila.DetAperturaCaja.Caja.IdRecinto))
                     {
                         AnularRecibo anularRecibo = new AnularRecibo(fila);
                         anularRecibo.ShowDialog();
@@ -287,12 +287,12 @@ namespace PruebaWPF.Views.Recibo
                 else
                 {
                     operacion = new Operacion(clsReferencias.TYPE_MESSAGE_Advertencia, clsReferencias.MESSAGE_NoSelection);
-                    clsutilidades.OpenMessage(operacion);
+                    clsUtilidades.OpenMessage(operacion);
                 }
             }
             catch (Exception ex)
             {
-                clsutilidades.OpenMessage(new Operacion() { Mensaje = new clsException(ex).ErrorMessage(), OperationType = clsReferencias.TYPE_MESSAGE_Error });
+                clsUtilidades.OpenMessage(new Operacion() { Mensaje = new clsException(ex).ErrorMessage(), OperationType = clsReferencias.TYPE_MESSAGE_Error });
             }
         }
     }

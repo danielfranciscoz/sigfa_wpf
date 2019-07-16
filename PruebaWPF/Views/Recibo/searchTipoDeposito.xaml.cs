@@ -255,7 +255,7 @@ namespace PruebaWPF.Views.Recibo
             try
             {
                 string texto = Texto.Length > 0 ? "%" + Texto.Replace(' ', '%') + "%" : "";
-                items = new ObservableCollection<fn_ConsultarInfoExterna_Result>(controller.ObtenerTipoDeposito(TipoDeposito, Criterio, false, texto, clsConfiguration.Actual().TopRow));
+                items = new ObservableCollection<fn_ConsultarInfoExterna_Result>(controller.ObtenerTipoDeposito(TipoDeposito, Criterio, false, texto, clsConfiguration.Actual().TopRow,null));
 
                 if (panelError.Visibility == Visibility.Visible)
                 {
@@ -287,7 +287,7 @@ namespace PruebaWPF.Views.Recibo
             }
             else
             {
-                clsutilidades.OpenMessage(new Operacion() { Mensaje = clsReferencias.MESSAGE_NoSelection, OperationType = clsReferencias.TYPE_MESSAGE_Advertencia },this);
+                clsUtilidades.OpenMessage(new Operacion() { Mensaje = clsReferencias.MESSAGE_NoSelection, OperationType = clsReferencias.TYPE_MESSAGE_Advertencia },this);
             }
         }
 
@@ -364,7 +364,7 @@ namespace PruebaWPF.Views.Recibo
                 {
                     Pantalla pantalla = new PantallaViewModel().FindById(new AgenteExterno.AgenteExterno().Uid);
 
-                    if (controller.AutoricePantallaIncrustada(pantalla,((Button)sender).Tag.ToString()))
+                    if (controller.AuthorizePantallaIncrustada(pantalla,((Button)sender).Tag.ToString()))
                     {
                         GestionarAgenteExterno ga = new GestionarAgenteExterno(pantalla, btnAddAgente.Tag.ToString());
                         ga.ShowDialog();
@@ -372,12 +372,12 @@ namespace PruebaWPF.Views.Recibo
                 }
                 catch (Exception ex)
                 {
-                    clsutilidades.OpenMessage(new Operacion() { Mensaje = new clsException(ex).ErrorMessage(), OperationType = clsReferencias.TYPE_MESSAGE_Error }, this);
+                    clsUtilidades.OpenMessage(new Operacion() { Mensaje = new clsException(ex).ErrorMessage(), OperationType = clsReferencias.TYPE_MESSAGE_Error }, this);
                 }
             }
             else
             {
-                clsutilidades.OpenMessage(new Operacion() { Mensaje = "¡Espera un momento!\n\nAntes de agregar un nuevo registro, por favor asegúrate que este no existe mediante una breve búsqueda.\nLos registros duplicados no permiten obtener información adecuada para análisis.", OperationType = clsReferencias.TYPE_MESSAGE_Wait_a_Moment }, this);
+                clsUtilidades.OpenMessage(new Operacion() { Mensaje = "¡Espera un momento!\n\nAntes de agregar un nuevo registro, por favor asegúrate que este no existe mediante una breve búsqueda.\nLos registros duplicados no permiten obtener información adecuada para análisis.", OperationType = clsReferencias.TYPE_MESSAGE_Wait_a_Moment }, this);
             }
         }
     }

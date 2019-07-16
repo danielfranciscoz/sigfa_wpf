@@ -161,9 +161,9 @@ namespace PruebaWPF.ViewModel
             return seguridad.RecintosPermiso(pantalla, PermisoName);
         }
 
-        public bool Autorice_Recinto(string PermisoName, int IdRecinto)
+        public bool Authorize_Recinto(string PermisoName, int IdRecinto)
         {
-            if (seguridad.Autorize(pantalla, PermisoName, IdRecinto))
+            if (seguridad.Authorize(pantalla, PermisoName, IdRecinto))
             {
                 return true;
             }
@@ -173,9 +173,9 @@ namespace PruebaWPF.ViewModel
             }
         }
 
-        public bool Autorice(string PermisoName)
+        public bool Authorize(string PermisoName)
         {
-            if (seguridad.Autorize(pantalla, PermisoName))
+            if (seguridad.Authorize(pantalla, PermisoName))
             {
                 return true;
             }

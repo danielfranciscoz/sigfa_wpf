@@ -61,7 +61,7 @@ namespace PruebaWPF.ViewModel
         /// <param name="PermisoName"></param>
         /// <param name="IdRecinto"></param>
         /// <returns>True si se encuentra autorizado para realizar la acción, False en caso contrario</returns>
-        public bool Autorize(Pantalla p, string PermisoName, int IdRecinto)
+        public bool Authorize(Pantalla p, string PermisoName, int IdRecinto)
         {
 
             var permisos = db.Permiso.ToList().Where(w =>
@@ -84,7 +84,7 @@ namespace PruebaWPF.ViewModel
         /// <param name="PermisoName"></param>
         /// <param name="IdRecinto"></param>
         /// <returns>True si se encuentra autorizado para realizar la acción, False en caso contrario</returns>
-        public bool Autorize(Pantalla p, string PermisoName)
+        public bool Authorize(Pantalla p, string PermisoName)
         {
 
             var permisos = db.Permiso.ToList().Where(w =>

@@ -22,5 +22,6 @@ namespace PruebaWPF.Model
         public string PrimeraOpcion { get; set; }
         public string SegundaOpcion { get; set; }
         public Nullable<bool> isBecado { get; set; }
+        public int isClasificado { get; set; }
     }
 }
