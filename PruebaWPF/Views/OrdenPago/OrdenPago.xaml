@@ -58,7 +58,7 @@
                         <DataGridTextColumn CanUserReorder="False" CanUserResize="False" IsReadOnly="True" Header="Recinto" Width="auto" Binding="{Binding Recinto}"></DataGridTextColumn>
                         <DataGridTextColumn CanUserReorder="False" CanUserResize="False" IsReadOnly="True" Header="Area" Width="auto" Binding="{Binding Area}"></DataGridTextColumn>
                         <DataGridTextColumn CanUserReorder="False" CanUserResize="False" IsReadOnly="True" Header="Tipo Depósito" Width="auto" Binding="{Binding TipoDeposito.Nombre}"></DataGridTextColumn>
-                        <DataGridTextColumn CanUserReorder="False" CanUserResize="False" IsReadOnly="True" Header="Recibiremos" Width="auto" Binding="{Binding Recibimos}"></DataGridTextColumn>
+                        <DataGridTextColumn CanUserReorder="False" CanUserResize="False" IsReadOnly="True" Header="Por Cuenta" Width="auto" Binding="{Binding TextoIdentificador}"></DataGridTextColumn>
                         <DataGridTextColumn CanUserReorder="False" CanUserResize="False" IsReadOnly="True" Header="Pagos" Width="auto" Binding="{Binding CantidadPagos}"></DataGridTextColumn>
                         <DataGridTextColumn CanUserReorder="False" CanUserResize="False" IsReadOnly="True" Header="Fecha de Envío" Width="auto" Binding="{Binding FechaEnvio}"></DataGridTextColumn>
                         <DataGridTextColumn CanUserReorder="False" CanUserResize="False" IsReadOnly="True" Header="Sistema" Width="auto" Binding="{Binding Sistema}"></DataGridTextColumn>

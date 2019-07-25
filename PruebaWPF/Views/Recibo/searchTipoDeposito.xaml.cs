@@ -18,6 +18,7 @@ namespace PruebaWPF.Views.Recibo
     public partial class searchTipoDeposito : Window
     {
         private int TipoDeposito;
+        private int IdTipoArancel;
 
         private ObservableCollection<fn_ConsultarInfoExterna_Result> items { get; set; }
         private SearchTipoDepositoViewModel controller;
@@ -32,9 +33,11 @@ namespace PruebaWPF.Views.Recibo
         }
 
 
-        public searchTipoDeposito(int TipoDeposito, string Tipo)
+        public searchTipoDeposito(int TipoDeposito, string Tipo, int IdTipoArancel)
         {
             this.TipoDeposito = TipoDeposito;
+            this.IdTipoArancel = IdTipoArancel;
+
             InitializeComponent();
             txtTitulo.Text = "Seleccionar Registro de " + Tipo;
             Inicializar();
@@ -174,16 +177,19 @@ namespace PruebaWPF.Views.Recibo
             switch (TipoDeposito)
             {
                 case 1:
-                    CambiarHeaderTabla(new String[] { "Carnet", "Estudiante", "Carrera", "Sede" });
+                    CambiarHeaderTabla(new String[] { "Identificación", "Estudiante", "Carrera", "Sede" });
                     break;
                 case 2:
-                    CambiarHeaderTabla(new String[] { "No.Interno", "Trabajador", "Código", "Área" });
+                    CambiarHeaderTabla(new String[] { "Identificación", "Trabajador", "Código", "Area" });
                     break;
                 case 3:
-                    CambiarHeaderTabla(new String[] { "No. de Documento", "Agente Externo", "Tipo de Identificación", "Procedencia" });
+                    CambiarHeaderTabla(new String[] { "Identificación", "Agente Externo", "Procedencia" });
                     break;
                 case 4:
-                    CambiarHeaderTabla(new String[] { "RUC", "Razón Social", "Nombre Comercial", "Dirección" });
+                    CambiarHeaderTabla(new String[] { "Identificación", "Razón Social", "Nombre Comercial" });
+                    break;
+                case 5:
+                    CambiarHeaderTabla(new String[] { "Identificación", "Nombre", "Primera Opción" });
                     break;
 
             }
@@ -220,6 +226,13 @@ namespace PruebaWPF.Views.Recibo
                     }
                     break;
 
+                case 5://Candidato
+                    if (ValidarCampos(new TextBox[] { txtRUC, txtProveedor }))
+                    {
+                        BuscarInformacion(txtRUC.Text, txtProveedor.Text);
+                    }
+                    break;
+
             }
 
         }
@@ -232,7 +245,7 @@ namespace PruebaWPF.Views.Recibo
             {
                 if (string.IsNullOrWhiteSpace(campos[i].Text))
                 {
-                    contador++;                    
+                    contador++;
                 }
             }
             if (contador == campos.Length)
@@ -255,8 +268,9 @@ namespace PruebaWPF.Views.Recibo
             try
             {
                 string texto = Texto.Length > 0 ? "%" + Texto.Replace(' ', '%') + "%" : "";
-                items = new ObservableCollection<fn_ConsultarInfoExterna_Result>(controller.ObtenerTipoDeposito(TipoDeposito, Criterio, false, texto, clsConfiguration.Actual().TopRow,null));
-
+                items = new ObservableCollection<fn_ConsultarInfoExterna_Result>(controller.ObtenerTipoDeposito(TipoDeposito, Criterio, false, texto, clsConfiguration.Actual().TopRow, IdTipoArancel));
+                //TODO Hay que componer el encabezado
+                HeaderIdentificador.Header = items.ToString();
                 if (panelError.Visibility == Visibility.Visible)
                 {
                     panelError.Visibility = Visibility.Collapsed;
@@ -287,7 +301,7 @@ namespace PruebaWPF.Views.Recibo
             }
             else
             {
-                clsUtilidades.OpenMessage(new Operacion() { Mensaje = clsReferencias.MESSAGE_NoSelection, OperationType = clsReferencias.TYPE_MESSAGE_Advertencia },this);
+                clsUtilidades.OpenMessage(new Operacion() { Mensaje = clsReferencias.MESSAGE_NoSelection, OperationType = clsReferencias.TYPE_MESSAGE_Advertencia }, this);
             }
         }
 
@@ -364,7 +378,7 @@ namespace PruebaWPF.Views.Recibo
                 {
                     Pantalla pantalla = new PantallaViewModel().FindById(new AgenteExterno.AgenteExterno().Uid);
 
-                    if (controller.AuthorizePantallaIncrustada(pantalla,((Button)sender).Tag.ToString()))
+                    if (controller.AuthorizePantallaIncrustada(pantalla, ((Button)sender).Tag.ToString()))
                     {
                         GestionarAgenteExterno ga = new GestionarAgenteExterno(pantalla, btnAddAgente.Tag.ToString());
                         ga.ShowDialog();
@@ -379,6 +393,28 @@ namespace PruebaWPF.Views.Recibo
             {
                 clsUtilidades.OpenMessage(new Operacion() { Mensaje = "¡Espera un momento!\n\nAntes de agregar un nuevo registro, por favor asegúrate que este no existe mediante una breve búsqueda.\nLos registros duplicados no permiten obtener información adecuada para análisis.", OperationType = clsReferencias.TYPE_MESSAGE_Wait_a_Moment }, this);
             }
+        }
+
+        private void RbPrematricula_Checked(object sender, RoutedEventArgs e)
+        {
+            setChecked(true, txtCandidato, txtPrematricula);
+        }
+        private void RbCandidato_Checked(object sender, RoutedEventArgs e)
+        {
+            setChecked(false, txtCandidato, txtPrematricula);
+        }
+
+        private void TxtPrematricula_KeyDown(object sender, KeyEventArgs e)
+        {
+            VerificarEnter(e);
+            CambiarRadioButton(txtCandidato, rbPrematricula);
+        }
+
+
+        private void TxtCandidato_KeyDown(object sender, KeyEventArgs e)
+        {
+            VerificarEnter(e);
+            CambiarRadioButton(txtPrematricula, rbCandidato);
         }
     }
 }

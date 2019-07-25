@@ -709,6 +709,9 @@
     <Compile Include="Model\ReciboCheque.cs">
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
+    <Compile Include="Model\ReciboDatos.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
     <Compile Include="Model\ReciboDet.cs">
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>

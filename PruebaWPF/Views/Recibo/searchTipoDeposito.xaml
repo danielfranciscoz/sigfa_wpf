@@ -50,6 +50,7 @@
                             <Setter Property="Visibility" Value="Collapsed"/>
                         </Style>
                     </TabControl.ItemContainerStyle>
+                    
                     <!--Pestaña para mostrar campos de busqueda de estudiantes-->
                     <TabItem x:Name="tabEstudiante" Tag="1">
                         <StackPanel>
@@ -80,7 +81,7 @@
                                     <TextBlock Grid.Column="0" Margin="5" Foreground="{StaticResource DarkGray}" TextWrapping="Wrap">
                                         Asegúrese de escribir el carnet correctamente respetando guiones y letras.
                                     <LineBreak/>        
-                                        Buscaremos al estudiante en la base de datos del Sistema de Registro Académico de la Universidad Nacional de Ingeniería, en caso de no ser encontrado, favor contactar con DTIC.
+                                        Buscaremos al estudiante en la base de datos del Sistema de Registro Académico de la Universidad Nacional de Ingeniería, en caso de no ser encontrado, favor contactar al administrador del sistema.
                                     </TextBlock>
                                 </Grid>
                             </StackPanel>
@@ -115,7 +116,7 @@
                                         <ColumnDefinition Width="auto"/>
                                     </Grid.ColumnDefinitions>
                                     <TextBlock Grid.Column="0" Margin="5" Foreground="{StaticResource DarkGray}">
-                                        Buscaremos al trabajador en la Base de datos de Recursos Humanos, en caso de no encontrar el registro favor contactar con DTIC.
+                                        Buscaremos al trabajador en la Base de datos de Recursos Humanos, en caso de no encontrar el registro favor contactar al administrador del sistema.
                                     </TextBlock>
                                 </Grid>
                             </StackPanel>
@@ -185,12 +186,50 @@
                                         <ColumnDefinition Width="auto"/>
                                     </Grid.ColumnDefinitions>
                                     <TextBlock Grid.Column="0" Margin="5" Foreground="{StaticResource DarkGray}" TextWrapping="Wrap">
-                                        Buscaremos al Proveedor en la Base de datos del Sistema de Compras de la Universidad Nacional de Ingeniería, en caso de no encontrar el registro favor contactar con DTIC.
+                                        Buscaremos al Proveedor en la Base de datos del Sistema de Compras de la Universidad Nacional de Ingeniería, en caso de no encontrar el registro favor contactar al administrador del sistema.
                                     </TextBlock>
                                 </Grid>
                             </StackPanel>
                         </StackPanel>
                     </TabItem>
+
+                    <!--Pestaña para mostrar campos de busqueda de candidatos-->
+                    <TabItem x:Name="tabCandidato" Tag="5">
+                        <StackPanel>
+                            <StackPanel  Margin="10 20 10 10">
+                                <Grid  Width="auto">
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition/>
+                                        <RowDefinition/>
+                                    </Grid.RowDefinitions>
+                                    <Grid.ColumnDefinitions>
+
+                                        <ColumnDefinition Width="120"/>
+                                        <ColumnDefinition Width="*"/>
+                                    </Grid.ColumnDefinitions>
+                                    <RadioButton GroupName="radios" x:Name="rbPrematricula" Grid.Column="0" Grid.Row="0" VerticalAlignment="Center" HorizontalAlignment="Left" IsChecked="True" Checked="RbPrematricula_Checked" >No.Prematricula:</RadioButton>
+                                    <TextBox Grid.Column="2" Grid.Row="0"  x:Name="txtPrematricula" materialDesign:HintAssist.Hint="Especifique el Número de Prematricula" KeyDown="TxtPrematricula_KeyDown"/>
+
+                                    <RadioButton GroupName="radios" x:Name="rbCandidato" Grid.Column="0" Grid.Row="1" VerticalAlignment="Center" HorizontalAlignment="Left" Checked="RbCandidato_Checked">Apellidos:</RadioButton>
+                                    <TextBox Grid.Column="2" Grid.Row="1" x:Name="txtCandidato"  materialDesign:HintAssist.Hint="Especifique los apellidos del candidato"  KeyDown="TxtCandidato_KeyDown" />
+                                </Grid>
+                            </StackPanel>
+                            <StackPanel Margin="0 0 0 0">
+                                <Grid  Width="auto">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*"/>
+                                        <ColumnDefinition Width="auto"/>
+                                    </Grid.ColumnDefinitions>
+                                    <TextBlock Grid.Column="0" Margin="5" Foreground="{StaticResource DarkGray}" TextWrapping="Wrap">
+                                        Asegúrese de escribir correctamente el número de prematricula del candidato.
+                                    <LineBreak/>        
+                                        Buscaremos su información en la base de datos del Sistema de Registro Académico de la Universidad Nacional de Ingeniería, en caso de no ser encontrado, favor contactar al administrador del sistema.
+                                    </TextBlock>
+                                </Grid>
+                            </StackPanel>
+                        </StackPanel>
+                    </TabItem>
+
                 </TabControl>
                 <Separator></Separator>
                 <StackPanel HorizontalAlignment="Right">
@@ -202,7 +241,7 @@
                 <DataGrid Name="tblData" CanUserDeleteRows="False" CanUserAddRows="False" AutoGenerateColumns="False" SelectionUnit="FullRow" SelectionMode="Single" MouseDoubleClick="tblData_MouseDoubleClick">
 
                     <DataGrid.Columns>
-                        <DataGridTextColumn CanUserReorder="False" CanUserResize="False" IsReadOnly="True" Header="Carnet" Binding="{Binding Id}"></DataGridTextColumn>
+                        <DataGridTextColumn x:Name="HeaderIdentificador" CanUserReorder="False" CanUserResize="False" IsReadOnly="True" Header="" Binding="{Binding Id}"></DataGridTextColumn>
                         <DataGridTextColumn CanUserReorder="False" CanUserResize="False" IsReadOnly="True" Header="Estudiante" Binding="{Binding Nombre}"></DataGridTextColumn>
                         <DataGridTextColumn CanUserReorder="False" CanUserResize="False" IsReadOnly="True" Header="Carrera" Width="auto" Binding="{Binding Info1}"></DataGridTextColumn>
                         <DataGridTextColumn CanUserReorder="False" CanUserResize="False" IsReadOnly="True" Header="Sede" Width="auto" Binding="{Binding Info2}"></DataGridTextColumn>

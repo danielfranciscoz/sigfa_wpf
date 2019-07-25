@@ -161,6 +161,7 @@ namespace PruebaWPF.Model
         public virtual DbSet<ArancelPrecio> ArancelPrecio { get; set; }
         public virtual DbSet<ArancelTipoDeposito> ArancelTipoDeposito { get; set; }
         public virtual DbSet<AreaPagoDelegado> AreaPagoDelegado { get; set; }
+        public virtual DbSet<DetOrdenPagoArancel> DetOrdenPagoArancel { get; set; }
         public virtual DbSet<Exoneracion> Exoneracion { get; set; }
         public virtual DbSet<OrdenPago> OrdenPago { get; set; }
         public virtual DbSet<TipoArancel> TipoArancel { get; set; }
@@ -176,12 +177,14 @@ namespace PruebaWPF.Model
         public virtual DbSet<InfoRecibo> InfoRecibo { get; set; }
         public virtual DbSet<Recibo1> Recibo1 { get; set; }
         public virtual DbSet<ReciboAnulado> ReciboAnulado { get; set; }
+        public virtual DbSet<ReciboDatos> ReciboDatos { get; set; }
         public virtual DbSet<ReciboDet> ReciboDet { get; set; }
         public virtual DbSet<ReciboPago> ReciboPago { get; set; }
         public virtual DbSet<ReciboPagoBono> ReciboPagoBono { get; set; }
         public virtual DbSet<ReciboPagoCheque> ReciboPagoCheque { get; set; }
         public virtual DbSet<ReciboPagoDeposito> ReciboPagoDeposito { get; set; }
         public virtual DbSet<ReciboPagoTarjeta> ReciboPagoTarjeta { get; set; }
+        public virtual DbSet<ReciboSIRA> ReciboSIRA { get; set; }
         public virtual DbSet<SerieRecibo> SerieRecibo { get; set; }
         public virtual DbSet<TipoDeposito> TipoDeposito { get; set; }
         public virtual DbSet<AccesoDirectoPerfil> AccesoDirectoPerfil { get; set; }
@@ -272,8 +275,6 @@ namespace PruebaWPF.Model
         public virtual DbSet<w_LibroMayorAcumulado_VA> w_LibroMayorAcumulado_VA { get; set; }
         public virtual DbSet<w_LibroMayorAcumulado_VEP> w_LibroMayorAcumulado_VEP { get; set; }
         public virtual DbSet<w_LibroMayorAcumulado_Vlast> w_LibroMayorAcumulado_Vlast { get; set; }
-        public virtual DbSet<DetOrdenPagoArancel> DetOrdenPagoArancel { get; set; }
-        public virtual DbSet<ReciboSIRA> ReciboSIRA { get; set; }
     
         [DbFunction("SIFOPEntities", "fn_ConsultarInfoExterna")]
         public virtual IQueryable<fn_ConsultarInfoExterna_Result> fn_ConsultarInfoExterna(Nullable<int> tipoDeposito, string criterio, Nullable<bool> criterioInterno, string texto, Nullable<int> top, Nullable<bool> isReingreso)
@@ -1076,6 +1077,48 @@ namespace PruebaWPF.Model
                 new ObjectParameter("carnet", typeof(string));
     
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("sp_ArancelesSIRA", carnetParameter);
+        }
+    
+        public virtual int sp_InsertarPagoSIRA(string carnet, string detalleRecibo, Nullable<bool> isMatricula)
+        {
+            var carnetParameter = carnet != null ?
+                new ObjectParameter("carnet", carnet) :
+                new ObjectParameter("carnet", typeof(string));
+    
+            var detalleReciboParameter = detalleRecibo != null ?
+                new ObjectParameter("detalleRecibo", detalleRecibo) :
+                new ObjectParameter("detalleRecibo", typeof(string));
+    
+            var isMatriculaParameter = isMatricula.HasValue ?
+                new ObjectParameter("isMatricula", isMatricula) :
+                new ObjectParameter("isMatricula", typeof(bool));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("sp_InsertarPagoSIRA", carnetParameter, detalleReciboParameter, isMatriculaParameter);
+        }
+    
+        public virtual int sp_RevertirPagoSIRA(string carnet, Nullable<int> idRecibo, string serie, string motivo, Nullable<bool> isMatricula)
+        {
+            var carnetParameter = carnet != null ?
+                new ObjectParameter("carnet", carnet) :
+                new ObjectParameter("carnet", typeof(string));
+    
+            var idReciboParameter = idRecibo.HasValue ?
+                new ObjectParameter("IdRecibo", idRecibo) :
+                new ObjectParameter("IdRecibo", typeof(int));
+    
+            var serieParameter = serie != null ?
+                new ObjectParameter("Serie", serie) :
+                new ObjectParameter("Serie", typeof(string));
+    
+            var motivoParameter = motivo != null ?
+                new ObjectParameter("Motivo", motivo) :
+                new ObjectParameter("Motivo", typeof(string));
+    
+            var isMatriculaParameter = isMatricula.HasValue ?
+                new ObjectParameter("isMatricula", isMatricula) :
+                new ObjectParameter("isMatricula", typeof(bool));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("sp_RevertirPagoSIRA", carnetParameter, idReciboParameter, serieParameter, motivoParameter, isMatriculaParameter);
         }
     
         public virtual ObjectResult<Nullable<double>> sp_ConvertirDivisas(Nullable<int> idMonedaConvertir, Nullable<int> idMonedaFinal, Nullable<double> monto)
@@ -4400,48 +4443,6 @@ namespace PruebaWPF.Model
                 new ObjectParameter("NoInterno", typeof(string));
     
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("fn_ObtenerInfoUsuario", noInternoParameter);
-        }
-    
-        public virtual int sp_InsertarPagoSIRA(string carnet, string detalleRecibo, Nullable<bool> isMatricula)
-        {
-            var carnetParameter = carnet != null ?
-                new ObjectParameter("carnet", carnet) :
-                new ObjectParameter("carnet", typeof(string));
-    
-            var detalleReciboParameter = detalleRecibo != null ?
-                new ObjectParameter("detalleRecibo", detalleRecibo) :
-                new ObjectParameter("detalleRecibo", typeof(string));
-    
-            var isMatriculaParameter = isMatricula.HasValue ?
-                new ObjectParameter("isMatricula", isMatricula) :
-                new ObjectParameter("isMatricula", typeof(bool));
-    
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("sp_InsertarPagoSIRA", carnetParameter, detalleReciboParameter, isMatriculaParameter);
-        }
-    
-        public virtual int sp_RevertirPagoSIRA(string carnet, Nullable<int> idRecibo, string serie, string motivo, Nullable<bool> isMatricula)
-        {
-            var carnetParameter = carnet != null ?
-                new ObjectParameter("carnet", carnet) :
-                new ObjectParameter("carnet", typeof(string));
-    
-            var idReciboParameter = idRecibo.HasValue ?
-                new ObjectParameter("IdRecibo", idRecibo) :
-                new ObjectParameter("IdRecibo", typeof(int));
-    
-            var serieParameter = serie != null ?
-                new ObjectParameter("Serie", serie) :
-                new ObjectParameter("Serie", typeof(string));
-    
-            var motivoParameter = motivo != null ?
-                new ObjectParameter("Motivo", motivo) :
-                new ObjectParameter("Motivo", typeof(string));
-    
-            var isMatriculaParameter = isMatricula.HasValue ?
-                new ObjectParameter("isMatricula", isMatricula) :
-                new ObjectParameter("isMatricula", typeof(bool));
-    
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("sp_RevertirPagoSIRA", carnetParameter, idReciboParameter, serieParameter, motivoParameter, isMatriculaParameter);
         }
     }
 }

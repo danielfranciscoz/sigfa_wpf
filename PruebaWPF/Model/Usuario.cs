@@ -63,6 +63,7 @@ namespace PruebaWPF.Model
             this.Caja = new HashSet<Caja>();
             this.Configuracion = new HashSet<Configuracion>();
             this.DetAperturaCaja = new HashSet<DetAperturaCaja>();
+            this.DetOrdenPagoArancel = new HashSet<DetOrdenPagoArancel>();
             this.Exoneracion = new HashSet<Exoneracion>();
             this.Exoneracion1 = new HashSet<Exoneracion>();
             this.FormaPago = new HashSet<FormaPago>();
@@ -80,7 +81,6 @@ namespace PruebaWPF.Model
             this.UsuarioPerfil = new HashSet<UsuarioPerfil>();
             this.UsuarioPrograma = new HashSet<UsuarioPrograma>();
             this.VariacionCambiaria = new HashSet<VariacionCambiaria>();
-            this.DetOrdenPagoArancel = new HashSet<DetOrdenPagoArancel>();
         }
     
         public string Login { get; set; }
@@ -198,6 +198,8 @@ namespace PruebaWPF.Model
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<DetAperturaCaja> DetAperturaCaja { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<DetOrdenPagoArancel> DetOrdenPagoArancel { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Exoneracion> Exoneracion { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Exoneracion> Exoneracion1 { get; set; }
@@ -231,7 +233,5 @@ namespace PruebaWPF.Model
         public virtual ICollection<UsuarioPrograma> UsuarioPrograma { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<VariacionCambiaria> VariacionCambiaria { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<DetOrdenPagoArancel> DetOrdenPagoArancel { get; set; }
     }
 }

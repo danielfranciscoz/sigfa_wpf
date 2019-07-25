@@ -12,13 +12,16 @@ namespace PruebaWPF.Model
     using System;
     using System.Collections.Generic;
     
-    public partial class ReciboSIRA
+    public partial class ReciboDatos
     {
         public int IdRecibo { get; set; }
         public string Serie { get; set; }
-        public bool isMatricula { get; set; }
-        public System.DateTime FechaCreacion { get; set; }
+        public string IdArea { get; set; }
+        public int IdTipoDeposito { get; set; }
+        public string Identificador { get; set; }
+        public string TextoIdentificador { get; set; }
     
         public virtual Recibo1 Recibo1 { get; set; }
+        public virtual TipoDeposito TipoDeposito { get; set; }
     }
 }

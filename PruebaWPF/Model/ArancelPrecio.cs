@@ -17,9 +17,9 @@ namespace PruebaWPF.Model
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public ArancelPrecio()
         {
+            this.DetOrdenPagoArancel = new HashSet<DetOrdenPagoArancel>();
             this.Exoneracion = new HashSet<Exoneracion>();
             this.ReciboDet = new HashSet<ReciboDet>();
-            this.DetOrdenPagoArancel = new HashSet<DetOrdenPagoArancel>();
         }
     
         public int IdArancelPrecio { get; set; }
@@ -34,10 +34,10 @@ namespace PruebaWPF.Model
         public virtual Usuario Usuario { get; set; }
         public virtual ArancelArea ArancelArea { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<DetOrdenPagoArancel> DetOrdenPagoArancel { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Exoneracion> Exoneracion { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<ReciboDet> ReciboDet { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<DetOrdenPagoArancel> DetOrdenPagoArancel { get; set; }
     }
 }

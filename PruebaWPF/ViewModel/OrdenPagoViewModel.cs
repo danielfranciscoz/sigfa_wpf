@@ -51,7 +51,7 @@ namespace PruebaWPF.ViewModel
                 IdOrdenPago = a.IdOrdenPago,
                 NoOrdenPago = a.NoOrdenPago,
                 IdRecinto = a.IdRecinto,
-                Recibimos = a.Recibimos,
+                TextoIdentificador = a.TextoIdentificador,
                 UsuarioRemitente = a.UsuarioRemitente,
                 Sistema = a.Sistema,
                 FechaEnvio = a.FechaEnvio,
@@ -91,7 +91,7 @@ namespace PruebaWPF.ViewModel
                         IdOrdenPago = a.IdOrdenPago,
                         NoOrdenPago = a.NoOrdenPago,
                         IdRecinto = a.IdRecinto,
-                        Recibimos = a.Recibimos,
+                        TextoIdentificador = a.TextoIdentificador,
                         UsuarioRemitente = a.UsuarioRemitente,
                         Sistema = a.Sistema,
                         FechaEnvio = a.FechaEnvio,
@@ -106,7 +106,7 @@ namespace PruebaWPF.ViewModel
                         Area = clsSessionHelper.areasMemory.Where(w => w.codigo == a.IdArea).FirstOrDefault().descripcion.ToUpper(),
                         Recinto = clsSessionHelper.recintosMemory.Find(w => w.IdRecinto == a.IdRecinto).Siglas
                     }).Where(
-                       w => busqueda.All(a => w.Recibimos.Contains(a))
+                       w => busqueda.All(a => w.TextoIdentificador.Contains(a))
                     && (w.regAnulado == false && string.IsNullOrEmpty(w.CodRecibo))).ToList().Where(b => r.Any(a => b.IdRecinto == a.IdRecinto)).ToList();
 
                 }

@@ -32,6 +32,8 @@ namespace PruebaWPF.Views.Recibo
         private ObservableCollection<ArancelPrecio> aranceles;
         private fn_ConsultarInfoExterna_Result infoExterna;
         private TipoArancel tipoArancel;
+        private int? IdMatricula = null;
+        private int? IdPreMatricula = null;
 
         //TODO Cambiar la forma de los recibos, ya no serán series sino recintos
 
@@ -118,7 +120,7 @@ namespace PruebaWPF.Views.Recibo
 
                 if (tipoArancel != null)
                 {
-                    aranceles = new ObservableCollection<ArancelPrecio>(controller.ObtenerAranceles(idarea, idtipodeposito, tipoArancel.IdTipoArancel, txtIdentificador.Text).ToList());
+                    aranceles = new ObservableCollection<ArancelPrecio>(controller.ObtenerAranceles(idarea, idtipodeposito, tipoArancel.IdTipoArancel, txtIdentificador.Text, IdPreMatricula, IdMatricula).ToList());
                     cboArancel.ItemsSource = aranceles;
                 }
             }
@@ -542,7 +544,7 @@ namespace PruebaWPF.Views.Recibo
         private void AddArancel()
         {
             ArancelPrecio a = (ArancelPrecio)cboArancel.SelectedItem;
-            Exoneracion exoneracion = controller.FindExoneracionArancel(orden.Identificador,orden.IdTipoDeposito,a.IdArancelPrecio);
+            Exoneracion exoneracion = controller.FindExoneracionArancel(orden.Identificador, orden.IdTipoDeposito, a.IdArancelPrecio);
             items.Add(new DetOrdenPagoSon()
             {
                 PrecioVariable = Decimal.Parse(txtMonto.Text.ToString()),
@@ -733,7 +735,7 @@ namespace PruebaWPF.Views.Recibo
 
         private void SeleccionarTipoDeposito()
         {
-            searchTipoDeposito search = new searchTipoDeposito(int.Parse(cboTipoDeposito.SelectedValue.ToString()), cboTipoDeposito.Text);
+            searchTipoDeposito search = new searchTipoDeposito(int.Parse(cboTipoDeposito.SelectedValue.ToString()), cboTipoDeposito.Text, tipoArancel.IdTipoArancel);
             search.Owner = this;
             search.ShowDialog();
 
@@ -752,12 +754,10 @@ namespace PruebaWPF.Views.Recibo
             orden.Identificador = selectedResult.Id;
             orden.PorCuenta = selectedResult.Nombre;
 
-            if (string.IsNullOrEmpty(orden.Recibimos))
-            {
-                orden.Recibimos = selectedResult.Nombre;
-            }
+            recibo.Recibimos = selectedResult.Nombre;
+            txtRecibimos.Text = recibo.Recibimos;
 
-            ActualizarCampo(new TextBox[] { txtIdentificador, txtPorCuenta, txtRecibimos });
+            ActualizarCampo(new TextBox[] { txtIdentificador, txtPorCuenta });
 
             //Si los campos estan rojos entonces les paso el foco para que cambien a azul
             txtIdentificador.Focus();
@@ -767,7 +767,18 @@ namespace PruebaWPF.Views.Recibo
 
         private void cboTipoDeposito_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
+
             LimpiarCargar();
+        }
+
+        private void SeleccionarPreOrMatricula(int idTipoArancel)
+        {
+            IdMatricula = controller.isMatricula(idTipoArancel) ? idTipoArancel : (int?)null;
+
+            if (IdMatricula == null)
+            {
+                IdPreMatricula = controller.isPreMatricula(idTipoArancel) ? idTipoArancel : (int?)null;
+            }
         }
 
         private void LimpiarCargar()
@@ -781,7 +792,8 @@ namespace PruebaWPF.Views.Recibo
                     if (cboTipoDeposito.SelectedValue != null)
                     {
                         orden.IdTipoDeposito = int.Parse(cboTipoDeposito.SelectedValue.ToString());
-                        //CargarAranceles(orden.IdArea, orden.IdTipoDeposito);
+
+                        CargarAranceles(orden.IdArea, orden.IdTipoDeposito);
 
                     }
                     ActualizarCampo(new TextBox[] { txtIdentificador, txtPorCuenta, txtRecibimos });
@@ -827,7 +839,11 @@ namespace PruebaWPF.Views.Recibo
                     fn_ConsultarInfoExterna_Result data = InformacionResult(int.Parse(cboTipoDeposito.SelectedValue.ToString()), txtIdentificador.Text, false);
                     if (data != null)
                     {
-                        CargarAranceles(orden.IdArea, orden.IdTipoDeposito);
+                        if (IdPreMatricula != null || IdMatricula != null)
+                        {
+                            CargarAranceles(orden.IdArea, orden.IdTipoDeposito);
+                        }
+
                         AsignarDatos(data);
                     }
                 }
@@ -903,7 +919,7 @@ namespace PruebaWPF.Views.Recibo
         private void GenerarRecibo()
         {
             orden.Identificador = infoExterna.IdInterno; //Le asigno el id interno de las tablas, porque el que tiene asignado previamente es el id visible a los usuarios
-            recibo = controller.GenerarRecibo(tipoArancel, recibo, orden, items.ToList(), formaPago.ToList());
+            recibo = controller.GenerarRecibo(tipoArancel, recibo, orden, items.ToList(), formaPago.ToList(), IdMatricula, IdPreMatricula);
             rptRecibo boucher = new rptRecibo(recibo, true);
             Finalizar();
             boucher.ShowDialog();
@@ -986,6 +1002,7 @@ namespace PruebaWPF.Views.Recibo
             BotonBusquedaArea();
             LimpiarArea();
             LimpiarCargar();
+
         }
 
         private void BotonBusquedaArea()
@@ -1003,6 +1020,8 @@ namespace PruebaWPF.Views.Recibo
                     btnSelectArea.IsEnabled = false;
                     CargarTiposDeposito("");
                 }
+
+                SeleccionarPreOrMatricula(tipoArancel.IdTipoArancel);
             }
         }
 

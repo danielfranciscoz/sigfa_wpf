@@ -114,7 +114,7 @@ namespace PruebaWPF.Views.Recibo
             fn_ConsultarInfoExterna_Result info = new fn_ConsultarInfoExterna_Result();
 
             info.Nombre = recibo.TextoIdentificador;
-            if (modeloRecibo.isAgenteExterno(recibo.IdTipoDeposito.Value))
+            if (modeloRecibo.isAgenteExterno(recibo.IdTipoDeposito))
             {
                 AgenteExternoCat agente = new AgenteExternoViewModel().FindById(int.Parse(recibo.Identificador));
                 if (agente != null)

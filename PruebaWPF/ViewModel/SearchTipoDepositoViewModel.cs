@@ -30,7 +30,7 @@ namespace PruebaWPF.ViewModel
             bool? isReingreso = false;
             if (tipoarancel.Value == int.Parse(db.Configuracion.First(f => f.Llave == clsConfiguration.Llaves.IdMatricula.ToString()).Valor))
             {
-                isReingreso = this.isNewOrReingreso(criterio);
+                isReingreso = IsNewOrReingreso(criterio);
             }
             else
             {
@@ -57,7 +57,7 @@ namespace PruebaWPF.ViewModel
             }
         }
 
-        public bool isNewOrReingreso(string criterio)
+        public static bool IsNewOrReingreso(string criterio)
         {
             bool flag = false;
 
