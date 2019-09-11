@@ -294,6 +294,8 @@
                                     <ListView.View>
                                         <GridView>
                                             <GridViewColumn Width="auto" Header="Forma de Pago" DisplayMemberBinding="{Binding FormaPago1}"  />
+                                            <GridViewColumn Width="auto" Header="Es Documento" DisplayMemberBinding="{Binding isDoc, Converter={StaticResource convertidor},ConverterParameter='Si;No'}"  />
+                                            <GridViewColumn Width="auto" Header="Identificador" DisplayMemberBinding="{Binding Identificador}"  />
                                         </GridView>
                                     </ListView.View>
                                 </ListView>

@@ -60,8 +60,19 @@
                         </StackPanel>
 
                         <!--Forma Pago-->
-                        <StackPanel x:Name="panelFormaPago" Visibility="Collapsed">
+                        <StackPanel x:Name="panelFormaPago" Visibility="Visible" >
                             <TextBox Margin="0 15 0 10" x:Name="txtFormaPago" materialDesign:HintAssist.Hint="* Forma de Pago" materialDesign:HintAssist.IsFloating="True" FontSize="12" Text="{Binding FormaPago1}"/>
+                            <DockPanel HorizontalAlignment="Stretch" ToolTip="Si: la forma de pago corresponde a un documento que representa efectivo o una transacción exitosa de efectivo.">
+                                <TextBlock Foreground="{StaticResource DarkGray}">¿Es un documento de efectivo?</TextBlock>
+                                <DockPanel HorizontalAlignment="Right">
+                                    <TextBlock Foreground="{StaticResource DarkGray}">No</TextBlock>
+                                    <ToggleButton x:Name="rbDoc" IsChecked="{Binding isDoc}" Style="{DynamicResource MaterialDesignSwitchToggleButton}" />
+                                    <TextBlock Foreground="{StaticResource DarkGray}">Si</TextBlock>
+                                </DockPanel>
+                            </DockPanel>
+
+                            <TextBox Margin="0 15 0 10" x:Name="txtIdentificador" materialDesign:HintAssist.Hint="* Identificador" materialDesign:HintAssist.IsFloating="True" FontSize="12" Text="{Binding Identificador}" IsEnabled="{Binding ElementName=rbDoc,Path=IsChecked}"/>
+
                             <TextBlock TextWrapping="Wrap" VerticalAlignment="Center" FontSize="10" Text="Si la forma de pago requiere de campos adicionales por favor pongase en contacto con el Administrador del Sistema." Foreground="{StaticResource DarkGray}"/>
                         </StackPanel>
 
@@ -100,7 +111,7 @@
                                 <ToggleButton Grid.Column="1" x:Name="webService" IsChecked="{Binding WebService}" Style="{DynamicResource MaterialDesignSwitchToggleButton}">
                                 </ToggleButton>
                             </Grid>-->
-                           
+
                         </StackPanel>
 
                         <!--Identificacion de Agentes Externos-->
@@ -128,7 +139,7 @@
                                 <TextBlock.Inlines>
                                     <Run>El texto cerá centrado automaticamente en el recibo.</Run>
                                     <LineBreak/>
-                                    <Run>Se permite un máximo de </Run>
+                                    <Run>Se permite un máximo de</Run>
                                     <Run Text="{Binding ElementName=txtEncabezado,Path=MaxLines}"></Run>
                                     <Run>líneas.</Run>
                                 </TextBlock.Inlines>
@@ -143,7 +154,7 @@
                                     <Run>líneas.</Run>
                                 </TextBlock.Inlines>
                             </TextBlock>
-                            
+
                             <ComboBox Margin="0 15 0 10"  x:Name="cboRecinto" materialDesign:HintAssist.Hint="* Recinto" materialDesign:HintAssist.IsFloating="True" FontSize="12" SelectedValuePath="IdRecinto" DisplayMemberPath="Siglas"></ComboBox>
                             <StackPanel Margin="0 0 0 0" Orientation="Horizontal">
                                 <TextBlock VerticalAlignment="Center" FontSize="10" Text="Se muestran recintos en base a sus permisos de ususario." Foreground="{StaticResource DarkGray}"/>
@@ -158,13 +169,13 @@
                                 <ColumnDefinition Width="auto"/>
                                 <ColumnDefinition Width="*"/>
                             </Grid.ColumnDefinitions>
-                        <Button x:Name="btnPreview" Visibility="Collapsed" HorizontalAlignment="Left" Grid.Column="0" Style="{DynamicResource MaterialDesignFlatButton}" Foreground="{StaticResource Save_Button}"  Margin="0 2 0 2" Click="btnPreview_Click" Content="VISUALIZAR"></Button>
-                        <StackPanel Grid.Column="1" Orientation="Horizontal" HorizontalAlignment="Right">
-                            <Button x:Name="btnCancel" Style="{DynamicResource MaterialDesignFlatButton}" Foreground="{StaticResource Save_Button}"  Margin="0 2 0 2" Click="btnCancel_Click" Content="{StaticResource Text_Cancel_Button}"></Button>
-                            <Button Tag="{StaticResource Permiso_Editar}" x:Name="btnEdit" Visibility="Collapsed" Style="{DynamicResource MaterialDesignFlatButton}" Foreground="{StaticResource Save_Button}"  Margin="0 2 0 2" Click="btnSave_Click" Content="{StaticResource Text_Edit_Button}"></Button>
-                            <Button Tag="{StaticResource Permiso_Guardar}" x:Name="btnSave" Style="{DynamicResource MaterialDesignFlatButton}" Foreground="{StaticResource Save_Button}"  Margin="0 2 0 2" Click="btnSave_Click" Content="{StaticResource Text_Save_Button}"></Button>
-                        </StackPanel>
-                        </Grid>    
+                            <Button x:Name="btnPreview" Visibility="Collapsed" HorizontalAlignment="Left" Grid.Column="0" Style="{DynamicResource MaterialDesignFlatButton}" Foreground="{StaticResource Save_Button}"  Margin="0 2 0 2" Click="btnPreview_Click" Content="VISUALIZAR"></Button>
+                            <StackPanel Grid.Column="1" Orientation="Horizontal" HorizontalAlignment="Right">
+                                <Button x:Name="btnCancel" Style="{DynamicResource MaterialDesignFlatButton}" Foreground="{StaticResource Save_Button}"  Margin="0 2 0 2" Click="btnCancel_Click" Content="{StaticResource Text_Cancel_Button}"></Button>
+                                <Button Tag="{StaticResource Permiso_Editar}" x:Name="btnEdit" Visibility="Collapsed" Style="{DynamicResource MaterialDesignFlatButton}" Foreground="{StaticResource Save_Button}"  Margin="0 2 0 2" Click="btnSave_Click" Content="{StaticResource Text_Edit_Button}"></Button>
+                                <Button Tag="{StaticResource Permiso_Guardar}" x:Name="btnSave" Style="{DynamicResource MaterialDesignFlatButton}" Foreground="{StaticResource Save_Button}"  Margin="0 2 0 2" Click="btnSave_Click" Content="{StaticResource Text_Save_Button}"></Button>
+                            </StackPanel>
+                        </Grid>
                     </StackPanel>
 
                 </Grid>

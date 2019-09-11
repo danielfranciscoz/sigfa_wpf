@@ -716,7 +716,9 @@ namespace PruebaWPF.Views.Tesoreria
                         FormaPago newEdit = new FormaPago()
                         {
                             IdFormaPago = selected.IdFormaPago,
-                            FormaPago1 = selected.FormaPago1
+                            FormaPago1 = selected.FormaPago1,
+                            isDoc = selected.isDoc,
+                            Identificador =selected.Identificador
                         };
                         GestionarT_B_FP gt = new GestionarT_B_FP(newEdit, pantalla);
                         gt.ShowDialog();

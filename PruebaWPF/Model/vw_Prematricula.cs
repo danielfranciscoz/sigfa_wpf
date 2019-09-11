@@ -21,7 +21,10 @@ namespace PruebaWPF.Model
         public byte ESTipo { get; set; }
         public string PrimeraOpcion { get; set; }
         public string SegundaOpcion { get; set; }
-        public Nullable<bool> isBecado { get; set; }
+        public Nullable<int> isBecado { get; set; }
         public int isClasificado { get; set; }
+        public string Carrera { get; set; }
+        public string TipoPrematricula { get; set; }
+        public string Sede { get; set; }
     }
 }

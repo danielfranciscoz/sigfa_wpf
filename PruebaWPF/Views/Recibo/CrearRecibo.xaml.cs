@@ -968,11 +968,6 @@ namespace PruebaWPF.Views.Recibo
             }
         }
 
-        private void tblDetalles_MouseDoubleClick(object sender, MouseButtonEventArgs e)
-        {
-
-        }
-
         private void cboFuenteFinanciamiento_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             recibo.IdFuenteFinanciamiento = byte.Parse(cboFuenteFinanciamiento.SelectedValue.ToString());
@@ -1002,7 +997,6 @@ namespace PruebaWPF.Views.Recibo
             BotonBusquedaArea();
             LimpiarArea();
             LimpiarCargar();
-
         }
 
         private void BotonBusquedaArea()

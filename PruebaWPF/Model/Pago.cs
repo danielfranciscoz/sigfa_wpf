@@ -12,27 +12,30 @@ namespace PruebaWPF.Model
     using System;
     using System.Collections.Generic;
     
-    public partial class FormaPago
+    public partial class Pago
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-        public FormaPago()
+        public Pago()
         {
-            this.ReciboPago = new HashSet<ReciboPago>();
-            this.ArqueoNoEfectivo = new HashSet<ArqueoNoEfectivo>();
+            this.AnulacionPago = new HashSet<AnulacionPago>();
+            this.DetallePago = new HashSet<DetallePago>();
         }
     
-        public int IdFormaPago { get; set; }
-        public string FormaPago1 { get; set; }
-        public bool isDoc { get; set; }
+        public int IdPago { get; set; }
         public string Identificador { get; set; }
+        public string TipoDeposito { get; set; }
+        public long NoTrx { get; set; }
+        public byte IdBanco { get; set; }
+        public string Sucursal { get; set; }
+        public string Cajero { get; set; }
+        public string PorCuenta { get; set; }
         public System.DateTime FechaCreacion { get; set; }
-        public string UsuarioCreacion { get; set; }
-        public bool regAnulado { get; set; }
+        public Nullable<System.DateTime> FechaAnulacion { get; set; }
     
-        public virtual Usuario Usuario { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<ReciboPago> ReciboPago { get; set; }
+        public virtual ICollection<AnulacionPago> AnulacionPago { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<ArqueoNoEfectivo> ArqueoNoEfectivo { get; set; }
+        public virtual ICollection<DetallePago> DetallePago { get; set; }
+        public virtual Banco Banco { get; set; }
     }
 }

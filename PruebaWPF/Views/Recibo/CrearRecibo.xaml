@@ -311,7 +311,7 @@
                                                 </StackPanel>
 
                                                 <StackPanel>
-                                                    <DataGrid Height="210" HorizontalScrollBarVisibility="Auto" CanUserAddRows="False" VerticalScrollBarVisibility="Auto" Name="tblDetalles" AutoGenerateColumns="False" SelectionUnit="FullRow" SelectionMode="Single" MouseDoubleClick="tblDetalles_MouseDoubleClick">
+                                                    <DataGrid Height="210" HorizontalScrollBarVisibility="Auto" CanUserAddRows="False" VerticalScrollBarVisibility="Auto" Name="tblDetalles" AutoGenerateColumns="False" SelectionUnit="FullRow" SelectionMode="Single">
                                                         <DataGrid.Columns>
                                                             <DataGridTemplateColumn CanUserResize="False" Width="50" Header="">
                                                                 <DataGridTemplateColumn.CellTemplate>

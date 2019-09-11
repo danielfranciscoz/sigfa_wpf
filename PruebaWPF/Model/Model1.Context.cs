@@ -27,6 +27,14 @@ namespace PruebaWPF.Model
             throw new UnintentionalCodeFirstException();
         }
     
+        public virtual DbSet<AnulacionPago> AnulacionPago { get; set; }
+        public virtual DbSet<DetallePago> DetallePago { get; set; }
+        public virtual DbSet<NoCuentasBankArea> NoCuentasBankArea { get; set; }
+        public virtual DbSet<Pago> Pago { get; set; }
+        public virtual DbSet<PagoSede> PagoSede { get; set; }
+        public virtual DbSet<TipoTransaccionBank> TipoTransaccionBank { get; set; }
+        public virtual DbSet<TransaccionesServicio> TransaccionesServicio { get; set; }
+        public virtual DbSet<UserBank> UserBank { get; set; }
         public virtual DbSet<AgenteExternoCat> AgenteExternoCat { get; set; }
         public virtual DbSet<IdentificacionAgenteExterno> IdentificacionAgenteExterno { get; set; }
         public virtual DbSet<DenominacionMoneda> DenominacionMoneda { get; set; }
@@ -169,7 +177,6 @@ namespace PruebaWPF.Model
         public virtual DbSet<AperturaCaja> AperturaCaja { get; set; }
         public virtual DbSet<Arqueo> Arqueo { get; set; }
         public virtual DbSet<ArqueoEfectivo> ArqueoEfectivo { get; set; }
-        public virtual DbSet<ArqueoNoEfectivo> ArqueoNoEfectivo { get; set; }
         public virtual DbSet<ArqueoRecibo> ArqueoRecibo { get; set; }
         public virtual DbSet<Caja> Caja { get; set; }
         public virtual DbSet<DetAperturaCaja> DetAperturaCaja { get; set; }
@@ -275,6 +282,7 @@ namespace PruebaWPF.Model
         public virtual DbSet<w_LibroMayorAcumulado_VA> w_LibroMayorAcumulado_VA { get; set; }
         public virtual DbSet<w_LibroMayorAcumulado_VEP> w_LibroMayorAcumulado_VEP { get; set; }
         public virtual DbSet<w_LibroMayorAcumulado_Vlast> w_LibroMayorAcumulado_Vlast { get; set; }
+        public virtual DbSet<ArqueoNoEfectivo> ArqueoNoEfectivo { get; set; }
     
         [DbFunction("SIFOPEntities", "fn_ConsultarInfoExterna")]
         public virtual IQueryable<fn_ConsultarInfoExterna_Result> fn_ConsultarInfoExterna(Nullable<int> tipoDeposito, string criterio, Nullable<bool> criterioInterno, string texto, Nullable<int> top, Nullable<bool> isReingreso)
@@ -4443,6 +4451,20 @@ namespace PruebaWPF.Model
                 new ObjectParameter("NoInterno", typeof(string));
     
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("fn_ObtenerInfoUsuario", noInternoParameter);
+        }
+    
+        [DbFunction("SIFOPEntities", "fn_TotalesArqueo")]
+        public virtual IQueryable<fn_TotalesArqueo_Result> fn_TotalesArqueo(Nullable<int> idArqueo, Nullable<bool> isDoc)
+        {
+            var idArqueoParameter = idArqueo.HasValue ?
+                new ObjectParameter("IdArqueo", idArqueo) :
+                new ObjectParameter("IdArqueo", typeof(int));
+    
+            var isDocParameter = isDoc.HasValue ?
+                new ObjectParameter("isDoc", isDoc) :
+                new ObjectParameter("isDoc", typeof(bool));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.CreateQuery<fn_TotalesArqueo_Result>("[SIFOPEntities].[fn_TotalesArqueo](@IdArqueo, @isDoc)", idArqueoParameter, isDocParameter);
         }
     }
 }

@@ -163,15 +163,15 @@ namespace PruebaWPF.ViewModel
         public List<ArqueoEfectivoSon> FindConteoEfectivo(DetAperturaCaja apertura)
         {
             List<ArqueoEfectivoSon> resultados = (from denominacion in db.DenominacionMoneda
-                                                  join efectivo in db.ArqueoEfectivo on new { moneda = denominacion.Moneda, denominacion = denominacion.Denominacion } equals new { moneda = efectivo.IdMoneda, denominacion = efectivo.Denominacion } into jointTable
-                                                  from jointRecord in jointTable.DefaultIfEmpty()
+                                                  join efectivo in db.ArqueoEfectivo on new { moneda = denominacion.Moneda, denominacion = denominacion.Denominacion } equals new { moneda = efectivo.IdMoneda, denominacion = efectivo.Denominacion } into joinTable
+                                                  from joinRecord in joinTable.DefaultIfEmpty()
                                                   select new ArqueoEfectivoSon()
                                                   {
-                                                      IdArqueoEfectivo = jointRecord.IdArqueoEfectivo,
-                                                      IdArqueo = jointRecord.IdArqueo,
+                                                      IdArqueoEfectivo = joinRecord.IdArqueoEfectivo,
+                                                      IdArqueo = joinRecord.IdArqueo,
                                                       Moneda = denominacion.Moneda1,
                                                       Denominacion = denominacion.Denominacion,
-                                                      Cantidad = jointRecord.Cantidad
+                                                      Cantidad = joinRecord.Cantidad
                                                   }).ToList();
 
             return resultados;
@@ -239,45 +239,102 @@ namespace PruebaWPF.ViewModel
 
         #region Paso 4, Conteo de Documentos de Efectivo
 
-        public List<DocumentosEfectivo> FindDocumentosEfectivo(DetAperturaCaja apertura)
+
+        public List<Moneda> FindMonedas()
         {
-            List<ReciboPago> pagos = db.ReciboPago.Where(w => w.Recibo1.IdDetAperturaCaja == apertura.IdDetAperturaCaja).ToList();
-
-            //List<DocumentosEfectivo> bonos1 = (from arqueo in db.ReciboPago
-            //                                   join doc in db.ArqueoNoEfectivo on new {
-
-            //                                   });
-
-            List<DocumentosEfectivo> bonos = pagos.Where(w => w.ReciboPagoBono != null)
-                .Select(s => new DocumentosEfectivo { IdRecibo = s.IdRecibo, Serie = s.Serie, IdReciboPago = s.IdReciboPago, FormaPago = s.FormaPago, Moneda = s.Moneda, Monto = s.Monto, NoDocumento = s.ReciboPagoBono.Numero, Informacion = "No.Bono" }).ToList();
-
-            List<DocumentosEfectivo> cheque = pagos.Where(w => w.ReciboPagoCheque != null)
-                .Select(s => new DocumentosEfectivo { IdRecibo = s.IdRecibo, Serie = s.Serie, IdReciboPago = s.IdReciboPago, FormaPago = s.FormaPago, Moneda = s.Moneda, Monto = s.Monto, NoDocumento = s.ReciboPagoCheque.NumeroCK.ToString(), Informacion = "No.Cheque" }).ToList();
-
-            List<DocumentosEfectivo> deposito = pagos.Where(w => w.ReciboPagoDeposito != null)
-                .Select(s => new DocumentosEfectivo { IdRecibo = s.IdRecibo, Serie = s.Serie, IdReciboPago = s.IdReciboPago, FormaPago = s.FormaPago, Moneda = s.Moneda, Monto = s.Monto, NoDocumento = s.ReciboPagoDeposito.Transaccion, Informacion = "No.Transacción" }).ToList();
-
-            List<DocumentosEfectivo> tarjeta = pagos.Where(w => w.ReciboPagoTarjeta != null)
-                .Select(s => new DocumentosEfectivo { IdRecibo = s.IdRecibo, Serie = s.Serie, IdReciboPago = s.IdReciboPago, FormaPago = s.FormaPago, Moneda = s.Moneda, Monto = s.Monto, NoDocumento = s.ReciboPagoTarjeta.Autorizacion.ToString(), Informacion = "No.Autorización" }).ToList();
-
-            return bonos.Union(cheque).Union(deposito).Union(tarjeta).ToList();
+            return db.Moneda.Where(w => w.regAnulado == false).ToList();
         }
 
-        public void GuardarNoEfectivo(List<DocumentosEfectivo> documentos, Arqueo arqueo)
+        public List<ArqueoNoEfectivoSon> FindDocumentosArqueados(int IdArqueoDetApertura)
+        {
+            return db.ArqueoNoEfectivo.Where(w => w.IdArqueo == IdArqueoDetApertura && w.FormaPago.isDoc).Select(s =>
+              new ArqueoNoEfectivoSon()
+              {
+                  IdArqueoNoEfectivo = s.IdArqueoNoEfectivo,
+                  IdArqueo = s.IdArqueo,
+                  IdRecibo = s.IdRecibo,
+                  Serie = s.Serie,
+                  IdFormaPago = s.IdFormaPago,
+                  FormaPago = s.FormaPago,
+                  NoDocumento = s.NoDocumento,
+                  Moneda = s.Moneda,
+                  MontoFisico = s.MontoFisico,
+                  MonedaFisica = s.MonedaFisica,
+                  IdReciboPago = s.IdReciboPago,
+                  FechaCreacion = s.FechaCreacion,
+                  UsuarioCreacion = s.UsuarioCreacion
+              }).ToList();
+        }
+
+        public List<FormaPago> FindFormasPagoDocumentos(int IdArqueoDetApertura)
+        {
+            return db.ReciboPago.Where(w => w.Recibo1.IdDetAperturaCaja == IdArqueoDetApertura && w.regAnulado == false && w.FormaPago.isDoc && w.FormaPago.Identificador != null).Select(s => s.FormaPago).Distinct().ToList();
+        }
+
+        public int? FindReciboPago(ArqueoNoEfectivoSon noefectivo)
+        {
+            ReciboPago pagos = db.ReciboPago.FirstOrDefault(w => w.IdRecibo == noefectivo.IdRecibo && w.Serie == noefectivo.Serie && w.IdFormaPago == noefectivo.IdFormaPago && w.IdMoneda == noefectivo.MonedaFisica && w.Monto == noefectivo.MontoFisico
+             && (noefectivo.NoDocumento == w.ReciboPagoCheque.NumeroCK.ToString() ||
+                    noefectivo.NoDocumento == w.ReciboPagoTarjeta.Autorizacion.ToString() ||
+                    noefectivo.NoDocumento == w.ReciboPagoBono.Numero ||
+                    noefectivo.NoDocumento == w.ReciboPagoDeposito.Transaccion)
+            );
+            return pagos?.IdReciboPago;
+        }
+
+        public int FindTotalDocumentos(int IdArqueoDetApertura)
+        {
+            return db.ReciboPago.Count(c => c.Recibo1.IdDetAperturaCaja == IdArqueoDetApertura && c.FormaPago.isDoc && c.regAnulado == false);
+        }
+
+
+        public void GuardarNoEfectivo(List<ArqueoNoEfectivoSon> documentosMemory , Arqueo arqueo)
         {
 
             using (var transaction = db.Database.BeginTransaction())
             {
                 try
                 {
-                    ArqueoNoEfectivo an;
 
-                    foreach (DocumentosEfectivo doc in documentos)
+                    //Eliminando los que no estan 
+                    List<ArqueoNoEfectivo> documentosBD = db.ArqueoNoEfectivo.Where(w => w.IdArqueo == arqueo.IdArqueoDetApertura).ToList();
+                    if (!documentosMemory.Any())
                     {
-                        //if (doc.i)
-                        //{
+                        if (documentosBD.Any())
+                        {
+                            db.ArqueoNoEfectivo.RemoveRange(documentosBD);
+                        }
+                    }
+                    else
+                    {
+                        documentosBD = documentosBD.Where(w => !documentosMemory.Any(a => a.IdArqueoNoEfectivo == w.IdArqueoNoEfectivo && a.IdArqueoNoEfectivo>0)).ToList();
 
-                        //}
+                        if (documentosBD.Any())
+                        {
+                            db.ArqueoNoEfectivo.RemoveRange(documentosBD);
+                        }
+                    }
+
+                    ArqueoNoEfectivo ae;
+                    foreach (ArqueoNoEfectivoSon a in documentosMemory)
+                    {
+                        if (a.IdArqueoNoEfectivo == 0)
+                        {
+                            ae = new ArqueoNoEfectivo
+                            {
+                                IdArqueo = arqueo.IdArqueoDetApertura,
+                                IdRecibo = a.IdRecibo,
+                                Serie = a.Serie,
+                                IdFormaPago = a.IdFormaPago,
+                                IdReciboPago = a.IdReciboPago,
+                                NoDocumento = a.NoDocumento,
+                                MontoFisico = a.MontoFisico,
+                                MonedaFisica = a.MonedaFisica,
+                                FechaCreacion = System.DateTime.Now,
+                                UsuarioCreacion = clsSessionHelper.usuario.Login
+                            };
+                            db.ArqueoNoEfectivo.Add(ae);
+                        }
                     }
 
                     db.SaveChanges();
@@ -300,6 +357,13 @@ namespace PruebaWPF.ViewModel
             return db.Recibo1.Where(w => w.IdDetAperturaCaja == apertura.IdDetAperturaCaja).Select(s => s.UsuarioCreacion).Distinct().ToList();
         }
 
+        public Object TotalEfectivo(DetAperturaCaja apertura) {
+
+            //var efectivo = db.ReciboPago.Where(w=>!w.FormaPago.isDoc && w.Recibo1.IdDetAperturaCaja==apertura.IdDetAperturaCaja).Select(s=>s.).ToList();
+
+            return null;
+        }
+
         public void FinalizarArqueo(Arqueo Obj)
         {
             Arqueo arqueo = db.Arqueo.Find(Obj.IdArqueoDetApertura);
@@ -314,7 +378,6 @@ namespace PruebaWPF.ViewModel
             db.SaveChanges();
 
         }
-
         #endregion
 
         public Arqueo FindById(int Id)
@@ -344,40 +407,11 @@ namespace PruebaWPF.ViewModel
 
     }
 
-    public class DocumentosEfectivo : ReciboPago, INotifyPropertyChanged
+    public class ArqueoNoEfectivoSon : ArqueoNoEfectivo
     {
-        public int IdArqueoNoEfectivo { get; set; }
+
         public string Recibo => string.Format("{0}-{1}", IdRecibo, Serie);
-        public string NoDocumento { get; set; }
-        public string Informacion { get; set; }
-
-        private string observacion { get; set; }
-
-        public event PropertyChangedEventHandler PropertyChanged;
-
-        private void NotifyPropertyChanged([CallerMemberName] String propertyName = "")
-        {
-            if (PropertyChanged != null)
-            {
-                PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
-            }
-        }
-
-        public string No_Documento
-        {
-            get
-            {
-                return observacion;
-            }
-            set
-            {
-                if (value != observacion)
-                {
-                    observacion = value;
-                    NotifyPropertyChanged();
-                }
-            }
-        }
+        public string ComentarioSistema => (IdReciboPago == null) ? "El documento no ha sido encontrado, este registro se incluirá como una observación en el informe" : "";
 
     }
 

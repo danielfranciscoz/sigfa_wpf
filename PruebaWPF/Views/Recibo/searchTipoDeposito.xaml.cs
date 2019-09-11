@@ -5,6 +5,7 @@ using PruebaWPF.ViewModel;
 using PruebaWPF.Views.AgenteExterno;
 using System;
 using System.Collections.ObjectModel;
+using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
@@ -227,9 +228,9 @@ namespace PruebaWPF.Views.Recibo
                     break;
 
                 case 5://Candidato
-                    if (ValidarCampos(new TextBox[] { txtRUC, txtProveedor }))
+                    if (ValidarCampos(new TextBox[] { txtPrematricula, txtCandidato }))
                     {
-                        BuscarInformacion(txtRUC.Text, txtProveedor.Text);
+                        BuscarInformacion(txtPrematricula.Text, txtCandidato.Text);
                     }
                     break;
 
@@ -268,9 +269,17 @@ namespace PruebaWPF.Views.Recibo
             try
             {
                 string texto = Texto.Length > 0 ? "%" + Texto.Replace(' ', '%') + "%" : "";
-                items = new ObservableCollection<fn_ConsultarInfoExterna_Result>(controller.ObtenerTipoDeposito(TipoDeposito, Criterio, false, texto, clsConfiguration.Actual().TopRow, IdTipoArancel));
-                //TODO Hay que componer el encabezado
-                HeaderIdentificador.Header = items.ToString();
+                var informacion = controller.ObtenerTipoDeposito(TipoDeposito, Criterio, false, texto, clsConfiguration.Actual().TopRow, IdTipoArancel);
+                items = new ObservableCollection<fn_ConsultarInfoExterna_Result>(informacion);
+
+                if (informacion.Any())
+                {
+                HeaderIdentificador.Header = informacion.First().IdentificatorType.ToString();
+                }
+                else
+                {
+                HeaderIdentificador.Header = "";
+                }
                 if (panelError.Visibility == Visibility.Visible)
                 {
                     panelError.Visibility = Visibility.Collapsed;

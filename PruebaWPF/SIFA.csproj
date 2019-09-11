@@ -153,6 +153,9 @@
     <Compile Include="Model\AgenteExternoCat.cs">
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
+    <Compile Include="Model\AnulacionPago.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
     <Compile Include="Model\AperturaCaja.cs">
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
@@ -273,6 +276,9 @@
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
     <Compile Include="Model\Departamento.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Model\DetallePago.cs">
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
     <Compile Include="Model\DetAperturaCaja.cs">
@@ -497,6 +503,9 @@
     <Compile Include="Model\fn_TareasActividad_Result.cs">
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
+    <Compile Include="Model\fn_TotalesArqueo_Result.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
     <Compile Include="Model\FormaPago.cs">
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
@@ -547,6 +556,9 @@
     <Compile Include="Model\Municipio.cs">
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
+    <Compile Include="Model\NoCuentasBankArea.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
     <Compile Include="Model\Obtener_Cheques_Periodo_Fuente_Result.cs">
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
@@ -554,6 +566,12 @@
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
     <Compile Include="Model\OrdenPago.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Model\Pago.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Model\PagoSede.cs">
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
     <Compile Include="Model\Paises.cs">
@@ -805,6 +823,9 @@
     <Compile Include="Model\TipoDeposito.cs">
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
+    <Compile Include="Model\TipoTransaccionBank.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
     <Compile Include="Model\TmpAnticiposGastos.cs">
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
@@ -913,6 +934,9 @@
     <Compile Include="Model\tmp_SaldoCuentas.cs">
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
+    <Compile Include="Model\TransaccionesServicio.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
     <Compile Include="Model\Transferencia.cs">
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
@@ -920,6 +944,9 @@
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
     <Compile Include="Model\Transferencia_Area_DD.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Model\UserBank.cs">
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
     <Compile Include="Model\Usuario.cs">

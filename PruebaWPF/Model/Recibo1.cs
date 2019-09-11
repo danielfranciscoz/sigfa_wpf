@@ -20,6 +20,7 @@ namespace PruebaWPF.Model
             this.ArqueoRecibo = new HashSet<ArqueoRecibo>();
             this.ReciboDet = new HashSet<ReciboDet>();
             this.ReciboPago = new HashSet<ReciboPago>();
+            this.ArqueoNoEfectivo = new HashSet<ArqueoNoEfectivo>();
         }
     
         public int IdRecibo { get; set; }
@@ -49,5 +50,7 @@ namespace PruebaWPF.Model
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<ReciboPago> ReciboPago { get; set; }
         public virtual ReciboSIRA ReciboSIRA { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<ArqueoNoEfectivo> ArqueoNoEfectivo { get; set; }
     }
 }

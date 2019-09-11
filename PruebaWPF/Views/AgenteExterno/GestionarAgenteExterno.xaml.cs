@@ -55,7 +55,6 @@ namespace PruebaWPF.Views.AgenteExterno
         private void Inicializar()
         {
             controller = new AgenteExternoViewModel(pantalla);
-            Diseñar();
             CargarCombo();
             DataContext = agente;
             CamposNormales();

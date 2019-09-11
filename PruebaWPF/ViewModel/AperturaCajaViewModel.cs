@@ -25,7 +25,6 @@ namespace PruebaWPF.ViewModel
             this.pantalla = pantalla;
         }
 
-        //TODO Toda la gestión de apertura y cierre de caja
         public void Eliminar(AperturaCaja Obj)
         {
             throw new NotImplementedException();

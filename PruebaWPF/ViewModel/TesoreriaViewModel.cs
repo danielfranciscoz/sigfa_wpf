@@ -6,8 +6,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net.NetworkInformation;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace PruebaWPF.ViewModel
 {
@@ -297,6 +295,15 @@ namespace PruebaWPF.ViewModel
 
                 formapago = new FormaPago();
                 formapago.FormaPago1 = fp.FormaPago1;
+                formapago.isDoc = fp.isDoc;
+                if (fp.isDoc)
+                {
+                    formapago.Identificador = fp.Identificador;
+                }
+                else
+                {
+                    formapago.Identificador = null;
+                }
                 formapago.FechaCreacion = System.DateTime.Now;
                 formapago.UsuarioCreacion = clsSessionHelper.usuario.Login;
 
@@ -308,7 +315,16 @@ namespace PruebaWPF.ViewModel
 
                 formapago = db.FormaPago.Find(fp.IdFormaPago);
                 formapago.FormaPago1 = fp.FormaPago1;
-
+                formapago.isDoc = fp.isDoc;
+                if (fp.isDoc)
+                {
+                    formapago.Identificador = fp.Identificador;
+                }
+                else
+                {
+                    formapago.Identificador = null;
+                }
+               
                 db.Entry(formapago).State = System.Data.Entity.EntityState.Modified;
 
             }

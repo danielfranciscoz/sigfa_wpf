@@ -40,7 +40,6 @@ namespace PruebaWPF.Views.Main
 
             CargarMenu();
             IniciarFrame();
-            CargarStatusBar();
             principal = this;
             frmmain = this;
             this.DataContext = this;
@@ -161,10 +160,6 @@ namespace PruebaWPF.Views.Main
                     perfil = perfil.Equals("") ? up.Perfil1 : perfil + "," + up.Perfil1;
 
                 }
-                //for (int i = 0; i < clsSessionHelper.perfiles.Count; i++)
-                //{
-                //    perfil = "" + ((i == 0) ? clsSessionHelper.perfiles.ElementAt(i).Perfil.Perfil1 : perfil + "," + clsSessionHelper.perfiles.ElementAt(i).Perfil.Perfil1);
-                //}
 
                 lblPerfil.ToolTip = perfil;
 
@@ -398,12 +393,19 @@ namespace PruebaWPF.Views.Main
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
+            InsertarVariacionAutomatica();
             AgregarAccesos();
         }
 
-        //private Task<bool> VariacionCambiariaAuto()
-        //{
-        //    return Task.Run(() => new VariacionCambiariaViewModel().ObtenerMonedas().All();
-        //}
+        private async void InsertarVariacionAutomatica()
+        {
+            await VariacionCambiariaAuto();
+            CargarStatusBar();
+        }
+
+        private Task VariacionCambiariaAuto()
+        {
+            return Task.Run(() => new VariacionCambiariaViewModel().VariacionAutomatica());
+        }
     }
 }
