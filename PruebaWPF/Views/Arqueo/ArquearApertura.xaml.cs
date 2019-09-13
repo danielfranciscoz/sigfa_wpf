@@ -28,9 +28,10 @@ namespace PruebaWPF.Views.Arqueo
         private ObservableCollection<ArqueoNoEfectivoSon> documentos;
         private System.Windows.Forms.BindingSource ArqueoEfectivoBindingSource = new System.Windows.Forms.BindingSource();
         private System.Windows.Forms.BindingSource DocumentosEfectivoBindingSource = new System.Windows.Forms.BindingSource();
-
+        private List<Moneda> monedas;
         private ObservableCollection<Recibo1> recibos;
         MaterialDesignExtensions.Controllers.StepperController tabmaterial;
+        private DateTime? fecha = null;
         clsValidateInput validate = new clsValidateInput();
 
         public ArquearApertura()
@@ -133,6 +134,8 @@ namespace PruebaWPF.Views.Arqueo
                 Recibo1 agregado = controller.ContabilizarRecibo(codigo, apertura);
                 recibos.Insert(0, agregado);
 
+                AsignarFecha(agregado);
+
                 if (panelErrorRecibo.Visibility == Visibility.Visible)
                 {
                     panelErrorRecibo.Visibility = Visibility.Hidden;
@@ -146,6 +149,19 @@ namespace PruebaWPF.Views.Arqueo
 
         }
 
+        private void AsignarFecha(Recibo1 agregado)
+        {
+            //fecha para el tipo de cambio
+            if (fecha == null)
+            {
+                fecha = agregado.Fecha;
+                var tc = new ReciboViewModel().FindTipoCambio(new ReciboSon() { IdRecibo = agregado.IdRecibo, Serie = agregado.Serie, Fecha = agregado.Fecha, IdOrdenPago = agregado.IdOrdenPago, ReciboPago = agregado.ReciboPago }, null).Select(s => string.Format(" {0} -> C$ {1}", s.SimboloMoneda, s.Valor)); ;
+
+
+                txtTC.Text = string.Format("Fecha de Apertura= {0}, TC={1}", fecha.Value.ToString("dd/MM/yyyy"), string.Join(",", tc).ToString());
+            }
+
+        }
 
         private void btnArqueo_Click(object sender, RoutedEventArgs e)
         {
@@ -189,6 +205,7 @@ namespace PruebaWPF.Views.Arqueo
                 recibos.CollectionChanged += new System.Collections.Specialized.NotifyCollectionChangedEventHandler(Recibos_CollectionChanged);
                 lstRecibos.ItemsSource = recibos;
                 VerificarConteoFinalizado();
+                AsignarFecha(recibos.FirstOrDefault());
             }
 
 
@@ -307,7 +324,8 @@ namespace PruebaWPF.Views.Arqueo
 
         private void CargarMonedas()
         {
-            cboMoneda.ItemsSource = controller.FindMonedas();
+            monedas = controller.FindMonedas();
+            cboMoneda.ItemsSource = monedas;
         }
 
         private void CargarDocumentosArqueados()
@@ -362,8 +380,7 @@ namespace PruebaWPF.Views.Arqueo
                 controller.GuardarNoEfectivo(documentos.ToList(), arqueo);
                 documentos = null;
                 CargarDocumentosArqueados();
-
-
+                TotalSaldoArqueo();
                 tabmaterial.Continue();
             }
             catch (Exception ex)
@@ -461,6 +478,143 @@ namespace PruebaWPF.Views.Arqueo
                 ValidaAgregaDocumento();
             }
         }
+
+        private void TotalSaldoArqueo()
+        {
+            var saldos = controller.SaldoTotalArqueo(apertura);
+
+            lstEfectivoRecibido.Items.Clear();
+            lstEfectivoRecibidoEquivalente.Items.Clear();
+            lstEfectivoArqueo.Items.Clear();
+            lstEfectivoArqueoEquivalente.Items.Clear();
+            lstDiferencias.Items.Clear();
+            lstDiferenciasEquivalente.Items.Clear();
+            SaldosEfectivo(saldos[0]);
+
+            lstPendienteDocumento.Items.Clear();
+            //lstDocumentoMatch.Items.Clear();
+            DocumentosNoEnlazados(saldos[1]);
+
+
+        }
+
+        private void DocumentosNoEnlazados(List<fn_TotalesArqueo_Result> list)
+        {
+         
+            List<ArqueoNoEfectivoSon> documentosMatch = documentos.Where(w=>w.IdReciboPago == null).Union(controller.FindDocumentosNoEnlazados(apertura)).ToList();
+            tblDocumentosMatch.ItemsSource = documentosMatch;
+
+            foreach (var item in list)
+            {
+                if (item.Diferencia != 0)
+                {
+                    lstPendienteDocumento.Items.Add(string.Format("{0}, {1} {2} {3}", item.Diferencia > 0 ? "Sobrante" : "Faltante", item.FormaPago, item.MonedaDiferencia, item.Diferencia));
+                }
+            }
+        }
+
+        private void SaldosEfectivo(List<fn_TotalesArqueo_Result> list)
+        {
+            List<MonedaMonto> recibidoEquivalente;
+            List<MonedaMonto> arqueoEquivalente;
+            List<MonedaMonto> TotalesRecibido = new List<MonedaMonto>();
+            List<MonedaMonto> TotalesArqueo = new List<MonedaMonto>();
+            List<MonedaMonto> TotalesDiferencia = new List<MonedaMonto>();
+
+            foreach (var item in list)
+            {
+
+                if (item.IdApertura != null)
+                {
+                    lstEfectivoRecibido.Items.Add(item.Simbolo + " " + string.Format("{0:N}", item.Monto));
+
+                    foreach (var i in monedas)
+                    {
+                        if (i.IdMoneda == item.IdMoneda.Value)
+                        {
+                            TotalesRecibido.Add(new MonedaMonto { Valor = (Double)item.Monto.Value, IdMoneda = item.IdMoneda.Value, Moneda = item.Simbolo });
+                        }
+                        else
+                        {
+                            TotalesRecibido.Add(new MonedaMonto
+                            {
+                                Valor = new ReciboViewModel().ConvertirDivisa(item.IdMoneda.Value, i.IdMoneda, item.Monto, fecha),
+                                IdMoneda = i.IdMoneda,
+                                Moneda = i.Simbolo
+                            });
+                        }
+                    }
+
+                }
+                if (item.IdArqueo != null)
+                {
+                    lstEfectivoArqueo.Items.Add(item.SimboloArqueo + " " + string.Format("{0:N}", item.MontoArqueo));
+                    foreach (var i in monedas)
+                    {
+                        if (i.IdMoneda == item.IdMonedaArqueo.Value)
+                        {
+                            TotalesArqueo.Add(new MonedaMonto { Valor = (Double)item.MontoArqueo.Value, IdMoneda = item.IdMonedaArqueo.Value, Moneda = item.SimboloArqueo });
+                        }
+                        else
+                        {
+                            TotalesArqueo.Add(new MonedaMonto
+                            {
+                                Valor = new ReciboViewModel().ConvertirDivisa(item.IdMonedaArqueo.Value, i.IdMoneda, item.MontoArqueo, fecha),
+                                IdMoneda = i.IdMoneda,
+                                Moneda = i.Simbolo
+                            });
+                        }
+                    }
+                }
+
+                lstDiferencias.Items.Add(item.MonedaDiferencia + " " + string.Format("{0:N}", item.Diferencia));
+                foreach (var i in monedas)
+                {
+                    if (i.IdMoneda == item.IdMonedaDiferencia)
+                    {
+                        TotalesDiferencia.Add(new MonedaMonto { Valor = (Double)item.Diferencia.Value, IdMoneda = item.IdMonedaDiferencia.Value, Moneda = item.MonedaDiferencia });
+                    }
+                    else
+                    {
+                        TotalesDiferencia.Add(new MonedaMonto
+                        {
+                            Valor = new ReciboViewModel().ConvertirDivisa(item.IdMonedaDiferencia.Value, i.IdMoneda, item.Diferencia),
+                            IdMoneda = i.IdMoneda,
+                            Moneda = i.Simbolo
+                        });
+                    }
+                }
+            }
+
+            //Cargando los totales equivalentes para pagos en efectivo
+            var SumETotal = TotalesRecibido.GroupBy(a => new { a.IdMoneda, a.Moneda }).Select(b => new { Moneda = b.Key.Moneda, b.Key.IdMoneda, Monto = b.Sum(c => c.Valor) }).OrderBy(o => o.IdMoneda).ToList();
+
+            recibidoEquivalente = new List<MonedaMonto>();
+
+            foreach (var item in SumETotal)
+            {
+                lstEfectivoRecibidoEquivalente.Items.Add("Total " + item.Moneda + " " + string.Format("{0:N}", item.Monto));
+                recibidoEquivalente.Add(new MonedaMonto() { Moneda = item.Moneda, Valor = item.Monto });
+            }
+
+            var SumETotalArqueo = TotalesArqueo.GroupBy(a => new { a.IdMoneda, a.Moneda }).Select(b => new { Moneda = b.Key.Moneda, b.Key.IdMoneda, Monto = b.Sum(c => c.Valor) }).OrderBy(o => o.IdMoneda).ToList();
+
+            arqueoEquivalente = new List<MonedaMonto>();
+
+            foreach (var item in SumETotalArqueo)
+            {
+                lstEfectivoArqueoEquivalente.Items.Add("Total " + item.Moneda + " " + string.Format("{0:N}", item.Monto));
+                arqueoEquivalente.Add(new MonedaMonto() { Moneda = item.Moneda, Valor = item.Monto });
+            }
+
+            for (int i = 0; i < SumETotalArqueo.Count; i++)
+            {
+                double diferencia = SumETotalArqueo[i].Monto - SumETotal[i].Monto;
+                lstDiferenciasEquivalente.Items.Add(diferencia < 0 ? "Faltante " : (diferencia == 0 ? "" : "Sobrante ") + SumETotal[i].Moneda + " " + string.Format("{0:N}", diferencia));
+            }
+        }
     }
 
 }
+
+//19XFB2F7XFE081917

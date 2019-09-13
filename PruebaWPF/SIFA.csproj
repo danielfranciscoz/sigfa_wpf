@@ -553,6 +553,7 @@
     <Compile Include="Model\Moneda.cs">
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
+    <Compile Include="Model\MonedaMonto.cs" />
     <Compile Include="Model\Municipio.cs">
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>

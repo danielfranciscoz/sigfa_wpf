@@ -514,33 +514,203 @@
                             <Grid Height="480" >
                                 <Grid.RowDefinitions>
                                     <RowDefinition Height="*"/>
-                                    <RowDefinition Height="100"/>
-                                    <RowDefinition  Height="auto"/>
+                                    <RowDefinition Height="*"/>
+                                    <RowDefinition Height="80"/>
+                                    <RowDefinition Height="auto"/>
                                 </Grid.RowDefinitions>
-                                <Grid Grid.Row="0">
-                                    <Grid.ColumnDefinitions>
-                                        <ColumnDefinition/>
-                                        <ColumnDefinition Width="10"/>
-                                        <ColumnDefinition/>
-                                    </Grid.ColumnDefinitions>
-                                <StackPanel Grid.Column="0">
+                                <StackPanel Grid.Row="0">
                                     <StackPanel Orientation="Horizontal">
                                         <materialDesign:PackIcon Kind="Money" HorizontalAlignment="Center"  VerticalAlignment="Center" Margin="10 0 10 0"></materialDesign:PackIcon>
-                                        <TextBlock VerticalAlignment="Center" FontWeight="Bold">Resumen de pagos en efectivo</TextBlock>
+                                        <TextBlock VerticalAlignment="Center"  >
+                                            <TextBlock.Inlines>
+                                                <Run FontWeight="Bold">Resumen de pagos en efectivo</Run>
+                                                <Run>(</Run>
+                                                <Run x:Name="txtTC"></Run>
+                                                <Run>)</Run>
+                                            </TextBlock.Inlines>
+                                        </TextBlock>
                                     </StackPanel>
                                     <Separator></Separator>
+                                    <Grid >
+                                        <Grid>
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="*"/>
+                                                <ColumnDefinition Width="10"/>
+                                                <ColumnDefinition Width="*"/>
+                                                <ColumnDefinition Width="10"/>
+                                                <ColumnDefinition Width="*"/>
+                                            </Grid.ColumnDefinitions>
+                                            <Grid Grid.Column="0">
+                                                <Grid>
+                                                    <Grid.RowDefinitions>
+                                                        <RowDefinition Height="auto"/>
+                                                        <RowDefinition Height="*"/>
+                                                    </Grid.RowDefinitions>
+                                                    <StackPanel Grid.Row="0" Orientation="Vertical">
+                                                        <TextBlock VerticalAlignment="Center" Foreground="Gray" FontWeight="Bold">Efectivo recibido</TextBlock>
+                                                        <Separator/>
+                                                    </StackPanel>
+
+                                                    <StackPanel Grid.Row="1" VerticalAlignment="Top">
+                                                        <ListBox FontWeight="Bold" x:Name="lstEfectivoRecibido">
+                                                            <ListBox.Resources>
+                                                                <SolidColorBrush x:Key="{x:Static SystemColors.HighlightBrushKey}" Color="Transparent"/>
+                                                                <SolidColorBrush x:Key="{x:Static SystemColors.HighlightTextBrushKey}" Color="Black" />
+                                                                <SolidColorBrush x:Key="{x:Static SystemColors.ControlBrushKey}" Color="Transparent" />
+                                                            </ListBox.Resources>
+                                                        </ListBox>
+                                                        <Separator/>
+                                                        <ListBox x:Name="lstEfectivoRecibidoEquivalente">
+                                                        </ListBox>
+                                                    </StackPanel>
+                                                </Grid>
+                                            </Grid>
+
+                                            <StackPanel Grid.Column="1" Orientation="Horizontal" HorizontalAlignment="Center">
+                                                <Rectangle VerticalAlignment="Stretch" Height="220" Width="1" Stroke="Gray" />
+                                            </StackPanel>
+
+                                            <Grid Grid.Column="2">
+                                                <Grid>
+                                                    <Grid.RowDefinitions>
+                                                        <RowDefinition Height="auto"/>
+                                                        <RowDefinition Height="*"/>
+                                                    </Grid.RowDefinitions>
+                                                    <StackPanel Grid.Row="0" Orientation="Vertical">
+                                                        <TextBlock VerticalAlignment="Center" Foreground="Gray" FontWeight="Bold">Efectivo visto en caja</TextBlock>
+                                                        <Separator/>
+                                                    </StackPanel>
+
+                                                    <StackPanel Grid.Row="1" VerticalAlignment="Top">
+                                                        <ListBox FontWeight="Bold" x:Name="lstEfectivoArqueo">
+                                                            <ListBox.Resources>
+                                                                <SolidColorBrush x:Key="{x:Static SystemColors.HighlightBrushKey}" Color="Transparent"/>
+                                                                <SolidColorBrush x:Key="{x:Static SystemColors.HighlightTextBrushKey}" Color="Black" />
+                                                                <SolidColorBrush x:Key="{x:Static SystemColors.ControlBrushKey}" Color="Transparent" />
+                                                            </ListBox.Resources>
+                                                        </ListBox>
+                                                        <Separator/>
+                                                        <ListBox x:Name="lstEfectivoArqueoEquivalente">
+                                                        </ListBox>
+                                                    </StackPanel>
+                                                </Grid>
+                                            </Grid>
+
+                                            <StackPanel Grid.Column="3" Orientation="Horizontal" HorizontalAlignment="Center">
+                                                <Rectangle VerticalAlignment="Stretch" Height="220" Width="1" Stroke="Gray" />
+                                            </StackPanel>
+
+                                            <Grid Grid.Column="4">
+                                                <Grid>
+                                                    <Grid.RowDefinitions>
+                                                        <RowDefinition Height="auto"/>
+                                                        <RowDefinition Height="*"/>
+                                                    </Grid.RowDefinitions>
+                                                    <StackPanel Grid.Row="0" Orientation="Vertical">
+                                                        <TextBlock VerticalAlignment="Center" Foreground="Gray" FontWeight="Bold">Faltante/Sobrante</TextBlock>
+                                                        <Separator/>
+                                                    </StackPanel>
+
+                                                    <StackPanel Grid.Row="1" VerticalAlignment="Top">
+                                                        <ListBox x:Name="lstDiferencias">
+                                                            <ListBox.Resources>
+                                                                <SolidColorBrush x:Key="{x:Static SystemColors.HighlightBrushKey}" Color="Transparent"/>
+                                                                <SolidColorBrush x:Key="{x:Static SystemColors.HighlightTextBrushKey}" Color="Black" />
+                                                                <SolidColorBrush x:Key="{x:Static SystemColors.ControlBrushKey}" Color="Transparent" />
+                                                            </ListBox.Resources>
+                                                        </ListBox>
+                                                        <Separator/>
+                                                        <ListBox x:Name="lstDiferenciasEquivalente" FontWeight="Bold" >
+                                                        </ListBox>
+                                                    </StackPanel>
+                                                </Grid>
+                                            </Grid>
+                                        </Grid>
+                                    </Grid>
                                 </StackPanel>
                                     
-                                <StackPanel Grid.Column="2">
+                                <StackPanel Grid.Row="1">
                                     <StackPanel Orientation="Horizontal">
                                         <materialDesign:PackIcon Kind="ChequeBook" HorizontalAlignment="Center"  VerticalAlignment="Center" Margin="10 0 10 0"></materialDesign:PackIcon>
-                                        <TextBlock VerticalAlignment="Center" FontWeight="Bold">Resumen de pagos en documentos de efectivo</TextBlock>
+                                        <TextBlock VerticalAlignment="Center" FontWeight="Bold">Resumen de inconsistencias en documentos de efectivo</TextBlock>
                                     </StackPanel>
                                     <Separator></Separator>
+                                    <Grid >
+                                        <Grid>
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="*"/>
+                                                <ColumnDefinition Width="10"/>
+                                                <ColumnDefinition Width="*"/>
+                                            </Grid.ColumnDefinitions>
+                                            <Grid Grid.Column="0">
+                                                <Grid>
+                                                    <Grid.RowDefinitions>
+                                                        <RowDefinition Height="auto"/>
+                                                        <RowDefinition Height="*"/>
+                                                    </Grid.RowDefinitions>
+                                                    <StackPanel Grid.Row="0" Orientation="Vertical">
+                                                        <TextBlock VerticalAlignment="Center" Foreground="Gray" FontWeight="Bold">Documentos no enlazados</TextBlock>
+                                                        <Separator/>
+                                                    </StackPanel>
+
+                                                    <DockPanel Grid.Row="1" VerticalAlignment="Top" Height="200">
+                                                        <!--<ListBox  x:Name="lstDocumentoMatch" Height="100">
+                                                        
+                                                        </ListBox>-->
+                                                        <DockPanel VerticalAlignment="Top" Margin="0 0 0 0" Height="140">
+                                                            <DataGrid Name="tblDocumentosMatch"  CanUserDeleteRows="False" CanUserAddRows="False" AutoGenerateColumns="False" SelectionUnit="FullRow" SelectionMode="Single" >
+                                                                <DataGrid.Columns>
+                                                                    <DataGridTextColumn CanUserReorder="False" CanUserResize="True" IsReadOnly="True"  Header="Origen" Width="auto"  Binding="{Binding Origen}"></DataGridTextColumn>
+                                                                    <DataGridTextColumn CanUserReorder="False" CanUserResize="True" IsReadOnly="True"  Header="Documento" Width="auto"  Binding="{Binding FormaPago.FormaPago1}"></DataGridTextColumn>
+                                                                    <DataGridTextColumn CanUserReorder="False" CanUserResize="True" IsReadOnly="True" Header="No.Doc" Width="auto" Binding="{Binding NoDocumento, StringFormat={}{0:n2}}"></DataGridTextColumn>
+                                                                    <DataGridTextColumn CanUserReorder="False" CanUserResize="True" IsReadOnly="True" Header="Moneda" Width="auto" Binding="{Binding Moneda.Simbolo}"></DataGridTextColumn>
+                                                                    <DataGridTextColumn CanUserReorder="False" CanUserResize="True" IsReadOnly="True" Header="Total" Width="auto" Binding="{Binding MontoFisico}"></DataGridTextColumn>
+                                                                </DataGrid.Columns>
+                                                            </DataGrid>
+
+                                                        </DockPanel>
+
+                                                        <!--<ListBox x:Name="lstEfectivoRecibidoEquivalente">
+                                                        </ListBox>-->
+                                                    </DockPanel>
+                                                </Grid>
+                                            </Grid>
+
+                                            <StackPanel Grid.Column="1" Orientation="Horizontal" HorizontalAlignment="Center">
+                                                <Rectangle VerticalAlignment="Stretch" Height="220" Width="1" Stroke="Gray" />
+                                            </StackPanel>
+
+                                            <Grid Grid.Column="2">
+                                                <Grid>
+                                                    <Grid.RowDefinitions>
+                                                        <RowDefinition Height="auto"/>
+                                                        <RowDefinition Height="*"/>
+                                                    </Grid.RowDefinitions>
+                                                    <StackPanel Grid.Row="0" Orientation="Vertical">
+                                                        <TextBlock VerticalAlignment="Center" Foreground="Gray" FontWeight="Bold">Faltante/Sobrante</TextBlock>
+                                                        <!--<Separator/>-->
+                                                    </StackPanel>
+
+                                                    <StackPanel Grid.Row="1" VerticalAlignment="Top">
+                                                        <ListBox FontWeight="Bold" x:Name="lstDocumentoArqueo">
+                                                            <ListBox.Resources>
+                                                                <SolidColorBrush x:Key="{x:Static SystemColors.HighlightBrushKey}" Color="Transparent"/>
+                                                                <SolidColorBrush x:Key="{x:Static SystemColors.HighlightTextBrushKey}" Color="Black" />
+                                                                <SolidColorBrush x:Key="{x:Static SystemColors.ControlBrushKey}" Color="Transparent" />
+                                                            </ListBox.Resources>
+                                                        </ListBox>
+                                                        <Separator/>
+                                                        <ListBox x:Name="lstPendienteDocumento">
+                                                        </ListBox>
+                                                    </StackPanel>
+                                                </Grid>
+                                            </Grid>
+                                        </Grid>
+                                    </Grid>
                                 </StackPanel>
-                                </Grid>
-                                <StackPanel Grid.Row="1">
-                                    <TextBox FontSize="14" Language="es-419" SpellCheck.IsEnabled="True" materialDesign:HintAssist.Hint="Observaciones" materialDesign:HintAssist.IsFloating="True" materialDesign:HintAssist.FloatingScale="1" AcceptsReturn="True" MaxLines="5"></TextBox>
+                               
+                                <StackPanel Grid.Row="2">
+                                    <TextBox FontSize="14" Language="es-419" SpellCheck.IsEnabled="True" materialDesign:HintAssist.Hint="Observaciones" materialDesign:HintAssist.IsFloating="True" materialDesign:HintAssist.FloatingScale="1" AcceptsReturn="True" MaxLines="3"></TextBox>
                                 </StackPanel>
 
                                 <StackPanel Grid.Row="3" Height="auto">

@@ -1129,7 +1129,7 @@ namespace PruebaWPF.Model
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("sp_RevertirPagoSIRA", carnetParameter, idReciboParameter, serieParameter, motivoParameter, isMatriculaParameter);
         }
     
-        public virtual ObjectResult<Nullable<double>> sp_ConvertirDivisas(Nullable<int> idMonedaConvertir, Nullable<int> idMonedaFinal, Nullable<double> monto)
+        public virtual ObjectResult<Nullable<double>> sp_ConvertirDivisas(Nullable<int> idMonedaConvertir, Nullable<int> idMonedaFinal, Nullable<double> monto, Nullable<System.DateTime> fecha)
         {
             var idMonedaConvertirParameter = idMonedaConvertir.HasValue ?
                 new ObjectParameter("IdMonedaConvertir", idMonedaConvertir) :
@@ -1143,7 +1143,11 @@ namespace PruebaWPF.Model
                 new ObjectParameter("Monto", monto) :
                 new ObjectParameter("Monto", typeof(double));
     
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Nullable<double>>("sp_ConvertirDivisas", idMonedaConvertirParameter, idMonedaFinalParameter, montoParameter);
+            var fechaParameter = fecha.HasValue ?
+                new ObjectParameter("Fecha", fecha) :
+                new ObjectParameter("Fecha", typeof(System.DateTime));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Nullable<double>>("sp_ConvertirDivisas", idMonedaConvertirParameter, idMonedaFinalParameter, montoParameter, fechaParameter);
         }
     
         public virtual int Code_Rethink(string newPassword, string usuario)

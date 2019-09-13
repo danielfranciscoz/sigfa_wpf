@@ -323,7 +323,7 @@ namespace PruebaWPF.Views.Recibo
                     {
                         Totales.Add(new MonedaMonto
                         {
-                            Valor = controller.ConvertirDivisa(item.IdMoneda, i.IdMoneda, (Double)item.Monto),
+                            Valor = controller.ConvertirDivisa(item.IdMoneda, i.IdMoneda, item.Monto),
                             IdMoneda = i.IdMoneda,
                             Moneda = i.Simbolo
                         });
@@ -380,7 +380,7 @@ namespace PruebaWPF.Views.Recibo
                     {
                         Totales.Add(new MonedaMonto
                         {
-                            Valor = controller.ConvertirDivisa(item.IdMoneda, i.IdMoneda, (Double)item.Monto),
+                            Valor = controller.ConvertirDivisa(item.IdMoneda, i.IdMoneda, item.Monto),
                             IdMoneda = i.IdMoneda,
                             Moneda = i.Simbolo
                         });
@@ -849,7 +849,10 @@ namespace PruebaWPF.Views.Recibo
                 }
                 catch (Exception ex)
                 {
-                    cboArancel.ItemsSource = null;
+                    if (IdPreMatricula != null || IdMatricula != null)
+                    {
+                        cboArancel.ItemsSource = null;
+                    }
                     clsUtilidades.OpenMessage(new Operacion() { Mensaje = new clsException(ex).ErrorMessage(), OperationType = clsReferencias.TYPE_MESSAGE_Error });
                 }
             }
@@ -1027,12 +1030,6 @@ namespace PruebaWPF.Views.Recibo
         }
     }
 
-    class MonedaMonto
-    {
-        public int IdMoneda { get; set; }
-        public string Moneda { get; set; }
-        public double Valor { get; set; }
-    }
 }
 
 

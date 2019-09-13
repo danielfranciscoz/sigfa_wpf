@@ -7655,6 +7655,7 @@ advertencia 6002: La tabla o vista 'SIFOP.dbo.w_LibroMayorAcumulado_Vlast' no ti
           <Parameter Name="IdMonedaConvertir" Type="int" Mode="In" />
           <Parameter Name="IdMonedaFinal" Type="int" Mode="In" />
           <Parameter Name="Monto" Type="float" Mode="In" />
+          <Parameter Name="Fecha" Type="date" Mode="In" />
         </Function>
         <Function Name="cientos" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="true" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" ReturnType="varchar">
           <Parameter Name="cien" Type="int" Mode="In" />
@@ -10152,13 +10153,18 @@ advertencia 6002: La tabla o vista 'SIFOP.dbo.w_LibroMayorAcumulado_Vlast' no ti
                 <Property Name="IdFormaPago" Type="int" />
                 <Property Name="FormaPago" Type="varchar" MaxLength="50" />
                 <Property Name="Moneda" Type="varchar" MaxLength="20" />
+                <Property Name="Simbolo" Type="varchar" MaxLength="2" />
                 <Property Name="Monto" Type="decimal" Precision="18" Scale="2" />
                 <Property Name="IdArqueo" Type="int" />
                 <Property Name="IdMonedaArqueo" Type="int" />
                 <Property Name="MonedaArqueo" Type="varchar" MaxLength="20" />
+                <Property Name="SimboloArqueo" Type="varchar" MaxLength="2" />
                 <Property Name="MontoArqueo" Type="decimal" Precision="18" Scale="2" />
                 <Property Name="IdFormaPagoArqueo" Type="int" />
                 <Property Name="FormaPagoArqueo" Type="varchar" MaxLength="50" />
+                <Property Name="IdMonedaDiferencia" Type="int" />
+                <Property Name="MonedaDiferencia" Type="varchar" MaxLength="2" />
+                <Property Name="Diferencia" Type="decimal" Precision="18" Scale="2" />
               </RowType>
             </CollectionType>
           </ReturnType>
@@ -22934,6 +22940,7 @@ advertencia 6002: La tabla o vista 'SIFOP.dbo.w_LibroMayorAcumulado_Vlast' no ti
             <Parameter Name="IdMonedaConvertir" Mode="In" Type="Int32" />
             <Parameter Name="IdMonedaFinal" Mode="In" Type="Int32" />
             <Parameter Name="Monto" Mode="In" Type="Double" />
+            <Parameter Name="Fecha" Mode="In" Type="DateTime" />
           </FunctionImport>
           <FunctionImport Name="Code_Rethink">
             <Parameter Name="NewPassword" Mode="In" Type="String" />
@@ -24045,13 +24052,18 @@ advertencia 6002: La tabla o vista 'SIFOP.dbo.w_LibroMayorAcumulado_Vlast' no ti
           <Property Type="Int32" Name="IdFormaPago" Nullable="true" />
           <Property Type="String" Name="FormaPago" Nullable="true" MaxLength="50" />
           <Property Type="String" Name="Moneda" Nullable="true" MaxLength="20" />
+          <Property Type="String" Name="Simbolo" Nullable="true" MaxLength="2" />
           <Property Type="Decimal" Name="Monto" Nullable="true" Precision="18" Scale="2" />
           <Property Type="Int32" Name="IdArqueo" Nullable="true" />
           <Property Type="Int32" Name="IdMonedaArqueo" Nullable="true" />
           <Property Type="String" Name="MonedaArqueo" Nullable="true" MaxLength="20" />
+          <Property Type="String" Name="SimboloArqueo" Nullable="true" MaxLength="2" />
           <Property Type="Decimal" Name="MontoArqueo" Nullable="true" Precision="18" Scale="2" />
           <Property Type="Int32" Name="IdFormaPagoArqueo" Nullable="true" />
           <Property Type="String" Name="FormaPagoArqueo" Nullable="true" MaxLength="50" />
+          <Property Type="Int32" Name="IdMonedaDiferencia" Nullable="true" />
+          <Property Type="String" Name="MonedaDiferencia" Nullable="true" MaxLength="2" />
+          <Property Type="Decimal" Name="Diferencia" Nullable="true" Precision="18" Scale="2" />
         </ComplexType>
       </Schema>
     </edmx:ConceptualModels>
@@ -29765,13 +29777,18 @@ advertencia 6002: La tabla o vista 'SIFOP.dbo.w_LibroMayorAcumulado_Vlast' no ti
                 <ScalarProperty Name="IdFormaPago" ColumnName="IdFormaPago" />
                 <ScalarProperty Name="FormaPago" ColumnName="FormaPago" />
                 <ScalarProperty Name="Moneda" ColumnName="Moneda" />
+                <ScalarProperty Name="Simbolo" ColumnName="Simbolo" />
                 <ScalarProperty Name="Monto" ColumnName="Monto" />
                 <ScalarProperty Name="IdArqueo" ColumnName="IdArqueo" />
                 <ScalarProperty Name="IdMonedaArqueo" ColumnName="IdMonedaArqueo" />
                 <ScalarProperty Name="MonedaArqueo" ColumnName="MonedaArqueo" />
+                <ScalarProperty Name="SimboloArqueo" ColumnName="SimboloArqueo" />
                 <ScalarProperty Name="MontoArqueo" ColumnName="MontoArqueo" />
                 <ScalarProperty Name="IdFormaPagoArqueo" ColumnName="IdFormaPagoArqueo" />
                 <ScalarProperty Name="FormaPagoArqueo" ColumnName="FormaPagoArqueo" />
+                <ScalarProperty Name="IdMonedaDiferencia" ColumnName="IdMonedaDiferencia" />
+                <ScalarProperty Name="MonedaDiferencia" ColumnName="MonedaDiferencia" />
+                <ScalarProperty Name="Diferencia" ColumnName="Diferencia" />
               </ComplexTypeMapping>
             </ResultMapping>
           </FunctionImportMapping>

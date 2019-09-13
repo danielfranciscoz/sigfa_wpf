@@ -298,12 +298,16 @@ namespace PruebaWPF.ViewModel
             return arancelT.Select(s => s.TipoArancel).Distinct().ToList();
         }
 
-        public double ConvertirDivisa(int MonedaConvertir, int MonedaFinal, double Monto)
+        public double ConvertirDivisa(int? MonedaConvertir, int? MonedaFinal, decimal? Monto, DateTime? fecha = null)
         {
             double valor = 0;
             using (SIFOPEntities dbN = new SIFOPEntities())
             {
-                var m = dbN.sp_ConvertirDivisas(MonedaConvertir, MonedaFinal, Monto).FirstOrDefault();
+                if (Monto == null || MonedaConvertir == null || MonedaFinal == null)
+                {
+                    return 0;
+                }
+                var m = dbN.sp_ConvertirDivisas(MonedaConvertir, MonedaFinal, (Double)Monto, fecha).FirstOrDefault();
 
                 valor = Double.Parse(m.ToString());
             }

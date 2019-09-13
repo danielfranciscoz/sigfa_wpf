@@ -18,12 +18,17 @@ namespace PruebaWPF.Model
         public Nullable<int> IdFormaPago { get; set; }
         public string FormaPago { get; set; }
         public string Moneda { get; set; }
+        public string Simbolo { get; set; }
         public Nullable<decimal> Monto { get; set; }
         public Nullable<int> IdArqueo { get; set; }
         public Nullable<int> IdMonedaArqueo { get; set; }
         public string MonedaArqueo { get; set; }
+        public string SimboloArqueo { get; set; }
         public Nullable<decimal> MontoArqueo { get; set; }
         public Nullable<int> IdFormaPagoArqueo { get; set; }
         public string FormaPagoArqueo { get; set; }
+        public Nullable<int> IdMonedaDiferencia { get; set; }
+        public string MonedaDiferencia { get; set; }
+        public Nullable<decimal> Diferencia { get; set; }
     }
 }
