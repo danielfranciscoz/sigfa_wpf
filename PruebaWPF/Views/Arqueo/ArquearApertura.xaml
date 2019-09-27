@@ -1,6 +1,7 @@
 ﻿<Window x:Class="PruebaWPF.Views.Arqueo.ArquearApertura"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+        materialDesign:ShadowAssist.CacheMode="{x:Null}"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
@@ -721,7 +722,7 @@
                                         </Grid.ColumnDefinitions>
                                         <Button HorizontalAlignment="Left" Grid.Column="0" Style="{DynamicResource MaterialDesignFlatButton}" Foreground="{StaticResource Back_Button}"  Margin="0 2 0 2" Click="btnBack_Click" Content="{StaticResource Text_Back_Button}"></Button>
                                         <StackPanel Grid.Column="1" Orientation="Horizontal" HorizontalAlignment="Right">
-                                            <Button x:Name="btnFinalizar" Style="{DynamicResource MaterialDesignFlatButton}" Foreground="{StaticResource Save_Button}"  Margin="0 2 0 2" Click="btnConteoEfectivo_Click" Content="FINALIZAR ARQUEO"></Button>
+                                            <Button x:Name="btnFinalizar" Style="{DynamicResource MaterialDesignFlatButton}" Foreground="{StaticResource Save_Button}"  Margin="0 2 0 2" Click="BtnFinalizar_Click" Content="FINALIZAR ARQUEO"></Button>
                                         </StackPanel>
                                     </Grid>
                                 </StackPanel>

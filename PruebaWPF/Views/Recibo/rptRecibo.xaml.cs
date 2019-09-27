@@ -147,29 +147,24 @@ namespace PruebaWPF.Views.Recibo
 
         private void CargarVisor(List<ReciboSon> recibos, List<Model.OrdenPago> ordenPago, List<clsBarCode> barcode, List<InfoRecibo> infos, List<fn_ConsultarInfoExterna_Result> cuenta, List<DetReciboSon> detrecibo, List<ReciboPagoSon> formaPago, List<VariacionCambiariaSon> variacionCambiarias)
         {
-            ReportDataSource ReciboDataSource = new ReportDataSource("Recibo", recibos);
-            ReportDataSource OrdenPagoDataSource = new ReportDataSource("OrdenPago", ordenPago);
-            ReportDataSource BarcodeDataSource = new ReportDataSource("Barcode", barcode);
-            ReportDataSource InfoReciboDataSource = new ReportDataSource("InfoRecibo", infos);
-            ReportDataSource PorCuentaDataSource = new ReportDataSource("CuentaDe", cuenta);
-            ReportDataSource DetReciboDataSource = new ReportDataSource("DetalleRecibo", detrecibo);
-            ReportDataSource FormaPagoDataSource = new ReportDataSource("FormaPago", formaPago);
-            ReportDataSource TipoCambioDataSource = new ReportDataSource("TipoCambio", variacionCambiarias);
+            ReportDataSource[] datasSource = new ReportDataSource[8];
 
-            reporteDemo.Reset();
-            reporteDemo.LocalReport.ReportEmbeddedResource = "PruebaWPF.Reportes.Recibo.Recibo.rdlc";
-            reporteDemo.LocalReport.SetParameters(new ReportParameter("isFirstTime", isFirtTime.ToString()));
-            reporteDemo.LocalReport.DataSources.Add(ReciboDataSource);
-            reporteDemo.LocalReport.DataSources.Add(OrdenPagoDataSource);
-            reporteDemo.LocalReport.DataSources.Add(InfoReciboDataSource);
-            reporteDemo.LocalReport.DataSources.Add(BarcodeDataSource);
-            reporteDemo.LocalReport.DataSources.Add(PorCuentaDataSource);
-            reporteDemo.LocalReport.DataSources.Add(DetReciboDataSource);
-            reporteDemo.LocalReport.DataSources.Add(FormaPagoDataSource);
-            reporteDemo.LocalReport.DataSources.Add(TipoCambioDataSource);
+            datasSource[0] = new ReportDataSource("Recibo", recibos);
+            datasSource[1] = new ReportDataSource("OrdenPago", ordenPago);
+            datasSource[2] = new ReportDataSource("Barcode", barcode);
+            datasSource[3] = new ReportDataSource("InfoRecibo", infos);
+            datasSource[4] = new ReportDataSource("CuentaDe", cuenta);
+            datasSource[5] = new ReportDataSource("DetalleRecibo", detrecibo);
+            datasSource[6] = new ReportDataSource("FormaPago", formaPago);
+            datasSource[7] = new ReportDataSource("TipoCambio", variacionCambiarias);
 
-            reporteDemo.SetDisplayMode(Microsoft.Reporting.WinForms.DisplayMode.PrintLayout);
-            reporteDemo.LocalReport.Refresh();
+            
+            clsUtilidades.InformeDataSource(informe, datasSource);
+            informe.LocalReport.ReportEmbeddedResource = "PruebaWPF.Reportes.Recibo.Recibo.rdlc";
+            informe.LocalReport.SetParameters(new ReportParameter("isFirstTime", isFirtTime.ToString()));
+
+            informe.SetDisplayMode(Microsoft.Reporting.WinForms.DisplayMode.PrintLayout);
+            informe.LocalReport.Refresh();
         }
 
     }

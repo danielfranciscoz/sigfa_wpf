@@ -1,6 +1,7 @@
 ﻿using PruebaWPF.Clases;
 using PruebaWPF.Model;
 using PruebaWPF.ViewModel;
+using PruebaWPF.Views.Shared;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -307,7 +308,7 @@ namespace PruebaWPF.Views.Arqueo
         {
             if (efectivo == null)
             {
-                efectivo = new BindingList<ArqueoEfectivoSon>(controller.FindConteoEfectivo(apertura));
+                efectivo = new BindingList<ArqueoEfectivoSon>(controller.FindConteoEfectivo(apertura.IdDetAperturaCaja));
                 ArqueoEfectivoBindingSource.DataSource = efectivo;
 
                 tblEfectivo.ItemsSource = ArqueoEfectivoBindingSource;
@@ -612,6 +613,17 @@ namespace PruebaWPF.Views.Arqueo
                 double diferencia = SumETotalArqueo[i].Monto - SumETotal[i].Monto;
                 lstDiferenciasEquivalente.Items.Add(diferencia < 0 ? "Faltante " : (diferencia == 0 ? "" : "Sobrante ") + SumETotal[i].Moneda + " " + string.Format("{0:N}", diferencia));
             }
+        }
+
+        private void BtnFinalizar_Click(object sender, RoutedEventArgs e)
+        {
+            InformeArqueo();
+        }
+
+        private void InformeArqueo()
+        {
+            rptInforme cierre = new rptInforme(arqueo);
+            cierre.ShowDialog();
         }
     }
 

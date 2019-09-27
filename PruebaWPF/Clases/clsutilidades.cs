@@ -10,6 +10,7 @@ using PruebaWPF.Model;
 using System.Windows;
 using System.Drawing;
 using System.Windows.Controls.Primitives;
+using Microsoft.Reporting.WinForms;
 
 namespace PruebaWPF.Clases
 {
@@ -143,6 +144,15 @@ namespace PruebaWPF.Clases
         public static Byte[] CodigoBarraRecibo(string texto)
         {
             return CodigoBarra(texto, 276, 69);
+        }
+
+        public static void InformeDataSource(ReportViewer informe, ReportDataSource[] datasources)
+        {
+            informe.Reset();
+            for (int i = 0; i < datasources.Length; i++)
+            {
+                informe.LocalReport.DataSources.Add(datasources[i]);
+            }
         }
     }
 }

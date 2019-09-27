@@ -6,6 +6,7 @@
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
       xmlns:local="clr-namespace:PruebaWPF.Views.OrdenPago"
       xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+      materialDesign:ShadowAssist.CacheMode="{x:Null}"
       xmlns:ViewModel="clr-namespace:PruebaWPF.ViewModel" x:Class="PruebaWPF.Views.OrdenPago.OrdenPago"
       mc:Ignorable="d" 
       d:DesignHeight="350" d:DesignWidth="700"

@@ -866,6 +866,7 @@ namespace PruebaWPF.ViewModel
         public string Identificador { get; set; }
         public string TextoIdentificador { get; set; }
         public TipoDeposito TipoDeposito { get; set; }
+        
 
     }
 

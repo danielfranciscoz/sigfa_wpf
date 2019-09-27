@@ -50,7 +50,11 @@ namespace PruebaWPF.Referencias
         public const string SinFecha = "Debe seleccionar o digitar una fecha.";
         public const string NumeroMal = "Se detectó un error de escritura, por favor corrija la cantida escrita para poder continuar.";
 
-
+        public enum Informes
+        {
+            cierre_caja = 1,
+            arqueo_caja = 2
+        }
 
     }
 }

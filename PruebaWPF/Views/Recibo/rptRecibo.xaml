@@ -11,7 +11,7 @@
         >
     <Grid>
         <WindowsFormsHost Margin="0">
-            <rv:ReportViewer x:Name="reporteDemo" ZoomPercent="100" ></rv:ReportViewer>
+            <rv:ReportViewer x:Name="informe" ZoomPercent="100" ></rv:ReportViewer>
         </WindowsFormsHost>
     </Grid>
 </Window>

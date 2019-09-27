@@ -12,4 +12,5 @@ namespace PruebaWPF.Model
         public string Moneda { get; set; }
         public double Valor { get; set; }
     }
+
 }

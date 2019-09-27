@@ -599,6 +599,7 @@
     <Compile Include="Model\ParametroSistema.cs">
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
+    <Compile Include="Model\PartialClases.cs" />
     <Compile Include="Model\Perfil.cs">
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
@@ -1450,6 +1451,7 @@
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
     <EmbeddedResource Include="Reportes\AperturaCaja\InformeCierre.rdlc" />
+    <EmbeddedResource Include="Reportes\Arqueo\Arqueo.rdlc" />
     <EmbeddedResource Include="Reportes\Recibo\Recibo.rdlc">
       <SubType>Designer</SubType>
     </EmbeddedResource>
@@ -1485,19 +1487,25 @@
     <None Include="packages.config" />
     <None Include="Properties\DataSources\PruebaWPF.Model.AperturaCaja.datasource" />
     <None Include="Properties\DataSources\PruebaWPF.Model.Arancel.datasource" />
+    <None Include="Properties\DataSources\PruebaWPF.Model.Arqueo.datasource" />
     <None Include="Properties\DataSources\PruebaWPF.Model.Caja.datasource" />
     <None Include="Properties\DataSources\PruebaWPF.Model.clsBarCode.datasource" />
     <None Include="Properties\DataSources\PruebaWPF.Model.clsResultObject.datasource" />
     <None Include="Properties\DataSources\PruebaWPF.Model.fn_ConsultarInfoExterna_Result.datasource" />
+    <None Include="Properties\DataSources\PruebaWPF.Model.fn_TotalesArqueo_Result.datasource" />
     <None Include="Properties\DataSources\PruebaWPF.Model.FormaPago.datasource" />
     <None Include="Properties\DataSources\PruebaWPF.Model.InfoRecibo.datasource" />
     <None Include="Properties\DataSources\PruebaWPF.Model.OrdenPago.datasource" />
+    <None Include="Properties\DataSources\PruebaWPF.Model.Recibo1.datasource" />
     <None Include="Properties\DataSources\PruebaWPF.Model.ReciboAnulado.datasource" />
     <None Include="Properties\DataSources\PruebaWPF.Model.vista_RecibosPago.datasource" />
+    <None Include="Properties\DataSources\PruebaWPF.ViewModel.ArqueoEfectivoSon.datasource" />
+    <None Include="Properties\DataSources\PruebaWPF.ViewModel.ArqueoNoEfectivoSon.datasource" />
+    <None Include="Properties\DataSources\PruebaWPF.ViewModel.CajaSon.datasource" />
     <None Include="Properties\DataSources\PruebaWPF.ViewModel.DetAperturaCajaSon.datasource" />
+    <None Include="Properties\DataSources\PruebaWPF.ViewModel.DetOrdenPagoSon.datasource" />
     <None Include="Properties\DataSources\PruebaWPF.ViewModel.DetReciboSon.datasource" />
     <None Include="Properties\DataSources\PruebaWPF.ViewModel.ReciboPagoSon.datasource" />
-    <None Include="Properties\DataSources\PruebaWPF.ViewModel.ReciboSon.datasource" />
     <None Include="Properties\DataSources\PruebaWPF.ViewModel.VariacionCambiariaSon.datasource" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>

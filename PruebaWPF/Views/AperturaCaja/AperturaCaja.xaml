@@ -5,6 +5,7 @@
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
       xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+      materialDesign:ShadowAssist.CacheMode="{x:Null}"
       xmlns:local="clr-namespace:PruebaWPF.Views.AperturaCaja"
       xmlns:l="clr-namespace:PruebaWPF.Clases"
       mc:Ignorable="d" 

@@ -22,6 +22,10 @@ namespace PruebaWPF.ViewModel
             this.pantalla = pantalla;
         }
 
+        public ArqueoViewModel()
+        {
+        }
+
         public void Eliminar(Arqueo Obj)
         {
             throw new NotImplementedException();
@@ -160,11 +164,12 @@ namespace PruebaWPF.ViewModel
 
         #region Paso 3, conteo de efectivo
 
-        public List<ArqueoEfectivoSon> FindConteoEfectivo(DetAperturaCaja apertura)
+        public List<ArqueoEfectivoSon> FindConteoEfectivo(int IdDetApertura)
         {
             List<ArqueoEfectivoSon> resultados = (from denominacion in db.DenominacionMoneda
-                                                  join efectivo in db.ArqueoEfectivo on new { moneda = denominacion.Moneda, denominacion = denominacion.Denominacion } equals new { moneda = efectivo.IdMoneda, denominacion = efectivo.Denominacion } into joinTable
+                                                  join efectivo in db.ArqueoEfectivo on new { moneda = denominacion.Moneda, denominacion = denominacion.Denominacion, IdArqueo = IdDetApertura } equals new { moneda = efectivo.IdMoneda, denominacion = efectivo.Denominacion, efectivo.IdArqueo } into joinTable
                                                   from joinRecord in joinTable.DefaultIfEmpty()
+
                                                   select new ArqueoEfectivoSon()
                                                   {
                                                       IdArqueoEfectivo = joinRecord.IdArqueoEfectivo,
@@ -172,7 +177,9 @@ namespace PruebaWPF.ViewModel
                                                       Moneda = denominacion.Moneda1,
                                                       Denominacion = denominacion.Denominacion,
                                                       Cantidad = joinRecord.Cantidad
-                                                  }).ToList();
+                                                  }
+
+                                                  ).ToList();
 
             return resultados;
         }
@@ -238,7 +245,6 @@ namespace PruebaWPF.ViewModel
         #endregion
 
         #region Paso 4, Conteo de Documentos de Efectivo
-
 
         public List<Moneda> FindMonedas()
         {
@@ -369,13 +375,14 @@ namespace PruebaWPF.ViewModel
         public List<ArqueoNoEfectivoSon> FindDocumentosNoEnlazados(DetAperturaCaja apertura)
         {
             List<ArqueoNoEfectivo> arqueo = db.ArqueoNoEfectivo.Where(w => w.IdArqueo == apertura.IdDetAperturaCaja && w.IdReciboPago != null).ToList();
-            var apagos = db.ReciboPago.Where(w => w.Recibo1.IdDetAperturaCaja == apertura.IdDetAperturaCaja && w.FormaPago.isDoc).ToList().Where(w=>!arqueo.Exists(a => a.IdReciboPago == w.IdReciboPago)).ToList();
+            var apagos = db.ReciboPago.Where(w => w.Recibo1.IdDetAperturaCaja == apertura.IdDetAperturaCaja && w.FormaPago.isDoc).ToList().Where(w => !arqueo.Exists(a => a.IdReciboPago == w.IdReciboPago)).ToList();
 
             List<ArqueoNoEfectivoSon> pagos = apagos
-                .Select(s=>new ArqueoNoEfectivoSon() {
+                .Select(s => new ArqueoNoEfectivoSon()
+                {
                     IdReciboPago = s.IdReciboPago,
                     FormaPago = s.FormaPago,
-                    NoDocumento = s.ReciboPagoTarjeta != null? s.ReciboPagoTarjeta.Autorizacion.ToString(): s.ReciboPagoCheque!=null?s.ReciboPagoCheque.NumeroCK.ToString():s.ReciboPagoDeposito != null?s.ReciboPagoDeposito.Transaccion:s.ReciboPagoBono.Numero,
+                    NoDocumento = s.ReciboPagoTarjeta != null ? s.ReciboPagoTarjeta.Autorizacion.ToString() : s.ReciboPagoCheque != null ? s.ReciboPagoCheque.NumeroCK.ToString() : s.ReciboPagoDeposito != null ? s.ReciboPagoDeposito.Transaccion : s.ReciboPagoBono.Numero,
                     Moneda = s.Moneda,
                     MontoFisico = s.Monto
                 })
@@ -402,7 +409,7 @@ namespace PruebaWPF.ViewModel
 
         public Arqueo FindById(int Id)
         {
-            throw new NotImplementedException();
+            return db.Arqueo.Find(Id);
         }
 
         public List<Arqueo> FindByText(string text)
@@ -433,15 +440,18 @@ namespace PruebaWPF.ViewModel
         public string Recibo => string.Format("{0}-{1}", IdRecibo, Serie);
         public string ComentarioSistema => (IdReciboPago == null) ? "El documento no ha sido encontrado, este registro se incluirá como una observación en el informe" : "";
         public String Origen => IdArqueo == 0 ? "Recibo" : "Arqueo";
+        public string Documento => FormaPago.FormaPago1;
+        public string SimboloMoneda => Moneda.Simbolo;
     }
 
     public class ArqueoEfectivoSon : ArqueoEfectivo, INotifyPropertyChanged
     {
-    
+
         public new int? IdArqueoEfectivo { get; set; }
         public new int? IdArqueo { get; set; }
         private int? CantidadValue { get; set; }
         public double? Total => Cantidad == null ? (double?)null : Denominacion * double.Parse(Cantidad.Value.ToString());
+        public string SimboloMoneda => Moneda.Simbolo;
 
         public event PropertyChangedEventHandler PropertyChanged;
 
@@ -471,5 +481,6 @@ namespace PruebaWPF.ViewModel
                 }
             }
         }
+
     }
 }

@@ -2410,7 +2410,7 @@
           </Style>
         </PageHeader>
         <PageFooter>
-          <Height>1.42875cm</Height>
+          <Height>1.13771cm</Height>
           <PrintOnFirstPage>true</PrintOnFirstPage>
           <PrintOnLastPage>true</PrintOnLastPage>
           <ReportItems>
@@ -2431,7 +2431,7 @@
                 <Paragraph>
                   <TextRuns>
                     <TextRun>
-                      <Value>Sistema de Gestión Financiera SIGFA-UNI</Value>
+                      <Value>=Parameters!SystemNameParameter.Value</Value>
                       <Style>
                         <FontSize>9pt</FontSize>
                         <FontWeight>Bold</FontWeight>
@@ -2571,6 +2571,10 @@
       <DataType>String</DataType>
       <Prompt>ReportParameter1</Prompt>
     </ReportParameter>
+    <ReportParameter Name="SystemNameParameter">
+      <DataType>String</DataType>
+      <Prompt>ReportParameter1</Prompt>
+    </ReportParameter>
   </ReportParameters>
   <ReportParametersLayout>
     <GridLayoutDefinition>
@@ -2581,6 +2585,11 @@
           <ColumnIndex>0</ColumnIndex>
           <RowIndex>0</RowIndex>
           <ParameterName>UserParameter</ParameterName>
+        </CellDefinition>
+        <CellDefinition>
+          <ColumnIndex>1</ColumnIndex>
+          <RowIndex>0</RowIndex>
+          <ParameterName>SystemNameParameter</ParameterName>
         </CellDefinition>
       </CellDefinitions>
     </GridLayoutDefinition>
