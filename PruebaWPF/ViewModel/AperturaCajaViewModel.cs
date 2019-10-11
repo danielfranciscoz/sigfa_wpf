@@ -2,11 +2,10 @@
 using PruebaWPF.Helper;
 using PruebaWPF.Interface;
 using PruebaWPF.Model;
+using PruebaWPF.Referencias;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace PruebaWPF.ViewModel
 {
@@ -49,7 +48,8 @@ namespace PruebaWPF.ViewModel
                     IdAperturaCaja = s.IdAperturaCaja,
                     IdDetAperturaCaja = s.IdDetAperturaCaja,
                     Recibo1 = s.Recibo1,
-                    Recinto = clsSessionHelper.recintosMemory.Find(w => w.IdRecinto == s.AperturaCaja.IdRecinto).Siglas
+                    Recinto = clsSessionHelper.recintosMemory.Find(w => w.IdRecinto == s.AperturaCaja.IdRecinto).Siglas,
+                    Arqueo = s.Arqueo
                 }).Where(w => r.Any(a => w.AperturaCaja.IdRecinto == a.IdRecinto)).ToList();
 
         }
@@ -94,7 +94,8 @@ namespace PruebaWPF.ViewModel
                     IdAperturaCaja = s.IdAperturaCaja,
                     IdDetAperturaCaja = s.IdDetAperturaCaja,
                     Recibo1 = s.Recibo1,
-                    Recinto = clsSessionHelper.recintosMemory.Find(w => w.IdRecinto == s.AperturaCaja.IdRecinto).Siglas
+                    Recinto = clsSessionHelper.recintosMemory.Find(w => w.IdRecinto == s.AperturaCaja.IdRecinto).Siglas,
+                    Arqueo = s.Arqueo
                 })
                 .Where(b => r.Any(a => b.AperturaCaja.IdRecinto == a.IdRecinto) &&
                     (b.AperturaCaja.FechaApertura.Year.ToString() + "/" + b.AperturaCaja.FechaApertura.ToString("MM")).Contains(text)).ToList();
@@ -188,5 +189,6 @@ namespace PruebaWPF.ViewModel
     public class DetAperturaCajaSon : DetAperturaCaja
     {
         public string Recinto { get; set; }
+        public string EstadoArqueo => Arqueo == null ? clsReferencias.Pendiente : Arqueo.isFinalizado ? clsReferencias.Finalizado : clsReferencias.EnProceso;
     }
 }

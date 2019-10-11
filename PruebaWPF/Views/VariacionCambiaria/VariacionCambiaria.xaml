@@ -73,7 +73,7 @@
 
             <DockPanel DockPanel.Dock="Bottom" Grid.Row="2" HorizontalAlignment="Right">
                 <TextBlock FontWeight="Bold">Cantidad de registros:</TextBlock>
-                <TextBlock FontWeight="Bold" Margin="5 0 20 0" Name="lblCantidadRegitros"> 0</TextBlock>
+                <TextBlock FontWeight="Bold" Margin="5 0 20 0" Name="lblCantidadRegitros" Text="{Binding ElementName=tblVariacionCambiaria,Path=Items.Count}"></TextBlock>
             </DockPanel>
         </Grid>
     </Grid>

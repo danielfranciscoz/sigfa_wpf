@@ -17,10 +17,10 @@ namespace PruebaWPF.Model
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public Recibo1()
         {
+            this.ArqueoNoEfectivo = new HashSet<ArqueoNoEfectivo>();
             this.ArqueoRecibo = new HashSet<ArqueoRecibo>();
             this.ReciboDet = new HashSet<ReciboDet>();
             this.ReciboPago = new HashSet<ReciboPago>();
-            this.ArqueoNoEfectivo = new HashSet<ArqueoNoEfectivo>();
         }
     
         public int IdRecibo { get; set; }
@@ -35,11 +35,13 @@ namespace PruebaWPF.Model
         public string UsuarioCreacion { get; set; }
         public bool regAnulado { get; set; }
     
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<ArqueoNoEfectivo> ArqueoNoEfectivo { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<ArqueoRecibo> ArqueoRecibo { get; set; }
         public virtual FuenteFinanciamiento FuenteFinanciamiento { get; set; }
         public virtual Usuario Usuario { get; set; }
         public virtual OrdenPago OrdenPago { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<ArqueoRecibo> ArqueoRecibo { get; set; }
         public virtual DetAperturaCaja DetAperturaCaja { get; set; }
         public virtual InfoRecibo InfoRecibo { get; set; }
         public virtual SerieRecibo SerieRecibo { get; set; }
@@ -50,7 +52,5 @@ namespace PruebaWPF.Model
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<ReciboPago> ReciboPago { get; set; }
         public virtual ReciboSIRA ReciboSIRA { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<ArqueoNoEfectivo> ArqueoNoEfectivo { get; set; }
     }
 }

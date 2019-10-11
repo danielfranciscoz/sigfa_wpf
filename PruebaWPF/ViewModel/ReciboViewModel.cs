@@ -358,7 +358,7 @@ namespace PruebaWPF.ViewModel
         public List<DetReciboSon> DetallesRecibo(ReciboSon recibo)
         {
             List<DetReciboSon> detalles;
-            if (recibo.IdOrdenPago == null)
+            if (recibo.OrdenPago == null)
             {
                 detalles = db.ReciboDet.Select(s => new DetReciboSon()
                 {

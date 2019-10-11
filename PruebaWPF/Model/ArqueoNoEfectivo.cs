@@ -27,10 +27,10 @@ namespace PruebaWPF.Model
         public System.DateTime FechaCreacion { get; set; }
         public string UsuarioCreacion { get; set; }
     
-        public virtual Moneda Moneda { get; set; }
-        public virtual Usuario Usuario { get; set; }
         public virtual FormaPago FormaPago { get; set; }
+        public virtual Moneda Moneda { get; set; }
         public virtual Recibo1 Recibo1 { get; set; }
         public virtual ReciboPago ReciboPago { get; set; }
+        public virtual Usuario Usuario { get; set; }
     }
 }

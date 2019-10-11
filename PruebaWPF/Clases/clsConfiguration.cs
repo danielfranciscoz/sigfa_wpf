@@ -56,7 +56,8 @@ namespace PruebaWPF.Clases
             IdPrematricula,
             Perfil_Cajero,
             Saldo_Inicial_Cajas,
-            IdAgenteExterno
+            IdAgenteExterno,
+            Id_Efectivo
 
         };
 

@@ -287,6 +287,9 @@
     <Compile Include="Model\DetOrdenPagoArancel.cs">
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
+    <Compile Include="Model\DiferenciasArqueo.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
     <Compile Include="Model\Distribucion_D.cs">
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
@@ -1491,6 +1494,7 @@
     <None Include="Properties\DataSources\PruebaWPF.Model.Caja.datasource" />
     <None Include="Properties\DataSources\PruebaWPF.Model.clsBarCode.datasource" />
     <None Include="Properties\DataSources\PruebaWPF.Model.clsResultObject.datasource" />
+    <None Include="Properties\DataSources\PruebaWPF.Model.DiferenciasArqueo.datasource" />
     <None Include="Properties\DataSources\PruebaWPF.Model.fn_ConsultarInfoExterna_Result.datasource" />
     <None Include="Properties\DataSources\PruebaWPF.Model.fn_TotalesArqueo_Result.datasource" />
     <None Include="Properties\DataSources\PruebaWPF.Model.FormaPago.datasource" />

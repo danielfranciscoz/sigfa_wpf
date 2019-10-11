@@ -17,8 +17,9 @@ namespace PruebaWPF.Model
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public FormaPago()
         {
-            this.ReciboPago = new HashSet<ReciboPago>();
             this.ArqueoNoEfectivo = new HashSet<ArqueoNoEfectivo>();
+            this.DiferenciasArqueo = new HashSet<DiferenciasArqueo>();
+            this.ReciboPago = new HashSet<ReciboPago>();
         }
     
         public int IdFormaPago { get; set; }
@@ -29,10 +30,12 @@ namespace PruebaWPF.Model
         public string UsuarioCreacion { get; set; }
         public bool regAnulado { get; set; }
     
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<ArqueoNoEfectivo> ArqueoNoEfectivo { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<DiferenciasArqueo> DiferenciasArqueo { get; set; }
         public virtual Usuario Usuario { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<ReciboPago> ReciboPago { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<ArqueoNoEfectivo> ArqueoNoEfectivo { get; set; }
     }
 }

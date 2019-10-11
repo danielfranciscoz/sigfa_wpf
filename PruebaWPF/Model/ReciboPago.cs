@@ -30,6 +30,8 @@ namespace PruebaWPF.Model
         public string UsuarioCreacion { get; set; }
         public bool regAnulado { get; set; }
     
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<ArqueoNoEfectivo> ArqueoNoEfectivo { get; set; }
         public virtual Moneda Moneda { get; set; }
         public virtual Usuario Usuario { get; set; }
         public virtual FormaPago FormaPago { get; set; }
@@ -38,7 +40,5 @@ namespace PruebaWPF.Model
         public virtual ReciboPagoCheque ReciboPagoCheque { get; set; }
         public virtual ReciboPagoDeposito ReciboPagoDeposito { get; set; }
         public virtual ReciboPagoTarjeta ReciboPagoTarjeta { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<ArqueoNoEfectivo> ArqueoNoEfectivo { get; set; }
     }
 }

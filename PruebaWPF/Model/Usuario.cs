@@ -17,6 +17,8 @@ namespace PruebaWPF.Model
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public Usuario()
         {
+            this.Arqueo = new HashSet<Arqueo>();
+            this.ArqueoNoEfectivo = new HashSet<ArqueoNoEfectivo>();
             this.NoCuentasBankArea = new HashSet<NoCuentasBankArea>();
             this.TipoTransaccionBank = new HashSet<TipoTransaccionBank>();
             this.UserBank = new HashSet<UserBank>();
@@ -61,7 +63,6 @@ namespace PruebaWPF.Model
             this.ArancelPrecio = new HashSet<ArancelPrecio>();
             this.ArancelTipoDeposito = new HashSet<ArancelTipoDeposito>();
             this.AreaPagoDelegado = new HashSet<AreaPagoDelegado>();
-            this.Arqueo = new HashSet<Arqueo>();
             this.Caja = new HashSet<Caja>();
             this.Configuracion = new HashSet<Configuracion>();
             this.DetAperturaCaja = new HashSet<DetAperturaCaja>();
@@ -83,7 +84,6 @@ namespace PruebaWPF.Model
             this.UsuarioPerfil = new HashSet<UsuarioPerfil>();
             this.UsuarioPrograma = new HashSet<UsuarioPrograma>();
             this.VariacionCambiaria = new HashSet<VariacionCambiaria>();
-            this.ArqueoNoEfectivo = new HashSet<ArqueoNoEfectivo>();
         }
     
         public string Login { get; set; }
@@ -108,6 +108,10 @@ namespace PruebaWPF.Model
         public string LoginCreacion { get; set; }
         public bool RegAnulado { get; set; }
     
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Arqueo> Arqueo { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<ArqueoNoEfectivo> ArqueoNoEfectivo { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<NoCuentasBankArea> NoCuentasBankArea { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
@@ -197,8 +201,6 @@ namespace PruebaWPF.Model
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<AreaPagoDelegado> AreaPagoDelegado { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Arqueo> Arqueo { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Caja> Caja { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Configuracion> Configuracion { get; set; }
@@ -240,7 +242,5 @@ namespace PruebaWPF.Model
         public virtual ICollection<UsuarioPrograma> UsuarioPrograma { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<VariacionCambiaria> VariacionCambiaria { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<ArqueoNoEfectivo> ArqueoNoEfectivo { get; set; }
     }
 }

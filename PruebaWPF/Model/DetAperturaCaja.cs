@@ -26,9 +26,9 @@ namespace PruebaWPF.Model
         public string UsuarioCierre { get; set; }
         public Nullable<System.DateTime> FechaCierre { get; set; }
     
+        public virtual Arqueo Arqueo { get; set; }
         public virtual Usuario Usuario { get; set; }
         public virtual AperturaCaja AperturaCaja { get; set; }
-        public virtual Arqueo Arqueo { get; set; }
         public virtual Caja Caja { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Recibo1> Recibo1 { get; set; }

@@ -1,4 +1,5 @@
-﻿using PruebaWPF.Helper;
+﻿using PruebaWPF.Clases;
+using PruebaWPF.Helper;
 using PruebaWPF.Interface;
 using PruebaWPF.Model;
 using System;
@@ -372,10 +373,10 @@ namespace PruebaWPF.ViewModel
             return total;
         }
 
-        public List<ArqueoNoEfectivoSon> FindDocumentosNoEnlazados(DetAperturaCaja apertura)
+        public List<ArqueoNoEfectivoSon> FindDocumentosNoEnlazados(int IdDetAperturaCaja)
         {
-            List<ArqueoNoEfectivo> arqueo = db.ArqueoNoEfectivo.Where(w => w.IdArqueo == apertura.IdDetAperturaCaja && w.IdReciboPago != null).ToList();
-            var apagos = db.ReciboPago.Where(w => w.Recibo1.IdDetAperturaCaja == apertura.IdDetAperturaCaja && w.FormaPago.isDoc).ToList().Where(w => !arqueo.Exists(a => a.IdReciboPago == w.IdReciboPago)).ToList();
+            List<ArqueoNoEfectivo> arqueo = db.ArqueoNoEfectivo.Where(w => w.IdArqueo == IdDetAperturaCaja && w.IdReciboPago != null).ToList();
+            var apagos = db.ReciboPago.Where(w => w.Recibo1.IdDetAperturaCaja == IdDetAperturaCaja && w.FormaPago.isDoc).ToList().Where(w => !arqueo.Exists(a => a.IdReciboPago == w.IdReciboPago)).ToList();
 
             List<ArqueoNoEfectivoSon> pagos = apagos
                 .Select(s => new ArqueoNoEfectivoSon()
@@ -391,21 +392,78 @@ namespace PruebaWPF.ViewModel
             return pagos;
         }
 
-        public void FinalizarArqueo(Arqueo Obj)
+        public int IdEfectivo()
         {
-            Arqueo arqueo = db.Arqueo.Find(Obj.IdArqueoDetApertura);
-            arqueo.UsuarioArqueador = clsSessionHelper.usuario.Login;
+            return int.Parse(db.Configuracion.Find(clsConfiguration.Llaves.Id_Efectivo.ToString()).Valor);
+        }
 
-            arqueo.FechaFinArqueo = System.DateTime.Now;
-            arqueo.Observaciones = Obj.Observaciones;
-            arqueo.CajeroEntrega = Obj.CajeroEntrega;
-            arqueo.isFinalizado = true;
+        public void FinalizarArqueo(Arqueo Obj, List<fn_TotalesArqueo_Result> diferencias)
+        {
+            using (var transaction = db.Database.BeginTransaction())
+            {
+                try
+                {
+                    Arqueo arqueo = db.Arqueo.Find(Obj.IdArqueoDetApertura);
 
-            db.Entry(arqueo).State = System.Data.Entity.EntityState.Modified;
-            db.SaveChanges();
+                    arqueo.Observaciones = Obj.Observaciones;
+                    arqueo.CajeroEntrega = Obj.CajeroEntrega;
+                    arqueo.isFinalizado = true;
+
+                    db.Entry(arqueo).State = System.Data.Entity.EntityState.Modified;
+                    DiferenciasArqueo da;
+
+                    foreach (fn_TotalesArqueo_Result diferencia in diferencias)
+                    {
+                        if (diferencia.Diferencia.Value != 0)
+                        {
+                            da = new DiferenciasArqueo();
+
+                            da.IdArqueo = arqueo.IdArqueoDetApertura;
+                            da.IdFormaPago = diferencia.IdFormaPago == null ? diferencia.IdFormaPagoArqueo.Value : diferencia.IdFormaPago.Value;
+                            da.IdMoneda = diferencia.IdMonedaDiferencia.Value;
+                            da.Monto = diferencia.Diferencia.Value;
+
+                            db.DiferenciasArqueo.Add(da);
+                        }
+                    }
+
+                    db.SaveChanges();
+                    transaction.Commit();
+                }
+                catch (Exception ex)
+                {
+                    transaction.Rollback();
+                    throw ex;
+                }
+            }
 
         }
         #endregion
+
+        #region Informe de Arqueo
+        public List<DiferenciasArqueo> DiferenciasArqueo(int IdArqueoDetApertura)
+        {
+            return db.DiferenciasArqueo.Where(w => w.IdArqueo == IdArqueoDetApertura).ToList();
+        }
+        #endregion
+
+        public ReciboSon ConvertToReciboSon(Recibo1 recibo)
+        {
+            return new ReciboSon() { IdRecibo = recibo.IdRecibo, Serie = recibo.Serie, Fecha = recibo.Fecha, IdOrdenPago = recibo.IdOrdenPago, ReciboPago = recibo.ReciboPago };
+        }
+
+        public List<VariacionCambiariaSon> FindTipoCambios(int IdArqueo)
+        {
+            Recibo1 recibo = db.ArqueoRecibo.FirstOrDefault(f => f.IdArqueo == IdArqueo).Recibo1;
+
+            ReciboSon agregado = ConvertToReciboSon(recibo);
+
+            return FindTipoCambios(agregado);
+        }
+        public List<VariacionCambiariaSon> FindTipoCambios(ReciboSon agregado)
+        {
+            return new ReciboViewModel().FindTipoCambio(agregado, null);
+        }
 
         public Arqueo FindById(int Id)
         {
@@ -414,7 +472,17 @@ namespace PruebaWPF.ViewModel
 
         public List<Arqueo> FindByText(string text)
         {
-            throw new NotImplementedException();
+            if (!text.Equals(""))
+            {
+                return db.Arqueo.ToList().Where(
+                   w => (w.FechaInicioArqueo.Year.ToString() + "/" + w.FechaInicioArqueo.ToString("MM")).Contains(text)
+                ).OrderByDescending(a => a.IdArqueoDetApertura).ToList();
+
+            }
+            else
+            {
+                return FindAll();
+            }
         }
 
         public void Modificar(Arqueo Obj)

@@ -85,13 +85,8 @@ namespace PruebaWPF.Views.VariacionCambiaria
         private void Load()
         {
             tblVariacionCambiaria.ItemsSource = items;
-            ContarRegistros();
         }
 
-        private void ContarRegistros()
-        {
-            lblCantidadRegitros.Text = "" + tblVariacionCambiaria.Items.Count;
-        }
 
         private void LoadTitle()
         {

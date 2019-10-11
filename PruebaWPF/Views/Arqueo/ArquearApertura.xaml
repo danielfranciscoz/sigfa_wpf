@@ -608,7 +608,7 @@
                                                         <RowDefinition Height="*"/>
                                                     </Grid.RowDefinitions>
                                                     <StackPanel Grid.Row="0" Orientation="Vertical">
-                                                        <TextBlock VerticalAlignment="Center" Foreground="Gray" FontWeight="Bold">Faltante/Sobrante</TextBlock>
+                                                        <TextBlock VerticalAlignment="Center" Foreground="Gray" FontWeight="Bold">Faltante (-), Sobrante (+)</TextBlock>
                                                         <Separator/>
                                                     </StackPanel>
 
@@ -710,8 +710,8 @@
                                     </Grid>
                                 </StackPanel>
                                
-                                <StackPanel Grid.Row="2">
-                                    <TextBox FontSize="14" Language="es-419" SpellCheck.IsEnabled="True" materialDesign:HintAssist.Hint="Observaciones" materialDesign:HintAssist.IsFloating="True" materialDesign:HintAssist.FloatingScale="1" AcceptsReturn="True" MaxLines="3"></TextBox>
+                                <StackPanel Grid.Row="2"  VerticalAlignment="Bottom" >
+                                    <TextBox FontSize="14" x:Name="txtObservaciones" Language="es-419" SpellCheck.IsEnabled="True" materialDesign:HintAssist.Hint="Observaciones" materialDesign:HintAssist.IsFloating="True" materialDesign:HintAssist.FloatingScale="1" AcceptsReturn="True" MaxLines="3"></TextBox>
                                 </StackPanel>
 
                                 <StackPanel Grid.Row="3" Height="auto">

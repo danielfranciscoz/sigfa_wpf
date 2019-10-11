@@ -19,6 +19,7 @@ namespace PruebaWPF.Model
         {
             this.ArqueoEfectivo = new HashSet<ArqueoEfectivo>();
             this.ArqueoRecibo = new HashSet<ArqueoRecibo>();
+            this.DiferenciasArqueo = new HashSet<DiferenciasArqueo>();
         }
     
         public int IdArqueoDetApertura { get; set; }
@@ -29,11 +30,13 @@ namespace PruebaWPF.Model
         public string CajeroEntrega { get; set; }
         public bool isFinalizado { get; set; }
     
-        public virtual Usuario Usuario { get; set; }
         public virtual DetAperturaCaja DetAperturaCaja { get; set; }
+        public virtual Usuario Usuario { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<ArqueoEfectivo> ArqueoEfectivo { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<ArqueoRecibo> ArqueoRecibo { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<DiferenciasArqueo> DiferenciasArqueo { get; set; }
     }
 }

@@ -68,6 +68,10 @@ namespace PruebaWPF.Views.Shared
             List<ArqueoEfectivoSon> efectivo = controller.FindConteoEfectivo(arqueo.IdArqueoDetApertura);
             List<fn_TotalesArqueo_Result>[] recibido = controller.SaldoTotalArqueo(arqueo.DetAperturaCaja);
             List<ArqueoNoEfectivoSon> DocumentosArqueados = controller.FindDocumentosArqueados(arqueo.IdArqueoDetApertura);
+            List<VariacionCambiariaSon> variacionCambiarias = controller.FindTipoCambios(arqueo.IdArqueoDetApertura);
+            List<ArqueoNoEfectivoSon> documentosNoEnlazados = controller.FindDocumentosNoEnlazados(arqueo.IdArqueoDetApertura);
+            List<DiferenciasArqueo> diferenciasArqueo = controller.DiferenciasArqueo(arqueo.IdArqueoDetApertura);
+
             List<Recibo1> recibos = new List<Recibo1>();
             List<Recibo1> recibosAnulados = new List<Recibo1>();
 
@@ -85,7 +89,7 @@ namespace PruebaWPF.Views.Shared
             }
             arqueoFinalizado.Add(controller.FindById(arqueo.IdArqueoDetApertura));
 
-            datasSource = new ReportDataSource[6];
+            datasSource = new ReportDataSource[9];
 
             datasSource[0] = new ReportDataSource("ArqueoEfectivo", efectivo);
             datasSource[1] = new ReportDataSource("Recibos", recibos);
@@ -93,6 +97,9 @@ namespace PruebaWPF.Views.Shared
             datasSource[3] = new ReportDataSource("Arqueo", arqueoFinalizado);
             datasSource[4] = new ReportDataSource("EfectivoRecibido", recibido[0]);
             datasSource[5] = new ReportDataSource("ArqueoNoEfectivo", DocumentosArqueados);
+            datasSource[6] = new ReportDataSource("TipoCambio", variacionCambiarias);
+            datasSource[7] = new ReportDataSource("DocumentosNoEnlazados", documentosNoEnlazados);
+            datasSource[8] = new ReportDataSource("DiferenciasArqueo", diferenciasArqueo);
 
 
 

@@ -49,13 +49,13 @@
             </StackPanel>
 
             <DockPanel  Grid.Row="1" x:Name="panelGrid" VerticalAlignment="Stretch">
-                <DataGrid Name="tblArqueos" CanUserDeleteRows="False" CanUserAddRows="False" AutoGenerateColumns="False" SelectionUnit="FullRow" SelectionMode="Single" SelectionChanged="tblAperturas_SelectionChanged">
+                <DataGrid Name="tblArqueos" CanUserDeleteRows="False" CanUserAddRows="False" AutoGenerateColumns="False" SelectionUnit="FullRow" SelectionMode="Single">
                     <DataGrid.Columns>
                         <DataGridTemplateColumn CanUserResize="False" Width="50" Header="">
                             <DataGridTemplateColumn.CellTemplate>
                                 <DataTemplate>
                                     <StackPanel>
-                                        <Button x:Name="btnInformeCierre" Tag="{StaticResource Permiso_Eliminar}" Background="{StaticResource Delete_Button}" Height="20" Width="20" BorderBrush="Transparent" ToolTip="Ver Informe de Cierre" >
+                                        <Button x:Name="btnInformeCierre" Tag="{StaticResource Permiso_Imprimir}" Background="{StaticResource Print_Button}" Height="20" Width="20" BorderBrush="Transparent" ToolTip="Ver Arqueo" Click="BtnInformeCierre_Click">
                                             <Button.Resources>
                                                 <l:IsNullConverter x:Key="isNullConverter" />
                                             </Button.Resources>
@@ -77,12 +77,13 @@
                                 </DataTemplate>
                             </DataGridTemplateColumn.CellTemplate>
                         </DataGridTemplateColumn>
-                        <DataGridTextColumn CanUserReorder="False" CanUserResize="False" IsReadOnly="True" Header="No. Arqueo" Width="auto" Binding="{Binding IdArqueo}"></DataGridTextColumn>
-                        <DataGridTextColumn CanUserReorder="False" CanUserResize="False" IsReadOnly="True" Header="Apertura" Width="auto" Binding="{Binding IdDetApertura}"></DataGridTextColumn>
-                        <DataGridTextColumn CanUserReorder="False" CanUserResize="False" IsReadOnly="True" Header="Fecha de Arqueo" Width="auto" Binding="{Binding FechaArqueo,StringFormat={}{0:dd/MM/yyyy HH:mmmm:ss tt}}"></DataGridTextColumn>
+                        <DataGridTextColumn CanUserReorder="False" CanUserResize="False" IsReadOnly="True" Header="No. Arqueo" Width="auto" Binding="{Binding IdArqueoDetApertura}"></DataGridTextColumn>
+                        <DataGridTextColumn CanUserReorder="False" CanUserResize="False" IsReadOnly="True" Header="Iniciado" Width="auto" Binding="{Binding FechaInicioArqueo,StringFormat={}{0:dd/MM/yyyy HH:mmmm:ss tt}}"></DataGridTextColumn>
+                        <DataGridTextColumn CanUserReorder="False" CanUserResize="False" IsReadOnly="True" Header="Finalizado" Width="auto" Binding="{Binding FechaFinArqueo,StringFormat={}{0:dd/MM/yyyy HH:mmmm:ss tt}}"></DataGridTextColumn>
                         <DataGridTextColumn CanUserReorder="False" CanUserResize="False" IsReadOnly="True" Header="Arqueado por" Width="auto" Binding="{Binding UsuarioArqueador}"></DataGridTextColumn>
+                        <DataGridTextColumn CanUserReorder="False" CanUserResize="False" IsReadOnly="True" Header="Cajero Presente" Width="auto" Binding="{Binding CajeroEntrega}"></DataGridTextColumn>
+                        <DataGridTextColumn CanUserReorder="False" CanUserResize="False" IsReadOnly="True" Header="Estado" Width="auto" Binding="{Binding EstadoArqueo}"></DataGridTextColumn>
                         <DataGridTextColumn CanUserReorder="False" CanUserResize="False" IsReadOnly="True" Header="Observaciones" Width="auto" Binding="{Binding Observaciones}"></DataGridTextColumn>
-                        <DataGridTextColumn CanUserReorder="False" CanUserResize="False" IsReadOnly="True" Header="Estado" Width="auto" Binding="{Binding isFinalizado}"></DataGridTextColumn>
                     </DataGrid.Columns>
 
                 </DataGrid>
@@ -90,7 +91,7 @@
 
             <DockPanel Grid.Row="2" DockPanel.Dock="Bottom" HorizontalAlignment="Right">
                 <TextBlock FontWeight="Bold">Cantidad de registros:</TextBlock>
-                <TextBlock FontWeight="Bold" Margin="5 0 20 0" Name="lblCantidadRegitros"> 0</TextBlock>
+                <TextBlock FontWeight="Bold" Margin="5 0 20 0" Name="lblCantidadRegitros" Text="{Binding ElementName=tblArqueos,Path=Items.Count}"></TextBlock>
             </DockPanel>
         </Grid>
     </Grid>

@@ -12,7 +12,12 @@ namespace PruebaWPF.Referencias
         //Ids de Referencia
 
         public const int PerfilCajero = 8;
-        public const String Default = "Default";
+        public const string Default = "Default";
+
+        //Estados
+        public const string Pendiente = "Pendiente";
+        public const string Finalizado = "Finalizado";
+        public const string EnProceso = "En proceso...";
 
         //Tipos de mensaje
         public const int TYPE_MESSAGE_Exito = 0;
