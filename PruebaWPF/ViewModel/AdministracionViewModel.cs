@@ -103,15 +103,21 @@ namespace PruebaWPF.ViewModel
         public List<UsuarioPerfilSon> ObtenerPerfilesUsuario(Usuario u)
         {
 
-            return db.Usuario.Find(u.Login).UsuarioPerfil.Where(w => w.RegAnulado == false)
+            return db.Usuario.Find(u.Login).UsuarioPerfil
+                .Join(db.vw_RecintosRH,
+                urecinto => urecinto.IdRecinto,
+                recinto => recinto.IdRecinto,
+                (user, recinto) => new { user, recinto }
+                )
+                .Where(w => w.user.RegAnulado == false)
                  .Select(s => new UsuarioPerfilSon()
                  {
-                     IdPerfil = s.IdPerfil,
-                     Perfil = s.Perfil,
-                     LoginCreacion = s.LoginCreacion,
-                     Login = s.Login,
-                     IdRecinto = s.IdRecinto,
-                     Recinto = clsSessionHelper.recintosMemory.Where(w => w.IdRecinto == s.IdRecinto).FirstOrDefault().Siglas,
+                     IdPerfil = s.user.IdPerfil,
+                     Perfil = s.user.Perfil,
+                     LoginCreacion = s.user.LoginCreacion,
+                     Login = s.user.Login,
+                     IdRecinto = s.user.IdRecinto,
+                     Recinto = s.recinto.Siglas,
                  }).ToList();
         }
 
@@ -202,7 +208,7 @@ namespace PruebaWPF.ViewModel
                 }
                 else
                 {
-                    if (validacion.Where(a => a.LoginEmail == user.LoginEmail && a.Login != user.Login).Count() > 0)
+                    if (validacion.Any(a => a.LoginEmail == user.LoginEmail && a.Login != user.Login))
                     {
                         throw new Exception("El correo institucional ingresado ya se encuentra asociado a un usuario del sistema");
                     }
@@ -270,17 +276,22 @@ namespace PruebaWPF.ViewModel
         public List<PermisoSon> FindPermisos(Pantalla pantalla, Perfil perfil)
         {
 
-            return db.Permiso.Where(w => w.IdPerfil == perfil.IdPerfil && w.IdPantalla == pantalla.IdPantalla).OrderBy(o => o.IdRecinto).ToList()
+            return db.Permiso.Where(w => w.IdPerfil == perfil.IdPerfil && w.IdPantalla == pantalla.IdPantalla)
+                .Join(db.vw_RecintosRH,
+                urecinto => urecinto.IdRecinto,
+                recinto => recinto.IdRecinto,
+                (user, recinto) => new { user, recinto }
+                ).OrderBy(o => o.user.IdRecinto)
                 .Select(s => new PermisoSon()
                 {
-                    IdPermiso = s.IdPermiso,
-                    IdPermisoName = s.IdPermisoName,
-                    PermisoName = s.PermisoName,
-                    IdPerfil = s.IdPerfil,
-                    IdPantalla = s.IdPantalla,
-                    FechaCreacion = s.FechaCreacion,
-                    UsuarioCreacion = s.UsuarioCreacion,
-                    Recinto = clsSessionHelper.recintosMemory.Where(w => w.IdRecinto == s.IdRecinto).FirstOrDefault().Siglas
+                    IdPermiso = s.user.IdPermiso,
+                    IdPermisoName = s.user.IdPermisoName,
+                    PermisoName = s.user.PermisoName,
+                    IdPerfil = s.user.IdPerfil,
+                    IdPantalla = s.user.IdPantalla,
+                    FechaCreacion = s.user.FechaCreacion,
+                    UsuarioCreacion = s.user.UsuarioCreacion,
+                    Recinto = s.recinto.Siglas
                 }).ToList();
         }
 
@@ -753,11 +764,9 @@ namespace PruebaWPF.ViewModel
 
         #endregion
 
-        public List<vw_RecintosRH> Recintos()
-        {
-            return clsSessionHelper.recintosMemory;
+        public List<vw_RecintosRH> Recintos() {
+            return db.vw_RecintosRH.ToList();
         }
-
     }
 
     public class UsuarioPerfilSon : UsuarioPerfil

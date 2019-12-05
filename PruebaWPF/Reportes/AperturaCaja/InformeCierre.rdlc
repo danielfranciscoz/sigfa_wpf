@@ -724,7 +724,7 @@
               <Paragraph>
                 <TextRuns>
                   <TextRun>
-                    <Value>=iIf(CountRows("ReciboPagos")=0,"NO EXISTEN INGRESOS","RECIBOS OFICIALES DE CAJA (" &amp; CountDistinct(CSTR(Fields!IdRecibo.Value)+CSTR(Fields!Serie.Value),"ReciboPagos") &amp; ")")</Value>
+                    <Value>="1. " &amp; iIf(CountRows("ReciboPagos")=0,"NO EXISTEN INGRESOS","RECIBOS OFICIALES DE CAJA (" &amp; CountDistinct(CSTR(Fields!IdRecibo.Value)+CSTR(Fields!Serie.Value),"ReciboPagos") &amp; ")")</Value>
                     <Style>
                       <FontWeight>Bold</FontWeight>
                     </Style>
@@ -755,7 +755,7 @@
               <Paragraph>
                 <TextRuns>
                   <TextRun>
-                    <Value>=iIf(CountRows("ReciboAnulado")=0,"NO EXISTEN RECIBOS ANULADOS","RECIBOS ANULADOS (" &amp; CountRows("ReciboAnulado") &amp; ")")</Value>
+                    <Value>=iIf(CountRows("ReciboPagos")=0,"2. ","4. ") &amp; iIf(CountRows("ReciboAnulado")=0,"NO EXISTEN RECIBOS ANULADOS","RECIBOS ANULADOS (" &amp; CountRows("ReciboAnulado") &amp; ")")</Value>
                     <Style>
                       <FontWeight>Bold</FontWeight>
                     </Style>
@@ -2202,7 +2202,7 @@
                   <Paragraph>
                     <TextRuns>
                       <TextRun>
-                        <Value>RESUMEN DE INGRESOS POR FORMA DE PAGO</Value>
+                        <Value>2. RESUMEN DE INGRESOS POR FORMA DE PAGO</Value>
                         <Style>
                           <FontWeight>Bold</FontWeight>
                         </Style>
@@ -2214,7 +2214,7 @@
                 <rd:DefaultName>Textbox305</rd:DefaultName>
                 <Top>1.88495cm</Top>
                 <Height>0.6cm</Height>
-                <Width>8.5cm</Width>
+                <Width>8.79104cm</Width>
                 <ZIndex>4</ZIndex>
                 <Style>
                   <Border>
@@ -2244,7 +2244,7 @@
                   <Paragraph>
                     <TextRuns>
                       <TextRun>
-                        <Value>RESUMEN DE INGRESOS POR MONEDA</Value>
+                        <Value>3. RESUMEN DE INGRESOS POR MONEDA</Value>
                         <Style>
                           <FontWeight>Bold</FontWeight>
                         </Style>

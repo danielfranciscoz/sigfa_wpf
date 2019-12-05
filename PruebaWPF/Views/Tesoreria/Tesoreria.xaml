@@ -36,6 +36,7 @@
                 <ComboBoxItem x:Name="opcion2">TARJETA, BANCO Y FORMA DE PAGO</ComboBoxItem>
                 <ComboBoxItem x:Name="opcion3">FUENTES DE FINANC., MONEDAS Y DOC. DE IDENTIFICACIÓN</ComboBoxItem>
                 <ComboBoxItem x:Name="opcion4">ENCABEZADO Y PIE DE RECIBOS</ComboBoxItem>
+                <ComboBoxItem x:Name="opcion5">PARAMETRIZACIÓN DE CUENTAS</ComboBoxItem>
             </ComboBox>
         </StackPanel>
 
@@ -52,7 +53,7 @@
                                 <ColumnDefinition Width="10"/>
                                 <ColumnDefinition Width="auto"/>
                             </Grid.ColumnDefinitions>
-                            <Grid Grid.Row="0">
+                            <Grid Grid.Column="0">
                                 <Grid.RowDefinitions>
                                     <RowDefinition Height="auto"/>
                                     <RowDefinition Height="*"/>
@@ -107,7 +108,8 @@
 
                                 <DockPanel Grid.Row="2" DockPanel.Dock="Bottom" HorizontalAlignment="Right">
                                     <TextBlock FontWeight="Bold">Cantidad de registros:</TextBlock>
-                                    <TextBlock FontWeight="Bold" Margin="5 0 20 0" Name="lblCantidadRegitrosCaja"> 0</TextBlock>
+                                    <TextBlock FontWeight="Bold" Margin="5 0 20 0" Text="{Binding ElementName=tblCajas,Path=Items.Count}"></TextBlock>
+
                                 </DockPanel>
                             </Grid>
                             <Separator Grid.Column="1">
@@ -125,6 +127,8 @@
                                 </Grid.RowDefinitions>
 
                                 <DockPanel Grid.Row="0" >
+                                    <StackPanel DockPanel.Dock="Top" Orientation="Vertical">
+                                        
                                     <Grid>
 
                                         <StackPanel Orientation="Horizontal" HorizontalAlignment="Left">
@@ -140,6 +144,8 @@
                                         </StackPanel>
 
                                     </Grid>
+                                        <Separator/>
+                                    </StackPanel>
                                 </DockPanel>
                                 <DockPanel x:Name="panelGridSerie"  Grid.Row="2" VerticalAlignment="Stretch">
                                     <DataGrid Name="tblSerie" CanUserDeleteRows="False" CanUserAddRows="False" AutoGenerateColumns="False" SelectionUnit="FullRow" SelectionMode="Single" >
@@ -194,11 +200,13 @@
 
                         <DockPanel Grid.Column="0">
                             <StackPanel DockPanel.Dock="Top" Margin="0 10 0 0" Orientation="Vertical">
+                                <Grid>
+                                    
                                 <StackPanel Orientation="Horizontal">
                                     <materialDesign:PackIcon Kind="Cards" HorizontalAlignment="Center"  VerticalAlignment="Center" Margin="10 0 10 0"></materialDesign:PackIcon>
                                     <TextBlock VerticalAlignment="Center" FontWeight="Bold">Registro de Tarjetas</TextBlock>
                                 </StackPanel>
-                                <Separator/>
+                               
                                 <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
                                     <Button Padding="0" x:Name="btnNewCard" Height="25" Width="30" Foreground="{StaticResource DarkGray}" Tag="{StaticResource Permiso_Guardar}"  Style="{StaticResource MaterialDesignFlatButton}" BorderBrush="Transparent" Click="btnNewCard_Click" ToolTip="Agregar una nueva tarjeta">
                                         <materialDesign:PackIcon Kind="Plus" HorizontalAlignment="Center"  VerticalAlignment="Center" ></materialDesign:PackIcon>
@@ -210,6 +218,7 @@
                                         <materialDesign:PackIcon Kind="Delete" HorizontalAlignment="Center"  VerticalAlignment="Center" ></materialDesign:PackIcon>
                                     </Button>
                                 </StackPanel>
+                                </Grid>
                                 <Separator/>
                             </StackPanel>
 
@@ -232,11 +241,12 @@
 
                         <DockPanel Grid.Column="2">
                             <StackPanel DockPanel.Dock="Top" Margin="0 10 0 0" Orientation="Vertical">
+                                <Grid>
+                                    
                                 <StackPanel Orientation="Horizontal">
                                     <materialDesign:PackIcon Kind="Bank" HorizontalAlignment="Center"  VerticalAlignment="Center" Margin="10 0 10 0"></materialDesign:PackIcon>
                                     <TextBlock VerticalAlignment="Center" FontWeight="Bold">Registro de Bancos</TextBlock>
                                 </StackPanel>
-                                <Separator/>
                                 <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
                                     <Button Padding="0" x:Name="btnNewBanco" Height="25" Width="30" Foreground="{StaticResource DarkGray}" Tag="{StaticResource Permiso_Guardar}"  Style="{StaticResource MaterialDesignFlatButton}" BorderBrush="Transparent" Click="btnNewBanco_Click" ToolTip="Agregar un nuevo banco">
                                         <materialDesign:PackIcon Kind="Plus" HorizontalAlignment="Center"  VerticalAlignment="Center" ></materialDesign:PackIcon>
@@ -248,6 +258,7 @@
                                         <materialDesign:PackIcon Kind="Delete" HorizontalAlignment="Center"  VerticalAlignment="Center" ></materialDesign:PackIcon>
                                     </Button>
                                 </StackPanel>
+                                </Grid>
                                 <Separator/>
                             </StackPanel>
 
@@ -271,11 +282,12 @@
 
                         <DockPanel Grid.Column="4">
                             <StackPanel DockPanel.Dock="Top" Margin="0 10 0 0" Orientation="Vertical">
+                                <Grid>
+                                    
                                 <StackPanel Orientation="Horizontal">
                                     <materialDesign:PackIcon Kind="CashMultiple" HorizontalAlignment="Center"  VerticalAlignment="Center" Margin="10 0 10 0"></materialDesign:PackIcon>
                                     <TextBlock VerticalAlignment="Center" FontWeight="Bold">Registro de Formas de Pago</TextBlock>
                                 </StackPanel>
-                                <Separator/>
                                 <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
                                     <Button Padding="0" x:Name="btnNewFormaPago" Height="25" Width="30" Foreground="{StaticResource DarkGray}" Tag="{StaticResource Permiso_Guardar}"  Style="{StaticResource MaterialDesignFlatButton}" BorderBrush="Transparent" Click="btnNewFormaPago_Click" ToolTip="Agregar una nueva forma de pago">
                                         <materialDesign:PackIcon Kind="Plus" HorizontalAlignment="Center"  VerticalAlignment="Center" ></materialDesign:PackIcon>
@@ -287,6 +299,7 @@
                                         <materialDesign:PackIcon Kind="Delete" HorizontalAlignment="Center"  VerticalAlignment="Center" ></materialDesign:PackIcon>
                                     </Button>
                                 </StackPanel>
+                                </Grid>
                                 <Separator/>
                             </StackPanel>
 
@@ -318,12 +331,12 @@
 
                         <DockPanel Grid.Column="0">
                             <StackPanel DockPanel.Dock="Top" Margin="0 10 0 0" Orientation="Vertical">
-                                <StackPanel Orientation="Horizontal">
+                                <Grid >
+                                <StackPanel Orientation="Horizontal" HorizontalAlignment="Left">
                                     <materialDesign:PackIcon Kind="Finance" HorizontalAlignment="Center"  VerticalAlignment="Center" Margin="10 0 10 0"></materialDesign:PackIcon>
                                     <TextBlock VerticalAlignment="Center" FontWeight="Bold">Registro de Fuentes de Financiamiento</TextBlock>
                                 </StackPanel>
-                                <Separator/>
-                                <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
+                                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">                                        
                                     <Button Padding="0" x:Name="btnNewFF" Height="25" Width="30" Foreground="{StaticResource DarkGray}" Tag="{StaticResource Permiso_Guardar}"  Style="{StaticResource MaterialDesignFlatButton}" BorderBrush="Transparent" Click="btnNewFF_Click" ToolTip="Agregar una nueva tarjeta">
                                         <materialDesign:PackIcon Kind="Plus" HorizontalAlignment="Center"  VerticalAlignment="Center" ></materialDesign:PackIcon>
                                     </Button>
@@ -333,7 +346,8 @@
                                     <Button Padding="0" x:Name="btnDeleteFF" Height="25" Width="30" Foreground="{StaticResource DarkGray}" Tag="{StaticResource Permiso_Eliminar}"  Style="{StaticResource MaterialDesignFlatButton}" BorderBrush="Transparent" Click="btnDeleteFF_Click" ToolTip="Eliminar la tarjeta seleccionada">
                                         <materialDesign:PackIcon Kind="Delete" HorizontalAlignment="Center"  VerticalAlignment="Center" ></materialDesign:PackIcon>
                                     </Button>
-                                </StackPanel>
+                                    </StackPanel>
+                                </Grid>
                                 <Separator/>
                             </StackPanel>
 
@@ -366,12 +380,15 @@
                             </Grid.RowDefinitions>
                             <DockPanel Grid.Row="0">
                                 <StackPanel DockPanel.Dock="Top" Margin="0 10 0 0" Orientation="Vertical">
+                                    <Grid>
+                                        
                                     <StackPanel Orientation="Horizontal">
                                         <materialDesign:PackIcon Kind="Coin" HorizontalAlignment="Center"  VerticalAlignment="Center" Margin="10 0 10 0"></materialDesign:PackIcon>
                                         <TextBlock VerticalAlignment="Center" FontWeight="Bold">Registro de Monedas</TextBlock>
                                     </StackPanel>
-                                    <Separator/>
+                                    
                                     <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
+                                        
                                         <Button Padding="0" x:Name="btnNewMoneda" Height="25" Width="30" Foreground="{StaticResource DarkGray}" Tag="{StaticResource Permiso_Guardar}"  Style="{StaticResource MaterialDesignFlatButton}" BorderBrush="Transparent" Click="btnNewMoneda_Click" ToolTip="Agregar un nuevo banco">
                                             <materialDesign:PackIcon Kind="Plus" HorizontalAlignment="Center"  VerticalAlignment="Center" ></materialDesign:PackIcon>
                                         </Button>
@@ -382,6 +399,7 @@
                                             <materialDesign:PackIcon Kind="Delete" HorizontalAlignment="Center"  VerticalAlignment="Center" ></materialDesign:PackIcon>
                                         </Button>
                                     </StackPanel>
+                                    </Grid>
                                     <Separator/>
                                 </StackPanel>
 
@@ -406,11 +424,12 @@
 
                             <DockPanel Grid.Row="2">
                                 <StackPanel DockPanel.Dock="Top" Margin="0 10 0 0" Orientation="Vertical">
+                                    <Grid>
+                                        
                                     <StackPanel Orientation="Horizontal">
                                         <materialDesign:PackIcon Kind="AccountCardDetails" HorizontalAlignment="Center"  VerticalAlignment="Center" Margin="10 0 10 0"></materialDesign:PackIcon>
                                         <TextBlock VerticalAlignment="Center" FontWeight="Bold">Registro de Documentos de Identificación</TextBlock>
                                     </StackPanel>
-                                    <Separator/>
                                     <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
                                         <Button Padding="0" x:Name="btnNewIdentificacion" Height="25" Width="30" Foreground="{StaticResource DarkGray}" Tag="{StaticResource Permiso_Guardar}"  Style="{StaticResource MaterialDesignFlatButton}" BorderBrush="Transparent" Click="btnNewIdentificacion_Click" ToolTip="Agregar una nueva forma de pago">
                                             <materialDesign:PackIcon Kind="Plus" HorizontalAlignment="Center"  VerticalAlignment="Center" ></materialDesign:PackIcon>
@@ -422,6 +441,7 @@
                                             <materialDesign:PackIcon Kind="Delete" HorizontalAlignment="Center"  VerticalAlignment="Center" ></materialDesign:PackIcon>
                                         </Button>
                                     </StackPanel>
+                                    </Grid>
                                     <Separator/>
                                 </StackPanel>
 
@@ -522,7 +542,149 @@
                         </Grid>
                     </DockPanel>
                 </TabItem>
+                <!--Parametrizacion Contable-->
+                <TabItem Header="{Binding ElementName=opcion5,Path=Content}">
+                    <DockPanel>
 
+                        <Grid >
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="3"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+                            <Grid Grid.Column="0">
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="*"/>
+                                    <RowDefinition Height="3"/>
+                                    <RowDefinition Height="200"/>
+
+                                </Grid.RowDefinitions>
+                                <DockPanel Grid.Row="0">
+                                    
+                                <StackPanel DockPanel.Dock="Top" Margin="0 10 0 0" Orientation="Vertical">
+                                    <Grid >
+                                        <StackPanel Orientation="Horizontal">
+                                            <materialDesign:PackIcon Kind="Counter" HorizontalAlignment="Center"  VerticalAlignment="Center" Margin="10 0 10 0"></materialDesign:PackIcon>
+                                            <TextBlock VerticalAlignment="Center" FontWeight="Bold">Movimientos Generadores de Partidas Contables</TextBlock>
+                                        </StackPanel>
+                                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
+
+                                            <Button Padding="0" x:Name="btnNewConta" Height="25" Width="30" Foreground="{StaticResource DarkGray}" Tag="{StaticResource Permiso_Guardar}"  Style="{StaticResource MaterialDesignFlatButton}" BorderBrush="Transparent" Click="btnNewFF_Click" ToolTip="Agregar una nueva tarjeta">
+                                                <materialDesign:PackIcon Kind="Plus" HorizontalAlignment="Center"  VerticalAlignment="Center" ></materialDesign:PackIcon>
+                                            </Button>
+                                            <Button Padding="0" x:Name="btnEditConta" Height="25" Width="30" Foreground="{StaticResource DarkGray}" Tag="{StaticResource Permiso_Editar}"  Style="{StaticResource MaterialDesignFlatButton}" BorderBrush="Transparent" Click="btnEditFF_Click" ToolTip="Editar la tarjeta seleccionada">
+                                                <materialDesign:PackIcon Kind="Pencil" HorizontalAlignment="Center"  VerticalAlignment="Center" ></materialDesign:PackIcon>
+                                            </Button>
+                                            <Button Padding="0" x:Name="btnDeleteConta" Height="25" Width="30" Foreground="{StaticResource DarkGray}" Tag="{StaticResource Permiso_Eliminar}"  Style="{StaticResource MaterialDesignFlatButton}" BorderBrush="Transparent" Click="btnDeleteFF_Click" ToolTip="Eliminar la tarjeta seleccionada">
+                                                <materialDesign:PackIcon Kind="Delete" HorizontalAlignment="Center"  VerticalAlignment="Center" ></materialDesign:PackIcon>
+                                            </Button>
+                                        </StackPanel>
+                                    </Grid>
+                                    <Separator/>
+                                </StackPanel>
+
+                                <DockPanel x:Name="panelGridMovimiento" VerticalAlignment="Stretch">
+                                    <ListView x:Name="lstMovimientos" SelectionMode="Single" SelectionChanged="LstMovimientos_SelectionChanged">
+                                        <ListView.View>
+                                            <GridView>
+                                                <GridViewColumn Width="auto" Header="Forma de Pago" DisplayMemberBinding="{Binding FormaPago.FormaPago1}"  />
+                                                <GridViewColumn Width="auto" Header="Moneda" DisplayMemberBinding="{Binding Moneda.Moneda1}" />
+                                                <GridViewColumn Width="auto" Header="Recinto" DisplayMemberBinding="{Binding Recinto}" />
+                                            </GridView>
+                                        </ListView.View>
+                                    </ListView>
+                                </DockPanel>
+                                </DockPanel>
+                                <DockPanel Grid.Row="2">
+
+                                    <StackPanel DockPanel.Dock="Top" Margin="0 10 0 0" Orientation="Vertical">
+                                        <Grid >
+                                            <StackPanel Orientation="Horizontal">
+                                                <materialDesign:PackIcon Kind="Counter" HorizontalAlignment="Center"  VerticalAlignment="Center" Margin="10 0 10 0"></materialDesign:PackIcon>
+                                                <TextBlock VerticalAlignment="Center" FontWeight="Bold">Contabilización de Variaciones cambiarias</TextBlock>
+                                            </StackPanel>
+                                            
+                                        </Grid>
+                                        <Separator/>
+                                    </StackPanel>
+
+                                    <DockPanel x:Name="panelGridVariaciones" VerticalAlignment="Stretch">
+                                        <DataGrid x:Name="tblVariaciones" CanUserDeleteRows="False" CanUserAddRows="False" AutoGenerateColumns="False" SelectionUnit="FullRow" SelectionMode="Single" >
+                                            <DataGrid.Columns>
+                                                <DataGridTemplateColumn CanUserResize="False" Width="50" Header="">
+                                                    <DataGridTemplateColumn.CellTemplate>
+                                                        <DataTemplate>
+                                                            <StackPanel>
+                                                                <Button x:Name="btnEditVariacion" Tag="{StaticResource Permiso_Editar}" Background="{StaticResource Delete_Button}" Height="20" Width="20" Style="{StaticResource MaterialDesignToolButton}" BorderBrush="Transparent" Click="BtnEditVariacion_Click">
+                                                                    <materialDesign:PackIcon Kind="Pencil" HorizontalAlignment="Center"  VerticalAlignment="Center" Margin="0 0 0 0"></materialDesign:PackIcon>
+                                                                </Button>
+                                                            </StackPanel>
+                                                        </DataTemplate>
+                                                    </DataGridTemplateColumn.CellTemplate>
+                                                </DataGridTemplateColumn>
+                                                <DataGridTextColumn Width="auto" Header="Codigo" Binding="{Binding CuentaContable1}" />
+                                                <DataGridTextColumn Width="auto" Header="Cuenta" Binding="{Binding Descripcion}" />
+                                                <DataGridTextColumn Width="auto" Header="Naturaleza" Binding="{Binding Tipo, Converter={StaticResource convertidor},ConverterParameter='Deudora;Acreedora'}" />
+                                                <DataGridTextColumn Width="auto" Header="Tipo" Binding="{Binding TipoCuenta.TipoCuenta1}" />
+                                            </DataGrid.Columns>
+                                        </DataGrid>
+                                    </DockPanel>
+                                </DockPanel>
+                            </Grid>
+
+                            <Separator Grid.Column="1">
+                                <Separator.LayoutTransform>
+                                    <RotateTransform Angle="90" />
+                                </Separator.LayoutTransform>
+                            </Separator>
+                            <DockPanel Grid.Column="2">
+
+                                <StackPanel DockPanel.Dock="Top" Margin="0 10 0 0" Orientation="Vertical">
+                                    <Grid >
+                                        <StackPanel Orientation="Horizontal">
+                                            <materialDesign:PackIcon Kind="Counter" HorizontalAlignment="Center"  VerticalAlignment="Center" Margin="10 0 10 0"></materialDesign:PackIcon>
+                                            <TextBlock VerticalAlignment="Center" FontWeight="Bold">
+                                                <TextBlock.Inlines>
+                                                    <Run>Parametrizacion de Movimientos Contables</Run>
+                                                    <Run Text="{Binding ElementName=lstMovimientos,Path=SelectedItem.FormaPago.FormaPago1}"></Run>
+                                                    <Run Text="{Binding ElementName=lstMovimientos,Path=SelectedItem.Moneda.Moneda1}"></Run>
+                                                    <Run Text="{Binding ElementName=lstMovimientos,Path=SelectedItem.Recinto}"></Run>
+                                                </TextBlock.Inlines>
+                                            </TextBlock>
+                                        </StackPanel>
+                                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
+
+                                            <Button Padding="0" x:Name="btnNewDetConta" Height="25" Width="30" Foreground="{StaticResource DarkGray}" Tag="{StaticResource Permiso_Guardar}"  Style="{StaticResource MaterialDesignFlatButton}" BorderBrush="Transparent" Click="btnNewFF_Click" ToolTip="Agregar una nueva tarjeta">
+                                                <materialDesign:PackIcon Kind="Plus" HorizontalAlignment="Center"  VerticalAlignment="Center" ></materialDesign:PackIcon>
+                                            </Button>
+                                            <Button Padding="0" x:Name="btnEditDetConta" Height="25" Width="30" Foreground="{StaticResource DarkGray}" Tag="{StaticResource Permiso_Editar}"  Style="{StaticResource MaterialDesignFlatButton}" BorderBrush="Transparent" Click="btnEditFF_Click" ToolTip="Editar la tarjeta seleccionada">
+                                                <materialDesign:PackIcon Kind="Pencil" HorizontalAlignment="Center"  VerticalAlignment="Center" ></materialDesign:PackIcon>
+                                            </Button>
+                                            <Button Padding="0" x:Name="btnDeleteDetConta" Height="25" Width="30" Foreground="{StaticResource DarkGray}" Tag="{StaticResource Permiso_Eliminar}"  Style="{StaticResource MaterialDesignFlatButton}" BorderBrush="Transparent" Click="btnDeleteFF_Click" ToolTip="Eliminar la tarjeta seleccionada">
+                                                <materialDesign:PackIcon Kind="Delete" HorizontalAlignment="Center"  VerticalAlignment="Center" ></materialDesign:PackIcon>
+                                            </Button>
+                                        </StackPanel>
+                                    </Grid>
+                                    <Separator/>
+                                </StackPanel>
+
+                                <DockPanel x:Name="panelGridDetalleMovimientos" VerticalAlignment="Stretch">
+                                    <ListView x:Name="lstDetalleMovimientos" SelectionMode="Single">
+                                        <ListView.View>
+                                            <GridView>
+                                                <GridViewColumn Width="auto" Header="Codigo" DisplayMemberBinding="{Binding CuentaContable.CuentaContable1}"  />
+                                                <GridViewColumn Width="250" Header="Cuenta" DisplayMemberBinding="{Binding CuentaContable.Descripcion}" />
+                                                <GridViewColumn Width="auto" Header="Afecta" DisplayMemberBinding="{Binding Naturaleza, Converter={StaticResource convertidor},ConverterParameter='Haber;Debe'}" />
+                                                <GridViewColumn Width="auto" Header="Base" DisplayMemberBinding="{Binding FactorPorcentual,StringFormat='{}{0:0.00%}'}" />
+                                                <GridViewColumn Width="150" Header="Tipo" DisplayMemberBinding="{Binding CuentaContable.TipoCuenta.TipoCuenta1}" />
+                                            </GridView>
+                                        </ListView.View>
+                                    </ListView>
+                                </DockPanel>
+                            </DockPanel>
+                        </Grid>
+                    </DockPanel>
+                </TabItem>
             </TabControl>
 
         </Grid>

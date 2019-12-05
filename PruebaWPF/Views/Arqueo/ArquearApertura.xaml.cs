@@ -29,6 +29,7 @@ namespace PruebaWPF.Views.Arqueo
         private BindingList<ArqueoEfectivoSon> efectivo;
         private List<FormaPago> formasPagoDocumentos;
         private ObservableCollection<ArqueoNoEfectivoSon> documentos;
+        private BindingList<DocumentosEfectivo> documentosNew;
         private System.Windows.Forms.BindingSource ArqueoEfectivoBindingSource = new System.Windows.Forms.BindingSource();
         private System.Windows.Forms.BindingSource DocumentosEfectivoBindingSource = new System.Windows.Forms.BindingSource();
         private List<Moneda> monedas;
@@ -37,6 +38,8 @@ namespace PruebaWPF.Views.Arqueo
         private DateTime? fecha = null;
         private clsValidateInput validate = new clsValidateInput();
         private List<fn_TotalesArqueo_Result> diferenciasTotales;
+        private int conteoDocEfectivo = 0;
+
         public ArquearApertura()
         {
             InitializeComponent();
@@ -161,7 +164,7 @@ namespace PruebaWPF.Views.Arqueo
             if (fecha == null)
             {
                 fecha = agregado.Fecha;
-                var tc = controller.FindTipoCambios(controller.ConvertToReciboSon(agregado)).Select(s => string.Format(" {0} -> C$ {1}", s.SimboloMoneda, s.Valor)); ;
+                var tc = controller.FindTipoCambios(agregado).Select(s => string.Format(" {0} -> C$ {1}", s.SimboloMoneda, s.Valor)); ;
 
 
                 txtTC.Text = string.Format("Fecha de Apertura= {0}, TC={1}", fecha.Value.ToString("dd/MM/yyyy"), string.Join(",", tc).ToString());
@@ -180,6 +183,7 @@ namespace PruebaWPF.Views.Arqueo
                 }
                 CargarRecibosContabilizados();
                 tabmaterial.Continue();
+                panelMensaje.Visibility = Visibility.Hidden;
             }
             catch (Exception ex)
             {
@@ -266,7 +270,12 @@ namespace PruebaWPF.Views.Arqueo
                     CargarDocumentosArqueados();
                 }
 
+                if (documentosNew == null)
+                {
+                    CargarDocumentosEfectivo();
+                }
                 tabmaterial.Continue();
+                panelErrorEfectivo.Visibility = Visibility.Hidden;
             }
             catch (Exception ex)
             {
@@ -316,7 +325,7 @@ namespace PruebaWPF.Views.Arqueo
         {
             if (efectivo == null)
             {
-                efectivo = new BindingList<ArqueoEfectivoSon>(controller.FindConteoEfectivo(apertura.IdDetAperturaCaja));
+                efectivo = new BindingList<ArqueoEfectivoSon>(controller.FindConteoEfectivo(apertura.IdDetAperturaCaja, true));
                 ArqueoEfectivoBindingSource.DataSource = efectivo;
 
                 tblEfectivo.ItemsSource = ArqueoEfectivoBindingSource;
@@ -346,6 +355,26 @@ namespace PruebaWPF.Views.Arqueo
             {
                 CalcularTotalesDocumento();
             }
+        }
+
+        private void CargarDocumentosEfectivo()
+        {
+            if (documentosNew == null)
+            {
+                documentosNew = new BindingList<DocumentosEfectivo>(controller.FindDocumentosEfectivo(apertura));
+                DocumentosEfectivoBindingSource.DataSource = documentosNew;
+
+                tblDocumentosEfectivo.ItemsSource = DocumentosEfectivoBindingSource;
+                documentosNew.ListChanged += new ListChangedEventHandler(Doc_CollectionChanged);
+
+                CalcularDocumentosNoConfirmados();
+            }
+        }
+
+        private void CalcularDocumentosNoConfirmados()
+        {
+            conteoDocEfectivo = documentosNew.Count(w => w.NoDocumento != null && w.NoDocumento != "");
+            panelConteoDocumentos.Text = "" + conteoDocEfectivo;
         }
 
         private void Documentos_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
@@ -391,6 +420,7 @@ namespace PruebaWPF.Views.Arqueo
                 CargarDocumentosArqueados();
                 TotalSaldoArqueo();
                 tabmaterial.Continue();
+                panelErrorDocumentos.Visibility = Visibility.Hidden;
             }
             catch (Exception ex)
             {
@@ -404,11 +434,11 @@ namespace PruebaWPF.Views.Arqueo
             throw new NotImplementedException();
         }
 
-        private void BtnDeletePay_Click(object sender, RoutedEventArgs e)
-        {
-            documentos.Remove((ArqueoNoEfectivoSon)tblDocumentosEfectivo.CurrentItem);
-            CalcularTotalesDocumento();
-        }
+        //private void BtnDeletePay_Click(object sender, RoutedEventArgs e)
+        //{
+        //    documentos.Remove((ArqueoNoEfectivoSon)tblDocumentosEfectivo.CurrentItem);
+        //    CalcularTotalesDocumento();
+        //}
 
         private void btnAdd_Click(object sender, RoutedEventArgs e)
         {
@@ -462,6 +492,7 @@ namespace PruebaWPF.Views.Arqueo
 
                 CalcularTotalesDocumento();
                 LimpiarCamposDocumento();
+                cboRecibo.Focus();
             }
             else
             {
@@ -620,10 +651,19 @@ namespace PruebaWPF.Views.Arqueo
 
             for (int i = 0; i < SumETotalArqueo.Count; i++)
             {
-                double diferencia = Math.Round(SumETotalArqueo[i].Monto - SumETotal[i].Monto,2);
+                double diferencia = 0;
+                if (SumETotal.Any())
+                {
+                    diferencia = Math.Round(SumETotalArqueo[i].Monto - SumETotal[i].Monto, 2);
+                }
+                else
+                {
+                    diferencia = Math.Round(SumETotalArqueo[i].Monto, 2);
+                }
+
                 if (diferencia != 0)
                 {
-                    lstDiferenciasEquivalente.Items.Add(string.Format("{0}, {1} {2}",diferencia < 0 ? "Faltante" : (diferencia == 0 ? "" : "Sobrante"), SumETotal[i].Moneda, string.Format("{0:N}", diferencia)));
+                    lstDiferenciasEquivalente.Items.Add(string.Format("{0}, {1} {2}", diferencia < 0 ? "Faltante" : (diferencia == 0 ? "" : "Sobrante"), (SumETotal.Any() ? SumETotal[i].Moneda : SumETotalArqueo[i].Moneda), string.Format("{0:N}", diferencia)));
                     diferenciasTotales.Add(new fn_TotalesArqueo_Result() { IdFormaPago = efectivo, IdMoneda = SumETotalArqueo[i].IdMoneda, IdMonedaDiferencia = SumETotalArqueo[i].IdMoneda, Diferencia = (decimal)diferencia });
                 }
 
@@ -664,13 +704,33 @@ namespace PruebaWPF.Views.Arqueo
 
         private bool ValidarCredencialesCajero()
         {
-            return true;
+            List<Usuario> cajerosPermitidos = recibos.Select(s => s.Usuario).Distinct().ToList();
+            LoginValidate login = new LoginValidate(cajerosPermitidos.Any() ? clsReferencias.ConfirmarCajeroEntrega : clsReferencias.ConfirmarCajero, cajerosPermitidos);
+            login.ShowDialog();
+            arqueo.CajeroEntrega = login.cajero;
+
+            return !string.IsNullOrEmpty(arqueo.CajeroEntrega);
         }
 
         private void InformeArqueo()
         {
             rptInforme cierre = new rptInforme(arqueo);
             cierre.ShowDialog();
+        }
+
+        private void BtnOkDocument_Click(object sender, RoutedEventArgs e)
+        {
+            //documentos.Remove((DocumentosEfectivo)tblDocumentosEfectivo.CurrentItem);
+            CalcularTotalesDocumento();
+        }
+
+        private void LstRecibos_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (lstRecibos.SelectedItem != null)
+            {
+                Recibo1 selected = (Recibo1)lstRecibos.SelectedItem;
+                lstFormasPago.ItemsSource = selected.ReciboPago;
+            }
         }
     }
 

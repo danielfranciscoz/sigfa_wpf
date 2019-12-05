@@ -19,6 +19,7 @@ namespace PruebaWPF.Model
         {
             this.ArqueoNoEfectivo = new HashSet<ArqueoNoEfectivo>();
             this.ArqueoRecibo = new HashSet<ArqueoRecibo>();
+            this.Asiento = new HashSet<Asiento>();
             this.ReciboDet = new HashSet<ReciboDet>();
             this.ReciboPago = new HashSet<ReciboPago>();
         }
@@ -39,6 +40,8 @@ namespace PruebaWPF.Model
         public virtual ICollection<ArqueoNoEfectivo> ArqueoNoEfectivo { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<ArqueoRecibo> ArqueoRecibo { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Asiento> Asiento { get; set; }
         public virtual FuenteFinanciamiento FuenteFinanciamiento { get; set; }
         public virtual Usuario Usuario { get; set; }
         public virtual OrdenPago OrdenPago { get; set; }
@@ -49,6 +52,7 @@ namespace PruebaWPF.Model
         public virtual ReciboDatos ReciboDatos { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<ReciboDet> ReciboDet { get; set; }
+        public virtual ReciboDiferencias ReciboDiferencias { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<ReciboPago> ReciboPago { get; set; }
         public virtual ReciboSIRA ReciboSIRA { get; set; }

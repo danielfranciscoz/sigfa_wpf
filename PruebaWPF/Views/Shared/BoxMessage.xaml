@@ -9,6 +9,7 @@
         xmlns:UserControl="clr-namespace:PruebaWPF.UserControls"
         mc:Ignorable="d" 
         AllowsTransparency="True"
+        Topmost="True"
         WindowStyle="None"
         Title="Información"
         WindowStartupLocation="CenterScreen" Width="Auto" Height="Auto">

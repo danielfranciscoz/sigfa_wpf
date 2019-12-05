@@ -1,19 +1,26 @@
 ﻿using PruebaWPF.Helper;
 using PruebaWPF.Model;
-using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace PruebaWPF.ViewModel
 {
     class SecurityViewModel
     {
-        private SIFOPEntities db = new SIFOPEntities();
+        private SIFOPEntities db;
 
-        public SecurityViewModel()
+     
+        public SecurityViewModel(SIFOPEntities db) {
+            this.db = db;
+        }
+
+        public IQueryable<UsuarioPerfil> perfiles() {
+            return db.UsuarioPerfil.Where(w => (w.Login == clsSessionHelper.usuario.Login || w.Usuario.LoginEmail == clsSessionHelper.usuario.Login) && w.Perfil.isWeb == false && w.RegAnulado == false && w.Usuario.RegAnulado == false && w.Perfil.RegAnulado == false);
+        }
+
+        public List<UsuarioPerfil> perfilesUser()
         {
+            return perfiles().ToList();
         }
 
         /// <summary>
@@ -24,15 +31,16 @@ namespace PruebaWPF.ViewModel
         /// <returns></returns>
         public List<vw_RecintosRH> RecintosPermiso(Pantalla p, string PermisoName)
         {
+            IQueryable<UsuarioPerfil> querable = perfiles();
 
-            var permisos = db.Permiso.ToList().Where(w =>
+            IQueryable<Permiso> permisos = db.Permiso.Where(w =>
                 w.IdPantalla == p.IdPantalla &&
                 w.PermisoName.Nombre.Equals(PermisoName) &&
-                clsSessionHelper.perfiles.Any(a => a.IdPerfil == w.IdPerfil && a.IdRecinto == w.IdRecinto)
-               ).Select(s => s.IdRecinto);
+                querable.Any(a => a.IdPerfil == w.IdPerfil && a.IdRecinto == w.IdRecinto)
+               );
 
 
-            return clsSessionHelper.recintosMemory.Where(w => permisos.Any(a => w.IdRecinto == a)).ToList();
+            return db.vw_RecintosRH.Where(w => permisos.Any(a => w.IdRecinto == a.IdRecinto)).ToList();
         }
 
         /// <summary>
@@ -40,18 +48,19 @@ namespace PruebaWPF.ViewModel
         /// </summary>
         /// <param name="p"></param>
         /// <returns></returns>
-        public List<vw_RecintosRH> RecintosPermiso(Pantalla p)
+        public IQueryable<vw_RecintosRH> RecintosPermiso(Pantalla p)
         {
+            IQueryable<UsuarioPerfil> querable = perfiles();
 
-            var permisos = db.Permiso.ToList().Where(w =>
+            IQueryable<Permiso> permisos = db.Permiso.Where(w =>
                 w.IdPantalla == p.IdPantalla &&
                 w.IdPermisoName == 1 &&
-                clsSessionHelper.perfiles.Any(a => a.IdPerfil == w.IdPerfil && a.IdRecinto == w.IdRecinto)
-            ).Select(s => s.IdRecinto);
+                querable.Any(a => a.IdPerfil == w.IdPerfil && a.IdRecinto == w.IdRecinto)
+            );
 
             //var Ids = clsSessionHelper.perfiles.Select(s => s.IdRecinto).Intersect(permisos);
 
-            return clsSessionHelper.recintosMemory.Where(w => permisos.Any(a => w.IdRecinto == a)).ToList();
+            return db.vw_RecintosRH.Where(w => permisos.Any(a => w.IdRecinto == a.IdRecinto));
         }
 
         /// <summary>
@@ -63,15 +72,14 @@ namespace PruebaWPF.ViewModel
         /// <returns>True si se encuentra autorizado para realizar la acción, False en caso contrario</returns>
         public bool Authorize(Pantalla p, string PermisoName, int IdRecinto)
         {
+            IQueryable<UsuarioPerfil> querable = perfiles();
 
-            var permisos = db.Permiso.ToList().Where(w =>
+            IQueryable<Permiso> permisos = db.Permiso.Where(w =>
                     w.IdPantalla == p.IdPantalla &&
                     w.PermisoName.Nombre.Equals(PermisoName) &&
                     w.IdRecinto == IdRecinto &&
-                    clsSessionHelper.perfiles.Any(a => a.IdPerfil == w.IdPerfil && a.IdRecinto == w.IdRecinto)
-                ).Select(s => s.IdPerfil);
-
-
+                    querable.Any(a => a.IdPerfil == w.IdPerfil && a.IdRecinto == w.IdRecinto)
+                );
 
             return permisos.Any() ? true : false;
         }
@@ -86,12 +94,13 @@ namespace PruebaWPF.ViewModel
         /// <returns>True si se encuentra autorizado para realizar la acción, False en caso contrario</returns>
         public bool Authorize(Pantalla p, string PermisoName)
         {
+            IQueryable<UsuarioPerfil> querable = perfiles();
 
-            var permisos = db.Permiso.ToList().Where(w =>
+            IQueryable<Permiso> permisos = db.Permiso.Where(w =>
                 w.IdPantalla == p.IdPantalla &&
                 w.PermisoName.Nombre.Equals(PermisoName) &&
-                clsSessionHelper.perfiles.Any(a => a.IdPerfil == w.IdPerfil && a.IdRecinto == w.IdRecinto)
-            ).Select(s => s.IdPerfil);
+                querable.Any(a => a.IdPerfil == w.IdPerfil && a.IdRecinto == w.IdRecinto)
+            );
 
             return permisos.Any() ? true : false;
         }

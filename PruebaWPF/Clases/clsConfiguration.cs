@@ -57,8 +57,10 @@ namespace PruebaWPF.Clases
             Perfil_Cajero,
             Saldo_Inicial_Cajas,
             IdAgenteExterno,
-            Id_Efectivo
-
+            Id_Efectivo,
+            Moneda_Nacional,
+            Variacion_Positiva,
+            Variacion_Negativa
         };
 
         public void Save()

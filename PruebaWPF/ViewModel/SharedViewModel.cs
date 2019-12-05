@@ -13,12 +13,17 @@ namespace PruebaWPF.ViewModel
 
         public List<vw_Areas> ObtenerAreasRH(int idtipoArancel)
         {
-            var areas = db.ArancelArea.Where(w => w.regAnulado == false && w.Arancel.IdTipoArancel == idtipoArancel && w.Arancel.regAnulado == false).ToList();
-            return ObtenerAreasRH().Where(w => areas.Any(a => a.IdArea == w.codigo)).ToList();
+            var areas = db.ArancelArea.Where(w => w.regAnulado == false && w.Arancel.IdTipoArancel == idtipoArancel && w.Arancel.regAnulado == false);
+            return ObtenerAreas().Where(w => areas.Any(a => a.IdArea == w.codigo)).ToList();
         }
+        private IQueryable<vw_Areas> ObtenerAreas()
+        {
+            return db.vw_Areas.Where(w => w.estado.Equals("A")).OrderBy(a => a.codigo).OrderBy(a => a.codigo);
+        }
+
         public List<vw_Areas> ObtenerAreasRH()
         {
-            return clsSessionHelper.areasMemory.Where(w => w.estado.Equals("A")).OrderBy(a => a.codigo).ToList();
+            return ObtenerAreas().ToList();
         }
 
         public List<vw_Areas> FindAreaByText(string text)
@@ -26,9 +31,9 @@ namespace PruebaWPF.ViewModel
             if (!text.Equals(""))
             {
                 string[] busqueda = text.Trim().Split(' ');
-                return clsSessionHelper.areasMemory.Where(
+                return ObtenerAreasRH().Where(
                        w => busqueda.All(a => w.nombre.Contains(a) || w.codigo.Contains(text))
-                       && w.estado.Equals("A")).OrderBy(a => a.codigo).ToList();
+                       ).ToList();
             }
             else
             {

@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace PruebaWPF.Referencias
+﻿namespace PruebaWPF.Referencias
 {
     class clsReferencias
     {
@@ -18,6 +12,11 @@ namespace PruebaWPF.Referencias
         public const string Pendiente = "Pendiente";
         public const string Finalizado = "Finalizado";
         public const string EnProceso = "En proceso...";
+
+
+        //Naturaleza de cuenta contable
+        public const bool Debe = false;
+        public const bool Haber = true;
 
         //Tipos de mensaje
         public const int TYPE_MESSAGE_Exito = 0;
@@ -44,16 +43,23 @@ namespace PruebaWPF.Referencias
         public const string MESSAGE_Cero_Registro_Table = "Para poder continuar debe agregar al menos un registro a la tabla.";
 
         public const string MESSAGE_Cero_Search = "No hemos encontrado resultados para sus criterios de búsqueda.";
-        
+
         public const string MESSAGE_Confirm_Delete = "Esta a punto de eliminar un registro de la base de datos, este proceso es irreversible, ¿Realmente desea continuar?";
 
         public const string MESSAGE_Total_Menor_Cero = "No pueden existir montos menores a cero, por favor revise la información.";
 
         public const string MESSAGE_Error_Title = "Ocurrió un error inesperado.";
 
+        public const string MESSAGE_Wrong_User = "Usuario o contraseña incorrecta.";
+        public const string MESSAGE_User_NoAccess = "El usuario no posee accesos al sistema.";
+        public const string MESSAGE_CajeroNoAutorizado = "Las credenciales proporcionadas no se corresponde con las del cajero que emitió recibos en esta caja, por favor verifique su información e intente nuevamente.";
+
+
         //Mensaje de validaciones
         public const string SinFecha = "Debe seleccionar o digitar una fecha.";
         public const string NumeroMal = "Se detectó un error de escritura, por favor corrija la cantida escrita para poder continuar.";
+        public const string ConfirmarCajeroEntrega = "Por motivos de seguridad, es necesario que el cajero ingrese sus credenciales para confirmar su participación en el arqueo, cabe destacar que solo aceptaremos credenciales del cajero que haya generado los recibos en esta caja desde que fue aperturada hasta que fue cerrada.";
+        public const string ConfirmarCajero = "Por motivos de seguridad, es necesario que un cajero ingrese sus credenciales para confirmar su participación en el arqueo.";
 
         public enum Informes
         {

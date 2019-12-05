@@ -12,17 +12,18 @@ namespace PruebaWPF.Model
     using System;
     using System.Collections.Generic;
     
-    public partial class VariacionCambiaria
+    public partial class ArqueoDocumento
     {
-        public int IdVariacionCambiaria { get; set; }
-        public int IdMoneda { get; set; }
-        public System.DateTime Fecha { get; set; }
-        public decimal Valor { get; set; }
-        public string LoginCreacion { get; set; }
-        public bool RegAnulado { get; set; }
-        public Nullable<System.DateTime> FechaCreacion { get; set; }
+        public int IdArqueoDocumento { get; set; }
+        public int IdArqueo { get; set; }
+        public int IdReciboPago { get; set; }
+        public bool isOk { get; set; }
+        public string Observacion { get; set; }
+        public System.DateTime FechaCreacion { get; set; }
+        public string UsuarioCreacion { get; set; }
     
-        public virtual Moneda Moneda { get; set; }
+        public virtual Arqueo Arqueo { get; set; }
+        public virtual ReciboPago ReciboPago { get; set; }
         public virtual Usuario Usuario { get; set; }
     }
 }

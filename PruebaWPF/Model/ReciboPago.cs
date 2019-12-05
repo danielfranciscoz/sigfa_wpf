@@ -17,6 +17,7 @@ namespace PruebaWPF.Model
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public ReciboPago()
         {
+            this.ArqueoDocumento = new HashSet<ArqueoDocumento>();
             this.ArqueoNoEfectivo = new HashSet<ArqueoNoEfectivo>();
         }
     
@@ -30,6 +31,8 @@ namespace PruebaWPF.Model
         public string UsuarioCreacion { get; set; }
         public bool regAnulado { get; set; }
     
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<ArqueoDocumento> ArqueoDocumento { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<ArqueoNoEfectivo> ArqueoNoEfectivo { get; set; }
         public virtual Moneda Moneda { get; set; }

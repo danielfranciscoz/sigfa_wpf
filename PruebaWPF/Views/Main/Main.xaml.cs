@@ -154,12 +154,9 @@ namespace PruebaWPF.Views.Main
             try
             {
                 String perfil = "";
+                List<UsuarioPerfil> perfiles = controller.FindPerfiles();
 
-                foreach (Perfil up in clsSessionHelper.perfiles.Select(s => s.Perfil).Distinct())
-                {
-                    perfil = perfil.Equals("") ? up.Perfil1 : perfil + "," + up.Perfil1;
-
-                }
+                perfil = string.Join(",", perfiles.Select(s => s.Perfil.Perfil1));
 
                 lblPerfil.ToolTip = perfil;
 

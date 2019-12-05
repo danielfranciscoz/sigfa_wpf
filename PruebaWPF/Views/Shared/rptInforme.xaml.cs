@@ -65,9 +65,11 @@ namespace PruebaWPF.Views.Shared
         {
             ArqueoViewModel controller = new ArqueoViewModel();
             List<Model.Arqueo> arqueoFinalizado = new List<Model.Arqueo>();
-            List<ArqueoEfectivoSon> efectivo = controller.FindConteoEfectivo(arqueo.IdArqueoDetApertura);
+            List<ArqueoEfectivoSon> efectivo = controller.FindConteoEfectivo(arqueo.IdArqueoDetApertura, false);
             List<fn_TotalesArqueo_Result>[] recibido = controller.SaldoTotalArqueo(arqueo.DetAperturaCaja);
             List<ArqueoNoEfectivoSon> DocumentosArqueados = controller.FindDocumentosArqueados(arqueo.IdArqueoDetApertura);
+
+
             List<VariacionCambiariaSon> variacionCambiarias = controller.FindTipoCambios(arqueo.IdArqueoDetApertura);
             List<ArqueoNoEfectivoSon> documentosNoEnlazados = controller.FindDocumentosNoEnlazados(arqueo.IdArqueoDetApertura);
             List<DiferenciasArqueo> diferenciasArqueo = controller.DiferenciasArqueo(arqueo.IdArqueoDetApertura);

@@ -17,6 +17,8 @@ namespace PruebaWPF.Model
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public CuentaContable()
         {
+            this.Asiento = new HashSet<Asiento>();
+            this.DetalleMovimientoIngreso = new HashSet<DetalleMovimientoIngreso>();
             this.BalanzaComprobacion = new HashSet<BalanzaComprobacion>();
             this.ConceptoDetalle = new HashSet<ConceptoDetalle>();
             this.ConciliacionBanco = new HashSet<ConciliacionBanco>();
@@ -54,6 +56,10 @@ namespace PruebaWPF.Model
         public string LoginCreacion { get; set; }
         public bool RegAnulado { get; set; }
     
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Asiento> Asiento { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<DetalleMovimientoIngreso> DetalleMovimientoIngreso { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<BalanzaComprobacion> BalanzaComprobacion { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]

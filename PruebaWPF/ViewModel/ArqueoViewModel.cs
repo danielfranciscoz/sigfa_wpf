@@ -19,7 +19,7 @@ namespace PruebaWPF.ViewModel
 
         public ArqueoViewModel(Pantalla pantalla)
         {
-            seguridad = new SecurityViewModel();
+            seguridad = new SecurityViewModel(db);
             this.pantalla = pantalla;
         }
 
@@ -159,18 +159,18 @@ namespace PruebaWPF.ViewModel
 
         public List<Recibo1> FindRecibosContabilizados(Arqueo arqueo)
         {
-            return db.ArqueoRecibo.Where(w => w.IdArqueo == arqueo.IdArqueoDetApertura).Select(s => s.Recibo1).ToList();
+            return db.ArqueoRecibo.Where(w => w.IdArqueo == arqueo.IdArqueoDetApertura).Select(s => s.Recibo1).OrderBy(o => o.Serie).ThenBy(t => t.IdRecibo).ToList();
         }
         #endregion
 
         #region Paso 3, conteo de efectivo
 
-        public List<ArqueoEfectivoSon> FindConteoEfectivo(int IdDetApertura)
+        public List<ArqueoEfectivoSon> FindConteoEfectivo(int IdDetApertura, bool isArqueo)
         {
             List<ArqueoEfectivoSon> resultados = (from denominacion in db.DenominacionMoneda
                                                   join efectivo in db.ArqueoEfectivo on new { moneda = denominacion.Moneda, denominacion = denominacion.Denominacion, IdArqueo = IdDetApertura } equals new { moneda = efectivo.IdMoneda, denominacion = efectivo.Denominacion, efectivo.IdArqueo } into joinTable
                                                   from joinRecord in joinTable.DefaultIfEmpty()
-
+                                                  where (joinRecord.Cantidad != null && isArqueo == false) || isArqueo
                                                   select new ArqueoEfectivoSon()
                                                   {
                                                       IdArqueoEfectivo = joinRecord.IdArqueoEfectivo,
@@ -182,7 +182,15 @@ namespace PruebaWPF.ViewModel
 
                                                   ).ToList();
 
-            return resultados;
+            if (resultados.All(a => a.Total == null) && !isArqueo)
+            {
+                return new List<ArqueoEfectivoSon>();
+            }
+            else
+            {
+                return resultados;
+            }
+
         }
 
         public void GuardarEfectivo(List<ArqueoEfectivoSon> efectivo, Arqueo arqueo)
@@ -250,6 +258,25 @@ namespace PruebaWPF.ViewModel
         public List<Moneda> FindMonedas()
         {
             return db.Moneda.Where(w => w.regAnulado == false).ToList();
+        }
+
+        public List<DocumentosEfectivo> FindDocumentosEfectivo(DetAperturaCaja apertura)
+        {
+            List<ReciboPago> pagos = db.ReciboPago.Where(w => w.Recibo1.IdDetAperturaCaja == apertura.IdDetAperturaCaja).ToList();
+
+            List<DocumentosEfectivo> bonos = pagos.Where(w => w.ReciboPagoBono != null)
+                .Select(s => new DocumentosEfectivo { IdRecibo = s.IdRecibo, Serie = s.Serie, IdReciboPago = s.IdReciboPago, FormaPago = s.FormaPago, Moneda = s.Moneda, Monto = s.Monto, NoDocumento = s.ReciboPagoBono.Numero, Informacion = "No.Bono" }).ToList();
+
+            List<DocumentosEfectivo> cheque = pagos.Where(w => w.ReciboPagoCheque != null)
+                .Select(s => new DocumentosEfectivo { IdRecibo = s.IdRecibo, Serie = s.Serie, IdReciboPago = s.IdReciboPago, FormaPago = s.FormaPago, Moneda = s.Moneda, Monto = s.Monto, NoDocumento = s.ReciboPagoCheque.NumeroCK.ToString(), Informacion = "No.Cheque" }).ToList();
+
+            List<DocumentosEfectivo> deposito = pagos.Where(w => w.ReciboPagoDeposito != null)
+                .Select(s => new DocumentosEfectivo { IdRecibo = s.IdRecibo, Serie = s.Serie, IdReciboPago = s.IdReciboPago, FormaPago = s.FormaPago, Moneda = s.Moneda, Monto = s.Monto, NoDocumento = s.ReciboPagoDeposito.Transaccion, Informacion = "No.Transacción" }).ToList();
+
+            List<DocumentosEfectivo> tarjeta = pagos.Where(w => w.ReciboPagoTarjeta != null)
+                .Select(s => new DocumentosEfectivo { IdRecibo = s.IdRecibo, Serie = s.Serie, IdReciboPago = s.IdReciboPago, FormaPago = s.FormaPago, Moneda = s.Moneda, Monto = s.Monto, NoDocumento = s.ReciboPagoTarjeta.Autorizacion.ToString(), Informacion = "No.Autorización" }).ToList();
+
+            return bonos.Union(cheque).Union(deposito).Union(tarjeta).OrderBy(o => o.Recibo).ToList();
         }
 
         public List<ArqueoNoEfectivoSon> FindDocumentosArqueados(int IdArqueoDetApertura)
@@ -438,6 +465,11 @@ namespace PruebaWPF.ViewModel
             }
 
         }
+
+        public void ValidarCajeroEntrega(String usuario, String password)
+        {
+
+        }
         #endregion
 
         #region Informe de Arqueo
@@ -449,20 +481,40 @@ namespace PruebaWPF.ViewModel
 
         public ReciboSon ConvertToReciboSon(Recibo1 recibo)
         {
-            return new ReciboSon() { IdRecibo = recibo.IdRecibo, Serie = recibo.Serie, Fecha = recibo.Fecha, IdOrdenPago = recibo.IdOrdenPago, ReciboPago = recibo.ReciboPago };
+            if (recibo != null)
+            {
+                return new ReciboSon() { IdRecibo = recibo.IdRecibo, Serie = recibo.Serie, Fecha = recibo.Fecha, IdOrdenPago = recibo.IdOrdenPago, ReciboPago = recibo.ReciboPago };
+
+            }
+            else
+            {
+                return new ReciboSon();
+            }
         }
 
         public List<VariacionCambiariaSon> FindTipoCambios(int IdArqueo)
         {
-            Recibo1 recibo = db.ArqueoRecibo.FirstOrDefault(f => f.IdArqueo == IdArqueo).Recibo1;
 
-            ReciboSon agregado = ConvertToReciboSon(recibo);
+            Recibo1 recibo = db.ArqueoRecibo.FirstOrDefault(f => f.IdArqueo == IdArqueo)?.Recibo1;
 
-            return FindTipoCambios(agregado);
+            if (recibo != null)
+            {
+                return FindTipoCambios(recibo.Fecha);
+            }
+            else
+            {
+                return new List<VariacionCambiariaSon>();
+            }
+
         }
-        public List<VariacionCambiariaSon> FindTipoCambios(ReciboSon agregado)
+
+        public List<VariacionCambiariaSon> FindTipoCambios(Recibo1 agregado)
         {
-            return new ReciboViewModel().FindTipoCambio(agregado, null);
+            return new ReciboViewModel().FindTipoCambio(ConvertToReciboSon(agregado), null);
+        }
+        public List<VariacionCambiariaSon> FindTipoCambios(DateTime fecha)
+        {
+            return new ReciboViewModel().FindTipoCambio(fecha);
         }
 
         public Arqueo FindById(int Id)
@@ -506,10 +558,47 @@ namespace PruebaWPF.ViewModel
     {
 
         public string Recibo => string.Format("{0}-{1}", IdRecibo, Serie);
-        public string ComentarioSistema => (IdReciboPago == null) ? "El documento no ha sido encontrado, este registro se incluirá como una observación en el informe" : "";
+        public string ComentarioSistema => (IdReciboPago == null) ? "" : "Validado fisicamente";
         public String Origen => IdArqueo == 0 ? "Recibo" : "Arqueo";
         public string Documento => FormaPago.FormaPago1;
         public string SimboloMoneda => Moneda.Simbolo;
+    }
+
+    public class DocumentosEfectivo : ReciboPago, INotifyPropertyChanged
+    {
+        public int IdArqueoNoEfectivo { get; set; }
+        public string Recibo => string.Format("{0}-{1}", IdRecibo, Serie);
+        public string NoDocumento { get; set; }
+        public string Informacion { get; set; }
+        private string observacion { get; set; }
+        private bool isOkDocument { get; set; }
+
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        private void NotifyPropertyChanged([CallerMemberName] String propertyName = "")
+        {
+            if (PropertyChanged != null)
+            {
+                PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+            }
+        }
+
+        public string Observacion
+        {
+            get
+            {
+                return observacion;
+            }
+            set
+            {
+                if (value != observacion)
+                {
+                    observacion = value;
+                    NotifyPropertyChanged();
+                }
+            }
+        }
+
     }
 
     public class ArqueoEfectivoSon : ArqueoEfectivo, INotifyPropertyChanged

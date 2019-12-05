@@ -1,39 +1,42 @@
-﻿using PruebaWPF.Helper;
-using PruebaWPF.Interface;
+﻿
+using PruebaWPF.Helper;
 using PruebaWPF.Model;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace PruebaWPF.ViewModel
 {
     class AccountViewModel
     {
-        private SIFOPEntities db = new SIFOPEntities();
-
-        public AccountViewModel() { }
+        private SIFOPEntities db;
+        private SecurityViewModel sec;
+        public AccountViewModel()
+        {
+            db = new SIFOPEntities();
+            sec = new SecurityViewModel(db);
+        }
 
         public List<Pantalla> ObtenerMenu()
         {
-            List<Perfil> perfiles = clsSessionHelper.perfiles.Select(s => s.Perfil).ToList();
-            List<Permiso> permisos = db.Permiso.ToList().Where(w => perfiles.Any(a => a.IdPerfil == w.IdPerfil) && w.Pantalla.isMenu && w.IdPermisoName == 1 && w.Pantalla.isWeb == false && w.Pantalla.regAnulado == false).ToList();
+            IQueryable<UsuarioPerfil> querable = sec.perfiles();
+            IQueryable<Permiso> permisos = db.Permiso.Where(w => querable.Any(a => a.IdPerfil == w.IdPerfil) && w.Pantalla.isMenu && w.IdPermisoName == 1 && w.Pantalla.isWeb == false && w.Pantalla.regAnulado == false);
 
-            List<Pantalla> hijos = permisos.Where(w => w.Pantalla.Uid != null).Select(s => s.Pantalla).Distinct().OrderBy(o=>o.Orden).ToList();
-            List<Pantalla> padres = FindPadres(hijos);
+            IQueryable<Pantalla> hijos = permisos.Where(w => w.Pantalla.Uid != null).Select(s => s.Pantalla).Distinct().OrderBy(o => o.Orden);
+            IQueryable<Pantalla> padres = FindPadres(hijos);
 
-            return padres;
+            return padres.ToList();
         }
 
         public List<AccesoDirectoUsuarioSon> AccesosDirectoUsuario()
         {
-            List<Perfil> perfiles = clsSessionHelper.perfiles.Select(s => s.Perfil).ToList();
-            List<Permiso> permisos = db.Permiso.ToList().Where(w => perfiles.Any(a => a.IdPerfil == w.IdPerfil) && w.IdPermisoName == 1 && w.Pantalla.isWeb == false && w.Pantalla.regAnulado == false).ToList();
-            List<Pantalla> hijos = permisos.Where(w => w.Pantalla.Uid != null).Select(s => s.Pantalla).Distinct().ToList();
+            IQueryable<UsuarioPerfil> querable = sec.perfiles();
 
-            List<AccesoDirectoUsuario> user = db.AccesoDirectoUsuario.Where(w => w.IdUsuario == clsSessionHelper.usuario.Login).ToList();
-            List<AccesoDirectoUsuarioSon> accesos =
+            IQueryable<Permiso> permisos = db.Permiso.Where(w => querable.Any(a => a.IdPerfil == w.IdPerfil) && w.IdPermisoName == 1 && w.Pantalla.isWeb == false && w.Pantalla.regAnulado == false);
+            IQueryable<Pantalla> hijos = permisos.Where(w => w.Pantalla.Uid != null).Select(s => s.Pantalla).Distinct();
+
+            IQueryable<AccesoDirectoUsuario> user = db.AccesoDirectoUsuario.Where(w => w.IdUsuario == clsSessionHelper.usuario.Login);
+            IQueryable<AccesoDirectoUsuarioSon> accesos =
 
                 hijos.Select(s => new AccesoDirectoUsuarioSon
                 {
@@ -41,20 +44,20 @@ namespace PruebaWPF.ViewModel
                     hasAD = user.Any(a => a.IdPantalla == s.IdPantalla),
                     Pantalla = s,
                     BackgroundCard = user.Where(a => a.IdPantalla == s.IdPantalla).Select(s1 => s1.BackgroundCard).FirstOrDefault()
-                }).ToList();
+                });
 
-            return accesos;
+            return accesos.ToList();
         }
 
-        private List<Pantalla> FindPadres(List<Pantalla> hijos)
+        private IQueryable<Pantalla> FindPadres(IQueryable<Pantalla> hijos)
         {
-            List<Pantalla> padre = db.Pantalla.Where(w => w.regAnulado == false).OrderBy(o => o.Orden).ToList().Where(w => hijos.Any(a => a.IdPadre == w.IdPantalla)).ToList();
+            IQueryable<Pantalla> padre = db.Pantalla.Where(w => w.regAnulado == false).OrderBy(o => o.Orden).Where(w => hijos.Any(a => a.IdPadre == w.IdPantalla));
 
-            if (padre.Where(w => w.IdPadre != null).Count() > 0)
+            if (padre.Any(w => w.IdPadre != null))
             {
-                padre = FindPadres(padre).ToList();
+                padre = FindPadres(padre);
             }
-            return hijos.Union(padre).ToList();
+            return hijos.Union(padre);
         }
 
         public String ObtenerTipoCambio()
@@ -64,14 +67,16 @@ namespace PruebaWPF.ViewModel
 
         public List<Pantalla> ObtenerAccesoDirectoPerfil()
         {
+            IQueryable<UsuarioPerfil> querable = sec.perfiles();
             //Primero obtengo todo en una lista porque la lista de perfiles se encuentra cargada en memoria y se genera un error de InvalidCastException al intentar realizar el where
-            return db.AccesoDirectoPerfil.ToList().Where(w => clsSessionHelper.perfiles.Any(a => w.IdPerfil == a.IdPerfil) && w.Pantalla.regAnulado == false).Select(s => s.Pantalla).Distinct().ToList();
+            return db.AccesoDirectoPerfil.Where(w => querable.Any(a => w.IdPerfil == a.IdPerfil) && w.Pantalla.regAnulado == false).Select(s => s.Pantalla).Distinct().ToList();
         }
 
         public List<AccesoDirectoUsuario> ObtenerAccesoDirectoUsuario()
         {
-            List<Pantalla> pantallasAcceso = db.Permiso.ToList().Where(w => clsSessionHelper.perfiles.Any(a => a.IdPerfil == w.IdPerfil) && w.Pantalla.isMenu && w.IdPermisoName == 1 && w.Pantalla.isWeb == false && w.Pantalla.regAnulado == false).Select(s => s.Pantalla).Distinct().ToList();
-            return db.AccesoDirectoUsuario.ToList().Where(w => w.IdUsuario == clsSessionHelper.usuario.Login && pantallasAcceso.Exists(e => e.IdPantalla == w.IdPantalla)).ToList();
+            IQueryable<UsuarioPerfil> querable = sec.perfiles();
+            IQueryable<Pantalla> pantallasAcceso = db.Permiso.Where(w => querable.Any(a => a.IdPerfil == w.IdPerfil) && w.Pantalla.isMenu && w.IdPermisoName == 1 && w.Pantalla.isWeb == false && w.Pantalla.regAnulado == false).Select(s => s.Pantalla).Distinct();
+            return db.AccesoDirectoUsuario.Where(w => w.IdUsuario == clsSessionHelper.usuario.Login && pantallasAcceso.Any(e => e.IdPantalla == w.IdPantalla)).ToList();
         }
 
         public string SaveAccesosDirectos(List<AccesoDirectoUsuarioSon> accesos)
@@ -133,7 +138,10 @@ namespace PruebaWPF.ViewModel
             return string.Format("Elementos agregados {0} \nElementos Modificados {1} \nElementos removidos {2}", agregados, editados, eliminados);
         }
 
-
+        internal List<UsuarioPerfil> FindPerfiles()
+        {
+            return new SecurityViewModel(db).perfilesUser();
+        }
     }
 
     class AccesoDirectoUsuarioSon : AccesoDirectoUsuario

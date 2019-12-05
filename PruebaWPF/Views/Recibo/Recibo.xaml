@@ -201,8 +201,8 @@
 
             <DockPanel Grid.Row="2" DockPanel.Dock="Bottom" HorizontalAlignment="Right">
                 <TextBlock FontWeight="Bold">Cantidad de registros:</TextBlock>
-                <TextBlock FontWeight="Bold" Margin="5 0 20 0" Name="lblCantidadRegitros"> 0</TextBlock>
-            </DockPanel>
+                <TextBlock FontWeight="Bold" Margin="5 0 20 0" Name="lblCantidadRegitros" Text="{Binding ElementName=tblRecibo,Path=Items.Count}"></TextBlock>
+                </DockPanel>
         </Grid>
 
 

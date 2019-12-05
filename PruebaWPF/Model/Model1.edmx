@@ -4,7 +4,7 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-      <Schema Namespace="SIFOPModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+    <Schema Namespace="SIFOPModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <EntityType Name="Arqueo">
           <Key>
             <PropertyRef Name="IdArqueoDetApertura" />
@@ -16,6 +16,18 @@
           <Property Name="Observaciones" Type="varchar(max)" />
           <Property Name="CajeroEntrega" Type="nvarchar" MaxLength="20" />
           <Property Name="isFinalizado" Type="bit" Nullable="false" />
+        </EntityType>
+        <EntityType Name="ArqueoDocumento">
+          <Key>
+            <PropertyRef Name="IdArqueoDocumento" />
+          </Key>
+          <Property Name="IdArqueoDocumento" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="IdArqueo" Type="int" Nullable="false" />
+          <Property Name="IdReciboPago" Type="int" Nullable="false" />
+          <Property Name="isOk" Type="bit" Nullable="false" />
+          <Property Name="Observacion" Type="varchar" MaxLength="200" />
+          <Property Name="FechaCreacion" Type="datetime" Nullable="false" />
+          <Property Name="UsuarioCreacion" Type="nvarchar" MaxLength="20" Nullable="false" />
         </EntityType>
         <EntityType Name="ArqueoEfectivo">
           <Key>
@@ -173,6 +185,16 @@
           <Property Name="FechaCreacion" Type="datetime" Nullable="false" />
           <Property Name="regAnulado" Type="bit" Nullable="false" />
         </EntityType>
+        <EntityType Name="AreaEquivalencia">
+          <Key>
+            <PropertyRef Name="IdAreaFinanzas" />
+            <PropertyRef Name="IdAreaRRHH" />
+          </Key>
+          <Property Name="IdAreaFinanzas" Type="int" Nullable="false" />
+          <Property Name="IdAreaRRHH" Type="varchar" MaxLength="3" Nullable="false" />
+          <Property Name="FechaCreacion" Type="datetime" Nullable="false" />
+          <Property Name="UsuarioCreacion" Type="nvarchar" MaxLength="20" Nullable="false" />
+        </EntityType>
         <EntityType Name="IdentificacionAgenteExterno">
           <Key>
             <PropertyRef Name="IdIdentificacion" />
@@ -236,6 +258,43 @@ advertencia 6002: La tabla o vista 'SIFOP.coin.Parametro' no tiene definida ning
           <Property Name="Formula" Type="varchar" MaxLength="200" Nullable="false" />
           <Property Name="Descripcion" Type="varchar" MaxLength="100" Nullable="false" />
           <Property Name="Inidicador" Type="varchar" MaxLength="5" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Asiento">
+          <Key>
+            <PropertyRef Name="IdAsiento" />
+          </Key>
+          <Property Name="IdAsiento" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="IdRecibo" Type="int" Nullable="false" />
+          <Property Name="Serie" Type="char" MaxLength="1" Nullable="false" />
+          <Property Name="IdArea" Type="varchar" MaxLength="4" />
+          <Property Name="IdCuentaContable" Type="smallint" Nullable="false" />
+          <Property Name="Naturaleza" Type="bit" Nullable="false" />
+          <Property Name="Monto" Type="decimal" Precision="18" Scale="2" Nullable="false" />
+          <Property Name="regAnulado" Type="bit" Nullable="false" />
+        </EntityType>
+        <EntityType Name="DetalleMovimientoIngreso">
+          <Key>
+            <PropertyRef Name="IdDetalleMovimientoIngreso" />
+          </Key>
+          <Property Name="IdDetalleMovimientoIngreso" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="IdMovimientoIngreso" Type="int" Nullable="false" />
+          <Property Name="IdCuentaContable" Type="smallint" Nullable="false" />
+          <Property Name="Naturaleza" Type="bit" Nullable="false" />
+          <Property Name="FactorPorcentual" Type="decimal" Precision="3" Scale="2" Nullable="false" />
+          <Property Name="FechaCreacion" Type="datetime" Nullable="false" />
+          <Property Name="UsuarioCreacion" Type="nvarchar" MaxLength="20" Nullable="false" />
+          <Property Name="regAnulado" Type="bit" Nullable="false" />
+        </EntityType>
+        <EntityType Name="MovimientoIngreso">
+          <Key>
+            <PropertyRef Name="IdMovimientoIngreso" />
+          </Key>
+          <Property Name="IdMovimientoIngreso" Type="int" Nullable="false" />
+          <Property Name="IdFormaPago" Type="int" Nullable="false" />
+          <Property Name="IdMoneda" Type="int" Nullable="false" />
+          <Property Name="IdRecinto" Type="int" Nullable="false" />
+          <Property Name="FechaCreacion" Type="datetime" Nullable="false" />
+          <Property Name="UsuarioCreacion" Type="nvarchar" MaxLength="20" Nullable="false" />
         </EntityType>
         <EntityType Name="Actividad">
           <Key>
@@ -1500,18 +1559,6 @@ advertencia 6002: La tabla o vista 'SIFOP.dbo.ParametroSistema' no tiene definid
           <Property Name="IdSolicitudCheque_SIPPSI" Type="int" />
           <Property Name="RegAnulado" Type="bit" Nullable="false" />
         </EntityType>
-        <!--Errores durante la generación:
-advertencia 6013: La tabla o vista 'SIFOP.dbo.SolicitudEjecutada' no tiene definida una clave principal y no es posible inferir ninguna clave principal válida. Esta tabla o vista se ha excluido. Para usar la entidad, necesitará revisar el esquema, agregar las claves correctas y quitar sus comentarios.
-        <EntityType Name="SolicitudEjecutada">
-          <Property Name="IdSolicitud_SIFA" Type="int" />
-          <Property Name="IdSolicitud_SIPPSI" Type="int" />
-          <Property Name="Secuencia" Type="int" />
-          <Property Name="Estado" Type="int" />
-          <Property Name="IdEstado" Type="tinyint" />
-          <Property Name="LoginCreacion" Type="nvarchar" MaxLength="25" />
-          <Property Name="FechaCreacion" Type="datetime" />
-          <Property Name="RegAnulado" Type="tinyint" />
-        </EntityType>-->
         <EntityType Name="SolicitudEstado">
           <Key>
             <PropertyRef Name="IdSolicitudCheque" />
@@ -1594,25 +1641,6 @@ advertencia 6013: La tabla o vista 'SIFOP.dbo.SolicitudEjecutada' no tiene defin
           <Property Name="LoginCreacion" Type="nvarchar" MaxLength="20" Nullable="false" />
           <Property Name="RegAnulado" Type="bit" Nullable="false" />
         </EntityType>
-        <!--Errores durante la generación:
-advertencia 6013: La tabla o vista 'SIFOP.dbo.Tmp_EstadoCuenta' no tiene definida una clave principal y no es posible inferir ninguna clave principal válida. Esta tabla o vista se ha excluido. Para usar la entidad, necesitará revisar el esquema, agregar las claves correctas y quitar sus comentarios.
-        <EntityType Name="Tmp_EstadoCuenta">
-          <Property Name="Codigo" Type="int" />
-          <Property Name="Cuenta" Type="nvarchar" MaxLength="30" />
-          <Property Name="Descripcion" Type="nvarchar" MaxLength="1500" />
-          <Property Name="IdDocumento" Type="int" />
-          <Property Name="Documento" Type="nvarchar" MaxLength="4" />
-          <Property Name="Fecha" Type="datetime" />
-          <Property Name="NoInterno" Type="int" />
-          <Property Name="NoDocumento" Type="int" />
-          <Property Name="IdSolicitud" Type="int" />
-          <Property Name="Annio" Type="int" />
-          <Property Name="Concepto" Type="nvarchar" MaxLength="2000" />
-          <Property Name="Debe" Type="decimal" Precision="18" Scale="4" />
-          <Property Name="Haber" Type="decimal" Precision="18" Scale="4" />
-          <Property Name="Saldo" Type="decimal" Precision="18" Scale="4" />
-          <Property Name="LoginCreacion" Type="nvarchar" MaxLength="25" />
-        </EntityType>-->
         <EntityType Name="tmp_SaldoCuentas">
           <Key>
             <PropertyRef Name="pre" />
@@ -1979,14 +2007,6 @@ advertencia 6002: La tabla o vista 'SIFOP.dbo.TmpComprobantePrint' no tiene defi
           <Property Name="Estado" Type="tinyint" Nullable="false" />
           <Property Name="Transferible" Type="bit" Nullable="false" />
         </EntityType>
-        <!--Errores durante la generación:
-advertencia 6013: La tabla o vista 'SIFOP.dbo.TmpLogins' no tiene definida una clave principal y no es posible inferir ninguna clave principal válida. Esta tabla o vista se ha excluido. Para usar la entidad, necesitará revisar el esquema, agregar las claves correctas y quitar sus comentarios.
-        <EntityType Name="TmpLogins">
-          <Property Name="Seleccionar" Type="bit" />
-          <Property Name="Login" Type="nvarchar" MaxLength="25" />
-          <Property Name="UsuarioNombre" Type="nvarchar" MaxLength="500" />
-          <Property Name="LoginCreacion" Type="nvarchar" MaxLength="25" />
-        </EntityType>-->
         <EntityType Name="TmpMontoEgresoFuente">
           <Key>
             <PropertyRef Name="IdOrden" />
@@ -2436,6 +2456,7 @@ advertencia 6002: La tabla o vista 'SIFOP.dbo.TmpSolicitudesArchivo' no tiene de
           <Property Name="Valor" Type="decimal" Precision="9" Scale="4" Nullable="false" />
           <Property Name="LoginCreacion" Type="nvarchar" MaxLength="20" Nullable="false" />
           <Property Name="RegAnulado" Type="bit" Nullable="false" />
+          <Property Name="FechaCreacion" Type="datetime" />
         </EntityType>
         <EntityType Name="Arancel">
           <Key>
@@ -2677,6 +2698,16 @@ advertencia 6002: La tabla o vista 'SIFOP.dbo.TmpSolicitudesArchivo' no tiene de
           <Property Name="FechaCreacion" Type="datetime" Nullable="false" />
           <Property Name="regAnulado" Type="bit" Nullable="false" />
         </EntityType>
+        <EntityType Name="ReciboDiferencias">
+          <Key>
+            <PropertyRef Name="IdRecibo" />
+            <PropertyRef Name="Serie" />
+          </Key>
+          <Property Name="IdRecibo" Type="int" Nullable="false" />
+          <Property Name="Serie" Type="char" MaxLength="1" Nullable="false" />
+          <Property Name="IdMoneda" Type="int" Nullable="false" />
+          <Property Name="Monto" Type="decimal" Precision="18" Scale="2" Nullable="false" />
+        </EntityType>
         <EntityType Name="ReciboPago">
           <Key>
             <PropertyRef Name="IdReciboPago" />
@@ -2858,6 +2889,22 @@ advertencia 6002: La tabla o vista 'SIFOP.cat.vw_Aranceles' no tiene definida ni
           <Property Name="Moneda" Type="varchar" MaxLength="20" Nullable="false" />
           <Property Name="IdArea" Type="varchar" MaxLength="4" Nullable="false" />
           <Property Name="Area" Type="varchar" MaxLength="200" />
+        </EntityType>
+        <!--Errores durante la generación:
+advertencia 6002: La tabla o vista 'SIFOP.cat.vw_AreaEquivalencia' no tiene definida ninguna clave principal. Se ha inferido la clave y la definición se creado como una vista o tabla de solo lectura.-->
+        <EntityType Name="vw_AreaEquivalencia">
+          <Key>
+            <PropertyRef Name="CodRH" />
+            <PropertyRef Name="IdF" />
+            <PropertyRef Name="DescripcionF" />
+            <PropertyRef Name="EstadoF" />
+          </Key>
+          <Property Name="CodRH" Type="varchar" MaxLength="3" Nullable="false" />
+          <Property Name="DescripcionRH" Type="varchar" MaxLength="200" />
+          <Property Name="EstadoRH" Type="varchar" MaxLength="1" />
+          <Property Name="IdF" Type="tinyint" Nullable="false" />
+          <Property Name="DescripcionF" Type="nvarchar" MaxLength="100" Nullable="false" />
+          <Property Name="EstadoF" Type="tinyint" Nullable="false" />
         </EntityType>
         <!--Errores durante la generación:
 advertencia 6002: La tabla o vista 'SIFOP.cat.vw_Areas' no tiene definida ninguna clave principal. Se ha inferido la clave y la definición se creado como una vista o tabla de solo lectura.-->
@@ -3195,11 +3242,6 @@ advertencia 6002: La tabla o vista 'SIFOP.dbo.Qry_Pagos_Matricula' no tiene defi
           <Property Name="SerieRecibo" Type="char" MaxLength="1" Nullable="false" />
           <Property Name="Monto" Type="decimal" Precision="33" Scale="13" />
         </EntityType>
-        <!--Errores durante la generación:
-advertencia 6013: La tabla o vista 'SIFOP.dbo.Qry_PeriodoCerrado' no tiene definida una clave principal y no es posible inferir ninguna clave principal válida. Esta tabla o vista se ha excluido. Para usar la entidad, necesitará revisar el esquema, agregar las claves correctas y quitar sus comentarios.
-        <EntityType Name="Qry_PeriodoCerrado">
-          <Property Name="Periodo" Type="int" />
-        </EntityType>-->
         <!--Errores durante la generación:
 advertencia 6002: La tabla o vista 'SIFOP.dbo.Qry_Personas' no tiene definida ninguna clave principal. Se ha inferido la clave y la definición se creado como una vista o tabla de solo lectura.-->
         <EntityType Name="Qry_Personas">
@@ -3547,8 +3589,10 @@ advertencia 6002: La tabla o vista 'SIFOP.dbo.Query_SolcitucCk_SIPPSI' no tiene 
 advertencia 6002: La tabla o vista 'SIFOP.dbo.QueryAreasFinanzas' no tiene definida ninguna clave principal. Se ha inferido la clave y la definición se creado como una vista o tabla de solo lectura.-->
         <EntityType Name="QueryAreasFinanzas">
           <Key>
+            <PropertyRef Name="IdActividad" />
             <PropertyRef Name="Descripcion" />
           </Key>
+          <Property Name="IdActividad" Type="tinyint" Nullable="false" />
           <Property Name="IdInterfaz" Type="nvarchar" MaxLength="10" />
           <Property Name="Descripcion" Type="nvarchar" MaxLength="100" Nullable="false" />
         </EntityType>
@@ -5164,6 +5208,42 @@ advertencia 6002: La tabla o vista 'SIFOP.dbo.w_LibroMayorAcumulado_Vlast' no ti
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_ArqueoDocumento_Arqueo">
+          <End Role="Arqueo" Type="Self.Arqueo" Multiplicity="1" />
+          <End Role="ArqueoDocumento" Type="Self.ArqueoDocumento" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Arqueo">
+              <PropertyRef Name="IdArqueoDetApertura" />
+            </Principal>
+            <Dependent Role="ArqueoDocumento">
+              <PropertyRef Name="IdArqueo" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ArqueoDocumento_ReciboPago">
+          <End Role="ReciboPago" Type="Self.ReciboPago" Multiplicity="1" />
+          <End Role="ArqueoDocumento" Type="Self.ArqueoDocumento" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ReciboPago">
+              <PropertyRef Name="IdReciboPago" />
+            </Principal>
+            <Dependent Role="ArqueoDocumento">
+              <PropertyRef Name="IdReciboPago" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ArqueoDocumento_Usuario">
+          <End Role="Usuario" Type="Self.Usuario" Multiplicity="1" />
+          <End Role="ArqueoDocumento" Type="Self.ArqueoDocumento" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Usuario">
+              <PropertyRef Name="Login" />
+            </Principal>
+            <Dependent Role="ArqueoDocumento">
+              <PropertyRef Name="UsuarioCreacion" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_ArqueoEfectivo_Arqueo">
           <End Role="Arqueo" Type="Self.Arqueo" Multiplicity="1" />
           <End Role="ArqueoEfectivo" Type="Self.ArqueoEfectivo" Multiplicity="*" />
@@ -5271,6 +5351,32 @@ advertencia 6002: La tabla o vista 'SIFOP.dbo.w_LibroMayorAcumulado_Vlast' no ti
               <PropertyRef Name="Serie" />
             </Principal>
             <Dependent Role="ArqueoRecibo">
+              <PropertyRef Name="IdRecibo" />
+              <PropertyRef Name="Serie" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Asiento_Asiento">
+          <End Role="CuentaContable" Type="Self.CuentaContable" Multiplicity="1" />
+          <End Role="Asiento" Type="Self.Asiento" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="CuentaContable">
+              <PropertyRef Name="IdCuentaContable" />
+            </Principal>
+            <Dependent Role="Asiento">
+              <PropertyRef Name="IdCuentaContable" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Asiento_Recibo">
+          <End Role="Recibo1" Type="Self.Recibo1" Multiplicity="1" />
+          <End Role="Asiento" Type="Self.Asiento" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Recibo1">
+              <PropertyRef Name="IdRecibo" />
+              <PropertyRef Name="Serie" />
+            </Principal>
+            <Dependent Role="Asiento">
               <PropertyRef Name="IdRecibo" />
               <PropertyRef Name="Serie" />
             </Dependent>
@@ -5771,6 +5877,42 @@ advertencia 6002: La tabla o vista 'SIFOP.dbo.w_LibroMayorAcumulado_Vlast' no ti
             </Principal>
             <Dependent Role="Departamento">
               <PropertyRef Name="LoginCreacion" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_DetalleMovimientoIngreso_CuentaContable">
+          <End Role="CuentaContable" Type="Self.CuentaContable" Multiplicity="1" />
+          <End Role="DetalleMovimientoIngreso" Type="Self.DetalleMovimientoIngreso" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="CuentaContable">
+              <PropertyRef Name="IdCuentaContable" />
+            </Principal>
+            <Dependent Role="DetalleMovimientoIngreso">
+              <PropertyRef Name="IdCuentaContable" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_DetalleMovimientoIngreso_MovimientoIngreso">
+          <End Role="MovimientoIngreso" Type="Self.MovimientoIngreso" Multiplicity="1" />
+          <End Role="DetalleMovimientoIngreso" Type="Self.DetalleMovimientoIngreso" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="MovimientoIngreso">
+              <PropertyRef Name="IdMovimientoIngreso" />
+            </Principal>
+            <Dependent Role="DetalleMovimientoIngreso">
+              <PropertyRef Name="IdMovimientoIngreso" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_DetalleMovimientoIngreso_Usuario">
+          <End Role="Usuario" Type="Self.Usuario" Multiplicity="1" />
+          <End Role="DetalleMovimientoIngreso" Type="Self.DetalleMovimientoIngreso" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Usuario">
+              <PropertyRef Name="Login" />
+            </Principal>
+            <Dependent Role="DetalleMovimientoIngreso">
+              <PropertyRef Name="UsuarioCreacion" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -6458,6 +6600,42 @@ advertencia 6002: La tabla o vista 'SIFOP.dbo.w_LibroMayorAcumulado_Vlast' no ti
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_MovimientoIngreso_FormaPago">
+          <End Role="FormaPago" Type="Self.FormaPago" Multiplicity="1" />
+          <End Role="MovimientoIngreso" Type="Self.MovimientoIngreso" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="FormaPago">
+              <PropertyRef Name="IdFormaPago" />
+            </Principal>
+            <Dependent Role="MovimientoIngreso">
+              <PropertyRef Name="IdFormaPago" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_MovimientoIngreso_Moneda">
+          <End Role="Moneda" Type="Self.Moneda" Multiplicity="1" />
+          <End Role="MovimientoIngreso" Type="Self.MovimientoIngreso" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Moneda">
+              <PropertyRef Name="IdMoneda" />
+            </Principal>
+            <Dependent Role="MovimientoIngreso">
+              <PropertyRef Name="IdMoneda" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_MovimientoIngreso_Usuario">
+          <End Role="Usuario" Type="Self.Usuario" Multiplicity="1" />
+          <End Role="MovimientoIngreso" Type="Self.MovimientoIngreso" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Usuario">
+              <PropertyRef Name="Login" />
+            </Principal>
+            <Dependent Role="MovimientoIngreso">
+              <PropertyRef Name="UsuarioCreacion" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_Municipio_Departamento">
           <End Role="Departamento" Type="Self.Departamento" Multiplicity="1" />
           <End Role="Municipio" Type="Self.Municipio" Multiplicity="*" />
@@ -7107,6 +7285,32 @@ advertencia 6002: La tabla o vista 'SIFOP.dbo.w_LibroMayorAcumulado_Vlast' no ti
               <PropertyRef Name="IdRecibo" />
               <PropertyRef Name="SerieRecibo" />
               <PropertyRef Name="IdPrograma" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ReciboDiferencias_Moneda">
+          <End Role="Moneda" Type="Self.Moneda" Multiplicity="1" />
+          <End Role="ReciboDiferencias" Type="Self.ReciboDiferencias" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Moneda">
+              <PropertyRef Name="IdMoneda" />
+            </Principal>
+            <Dependent Role="ReciboDiferencias">
+              <PropertyRef Name="IdMoneda" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ReciboDiferencias_Recibo">
+          <End Role="Recibo1" Type="Self.Recibo1" Multiplicity="1" />
+          <End Role="ReciboDiferencias" Type="Self.ReciboDiferencias" Multiplicity="0..1" />
+          <ReferentialConstraint>
+            <Principal Role="Recibo1">
+              <PropertyRef Name="IdRecibo" />
+              <PropertyRef Name="Serie" />
+            </Principal>
+            <Dependent Role="ReciboDiferencias">
+              <PropertyRef Name="IdRecibo" />
+              <PropertyRef Name="Serie" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -10299,6 +10503,7 @@ advertencia 6002: La tabla o vista 'SIFOP.dbo.w_LibroMayorAcumulado_Vlast' no ti
         </Function>
         <EntityContainer Name="SIFOPModelStoreContainer">
           <EntitySet Name="Arqueo" EntityType="Self.Arqueo" Schema="arq" store:Type="Tables" />
+          <EntitySet Name="ArqueoDocumento" EntityType="Self.ArqueoDocumento" Schema="arq" store:Type="Tables" />
           <EntitySet Name="ArqueoEfectivo" EntityType="Self.ArqueoEfectivo" Schema="arq" store:Type="Tables" />
           <EntitySet Name="ArqueoNoEfectivo" EntityType="Self.ArqueoNoEfectivo" Schema="arq" store:Type="Tables" />
           <EntitySet Name="ArqueoRecibo" EntityType="Self.ArqueoRecibo" Schema="arq" store:Type="Tables" />
@@ -10312,9 +10517,13 @@ advertencia 6002: La tabla o vista 'SIFOP.dbo.w_LibroMayorAcumulado_Vlast' no ti
           <EntitySet Name="TransaccionesServicio" EntityType="Self.TransaccionesServicio" Schema="Bank" store:Type="Tables" />
           <EntitySet Name="UserBank" EntityType="Self.UserBank" Schema="Bank" store:Type="Tables" />
           <EntitySet Name="AgenteExternoCat" EntityType="Self.AgenteExternoCat" Schema="cat" store:Type="Tables" />
+          <EntitySet Name="AreaEquivalencia" EntityType="Self.AreaEquivalencia" Schema="cat" store:Type="Tables" />
           <EntitySet Name="IdentificacionAgenteExterno" EntityType="Self.IdentificacionAgenteExterno" Schema="cat" store:Type="Tables" />
           <EntitySet Name="DenominacionMoneda" EntityType="Self.DenominacionMoneda" Schema="coin" store:Type="Tables" />
           <EntitySet Name="Moneda" EntityType="Self.Moneda" Schema="coin" store:Type="Tables" />
+          <EntitySet Name="Asiento" EntityType="Self.Asiento" Schema="conta" store:Type="Tables" />
+          <EntitySet Name="DetalleMovimientoIngreso" EntityType="Self.DetalleMovimientoIngreso" Schema="conta" store:Type="Tables" />
+          <EntitySet Name="MovimientoIngreso" EntityType="Self.MovimientoIngreso" Schema="conta" store:Type="Tables" />
           <EntitySet Name="Actividad" EntityType="Self.Actividad" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="AgenteExterno" EntityType="Self.AgenteExterno" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="AutorizarRestricciones" EntityType="Self.AutorizarRestricciones" Schema="dbo" store:Type="Tables" />
@@ -10459,6 +10668,7 @@ advertencia 6002: La tabla o vista 'SIFOP.dbo.w_LibroMayorAcumulado_Vlast' no ti
           <EntitySet Name="ReciboAnulado" EntityType="Self.ReciboAnulado" Schema="pay" store:Type="Tables" />
           <EntitySet Name="ReciboDatos" EntityType="Self.ReciboDatos" Schema="pay" store:Type="Tables" />
           <EntitySet Name="ReciboDet" EntityType="Self.ReciboDet" Schema="pay" store:Type="Tables" />
+          <EntitySet Name="ReciboDiferencias" EntityType="Self.ReciboDiferencias" Schema="pay" store:Type="Tables" />
           <EntitySet Name="ReciboPago" EntityType="Self.ReciboPago" Schema="pay" store:Type="Tables" />
           <EntitySet Name="ReciboPagoBono" EntityType="Self.ReciboPagoBono" Schema="pay" store:Type="Tables" />
           <EntitySet Name="ReciboPagoCheque" EntityType="Self.ReciboPagoCheque" Schema="pay" store:Type="Tables" />
@@ -10567,6 +10777,16 @@ advertencia 6002: La tabla o vista 'SIFOP.dbo.w_LibroMayorAcumulado_Vlast' no ti
     [vw_Aranceles].[IdArea] AS [IdArea], 
     [vw_Aranceles].[Area] AS [Area]
     FROM [cat].[vw_Aranceles] AS [vw_Aranceles]</DefiningQuery>
+          </EntitySet>
+          <EntitySet Name="vw_AreaEquivalencia" EntityType="Self.vw_AreaEquivalencia" store:Type="Views" store:Schema="cat">
+            <DefiningQuery>SELECT 
+    [vw_AreaEquivalencia].[CodRH] AS [CodRH], 
+    [vw_AreaEquivalencia].[DescripcionRH] AS [DescripcionRH], 
+    [vw_AreaEquivalencia].[EstadoRH] AS [EstadoRH], 
+    [vw_AreaEquivalencia].[IdF] AS [IdF], 
+    [vw_AreaEquivalencia].[DescripcionF] AS [DescripcionF], 
+    [vw_AreaEquivalencia].[EstadoF] AS [EstadoF]
+    FROM [cat].[vw_AreaEquivalencia] AS [vw_AreaEquivalencia]</DefiningQuery>
           </EntitySet>
           <EntitySet Name="vw_Areas" EntityType="Self.vw_Areas" store:Type="Views" store:Schema="cat">
             <DefiningQuery>SELECT 
@@ -11026,6 +11246,7 @@ advertencia 6002: La tabla o vista 'SIFOP.dbo.w_LibroMayorAcumulado_Vlast' no ti
           </EntitySet>
           <EntitySet Name="QueryAreasFinanzas" EntityType="Self.QueryAreasFinanzas" store:Type="Views" store:Schema="dbo">
             <DefiningQuery>SELECT 
+    [QueryAreasFinanzas].[IdActividad] AS [IdActividad], 
     [QueryAreasFinanzas].[IdInterfaz] AS [IdInterfaz], 
     [QueryAreasFinanzas].[Descripcion] AS [Descripcion]
     FROM [dbo].[QueryAreasFinanzas] AS [QueryAreasFinanzas]</DefiningQuery>
@@ -11988,6 +12209,18 @@ advertencia 6002: La tabla o vista 'SIFOP.dbo.w_LibroMayorAcumulado_Vlast' no ti
             <End Role="Usuario" EntitySet="Usuario" />
             <End Role="Arqueo" EntitySet="Arqueo" />
           </AssociationSet>
+          <AssociationSet Name="FK_ArqueoDocumento_Arqueo" Association="Self.FK_ArqueoDocumento_Arqueo">
+            <End Role="Arqueo" EntitySet="Arqueo" />
+            <End Role="ArqueoDocumento" EntitySet="ArqueoDocumento" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ArqueoDocumento_ReciboPago" Association="Self.FK_ArqueoDocumento_ReciboPago">
+            <End Role="ReciboPago" EntitySet="ReciboPago" />
+            <End Role="ArqueoDocumento" EntitySet="ArqueoDocumento" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ArqueoDocumento_Usuario" Association="Self.FK_ArqueoDocumento_Usuario">
+            <End Role="Usuario" EntitySet="Usuario" />
+            <End Role="ArqueoDocumento" EntitySet="ArqueoDocumento" />
+          </AssociationSet>
           <AssociationSet Name="FK_ArqueoEfectivo_Arqueo" Association="Self.FK_ArqueoEfectivo_Arqueo">
             <End Role="Arqueo" EntitySet="Arqueo" />
             <End Role="ArqueoEfectivo" EntitySet="ArqueoEfectivo" />
@@ -12023,6 +12256,14 @@ advertencia 6002: La tabla o vista 'SIFOP.dbo.w_LibroMayorAcumulado_Vlast' no ti
           <AssociationSet Name="FK_ArqueoRecibo_Recibo" Association="Self.FK_ArqueoRecibo_Recibo">
             <End Role="Recibo1" EntitySet="Recibo1" />
             <End Role="ArqueoRecibo" EntitySet="ArqueoRecibo" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Asiento_Asiento" Association="Self.FK_Asiento_Asiento">
+            <End Role="CuentaContable" EntitySet="CuentaContable" />
+            <End Role="Asiento" EntitySet="Asiento" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Asiento_Recibo" Association="Self.FK_Asiento_Recibo">
+            <End Role="Recibo1" EntitySet="Recibo1" />
+            <End Role="Asiento" EntitySet="Asiento" />
           </AssociationSet>
           <AssociationSet Name="FK_AutorizarRestricciones_ComprobantePago" Association="Self.FK_AutorizarRestricciones_ComprobantePago">
             <End Role="ComprobantePago" EntitySet="ComprobantePago" />
@@ -12187,6 +12428,18 @@ advertencia 6002: La tabla o vista 'SIFOP.dbo.w_LibroMayorAcumulado_Vlast' no ti
           <AssociationSet Name="FK_Departamento_Usuario" Association="Self.FK_Departamento_Usuario">
             <End Role="Usuario" EntitySet="Usuario" />
             <End Role="Departamento" EntitySet="Departamento" />
+          </AssociationSet>
+          <AssociationSet Name="FK_DetalleMovimientoIngreso_CuentaContable" Association="Self.FK_DetalleMovimientoIngreso_CuentaContable">
+            <End Role="CuentaContable" EntitySet="CuentaContable" />
+            <End Role="DetalleMovimientoIngreso" EntitySet="DetalleMovimientoIngreso" />
+          </AssociationSet>
+          <AssociationSet Name="FK_DetalleMovimientoIngreso_MovimientoIngreso" Association="Self.FK_DetalleMovimientoIngreso_MovimientoIngreso">
+            <End Role="MovimientoIngreso" EntitySet="MovimientoIngreso" />
+            <End Role="DetalleMovimientoIngreso" EntitySet="DetalleMovimientoIngreso" />
+          </AssociationSet>
+          <AssociationSet Name="FK_DetalleMovimientoIngreso_Usuario" Association="Self.FK_DetalleMovimientoIngreso_Usuario">
+            <End Role="Usuario" EntitySet="Usuario" />
+            <End Role="DetalleMovimientoIngreso" EntitySet="DetalleMovimientoIngreso" />
           </AssociationSet>
           <AssociationSet Name="FK_DetallePago_Moneda" Association="Self.FK_DetallePago_Moneda">
             <End Role="Moneda" EntitySet="Moneda" />
@@ -12416,6 +12669,18 @@ advertencia 6002: La tabla o vista 'SIFOP.dbo.w_LibroMayorAcumulado_Vlast' no ti
             <End Role="Usuario" EntitySet="Usuario" />
             <End Role="Moneda" EntitySet="Moneda" />
           </AssociationSet>
+          <AssociationSet Name="FK_MovimientoIngreso_FormaPago" Association="Self.FK_MovimientoIngreso_FormaPago">
+            <End Role="FormaPago" EntitySet="FormaPago" />
+            <End Role="MovimientoIngreso" EntitySet="MovimientoIngreso" />
+          </AssociationSet>
+          <AssociationSet Name="FK_MovimientoIngreso_Moneda" Association="Self.FK_MovimientoIngreso_Moneda">
+            <End Role="Moneda" EntitySet="Moneda" />
+            <End Role="MovimientoIngreso" EntitySet="MovimientoIngreso" />
+          </AssociationSet>
+          <AssociationSet Name="FK_MovimientoIngreso_Usuario" Association="Self.FK_MovimientoIngreso_Usuario">
+            <End Role="Usuario" EntitySet="Usuario" />
+            <End Role="MovimientoIngreso" EntitySet="MovimientoIngreso" />
+          </AssociationSet>
           <AssociationSet Name="FK_Municipio_Departamento" Association="Self.FK_Municipio_Departamento">
             <End Role="Departamento" EntitySet="Departamento" />
             <End Role="Municipio" EntitySet="Municipio" />
@@ -12624,6 +12889,14 @@ advertencia 6002: La tabla o vista 'SIFOP.dbo.w_LibroMayorAcumulado_Vlast' no ti
             <End Role="Recibo" EntitySet="Recibo" />
             <End Role="ReciboDetalle" EntitySet="ReciboDetalle" />
           </AssociationSet>
+          <AssociationSet Name="FK_ReciboDiferencias_Moneda" Association="Self.FK_ReciboDiferencias_Moneda">
+            <End Role="Moneda" EntitySet="Moneda" />
+            <End Role="ReciboDiferencias" EntitySet="ReciboDiferencias" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ReciboDiferencias_Recibo" Association="Self.FK_ReciboDiferencias_Recibo">
+            <End Role="Recibo1" EntitySet="Recibo1" />
+            <End Role="ReciboDiferencias" EntitySet="ReciboDiferencias" />
+          </AssociationSet>
           <AssociationSet Name="FK_ReciboFlujoEfectivo_Recibo" Association="Self.FK_ReciboFlujoEfectivo_Recibo">
             <End Role="Recibo" EntitySet="Recibo" />
             <End Role="ReciboFlujoEfectivo" EntitySet="ReciboFlujoEfectivo" />
@@ -12813,8 +13086,7 @@ advertencia 6002: La tabla o vista 'SIFOP.dbo.w_LibroMayorAcumulado_Vlast' no ti
             <End Role="VariacionCambiaria" EntitySet="VariacionCambiaria" />
           </AssociationSet>
         </EntityContainer>
-      </Schema>
-    </edmx:StorageModels>
+      </Schema></edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="SIFOPModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
@@ -13856,9 +14128,25 @@ advertencia 6002: La tabla o vista 'SIFOP.dbo.w_LibroMayorAcumulado_Vlast' no ti
           <Property Name="isFinalizado" Type="Boolean" Nullable="false" />
           <NavigationProperty Name="DetAperturaCaja" Relationship="Self.FK_Arqueo_DetAperturaCaja" FromRole="Arqueo" ToRole="DetAperturaCaja" />
           <NavigationProperty Name="Usuario" Relationship="Self.FK_Arqueo_Usuario" FromRole="Arqueo" ToRole="Usuario" />
+          <NavigationProperty Name="ArqueoDocumento" Relationship="Self.FK_ArqueoDocumento_Arqueo" FromRole="Arqueo" ToRole="ArqueoDocumento" />
           <NavigationProperty Name="ArqueoEfectivo" Relationship="Self.FK_ArqueoEfectivo_Arqueo" FromRole="Arqueo" ToRole="ArqueoEfectivo" />
           <NavigationProperty Name="ArqueoRecibo" Relationship="Self.FK_ArqueoRecibo_Arqueo" FromRole="Arqueo" ToRole="ArqueoRecibo" />
           <NavigationProperty Name="DiferenciasArqueo" Relationship="Self.FK_DiferenciasArqueo_Arqueo" FromRole="Arqueo" ToRole="DiferenciasArqueo" />
+        </EntityType>
+        <EntityType Name="ArqueoDocumento">
+          <Key>
+            <PropertyRef Name="IdArqueoDocumento" />
+          </Key>
+          <Property Name="IdArqueoDocumento" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="IdArqueo" Type="Int32" Nullable="false" />
+          <Property Name="IdReciboPago" Type="Int32" Nullable="false" />
+          <Property Name="isOk" Type="Boolean" Nullable="false" />
+          <Property Name="Observacion" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
+          <Property Name="FechaCreacion" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="UsuarioCreacion" Type="String" MaxLength="20" FixedLength="false" Unicode="true" Nullable="false" />
+          <NavigationProperty Name="Arqueo" Relationship="Self.FK_ArqueoDocumento_Arqueo" FromRole="ArqueoDocumento" ToRole="Arqueo" />
+          <NavigationProperty Name="ReciboPago" Relationship="Self.FK_ArqueoDocumento_ReciboPago" FromRole="ArqueoDocumento" ToRole="ReciboPago" />
+          <NavigationProperty Name="Usuario" Relationship="Self.FK_ArqueoDocumento_Usuario" FromRole="ArqueoDocumento" ToRole="Usuario" />
         </EntityType>
         <EntityType Name="ArqueoEfectivo">
           <Key>
@@ -14046,6 +14334,16 @@ advertencia 6002: La tabla o vista 'SIFOP.dbo.w_LibroMayorAcumulado_Vlast' no ti
           <NavigationProperty Name="IdentificacionAgenteExterno" Relationship="Self.FK_AgenteExterno_IdentificacionAgenteExterno" FromRole="AgenteExternoCat" ToRole="IdentificacionAgenteExterno" />
           <NavigationProperty Name="Usuario" Relationship="Self.FK_AgenteExterno_Usuario" FromRole="AgenteExternoCat" ToRole="Usuario" />
         </EntityType>
+        <EntityType Name="AreaEquivalencia">
+          <Key>
+            <PropertyRef Name="IdAreaFinanzas" />
+            <PropertyRef Name="IdAreaRRHH" />
+          </Key>
+          <Property Name="IdAreaFinanzas" Type="Int32" Nullable="false" />
+          <Property Name="IdAreaRRHH" Type="String" MaxLength="3" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="FechaCreacion" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="UsuarioCreacion" Type="String" MaxLength="20" FixedLength="false" Unicode="true" Nullable="false" />
+        </EntityType>
         <EntityType Name="IdentificacionAgenteExterno">
           <Key>
             <PropertyRef Name="IdIdentificacion" />
@@ -14091,8 +14389,41 @@ advertencia 6002: La tabla o vista 'SIFOP.dbo.w_LibroMayorAcumulado_Vlast' no ti
           <NavigationProperty Name="DenominacionMoneda" Relationship="Self.FK_DenominacionMoneda_Moneda" FromRole="Moneda" ToRole="DenominacionMoneda" />
           <NavigationProperty Name="ArancelPrecio" Relationship="Self.FK_ArancelPrecio_Moneda" FromRole="Moneda" ToRole="ArancelPrecio" />
           <NavigationProperty Name="Usuario" Relationship="Self.FK_Moneda_Usuario" FromRole="Moneda" ToRole="Usuario" />
+          <NavigationProperty Name="ReciboDiferencias" Relationship="Self.FK_ReciboDiferencias_Moneda" FromRole="Moneda" ToRole="ReciboDiferencias" />
           <NavigationProperty Name="ReciboPago" Relationship="Self.FK_ReciboPago_Moneda" FromRole="Moneda" ToRole="ReciboPago" />
           <NavigationProperty Name="VariacionCambiaria" Relationship="Self.FK_VariacionCambiaria_Moneda" FromRole="Moneda" ToRole="VariacionCambiaria" />
+          <NavigationProperty Name="MovimientoIngreso" Relationship="SIFOPModel.FK_MovimientoIngreso_Moneda" FromRole="Moneda" ToRole="MovimientoIngreso" />
+        </EntityType>
+        <EntityType Name="Asiento">
+          <Key>
+            <PropertyRef Name="IdAsiento" />
+          </Key>
+          <Property Name="IdAsiento" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="IdRecibo" Type="Int32" Nullable="false" />
+          <Property Name="Serie" Type="String" MaxLength="1" FixedLength="true" Unicode="false" Nullable="false" />
+          <Property Name="IdArea" Type="String" MaxLength="4" FixedLength="false" Unicode="false" />
+          <Property Name="IdCuentaContable" Type="Int16" Nullable="false" />
+          <Property Name="Naturaleza" Type="Boolean" Nullable="false" />
+          <Property Name="Monto" Type="Decimal" Precision="18" Scale="2" Nullable="false" />
+          <Property Name="regAnulado" Type="Boolean" Nullable="false" />
+          <NavigationProperty Name="CuentaContable" Relationship="Self.FK_Asiento_Asiento" FromRole="Asiento" ToRole="CuentaContable" />
+          <NavigationProperty Name="Recibo1" Relationship="Self.FK_Asiento_Recibo" FromRole="Asiento" ToRole="Recibo1" />
+        </EntityType>
+        <EntityType Name="DetalleMovimientoIngreso">
+          <Key>
+            <PropertyRef Name="IdDetalleMovimientoIngreso" />
+          </Key>
+          <Property Name="IdDetalleMovimientoIngreso" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="IdMovimientoIngreso" Type="Int32" Nullable="false" />
+          <Property Name="IdCuentaContable" Type="Int16" Nullable="false" />
+          <Property Name="Naturaleza" Type="Boolean" Nullable="false" />
+          <Property Name="FactorPorcentual" Type="Decimal" Precision="3" Scale="2" Nullable="false" />
+          <Property Name="FechaCreacion" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="UsuarioCreacion" Type="String" MaxLength="20" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="regAnulado" Type="Boolean" Nullable="false" />
+          <NavigationProperty Name="CuentaContable" Relationship="Self.FK_DetalleMovimientoIngreso_CuentaContable" FromRole="DetalleMovimientoIngreso" ToRole="CuentaContable" />
+          <NavigationProperty Name="Usuario" Relationship="Self.FK_DetalleMovimientoIngreso_Usuario" FromRole="DetalleMovimientoIngreso" ToRole="Usuario" />
+          <NavigationProperty Name="MovimientoIngreso" Relationship="SIFOPModel.FK_DetalleMovimientoIngreso_MovimientoIngreso" FromRole="DetalleMovimientoIngreso" ToRole="MovimientoIngreso" />
         </EntityType>
         <EntityType Name="Actividad">
           <Key>
@@ -14560,6 +14891,8 @@ advertencia 6002: La tabla o vista 'SIFOP.dbo.w_LibroMayorAcumulado_Vlast' no ti
           <Property Name="Estado" Type="Boolean" Nullable="false" />
           <Property Name="LoginCreacion" Type="String" MaxLength="20" FixedLength="false" Unicode="true" Nullable="false" />
           <Property Name="RegAnulado" Type="Boolean" Nullable="false" />
+          <NavigationProperty Name="Asiento" Relationship="Self.FK_Asiento_Asiento" FromRole="CuentaContable" ToRole="Asiento" />
+          <NavigationProperty Name="DetalleMovimientoIngreso" Relationship="Self.FK_DetalleMovimientoIngreso_CuentaContable" FromRole="CuentaContable" ToRole="DetalleMovimientoIngreso" />
           <NavigationProperty Name="BalanzaComprobacion" Relationship="Self.FK_BalanzaComprobacion_CuentaContable" FromRole="CuentaContable" ToRole="BalanzaComprobacion" />
           <NavigationProperty Name="ConceptoDetalle" Relationship="Self.FK_ConceptoDetalle_CuentaContable" FromRole="CuentaContable" ToRole="ConceptoDetalle" />
           <NavigationProperty Name="ConciliacionBanco" Relationship="Self.FK_ConciliacionBanco_CuentaContable" FromRole="CuentaContable" ToRole="ConciliacionBanco" />
@@ -16338,6 +16671,7 @@ advertencia 6002: La tabla o vista 'SIFOP.dbo.w_LibroMayorAcumulado_Vlast' no ti
           <Property Name="LoginCreacion" Type="String" MaxLength="20" FixedLength="false" Unicode="true" Nullable="false" />
           <Property Name="RegAnulado" Type="Boolean" Nullable="false" />
           <NavigationProperty Name="Arqueo" Relationship="Self.FK_Arqueo_Usuario" FromRole="Usuario" ToRole="Arqueo" />
+          <NavigationProperty Name="ArqueoDocumento" Relationship="Self.FK_ArqueoDocumento_Usuario" FromRole="Usuario" ToRole="ArqueoDocumento" />
           <NavigationProperty Name="ArqueoNoEfectivo" Relationship="Self.FK_ArqueoNoEfectivo_Usuario" FromRole="Usuario" ToRole="ArqueoNoEfectivo" />
           <NavigationProperty Name="NoCuentasBankArea" Relationship="Self.FK_NoCuentasBankArea_Usuario" FromRole="Usuario" ToRole="NoCuentasBankArea" />
           <NavigationProperty Name="TipoTransaccionBank" Relationship="Self.FK_TipoTransaccionBank_Usuario" FromRole="Usuario" ToRole="TipoTransaccionBank" />
@@ -16346,6 +16680,7 @@ advertencia 6002: La tabla o vista 'SIFOP.dbo.w_LibroMayorAcumulado_Vlast' no ti
           <NavigationProperty Name="IdentificacionAgenteExterno" Relationship="Self.FK_IdentificacionAgenteExterno_Usuario" FromRole="Usuario" ToRole="IdentificacionAgenteExterno" />
           <NavigationProperty Name="DenominacionMoneda" Relationship="Self.FK_DenominacionMoneda_Usuario" FromRole="Usuario" ToRole="DenominacionMoneda" />
           <NavigationProperty Name="Moneda" Relationship="Self.FK_Moneda_Usuario" FromRole="Usuario" ToRole="Moneda" />
+          <NavigationProperty Name="DetalleMovimientoIngreso" Relationship="Self.FK_DetalleMovimientoIngreso_Usuario" FromRole="Usuario" ToRole="DetalleMovimientoIngreso" />
           <NavigationProperty Name="Actividad" Relationship="Self.FK_Actividad_Usuario" FromRole="Usuario" ToRole="Actividad" />
           <NavigationProperty Name="AutorizarRestricciones" Relationship="Self.FK_AutorizarRestricciones_Usuario" FromRole="Usuario" ToRole="AutorizarRestricciones" />
           <NavigationProperty Name="BalanzaComprobacion" Relationship="Self.FK_BalanzaComprobacion_Usuario" FromRole="Usuario" ToRole="BalanzaComprobacion" />
@@ -16404,6 +16739,7 @@ advertencia 6002: La tabla o vista 'SIFOP.dbo.w_LibroMayorAcumulado_Vlast' no ti
           <NavigationProperty Name="UsuarioPerfil" Relationship="Self.FK_UsuarioPerfil_Usuario" FromRole="Usuario" ToRole="UsuarioPerfil" />
           <NavigationProperty Name="UsuarioPrograma" Relationship="Self.FK_UsuarioPrograma_Usuario" FromRole="Usuario" ToRole="UsuarioPrograma" />
           <NavigationProperty Name="VariacionCambiaria" Relationship="Self.FK_VariacionCambiaria_Usuario" FromRole="Usuario" ToRole="VariacionCambiaria" />
+          <NavigationProperty Name="MovimientoIngreso" Relationship="SIFOPModel.FK_MovimientoIngreso_Usuario" FromRole="Usuario" ToRole="MovimientoIngreso" />
         </EntityType>
         <EntityType Name="UsuarioArea">
           <Key>
@@ -16465,6 +16801,7 @@ advertencia 6002: La tabla o vista 'SIFOP.dbo.w_LibroMayorAcumulado_Vlast' no ti
           <Property Name="Valor" Type="Decimal" Precision="9" Scale="4" Nullable="false" />
           <Property Name="LoginCreacion" Type="String" MaxLength="20" FixedLength="false" Unicode="true" Nullable="false" />
           <Property Name="RegAnulado" Type="Boolean" Nullable="false" />
+          <Property Name="FechaCreacion" Type="DateTime" Precision="3" />
           <NavigationProperty Name="Moneda" Relationship="Self.FK_VariacionCambiaria_Moneda" FromRole="VariacionCambiaria" ToRole="Moneda" />
           <NavigationProperty Name="Usuario" Relationship="Self.FK_VariacionCambiaria_Usuario" FromRole="VariacionCambiaria" ToRole="Usuario" />
         </EntityType>
@@ -16694,6 +17031,7 @@ advertencia 6002: La tabla o vista 'SIFOP.dbo.w_LibroMayorAcumulado_Vlast' no ti
           <NavigationProperty Name="DiferenciasArqueo" Relationship="Self.FK_DiferenciasArqueo_FormaPago" FromRole="FormaPago" ToRole="DiferenciasArqueo" />
           <NavigationProperty Name="Usuario" Relationship="Self.FK_FormaPago_FormaPago" FromRole="FormaPago" ToRole="Usuario" />
           <NavigationProperty Name="ReciboPago" Relationship="Self.FK_ReciboPago_FormaPago" FromRole="FormaPago" ToRole="ReciboPago" />
+          <NavigationProperty Name="MovimientoIngreso" Relationship="SIFOPModel.FK_MovimientoIngreso_FormaPago" FromRole="FormaPago" ToRole="MovimientoIngreso" />
         </EntityType>
         <EntityType Name="InfoRecibo">
           <Key>
@@ -16727,6 +17065,7 @@ advertencia 6002: La tabla o vista 'SIFOP.dbo.w_LibroMayorAcumulado_Vlast' no ti
           <Property Name="regAnulado" Type="Boolean" Nullable="false" />
           <NavigationProperty Name="ArqueoNoEfectivo" Relationship="Self.FK_ArqueoNoEfectivo_Recibo" FromRole="Recibo1" ToRole="ArqueoNoEfectivo" />
           <NavigationProperty Name="ArqueoRecibo" Relationship="Self.FK_ArqueoRecibo_Recibo" FromRole="Recibo1" ToRole="ArqueoRecibo" />
+          <NavigationProperty Name="Asiento" Relationship="Self.FK_Asiento_Recibo" FromRole="Recibo1" ToRole="Asiento" />
           <NavigationProperty Name="FuenteFinanciamiento" Relationship="Self.FK_Recibo_FuenteFinanciamiento1" FromRole="Recibo1" ToRole="FuenteFinanciamiento" />
           <NavigationProperty Name="Usuario" Relationship="Self.FK_Recibo_Usuario" FromRole="Recibo1" ToRole="Usuario" />
           <NavigationProperty Name="OrdenPago" Relationship="Self.FK_Recibo_OrdenPago" FromRole="Recibo1" ToRole="OrdenPago" />
@@ -16736,6 +17075,7 @@ advertencia 6002: La tabla o vista 'SIFOP.dbo.w_LibroMayorAcumulado_Vlast' no ti
           <NavigationProperty Name="ReciboAnulado" Relationship="Self.FK_ReciboAnulado_Recibo" FromRole="Recibo1" ToRole="ReciboAnulado" />
           <NavigationProperty Name="ReciboDatos" Relationship="Self.FK_ReciboDatos_Recibo" FromRole="Recibo1" ToRole="ReciboDatos" />
           <NavigationProperty Name="ReciboDet" Relationship="Self.FK_ReciboDet_Recibo" FromRole="Recibo1" ToRole="ReciboDet" />
+          <NavigationProperty Name="ReciboDiferencias" Relationship="Self.FK_ReciboDiferencias_Recibo" FromRole="Recibo1" ToRole="ReciboDiferencias" />
           <NavigationProperty Name="ReciboPago" Relationship="Self.FK_ReciboPago_Recibo" FromRole="Recibo1" ToRole="ReciboPago" />
           <NavigationProperty Name="ReciboSIRA" Relationship="Self.FK_ReciboSIRA_Recibo" FromRole="Recibo1" ToRole="ReciboSIRA" />
         </EntityType>
@@ -16788,6 +17128,18 @@ advertencia 6002: La tabla o vista 'SIFOP.dbo.w_LibroMayorAcumulado_Vlast' no ti
           <NavigationProperty Name="Exoneracion" Relationship="Self.FK_ReciboDet_Exoneracion" FromRole="ReciboDet" ToRole="Exoneracion" />
           <NavigationProperty Name="Recibo1" Relationship="Self.FK_ReciboDet_Recibo" FromRole="ReciboDet" ToRole="Recibo1" />
         </EntityType>
+        <EntityType Name="ReciboDiferencias">
+          <Key>
+            <PropertyRef Name="IdRecibo" />
+            <PropertyRef Name="Serie" />
+          </Key>
+          <Property Name="IdRecibo" Type="Int32" Nullable="false" />
+          <Property Name="Serie" Type="String" MaxLength="1" FixedLength="true" Unicode="false" Nullable="false" />
+          <Property Name="IdMoneda" Type="Int32" Nullable="false" />
+          <Property Name="Monto" Type="Decimal" Precision="18" Scale="2" Nullable="false" />
+          <NavigationProperty Name="Moneda" Relationship="Self.FK_ReciboDiferencias_Moneda" FromRole="ReciboDiferencias" ToRole="Moneda" />
+          <NavigationProperty Name="Recibo1" Relationship="Self.FK_ReciboDiferencias_Recibo" FromRole="ReciboDiferencias" ToRole="Recibo1" />
+        </EntityType>
         <EntityType Name="ReciboPago">
           <Key>
             <PropertyRef Name="IdReciboPago" />
@@ -16801,6 +17153,7 @@ advertencia 6002: La tabla o vista 'SIFOP.dbo.w_LibroMayorAcumulado_Vlast' no ti
           <Property Name="FechaCreacion" Type="DateTime" Nullable="false" Precision="3" />
           <Property Name="UsuarioCreacion" Type="String" MaxLength="20" FixedLength="false" Unicode="true" Nullable="false" />
           <Property Name="regAnulado" Type="Boolean" Nullable="false" />
+          <NavigationProperty Name="ArqueoDocumento" Relationship="Self.FK_ArqueoDocumento_ReciboPago" FromRole="ReciboPago" ToRole="ArqueoDocumento" />
           <NavigationProperty Name="ArqueoNoEfectivo" Relationship="Self.FK_ArqueoNoEfectivo_ReciboPago" FromRole="ReciboPago" ToRole="ArqueoNoEfectivo" />
           <NavigationProperty Name="Moneda" Relationship="Self.FK_ReciboPago_Moneda" FromRole="ReciboPago" ToRole="Moneda" />
           <NavigationProperty Name="Usuario" Relationship="Self.FK_ReciboPago_Usuario" FromRole="ReciboPago" ToRole="Usuario" />
@@ -17113,6 +17466,20 @@ advertencia 6002: La tabla o vista 'SIFOP.dbo.w_LibroMayorAcumulado_Vlast' no ti
           <Property Name="Moneda" Type="String" MaxLength="20" FixedLength="false" Unicode="false" Nullable="false" />
           <Property Name="IdArea" Type="String" MaxLength="4" FixedLength="false" Unicode="false" Nullable="false" />
           <Property Name="Area" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
+        </EntityType>
+        <EntityType Name="vw_AreaEquivalencia">
+          <Key>
+            <PropertyRef Name="CodRH" />
+            <PropertyRef Name="IdF" />
+            <PropertyRef Name="DescripcionF" />
+            <PropertyRef Name="EstadoF" />
+          </Key>
+          <Property Name="CodRH" Type="String" MaxLength="3" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="DescripcionRH" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
+          <Property Name="EstadoRH" Type="String" MaxLength="1" FixedLength="false" Unicode="false" />
+          <Property Name="IdF" Type="Byte" Nullable="false" />
+          <Property Name="DescripcionF" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="EstadoF" Type="Byte" Nullable="false" />
         </EntityType>
         <EntityType Name="vw_Areas">
           <Key>
@@ -17731,8 +18098,10 @@ advertencia 6002: La tabla o vista 'SIFOP.dbo.w_LibroMayorAcumulado_Vlast' no ti
         </EntityType>
         <EntityType Name="QueryAreasFinanzas">
           <Key>
+            <PropertyRef Name="IdActividad" />
             <PropertyRef Name="Descripcion" />
           </Key>
+          <Property Name="IdActividad" Type="Byte" Nullable="false" />
           <Property Name="IdInterfaz" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
           <Property Name="Descripcion" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
         </EntityType>
@@ -18940,6 +19309,18 @@ advertencia 6002: La tabla o vista 'SIFOP.dbo.w_LibroMayorAcumulado_Vlast' no ti
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_ArqueoDocumento_Arqueo">
+          <End Role="Arqueo" Type="Self.Arqueo" Multiplicity="1" />
+          <End Role="ArqueoDocumento" Type="Self.ArqueoDocumento" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Arqueo">
+              <PropertyRef Name="IdArqueoDetApertura" />
+            </Principal>
+            <Dependent Role="ArqueoDocumento">
+              <PropertyRef Name="IdArqueo" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_ArqueoEfectivo_Arqueo">
           <End Role="Arqueo" Type="Self.Arqueo" Multiplicity="1" />
           <End Role="ArqueoEfectivo" Type="Self.ArqueoEfectivo" Multiplicity="*" />
@@ -18973,6 +19354,30 @@ advertencia 6002: La tabla o vista 'SIFOP.dbo.w_LibroMayorAcumulado_Vlast' no ti
             </Principal>
             <Dependent Role="DiferenciasArqueo">
               <PropertyRef Name="IdArqueo" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ArqueoDocumento_ReciboPago">
+          <End Role="ReciboPago" Type="Self.ReciboPago" Multiplicity="1" />
+          <End Role="ArqueoDocumento" Type="Self.ArqueoDocumento" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ReciboPago">
+              <PropertyRef Name="IdReciboPago" />
+            </Principal>
+            <Dependent Role="ArqueoDocumento">
+              <PropertyRef Name="IdReciboPago" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ArqueoDocumento_Usuario">
+          <End Role="Usuario" Type="Self.Usuario" Multiplicity="1" />
+          <End Role="ArqueoDocumento" Type="Self.ArqueoDocumento" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Usuario">
+              <PropertyRef Name="Login" />
+            </Principal>
+            <Dependent Role="ArqueoDocumento">
+              <PropertyRef Name="UsuarioCreacion" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -19328,6 +19733,18 @@ advertencia 6002: La tabla o vista 'SIFOP.dbo.w_LibroMayorAcumulado_Vlast' no ti
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_ReciboDiferencias_Moneda">
+          <End Role="Moneda" Type="Self.Moneda" Multiplicity="1" />
+          <End Role="ReciboDiferencias" Type="Self.ReciboDiferencias" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Moneda">
+              <PropertyRef Name="IdMoneda" />
+            </Principal>
+            <Dependent Role="ReciboDiferencias">
+              <PropertyRef Name="IdMoneda" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_ReciboPago_Moneda">
           <End Role="Moneda" Type="Self.Moneda" Multiplicity="1" />
           <End Role="ReciboPago" Type="Self.ReciboPago" Multiplicity="*" />
@@ -19349,6 +19766,56 @@ advertencia 6002: La tabla o vista 'SIFOP.dbo.w_LibroMayorAcumulado_Vlast' no ti
             </Principal>
             <Dependent Role="VariacionCambiaria">
               <PropertyRef Name="IdMoneda" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Asiento_Asiento">
+          <End Role="CuentaContable" Type="Self.CuentaContable" Multiplicity="1" />
+          <End Role="Asiento" Type="Self.Asiento" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="CuentaContable">
+              <PropertyRef Name="IdCuentaContable" />
+            </Principal>
+            <Dependent Role="Asiento">
+              <PropertyRef Name="IdCuentaContable" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Asiento_Recibo">
+          <End Role="Recibo1" Type="Self.Recibo1" Multiplicity="1" />
+          <End Role="Asiento" Type="Self.Asiento" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Recibo1">
+              <PropertyRef Name="IdRecibo" />
+              <PropertyRef Name="Serie" />
+            </Principal>
+            <Dependent Role="Asiento">
+              <PropertyRef Name="IdRecibo" />
+              <PropertyRef Name="Serie" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_DetalleMovimientoIngreso_CuentaContable">
+          <End Role="CuentaContable" Type="Self.CuentaContable" Multiplicity="1" />
+          <End Role="DetalleMovimientoIngreso" Type="Self.DetalleMovimientoIngreso" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="CuentaContable">
+              <PropertyRef Name="IdCuentaContable" />
+            </Principal>
+            <Dependent Role="DetalleMovimientoIngreso">
+              <PropertyRef Name="IdCuentaContable" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_DetalleMovimientoIngreso_Usuario">
+          <End Role="Usuario" Type="Self.Usuario" Multiplicity="1" />
+          <End Role="DetalleMovimientoIngreso" Type="Self.DetalleMovimientoIngreso" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Usuario">
+              <PropertyRef Name="Login" />
+            </Principal>
+            <Dependent Role="DetalleMovimientoIngreso">
+              <PropertyRef Name="UsuarioCreacion" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -21660,6 +22127,20 @@ advertencia 6002: La tabla o vista 'SIFOP.dbo.w_LibroMayorAcumulado_Vlast' no ti
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_ReciboDiferencias_Recibo">
+          <End Role="Recibo1" Type="Self.Recibo1" Multiplicity="1" />
+          <End Role="ReciboDiferencias" Type="Self.ReciboDiferencias" Multiplicity="0..1" />
+          <ReferentialConstraint>
+            <Principal Role="Recibo1">
+              <PropertyRef Name="IdRecibo" />
+              <PropertyRef Name="Serie" />
+            </Principal>
+            <Dependent Role="ReciboDiferencias">
+              <PropertyRef Name="IdRecibo" />
+              <PropertyRef Name="Serie" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_ReciboPago_Recibo">
           <End Role="Recibo1" Type="Self.Recibo1" Multiplicity="1" />
           <End Role="ReciboPago" Type="Self.ReciboPago" Multiplicity="*" />
@@ -21798,6 +22279,7 @@ advertencia 6002: La tabla o vista 'SIFOP.dbo.w_LibroMayorAcumulado_Vlast' no ti
         </Association>
         <EntityContainer Name="SIFOPEntities" annotation:LazyLoadingEnabled="true">
           <EntitySet Name="Arqueo" EntityType="Self.Arqueo" />
+          <EntitySet Name="ArqueoDocumento" EntityType="Self.ArqueoDocumento" />
           <EntitySet Name="ArqueoEfectivo" EntityType="Self.ArqueoEfectivo" />
           <EntitySet Name="ArqueoNoEfectivo" EntityType="Self.ArqueoNoEfectivo" />
           <EntitySet Name="ArqueoRecibo" EntityType="Self.ArqueoRecibo" />
@@ -21811,9 +22293,12 @@ advertencia 6002: La tabla o vista 'SIFOP.dbo.w_LibroMayorAcumulado_Vlast' no ti
           <EntitySet Name="TransaccionesServicio" EntityType="Self.TransaccionesServicio" />
           <EntitySet Name="UserBank" EntityType="Self.UserBank" />
           <EntitySet Name="AgenteExternoCat" EntityType="Self.AgenteExternoCat" />
+          <EntitySet Name="AreaEquivalencia" EntityType="Self.AreaEquivalencia" />
           <EntitySet Name="IdentificacionAgenteExterno" EntityType="Self.IdentificacionAgenteExterno" />
           <EntitySet Name="DenominacionMoneda" EntityType="Self.DenominacionMoneda" />
           <EntitySet Name="Moneda" EntityType="Self.Moneda" />
+          <EntitySet Name="Asiento" EntityType="Self.Asiento" />
+          <EntitySet Name="DetalleMovimientoIngreso" EntityType="Self.DetalleMovimientoIngreso" />
           <EntitySet Name="Actividad" EntityType="Self.Actividad" />
           <EntitySet Name="AgenteExterno" EntityType="Self.AgenteExterno" />
           <EntitySet Name="AutorizarRestricciones" EntityType="Self.AutorizarRestricciones" />
@@ -21958,6 +22443,7 @@ advertencia 6002: La tabla o vista 'SIFOP.dbo.w_LibroMayorAcumulado_Vlast' no ti
           <EntitySet Name="ReciboAnulado" EntityType="Self.ReciboAnulado" />
           <EntitySet Name="ReciboDatos" EntityType="Self.ReciboDatos" />
           <EntitySet Name="ReciboDet" EntityType="Self.ReciboDet" />
+          <EntitySet Name="ReciboDiferencias" EntityType="Self.ReciboDiferencias" />
           <EntitySet Name="ReciboPago" EntityType="Self.ReciboPago" />
           <EntitySet Name="ReciboPagoBono" EntityType="Self.ReciboPagoBono" />
           <EntitySet Name="ReciboPagoCheque" EntityType="Self.ReciboPagoCheque" />
@@ -21980,6 +22466,7 @@ advertencia 6002: La tabla o vista 'SIFOP.dbo.w_LibroMayorAcumulado_Vlast' no ti
           <EntitySet Name="TmpComprobantePrint" EntityType="Self.TmpComprobantePrint" />
           <EntitySet Name="TmpSolicitudesArchivo" EntityType="Self.TmpSolicitudesArchivo" />
           <EntitySet Name="vw_Aranceles" EntityType="Self.vw_Aranceles" />
+          <EntitySet Name="vw_AreaEquivalencia" EntityType="Self.vw_AreaEquivalencia" />
           <EntitySet Name="vw_Areas" EntityType="Self.vw_Areas" />
           <EntitySet Name="vw_FuentesSIPPSI" EntityType="Self.vw_FuentesSIPPSI" />
           <EntitySet Name="vw_Prematricula" EntityType="Self.vw_Prematricula" />
@@ -22062,6 +22549,10 @@ advertencia 6002: La tabla o vista 'SIFOP.dbo.w_LibroMayorAcumulado_Vlast' no ti
             <End Role="Usuario" EntitySet="Usuario" />
             <End Role="Arqueo" EntitySet="Arqueo" />
           </AssociationSet>
+          <AssociationSet Name="FK_ArqueoDocumento_Arqueo" Association="Self.FK_ArqueoDocumento_Arqueo">
+            <End Role="Arqueo" EntitySet="Arqueo" />
+            <End Role="ArqueoDocumento" EntitySet="ArqueoDocumento" />
+          </AssociationSet>
           <AssociationSet Name="FK_ArqueoEfectivo_Arqueo" Association="Self.FK_ArqueoEfectivo_Arqueo">
             <End Role="Arqueo" EntitySet="Arqueo" />
             <End Role="ArqueoEfectivo" EntitySet="ArqueoEfectivo" />
@@ -22073,6 +22564,14 @@ advertencia 6002: La tabla o vista 'SIFOP.dbo.w_LibroMayorAcumulado_Vlast' no ti
           <AssociationSet Name="FK_DiferenciasArqueo_Arqueo" Association="Self.FK_DiferenciasArqueo_Arqueo">
             <End Role="Arqueo" EntitySet="Arqueo" />
             <End Role="DiferenciasArqueo" EntitySet="DiferenciasArqueo" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ArqueoDocumento_ReciboPago" Association="Self.FK_ArqueoDocumento_ReciboPago">
+            <End Role="ReciboPago" EntitySet="ReciboPago" />
+            <End Role="ArqueoDocumento" EntitySet="ArqueoDocumento" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ArqueoDocumento_Usuario" Association="Self.FK_ArqueoDocumento_Usuario">
+            <End Role="Usuario" EntitySet="Usuario" />
+            <End Role="ArqueoDocumento" EntitySet="ArqueoDocumento" />
           </AssociationSet>
           <AssociationSet Name="FK_ArqueoEfectivo_Moneda" Association="Self.FK_ArqueoEfectivo_Moneda">
             <End Role="Moneda" EntitySet="Moneda" />
@@ -22190,6 +22689,10 @@ advertencia 6002: La tabla o vista 'SIFOP.dbo.w_LibroMayorAcumulado_Vlast' no ti
             <End Role="Usuario" EntitySet="Usuario" />
             <End Role="Moneda" EntitySet="Moneda" />
           </AssociationSet>
+          <AssociationSet Name="FK_ReciboDiferencias_Moneda" Association="Self.FK_ReciboDiferencias_Moneda">
+            <End Role="Moneda" EntitySet="Moneda" />
+            <End Role="ReciboDiferencias" EntitySet="ReciboDiferencias" />
+          </AssociationSet>
           <AssociationSet Name="FK_ReciboPago_Moneda" Association="Self.FK_ReciboPago_Moneda">
             <End Role="Moneda" EntitySet="Moneda" />
             <End Role="ReciboPago" EntitySet="ReciboPago" />
@@ -22197,6 +22700,22 @@ advertencia 6002: La tabla o vista 'SIFOP.dbo.w_LibroMayorAcumulado_Vlast' no ti
           <AssociationSet Name="FK_VariacionCambiaria_Moneda" Association="Self.FK_VariacionCambiaria_Moneda">
             <End Role="Moneda" EntitySet="Moneda" />
             <End Role="VariacionCambiaria" EntitySet="VariacionCambiaria" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Asiento_Asiento" Association="Self.FK_Asiento_Asiento">
+            <End Role="CuentaContable" EntitySet="CuentaContable" />
+            <End Role="Asiento" EntitySet="Asiento" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Asiento_Recibo" Association="Self.FK_Asiento_Recibo">
+            <End Role="Recibo1" EntitySet="Recibo1" />
+            <End Role="Asiento" EntitySet="Asiento" />
+          </AssociationSet>
+          <AssociationSet Name="FK_DetalleMovimientoIngreso_CuentaContable" Association="Self.FK_DetalleMovimientoIngreso_CuentaContable">
+            <End Role="CuentaContable" EntitySet="CuentaContable" />
+            <End Role="DetalleMovimientoIngreso" EntitySet="DetalleMovimientoIngreso" />
+          </AssociationSet>
+          <AssociationSet Name="FK_DetalleMovimientoIngreso_Usuario" Association="Self.FK_DetalleMovimientoIngreso_Usuario">
+            <End Role="Usuario" EntitySet="Usuario" />
+            <End Role="DetalleMovimientoIngreso" EntitySet="DetalleMovimientoIngreso" />
           </AssociationSet>
           <AssociationSet Name="FK_Actividad_Proyecto" Association="Self.FK_Actividad_Proyecto">
             <End Role="Proyecto" EntitySet="Proyecto" />
@@ -22950,6 +23469,10 @@ advertencia 6002: La tabla o vista 'SIFOP.dbo.w_LibroMayorAcumulado_Vlast' no ti
             <End Role="Recibo1" EntitySet="Recibo1" />
             <End Role="ReciboDet" EntitySet="ReciboDet" />
           </AssociationSet>
+          <AssociationSet Name="FK_ReciboDiferencias_Recibo" Association="Self.FK_ReciboDiferencias_Recibo">
+            <End Role="Recibo1" EntitySet="Recibo1" />
+            <End Role="ReciboDiferencias" EntitySet="ReciboDiferencias" />
+          </AssociationSet>
           <AssociationSet Name="FK_ReciboPago_Recibo" Association="Self.FK_ReciboPago_Recibo">
             <End Role="Recibo1" EntitySet="Recibo1" />
             <End Role="ReciboPago" EntitySet="ReciboPago" />
@@ -23022,13 +23545,13 @@ advertencia 6002: La tabla o vista 'SIFOP.dbo.w_LibroMayorAcumulado_Vlast' no ti
             <Parameter Name="IdCuentaContable" Mode="In" Type="Int32" />
           </FunctionImport>
           <FunctionImport Name="fnx_AntiguedadSaldo" IsComposable="true" ReturnType="Collection(SIFOPModel.fnx_AntiguedadSaldo_Result)">
-            <Parameter Name="Hasta" Mode="In" Type="String" />
+          <Parameter Name="Hasta" Mode="In" Type="String" />
           </FunctionImport>
           <FunctionImport Name="fnx_AntiguedadSaldo_V2" IsComposable="true" ReturnType="Collection(SIFOPModel.fnx_AntiguedadSaldo_V2_Result)">
-            <Parameter Name="Hasta" Mode="In" Type="String" />
+          <Parameter Name="Hasta" Mode="In" Type="String" />
           </FunctionImport>
           <FunctionImport Name="fnx_Cheque" IsComposable="true" ReturnType="Collection(SIFOPModel.fnx_Cheque_Result)">
-            <Parameter Name="IdComprobantePago" Mode="In" Type="Int32" />
+          <Parameter Name="IdComprobantePago" Mode="In" Type="Int32" />
           </FunctionImport>
           <FunctionImport Name="fnx_ComparaDocumentos" IsComposable="true" ReturnType="Collection(SIFOPModel.fnx_ComparaDocumentos_Result)">
             <Parameter Name="IdCuentaContable" Mode="In" Type="Int32" />
@@ -23050,7 +23573,7 @@ advertencia 6002: La tabla o vista 'SIFOP.dbo.w_LibroMayorAcumulado_Vlast' no ti
             <Parameter Name="Periodo" Mode="In" Type="Int32" />
           </FunctionImport>
           <FunctionImport Name="fnx_Cuentas_aranceles_banpro" IsComposable="true" ReturnType="Collection(SIFOPModel.fnx_Cuentas_aranceles_banpro_Result)">
-            <Parameter Name="IdActividad" Mode="In" Type="Int32" />
+          <Parameter Name="IdActividad" Mode="In" Type="Int32" />
           </FunctionImport>
           <FunctionImport Name="Fnx_DetalleGasto_Año_Area" IsComposable="true" ReturnType="Collection(SIFOPModel.Fnx_DetalleGasto_Año_Area_Result)">
             <Parameter Name="Anio" Mode="In" Type="Int32" />
@@ -23067,7 +23590,7 @@ advertencia 6002: La tabla o vista 'SIFOP.dbo.w_LibroMayorAcumulado_Vlast' no ti
             <Parameter Name="IdFuente" Mode="In" Type="Byte" />
           </FunctionImport>
           <FunctionImport Name="Fnx_EgresoFuente" IsComposable="true" ReturnType="Collection(SIFOPModel.Fnx_EgresoFuente_Result)">
-            <Parameter Name="IdPeriodoEspecifico" Mode="In" Type="Int32" />
+          <Parameter Name="IdPeriodoEspecifico" Mode="In" Type="Int32" />
           </FunctionImport>
           <FunctionImport Name="Fnx_EgresoFuente_V1" IsComposable="true" ReturnType="Collection(SIFOPModel.Fnx_EgresoFuente_V1_Result)">
             <Parameter Name="IdPeriodoInicial" Mode="In" Type="Int32" />
@@ -23092,7 +23615,7 @@ advertencia 6002: La tabla o vista 'SIFOP.dbo.w_LibroMayorAcumulado_Vlast' no ti
             <Parameter Name="IdActividad" Mode="In" Type="Int32" />
           </FunctionImport>
           <FunctionImport Name="fnx_Genera_LibroMayorAcumulado" IsComposable="true" ReturnType="Collection(SIFOPModel.fnx_Genera_LibroMayorAcumulado_Result)">
-            <Parameter Name="IdAnio" Mode="In" Type="Int32" />
+          <Parameter Name="IdAnio" Mode="In" Type="Int32" />
           </FunctionImport>
           <FunctionImport Name="Fnx_GeneraBalanzaComprobacion" IsComposable="true" ReturnType="Collection(SIFOPModel.Fnx_GeneraBalanzaComprobacion_Result)">
             <Parameter Name="IdPeriodo" Mode="In" Type="Int32" />
@@ -23103,14 +23626,14 @@ advertencia 6002: La tabla o vista 'SIFOP.dbo.w_LibroMayorAcumulado_Vlast' no ti
             <Parameter Name="FF" Mode="In" Type="String" />
           </FunctionImport>
           <FunctionImport Name="fnx_generacategoria_saldos" IsComposable="true" ReturnType="Collection(SIFOPModel.fnx_generacategoria_saldos_Result)">
-            <Parameter Name="IdPeriodo" Mode="In" Type="Int32" />
+          <Parameter Name="IdPeriodo" Mode="In" Type="Int32" />
           </FunctionImport>
           <FunctionImport Name="fnx_GeneraDetalleArea" IsComposable="true" ReturnType="Collection(SIFOPModel.fnx_GeneraDetalleArea_Result)">
             <Parameter Name="IdArea" Mode="In" Type="Int32" />
             <Parameter Name="IdFuente" Mode="In" Type="Int32" />
           </FunctionImport>
           <FunctionImport Name="fnx_GeneraSolicitud_Documentos" IsComposable="true" ReturnType="Collection(SIFOPModel.fnx_GeneraSolicitud_Documentos_Result)">
-            <Parameter Name="IdPeriodoEspecifico" Mode="In" Type="Int32" />
+          <Parameter Name="IdPeriodoEspecifico" Mode="In" Type="Int32" />
           </FunctionImport>
           <FunctionImport Name="Fnx_LineasDistribucion" IsComposable="true" ReturnType="Collection(SIFOPModel.Fnx_LineasDistribucion_Result)">
             <Parameter Name="NoDistribucion" Mode="In" Type="Int32" />
@@ -23157,22 +23680,22 @@ advertencia 6002: La tabla o vista 'SIFOP.dbo.w_LibroMayorAcumulado_Vlast' no ti
             <Parameter Name="Codigo" Mode="In" Type="Byte" />
           </FunctionImport>
           <FunctionImport Name="Fnx_RecuperarDisponibilidad_Año" IsComposable="true" ReturnType="Collection(SIFOPModel.Fnx_RecuperarDisponibilidad_Año_Result)">
-            <Parameter Name="Annio" Mode="In" Type="Int32" />
+          <Parameter Name="Annio" Mode="In" Type="Int32" />
           </FunctionImport>
           <FunctionImport Name="Fnx_RecuperarDisponibilidad_Año_Periodo" IsComposable="true" ReturnType="Collection(SIFOPModel.Fnx_RecuperarDisponibilidad_Año_Periodo_Result)">
-            <Parameter Name="Annio" Mode="In" Type="Int32" />
+          <Parameter Name="Annio" Mode="In" Type="Int32" />
           </FunctionImport>
           <FunctionImport Name="Fnx_RecuperarDisponibilidad_Año_V2" IsComposable="true" ReturnType="Collection(SIFOPModel.Fnx_RecuperarDisponibilidad_Año_V2_Result)">
-            <Parameter Name="Annio" Mode="In" Type="Int32" />
+          <Parameter Name="Annio" Mode="In" Type="Int32" />
           </FunctionImport>
           <FunctionImport Name="Fnx_RecuperarDisponibilidad_Año_V3" IsComposable="true" ReturnType="Collection(SIFOPModel.Fnx_RecuperarDisponibilidad_Año_V3_Result)">
-            <Parameter Name="Annio" Mode="In" Type="Int32" />
+          <Parameter Name="Annio" Mode="In" Type="Int32" />
           </FunctionImport>
           <FunctionImport Name="Fnx_RecuperarDisponibilidad_Año_V4" IsComposable="true" ReturnType="Collection(SIFOPModel.Fnx_RecuperarDisponibilidad_Año_V4_Result)">
-            <Parameter Name="Annio" Mode="In" Type="Int32" />
+          <Parameter Name="Annio" Mode="In" Type="Int32" />
           </FunctionImport>
           <FunctionImport Name="Fnx_RecuperaSaldos_Estructura" IsComposable="true" ReturnType="Collection(SIFOPModel.Fnx_RecuperaSaldos_Estructura_Result)">
-            <Parameter Name="Annio" Mode="In" Type="Int32" />
+          <Parameter Name="Annio" Mode="In" Type="Int32" />
           </FunctionImport>
           <FunctionImport Name="Fnx_RecuperaSaldos_Estructura_v2" IsComposable="true" ReturnType="Collection(SIFOPModel.Fnx_RecuperaSaldos_Estructura_v2_Result)">
             <Parameter Name="Annio" Mode="In" Type="Int32" />
@@ -23209,17 +23732,17 @@ advertencia 6002: La tabla o vista 'SIFOP.dbo.w_LibroMayorAcumulado_Vlast' no ti
             <Parameter Name="IdFuente" Mode="In" Type="Int32" />
           </FunctionImport>
           <FunctionImport Name="SisAccount" IsComposable="true" ReturnType="Collection(SIFOPModel.SisAccount_Result)">
-            <Parameter Name="Enterprise" Mode="In" Type="String" />
+          <Parameter Name="Enterprise" Mode="In" Type="String" />
           </FunctionImport>
           <FunctionImport Name="fn_ObtenerMenu" IsComposable="true" ReturnType="Collection(SIFOPModel.fn_ObtenerMenu_Result)">
             <Parameter Name="user" Mode="In" Type="String" />
             <Parameter Name="isWeb" Mode="In" Type="Boolean" />
           </FunctionImport>
           <FunctionImport Name="LoginInfo" IsComposable="true" ReturnType="Collection(SIFOPModel.LoginInfo_Result)">
-            <Parameter Name="usuario" Mode="In" Type="String" />
+          <Parameter Name="usuario" Mode="In" Type="String" />
           </FunctionImport>
           <FunctionImport Name="sp_ArancelesSIRA">
-            <Parameter Name="carnet" Mode="In" Type="String" />
+          <Parameter Name="carnet" Mode="In" Type="String" />
           </FunctionImport>
           <FunctionImport Name="sp_InsertarPagoSIRA">
             <Parameter Name="carnet" Mode="In" Type="String" />
@@ -23259,7 +23782,7 @@ advertencia 6002: La tabla o vista 'SIFOP.dbo.w_LibroMayorAcumulado_Vlast' no ti
           </FunctionImport>
           <FunctionImport Name="dt_adduserobject" />
           <FunctionImport Name="dt_adduserobject_vcs">
-            <Parameter Name="vchProperty" Mode="In" Type="String" />
+          <Parameter Name="vchProperty" Mode="In" Type="String" />
           </FunctionImport>
           <FunctionImport Name="dt_checkinobject">
             <Parameter Name="chObjectType" Mode="In" Type="String" />
@@ -23316,10 +23839,10 @@ advertencia 6002: La tabla o vista 'SIFOP.dbo.w_LibroMayorAcumulado_Vlast' no ti
             <Parameter Name="property" Mode="In" Type="String" />
           </FunctionImport>
           <FunctionImport Name="dt_dropuserobjectbyid">
-            <Parameter Name="id" Mode="In" Type="Int32" />
+          <Parameter Name="id" Mode="In" Type="Int32" />
           </FunctionImport>
           <FunctionImport Name="dt_generateansiname">
-            <Parameter Name="name" Mode="InOut" Type="String" />
+          <Parameter Name="name" Mode="InOut" Type="String" />
           </FunctionImport>
           <FunctionImport Name="dt_getobjwithprop" ReturnType="Collection(Int32)">
             <Parameter Name="property" Mode="In" Type="String" />
@@ -23584,7 +24107,7 @@ advertencia 6002: La tabla o vista 'SIFOP.dbo.w_LibroMayorAcumulado_Vlast' no ti
             <Parameter Name="Evento" Mode="In" Type="Byte" />
           </FunctionImport>
           <FunctionImport Name="sp_CreaLogin">
-            <Parameter Name="Login" Mode="In" Type="String" />
+          <Parameter Name="Login" Mode="In" Type="String" />
           </FunctionImport>
           <FunctionImport Name="sp_creatediagram">
             <Parameter Name="diagramname" Mode="In" Type="String" />
@@ -23597,7 +24120,7 @@ advertencia 6002: La tabla o vista 'SIFOP.dbo.w_LibroMayorAcumulado_Vlast' no ti
             <Parameter Name="BalanceResultado" Mode="In" Type="Boolean" />
           </FunctionImport>
           <FunctionImport Name="Sp_CuentaAuxiliarMod">
-            <Parameter Name="IdCuentaContable" Mode="In" Type="Int32" />
+          <Parameter Name="IdCuentaContable" Mode="In" Type="Int32" />
           </FunctionImport>
           <FunctionImport Name="Sp_CuentaBalanza_Admin">
             <Parameter Name="IdPeriodoEspecifico" Mode="In" Type="Byte" />
@@ -23609,7 +24132,7 @@ advertencia 6002: La tabla o vista 'SIFOP.dbo.w_LibroMayorAcumulado_Vlast' no ti
             <Parameter Name="MontoCuenta" Mode="In" Type="Decimal" />
           </FunctionImport>
           <FunctionImport Name="Sp_CuentaComplementariaMod">
-            <Parameter Name="IdCuentaContable" Mode="In" Type="Int32" />
+          <Parameter Name="IdCuentaContable" Mode="In" Type="Int32" />
           </FunctionImport>
           <FunctionImport Name="Sp_CuentaContable">
             <Parameter Name="IdCuentaContable" Mode="In" Type="Int32" />
@@ -23642,7 +24165,7 @@ advertencia 6002: La tabla o vista 'SIFOP.dbo.w_LibroMayorAcumulado_Vlast' no ti
             <Parameter Name="owner_id" Mode="In" Type="Int32" />
           </FunctionImport>
           <FunctionImport Name="sp_EgresoActividad" ReturnType="Collection(SIFOPModel.sp_EgresoActividad_Result)">
-            <Parameter Name="IdPeriodoEspecifico" Mode="In" Type="Int32" />
+          <Parameter Name="IdPeriodoEspecifico" Mode="In" Type="Int32" />
           </FunctionImport>
           <FunctionImport Name="sp_EgresoFuente">
             <Parameter Name="IdPeriodoInicial" Mode="In" Type="Int32" />
@@ -23716,10 +24239,10 @@ advertencia 6002: La tabla o vista 'SIFOP.dbo.w_LibroMayorAcumulado_Vlast' no ti
             <Parameter Name="DebeHaber" Mode="In" Type="Boolean" />
           </FunctionImport>
           <FunctionImport Name="Sp_MontoEgresoFuente">
-            <Parameter Name="IdPeriodoEspecifico" Mode="In" Type="Byte" />
+          <Parameter Name="IdPeriodoEspecifico" Mode="In" Type="Byte" />
           </FunctionImport>
           <FunctionImport Name="Sp_MontoEgresoFuente_VEP">
-            <Parameter Name="IdPeriodoEspecifico" Mode="In" Type="Byte" />
+          <Parameter Name="IdPeriodoEspecifico" Mode="In" Type="Byte" />
           </FunctionImport>
           <FunctionImport Name="Sp_Perfil">
             <Parameter Name="IdPerfil" Mode="In" Type="Int32" />
@@ -23729,7 +24252,7 @@ advertencia 6002: La tabla o vista 'SIFOP.dbo.w_LibroMayorAcumulado_Vlast' no ti
             <Parameter Name="Evento" Mode="In" Type="Byte" />
           </FunctionImport>
           <FunctionImport Name="Sp_Perfil_Diferenciado">
-            <Parameter Name="IdPerfil" Mode="In" Type="Int32" />
+          <Parameter Name="IdPerfil" Mode="In" Type="Int32" />
           </FunctionImport>
           <FunctionImport Name="Sp_PerfilContenido_Ins">
             <Parameter Name="IdPerfil" Mode="In" Type="Int32" />
@@ -23936,7 +24459,7 @@ advertencia 6002: La tabla o vista 'SIFOP.dbo.w_LibroMayorAcumulado_Vlast' no ti
             <Parameter Name="Evento" Mode="In" Type="Byte" />
           </FunctionImport>
           <FunctionImport Name="Sp_VariacionCambiariaMod">
-            <Parameter Name="Fecha" Mode="In" Type="DateTime" />
+          <Parameter Name="Fecha" Mode="In" Type="DateTime" />
           </FunctionImport>
           <FunctionImport Name="spr_Bancos_AsignaMontos">
             <Parameter Name="IdPeriodoGeneral" Mode="In" Type="Int32" />
@@ -23967,7 +24490,7 @@ advertencia 6002: La tabla o vista 'SIFOP.dbo.w_LibroMayorAcumulado_Vlast' no ti
             <Parameter Name="M12" Mode="In" Type="Decimal" />
           </FunctionImport>
           <FunctionImport Name="spro_CtaBanco" ReturnType="Collection(SIFOPModel.spro_CtaBanco_Result)">
-            <Parameter Name="Moneda" Mode="In" Type="Int32" />
+          <Parameter Name="Moneda" Mode="In" Type="Int32" />
           </FunctionImport>
           <FunctionImport Name="spro_GeneraLineasCuenta" ReturnType="Collection(SIFOPModel.spro_GeneraLineasCuenta_Result)">
             <Parameter Name="IdPeriodoEspecifico" Mode="In" Type="Int32" />
@@ -23989,7 +24512,7 @@ advertencia 6002: La tabla o vista 'SIFOP.dbo.w_LibroMayorAcumulado_Vlast' no ti
             <Parameter Name="Evento" Mode="In" Type="Byte" />
           </FunctionImport>
           <FunctionImport Name="sproc_CargarEstadosCheques">
-            <Parameter Name="LoginCreacion" Mode="In" Type="String" />
+          <Parameter Name="LoginCreacion" Mode="In" Type="String" />
           </FunctionImport>
           <FunctionImport Name="sproc_CargarUsuariosCheques">
             <Parameter Name="LoginCreacion" Mode="In" Type="String" />
@@ -23997,14 +24520,14 @@ advertencia 6002: La tabla o vista 'SIFOP.dbo.w_LibroMayorAcumulado_Vlast' no ti
             <Parameter Name="FF" Mode="In" Type="String" />
           </FunctionImport>
           <FunctionImport Name="sproc_ComprobantesaRendir">
-            <Parameter Name="FF" Mode="In" Type="String" />
+          <Parameter Name="FF" Mode="In" Type="String" />
           </FunctionImport>
           <FunctionImport Name="sproc_DeleteLinea">
             <Parameter Name="IdActividad" Mode="In" Type="Int32" />
             <Parameter Name="Secuencia" Mode="In" Type="Int32" />
           </FunctionImport>
           <FunctionImport Name="sproc_DeleteLineaTransferencia">
-            <Parameter Name="IdActividad" Mode="In" Type="Int32" />
+          <Parameter Name="IdActividad" Mode="In" Type="Int32" />
           </FunctionImport>
           <FunctionImport Name="sproc_Distribucion">
             <Parameter Name="IdDistribucion" Mode="In" Type="Int32" />
@@ -24024,7 +24547,7 @@ advertencia 6002: La tabla o vista 'SIFOP.dbo.w_LibroMayorAcumulado_Vlast' no ti
             <Parameter Name="nAccion" Mode="In" Type="Byte" />
           </FunctionImport>
           <FunctionImport Name="sproc_GeneraAnticiposGastos">
-            <Parameter Name="Login" Mode="In" Type="String" />
+          <Parameter Name="Login" Mode="In" Type="String" />
           </FunctionImport>
           <FunctionImport Name="sproc_GeneraChequesArchivo">
             <Parameter Name="strFI" Mode="In" Type="String" />
@@ -24062,7 +24585,7 @@ advertencia 6002: La tabla o vista 'SIFOP.dbo.w_LibroMayorAcumulado_Vlast' no ti
             <Parameter Name="IdBeneficiario" Mode="In" Type="Int32" />
           </FunctionImport>
           <FunctionImport Name="sproc_ParametroIngreosNC">
-            <Parameter Name="Operacion" Mode="In" Type="Int32" />
+          <Parameter Name="Operacion" Mode="In" Type="Int32" />
           </FunctionImport>
           <FunctionImport Name="sproc_PrestamosDocumentos">
             <Parameter Name="IDPrestamo" Mode="In" Type="Int32" />
@@ -24161,8 +24684,25 @@ advertencia 6002: La tabla o vista 'SIFOP.dbo.w_LibroMayorAcumulado_Vlast' no ti
             <Parameter Name="Sistema" Mode="In" Type="String" />
           </FunctionImport>
           <FunctionImport Name="fn_ObtenerInfoUsuario">
-            <Parameter Name="NoInterno" Mode="In" Type="String" />
+          <Parameter Name="NoInterno" Mode="In" Type="String" />
           </FunctionImport>
+          <EntitySet Name="MovimientoIngreso" EntityType="SIFOPModel.MovimientoIngreso" />
+          <AssociationSet Name="FK_MovimientoIngreso_Moneda" Association="SIFOPModel.FK_MovimientoIngreso_Moneda">
+            <End Role="Moneda" EntitySet="Moneda" />
+            <End Role="MovimientoIngreso" EntitySet="MovimientoIngreso" />
+          </AssociationSet>
+          <AssociationSet Name="FK_DetalleMovimientoIngreso_MovimientoIngreso" Association="SIFOPModel.FK_DetalleMovimientoIngreso_MovimientoIngreso">
+            <End Role="MovimientoIngreso" EntitySet="MovimientoIngreso" />
+            <End Role="DetalleMovimientoIngreso" EntitySet="DetalleMovimientoIngreso" />
+          </AssociationSet>
+          <AssociationSet Name="FK_MovimientoIngreso_FormaPago" Association="SIFOPModel.FK_MovimientoIngreso_FormaPago">
+            <End Role="FormaPago" EntitySet="FormaPago" />
+            <End Role="MovimientoIngreso" EntitySet="MovimientoIngreso" />
+          </AssociationSet>
+          <AssociationSet Name="FK_MovimientoIngreso_Usuario" Association="SIFOPModel.FK_MovimientoIngreso_Usuario">
+            <End Role="Usuario" EntitySet="Usuario" />
+            <End Role="MovimientoIngreso" EntitySet="MovimientoIngreso" />
+          </AssociationSet>
         </EntityContainer>
         <ComplexType Name="dt_getpropertiesbyid_Result">
           <Property Type="String" Name="property" Nullable="false" MaxLength="64" />
@@ -24234,6 +24774,69 @@ advertencia 6002: La tabla o vista 'SIFOP.dbo.w_LibroMayorAcumulado_Vlast' no ti
           <Property Type="Decimal" Name="Haber" Nullable="false" Precision="18" Scale="2" />
           <Property Type="Decimal" Name="Saldo" Nullable="true" Precision="19" Scale="2" />
         </ComplexType>
+        <EntityType Name="MovimientoIngreso">
+          <Key>
+            <PropertyRef Name="IdMovimientoIngreso" />
+          </Key>
+          <Property Name="IdMovimientoIngreso" Type="Int32" Nullable="false" />
+          <Property Name="IdFormaPago" Type="Int32" Nullable="false" />
+          <Property Name="IdMoneda" Type="Int32" Nullable="false" />
+          <Property Name="IdRecinto" Type="Int32" Nullable="false" />
+          <Property Name="FechaCreacion" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="UsuarioCreacion" Type="String" Nullable="false" MaxLength="20" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="Moneda" Relationship="SIFOPModel.FK_MovimientoIngreso_Moneda" FromRole="MovimientoIngreso" ToRole="Moneda" />
+          <NavigationProperty Name="DetalleMovimientoIngreso" Relationship="SIFOPModel.FK_DetalleMovimientoIngreso_MovimientoIngreso" FromRole="MovimientoIngreso" ToRole="DetalleMovimientoIngreso" />
+          <NavigationProperty Name="FormaPago" Relationship="SIFOPModel.FK_MovimientoIngreso_FormaPago" FromRole="MovimientoIngreso" ToRole="FormaPago" />
+          <NavigationProperty Name="Usuario" Relationship="SIFOPModel.FK_MovimientoIngreso_Usuario" FromRole="MovimientoIngreso" ToRole="Usuario" />
+        </EntityType>
+        <Association Name="FK_MovimientoIngreso_Moneda">
+          <End Type="SIFOPModel.Moneda" Role="Moneda" Multiplicity="1" />
+          <End Type="SIFOPModel.MovimientoIngreso" Role="MovimientoIngreso" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Moneda">
+              <PropertyRef Name="IdMoneda" />
+            </Principal>
+            <Dependent Role="MovimientoIngreso">
+              <PropertyRef Name="IdMoneda" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_DetalleMovimientoIngreso_MovimientoIngreso">
+          <End Type="SIFOPModel.MovimientoIngreso" Role="MovimientoIngreso" Multiplicity="1" />
+          <End Type="SIFOPModel.DetalleMovimientoIngreso" Role="DetalleMovimientoIngreso" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="MovimientoIngreso">
+              <PropertyRef Name="IdMovimientoIngreso" />
+            </Principal>
+            <Dependent Role="DetalleMovimientoIngreso">
+              <PropertyRef Name="IdMovimientoIngreso" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_MovimientoIngreso_FormaPago">
+          <End Type="SIFOPModel.FormaPago" Role="FormaPago" Multiplicity="1" />
+          <End Type="SIFOPModel.MovimientoIngreso" Role="MovimientoIngreso" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="FormaPago">
+              <PropertyRef Name="IdFormaPago" />
+            </Principal>
+            <Dependent Role="MovimientoIngreso">
+              <PropertyRef Name="IdFormaPago" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_MovimientoIngreso_Usuario">
+          <End Type="SIFOPModel.Usuario" Role="Usuario" Multiplicity="1" />
+          <End Type="SIFOPModel.MovimientoIngreso" Role="MovimientoIngreso" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Usuario">
+              <PropertyRef Name="Login" />
+            </Principal>
+            <Dependent Role="MovimientoIngreso">
+              <PropertyRef Name="UsuarioCreacion" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -24250,6 +24853,19 @@ advertencia 6002: La tabla o vista 'SIFOP.dbo.w_LibroMayorAcumulado_Vlast' no ti
                 <ScalarProperty Name="Observaciones" ColumnName="Observaciones" />
                 <ScalarProperty Name="CajeroEntrega" ColumnName="CajeroEntrega" />
                 <ScalarProperty Name="isFinalizado" ColumnName="isFinalizado" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ArqueoDocumento">
+            <EntityTypeMapping TypeName="SIFOPModel.ArqueoDocumento">
+              <MappingFragment StoreEntitySet="ArqueoDocumento">
+                <ScalarProperty Name="IdArqueoDocumento" ColumnName="IdArqueoDocumento" />
+                <ScalarProperty Name="IdArqueo" ColumnName="IdArqueo" />
+                <ScalarProperty Name="IdReciboPago" ColumnName="IdReciboPago" />
+                <ScalarProperty Name="isOk" ColumnName="isOk" />
+                <ScalarProperty Name="Observacion" ColumnName="Observacion" />
+                <ScalarProperty Name="FechaCreacion" ColumnName="FechaCreacion" />
+                <ScalarProperty Name="UsuarioCreacion" ColumnName="UsuarioCreacion" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -24422,6 +25038,16 @@ advertencia 6002: La tabla o vista 'SIFOP.dbo.w_LibroMayorAcumulado_Vlast' no ti
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
+          <EntitySetMapping Name="AreaEquivalencia">
+            <EntityTypeMapping TypeName="SIFOPModel.AreaEquivalencia">
+              <MappingFragment StoreEntitySet="AreaEquivalencia">
+                <ScalarProperty Name="IdAreaFinanzas" ColumnName="IdAreaFinanzas" />
+                <ScalarProperty Name="IdAreaRRHH" ColumnName="IdAreaRRHH" />
+                <ScalarProperty Name="FechaCreacion" ColumnName="FechaCreacion" />
+                <ScalarProperty Name="UsuarioCreacion" ColumnName="UsuarioCreacion" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
           <EntitySetMapping Name="IdentificacionAgenteExterno">
             <EntityTypeMapping TypeName="SIFOPModel.IdentificacionAgenteExterno">
               <MappingFragment StoreEntitySet="IdentificacionAgenteExterno">
@@ -24455,6 +25081,34 @@ advertencia 6002: La tabla o vista 'SIFOP.dbo.w_LibroMayorAcumulado_Vlast' no ti
                 <ScalarProperty Name="WebService" ColumnName="WebService" />
                 <ScalarProperty Name="UsuarioCreacion" ColumnName="UsuarioCreacion" />
                 <ScalarProperty Name="FechaCreacion" ColumnName="FechaCreacion" />
+                <ScalarProperty Name="regAnulado" ColumnName="regAnulado" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Asiento">
+            <EntityTypeMapping TypeName="SIFOPModel.Asiento">
+              <MappingFragment StoreEntitySet="Asiento">
+                <ScalarProperty Name="IdAsiento" ColumnName="IdAsiento" />
+                <ScalarProperty Name="IdRecibo" ColumnName="IdRecibo" />
+                <ScalarProperty Name="Serie" ColumnName="Serie" />
+                <ScalarProperty Name="IdArea" ColumnName="IdArea" />
+                <ScalarProperty Name="IdCuentaContable" ColumnName="IdCuentaContable" />
+                <ScalarProperty Name="Naturaleza" ColumnName="Naturaleza" />
+                <ScalarProperty Name="Monto" ColumnName="Monto" />
+                <ScalarProperty Name="regAnulado" ColumnName="regAnulado" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="DetalleMovimientoIngreso">
+            <EntityTypeMapping TypeName="SIFOPModel.DetalleMovimientoIngreso">
+              <MappingFragment StoreEntitySet="DetalleMovimientoIngreso">
+                <ScalarProperty Name="IdDetalleMovimientoIngreso" ColumnName="IdDetalleMovimientoIngreso" />
+                <ScalarProperty Name="IdMovimientoIngreso" ColumnName="IdMovimientoIngreso" />
+                <ScalarProperty Name="IdCuentaContable" ColumnName="IdCuentaContable" />
+                <ScalarProperty Name="Naturaleza" ColumnName="Naturaleza" />
+                <ScalarProperty Name="FactorPorcentual" ColumnName="FactorPorcentual" />
+                <ScalarProperty Name="FechaCreacion" ColumnName="FechaCreacion" />
+                <ScalarProperty Name="UsuarioCreacion" ColumnName="UsuarioCreacion" />
                 <ScalarProperty Name="regAnulado" ColumnName="regAnulado" />
               </MappingFragment>
             </EntityTypeMapping>
@@ -26497,6 +27151,7 @@ advertencia 6002: La tabla o vista 'SIFOP.dbo.w_LibroMayorAcumulado_Vlast' no ti
                 <ScalarProperty Name="Valor" ColumnName="Valor" />
                 <ScalarProperty Name="LoginCreacion" ColumnName="LoginCreacion" />
                 <ScalarProperty Name="RegAnulado" ColumnName="RegAnulado" />
+                <ScalarProperty Name="FechaCreacion" ColumnName="FechaCreacion" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -26752,6 +27407,16 @@ advertencia 6002: La tabla o vista 'SIFOP.dbo.w_LibroMayorAcumulado_Vlast' no ti
                 <ScalarProperty Name="UsuarioCreacion" ColumnName="UsuarioCreacion" />
                 <ScalarProperty Name="FechaCreacion" ColumnName="FechaCreacion" />
                 <ScalarProperty Name="regAnulado" ColumnName="regAnulado" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ReciboDiferencias">
+            <EntityTypeMapping TypeName="SIFOPModel.ReciboDiferencias">
+              <MappingFragment StoreEntitySet="ReciboDiferencias">
+                <ScalarProperty Name="IdRecibo" ColumnName="IdRecibo" />
+                <ScalarProperty Name="Serie" ColumnName="Serie" />
+                <ScalarProperty Name="IdMoneda" ColumnName="IdMoneda" />
+                <ScalarProperty Name="Monto" ColumnName="Monto" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -27031,6 +27696,18 @@ advertencia 6002: La tabla o vista 'SIFOP.dbo.w_LibroMayorAcumulado_Vlast' no ti
                 <ScalarProperty Name="Moneda" ColumnName="Moneda" />
                 <ScalarProperty Name="IdArea" ColumnName="IdArea" />
                 <ScalarProperty Name="Area" ColumnName="Area" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="vw_AreaEquivalencia">
+            <EntityTypeMapping TypeName="SIFOPModel.vw_AreaEquivalencia">
+              <MappingFragment StoreEntitySet="vw_AreaEquivalencia">
+                <ScalarProperty Name="CodRH" ColumnName="CodRH" />
+                <ScalarProperty Name="DescripcionRH" ColumnName="DescripcionRH" />
+                <ScalarProperty Name="EstadoRH" ColumnName="EstadoRH" />
+                <ScalarProperty Name="IdF" ColumnName="IdF" />
+                <ScalarProperty Name="DescripcionF" ColumnName="DescripcionF" />
+                <ScalarProperty Name="EstadoF" ColumnName="EstadoF" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -27557,6 +28234,7 @@ advertencia 6002: La tabla o vista 'SIFOP.dbo.w_LibroMayorAcumulado_Vlast' no ti
           <EntitySetMapping Name="QueryAreasFinanzas">
             <EntityTypeMapping TypeName="SIFOPModel.QueryAreasFinanzas">
               <MappingFragment StoreEntitySet="QueryAreasFinanzas">
+                <ScalarProperty Name="IdActividad" ColumnName="IdActividad" />
                 <ScalarProperty Name="IdInterfaz" ColumnName="IdInterfaz" />
                 <ScalarProperty Name="Descripcion" ColumnName="Descripcion" />
               </MappingFragment>
@@ -29972,6 +30650,18 @@ advertencia 6002: La tabla o vista 'SIFOP.dbo.w_LibroMayorAcumulado_Vlast' no ti
           <FunctionImportMapping FunctionImportName="sproc_VincularDocumentos" FunctionName="SIFOPModel.Store.sproc_VincularDocumentos" />
           <FunctionImportMapping FunctionImportName="sp_InsertarOrdenPago" FunctionName="SIFOPModel.Store.sp_InsertarOrdenPago" />
           <FunctionImportMapping FunctionImportName="fn_ObtenerInfoUsuario" FunctionName="SIFOPModel.Store.fn_ObtenerInfoUsuario" />
+          <EntitySetMapping Name="MovimientoIngreso">
+            <EntityTypeMapping TypeName="SIFOPModel.MovimientoIngreso">
+              <MappingFragment StoreEntitySet="MovimientoIngreso">
+                <ScalarProperty Name="UsuarioCreacion" ColumnName="UsuarioCreacion" />
+                <ScalarProperty Name="FechaCreacion" ColumnName="FechaCreacion" />
+                <ScalarProperty Name="IdRecinto" ColumnName="IdRecinto" />
+                <ScalarProperty Name="IdMoneda" ColumnName="IdMoneda" />
+                <ScalarProperty Name="IdFormaPago" ColumnName="IdFormaPago" />
+                <ScalarProperty Name="IdMovimientoIngreso" ColumnName="IdMovimientoIngreso" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
         </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>

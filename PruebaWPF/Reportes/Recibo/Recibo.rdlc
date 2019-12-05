@@ -908,7 +908,7 @@
               <Paragraph>
                 <TextRuns>
                   <TextRun>
-                    <Value>Cobros realizados</Value>
+                    <Value>Concepto(s) de Pago</Value>
                     <Style>
                       <FontWeight>Bold</FontWeight>
                     </Style>
@@ -2211,7 +2211,7 @@ IIF(string.IsNullOrEmpty(Fields!Concepto.Value),Fields!Arancel.Value,Fields!Conc
             <Source>Embedded</Source>
             <Value>anulado</Value>
             <Sizing>FitProportional</Sizing>
-            <Top>1.12273cm</Top>
+            <Top>1.82245cm</Top>
             <Left>0.1cm</Left>
             <Height>10.23055cm</Height>
             <Width>7.19cm</Width>

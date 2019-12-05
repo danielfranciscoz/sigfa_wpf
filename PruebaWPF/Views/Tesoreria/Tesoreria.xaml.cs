@@ -3,7 +3,6 @@ using PruebaWPF.Model;
 using PruebaWPF.Referencias;
 using PruebaWPF.UserControls;
 using PruebaWPF.ViewModel;
-using PruebaWPF.Views.Main;
 using PruebaWPF.Views.Shared;
 using System;
 using System.Collections.Generic;
@@ -32,6 +31,9 @@ namespace PruebaWPF.Views.Tesoreria
 
         private List<InfoReciboSon> infoRecibos;
 
+        private List<MovimientoIngreso> movimientosIngreso;
+        private List<CuentaContable> cuentasContable;
+
         public static Boolean Cambios = false;
         public Tesoreria()
         {
@@ -54,54 +56,6 @@ namespace PruebaWPF.Views.Tesoreria
             this.layoutRoot.DataContext = e;
         }
 
-        private Task<List<CajaSon>> FindAsyncCajas()
-        {
-            return Task.Run(() =>
-            {
-                return controller().FindAllCajas();
-            });
-        }
-
-        private Task<List<SerieRecibo>> FindAsyncSeires()
-        {
-            return Task.Run(() =>
-            {
-                return controller().FindAllSeries();
-            });
-        }
-
-        private Task<List<CiaTarjetaCredito>> FindAsyncTarjetas()
-        {
-            return Task.Run(() =>
-            {
-                return controller().FindAllTarjetas();
-            });
-        }
-
-        private Task<List<Banco>> FindAsyncBancos()
-        {
-            return Task.Run(() =>
-            {
-                return controller().FindAllBancos();
-            });
-        }
-
-        private Task<List<FormaPago>> FindAsyncFormasPago()
-        {
-            return Task.Run(() =>
-            {
-                return controller().FindAllFormasPago();
-            });
-        }
-
-        private Task<List<InfoReciboSon>> FindAsyncInfoRecibo()
-        {
-            return Task.Run(() =>
-            {
-                return controller().FindAllInfoRecibos();
-            });
-        }
-
         private async void LoadTableCaja()
         {
             try
@@ -109,17 +63,12 @@ namespace PruebaWPF.Views.Tesoreria
                 cajas = await FindAsyncCajas();
                 tblCajas.ItemsSource = cajas;
                 tblCajas.Height = panelGrid.ActualHeight;
-                ContarRegistrosCaja();
+
             }
             catch (Exception ex)
             {
                 clsUtilidades.OpenMessage(new Operacion() { Mensaje = new clsException(ex).ErrorMessage(), OperationType = clsReferencias.TYPE_MESSAGE_Error });
             }
-        }
-
-        private void ContarRegistrosCaja()
-        {
-            lblCantidadRegitrosCaja.Text = "" + tblCajas.Items.Count;
         }
 
         private void Page_Loaded(object sender, RoutedEventArgs e)
@@ -163,6 +112,12 @@ namespace PruebaWPF.Views.Tesoreria
                             CargarPesataña4();
                         }
                         break;
+                    case 4:
+                        if (movimientosIngreso == null || cuentasContable == null || Cambios)
+                        {
+                            CargarPesataña5();
+                        }
+                        break;
                 }
             }
             else
@@ -196,6 +151,56 @@ namespace PruebaWPF.Views.Tesoreria
             LoadTableInfoRecibo();
         }
 
+        private void CargarPesataña5()
+        {
+            LoadTableMovimiento();
+            LoadTableVaraciones();
+        }
+
+        #region Carga de Tablas y listas
+
+        private async void LoadTableMovimiento()
+        {
+            try
+            {
+                movimientosIngreso = await FindAsyncMovimientos();
+                lstMovimientos.ItemsSource = movimientosIngreso;
+                lstMovimientos.Height = panelGridMovimiento.ActualHeight;
+            }
+            catch (Exception ex)
+            {
+                clsUtilidades.OpenMessage(new Operacion() { Mensaje = new clsException(ex).ErrorMessage(), OperationType = clsReferencias.TYPE_MESSAGE_Error });
+            }
+        }
+
+        private async void LoadTableDetalleMovimiento(MovimientoIngreso movimiento)
+        {
+            try
+            {
+                var detalle = await FindAsynDetalleMovimientos(movimiento.IdMovimientoIngreso);
+                lstDetalleMovimientos.ItemsSource = detalle;
+                lstDetalleMovimientos.Height = panelGridDetalleMovimientos.ActualHeight;
+            }
+            catch (Exception ex)
+            {
+                clsUtilidades.OpenMessage(new Operacion() { Mensaje = new clsException(ex).ErrorMessage(), OperationType = clsReferencias.TYPE_MESSAGE_Error });
+            }
+        }
+
+        private async void LoadTableVaraciones()
+        {
+            try
+            {
+                cuentasContable = await FindAsyncVariaciones();
+                tblVariaciones.ItemsSource = cuentasContable;
+                tblVariaciones.Height = panelGridVariaciones.ActualHeight;
+            }
+            catch (Exception ex)
+            {
+                clsUtilidades.OpenMessage(new Operacion() { Mensaje = new clsException(ex).ErrorMessage(), OperationType = clsReferencias.TYPE_MESSAGE_Error });
+            }
+        }
+
         private async void LoadListIdentificaciones()
         {
             try
@@ -224,14 +229,6 @@ namespace PruebaWPF.Views.Tesoreria
             }
         }
 
-        private Task<List<IdentificacionAgenteExterno>> FindAsyncIdentificaciones()
-        {
-            return Task.Run(() =>
-            {
-                return controller().FindAllIdentifiaciones();
-            });
-        }
-
         private async void LoadListMoneda()
         {
             try
@@ -246,14 +243,6 @@ namespace PruebaWPF.Views.Tesoreria
             }
         }
 
-        private Task<List<Moneda>> FindAsyncMonedas()
-        {
-            return Task.Run(() =>
-            {
-                return controller().FindAllMonedas();
-            });
-        }
-
         private async void LoadListFF()
         {
             try
@@ -266,14 +255,6 @@ namespace PruebaWPF.Views.Tesoreria
             {
                 clsUtilidades.OpenMessage(new Operacion() { Mensaje = new clsException(ex).ErrorMessage(), OperationType = clsReferencias.TYPE_MESSAGE_Error });
             }
-        }
-
-        private Task<List<FuenteFinanciamientoSon>> FindAsyncFuentes()
-        {
-            return Task.Run(() =>
-            {
-                return controller().FindAllFuentesFinanciamiento();
-            });
         }
 
         private async void LoadTableSerie()
@@ -332,86 +313,9 @@ namespace PruebaWPF.Views.Tesoreria
                 clsUtilidades.OpenMessage(new Operacion() { Mensaje = new clsException(ex).ErrorMessage(), OperationType = clsReferencias.TYPE_MESSAGE_Error });
             }
         }
+        #endregion
 
-        private void btn_Exportar(object sender, RoutedEventArgs e)
-        {
-            try
-            {
-                if (controller().Authorize(((Button)sender).Tag.ToString()))
-                {
-                    Exportar export = new Exportar(GetDataTable.GetDataGridRows(tblCajas));
-                    export.ShowDialog();
-                }
-            }
-            catch (Exception ex)
-            {
-                clsUtilidades.OpenMessage(new Operacion() { Mensaje = new clsException(ex).ErrorMessage(), OperationType = clsReferencias.TYPE_MESSAGE_Error });
-            }
-        }
-
-        private TesoreriaViewModel controller()
-        {
-            return new TesoreriaViewModel(pantalla);
-        }
-
-        private void btnNew_Click(object sender, RoutedEventArgs e)
-        {
-            try
-            {
-                if (controller().Authorize(((Button)sender).Tag.ToString()))
-                {
-                    GestionarCaja gc = new GestionarCaja(pantalla, btnNew.Tag.ToString());
-                    gc.ShowDialog();
-                }
-            }
-            catch (Exception ex)
-            {
-                clsUtilidades.OpenMessage(new Operacion() { Mensaje = new clsException(ex).ErrorMessage(), OperationType = clsReferencias.TYPE_MESSAGE_Error });
-            }
-        }
-        private void btnNewSerie_Click(object sender, RoutedEventArgs e)
-        {
-            try
-            {
-                if (controller().Authorize(((Button)sender).Tag.ToString()))
-                {
-                    AddSerie ad = new AddSerie(pantalla);
-                    ad.ShowDialog();
-                }
-            }
-            catch (Exception ex)
-            {
-                clsUtilidades.OpenMessage(new Operacion() { Mensaje = new clsException(ex).ErrorMessage(), OperationType = clsReferencias.TYPE_MESSAGE_Error });
-            }
-        }
-        private void btnDelete_Click(object sender, RoutedEventArgs e)
-        {
-            try
-            {
-                CajaSon son = ((CajaSon)tblCajas.CurrentItem);
-                if (controller().Authorize_Recinto(((Button)sender).Tag.ToString(), son.IdRecinto))
-                {
-                    if (controller().VeriricarAperturasArquedas(son))
-                    {
-                        if (clsUtilidades.OpenDeleteQuestionMessage())
-                        {
-                            clsUtilidades.OpenMessage(EliminarCaja());
-                        }
-                    }
-                    else
-                    {
-                        clsUtilidades.OpenMessage(new Operacion() {Mensaje= "La caja no puede ser eliminada debido a que aun existen arqueos pendientes en el equipo",OperationType=clsReferencias.TYPE_MESSAGE_Advertencia });
-                    }
-
-                }
-            }
-            catch (Exception ex)
-            {
-                clsUtilidades.OpenMessage(new Operacion() { Mensaje = new clsException(ex).ErrorMessage(), OperationType = clsReferencias.TYPE_MESSAGE_Error });
-
-            }
-        }
-
+        #region Operaciones
         private Operacion EliminarCaja()
         {
 
@@ -452,6 +356,218 @@ namespace PruebaWPF.Views.Tesoreria
             }
             return o;
 
+        }
+
+        private Operacion EliminarTarjeta()
+        {
+            Operacion o = new Operacion();
+            try
+            {
+                controller().EliminarTarjeta((CiaTarjetaCredito)lstTarjeta.SelectedItem);
+
+                o.Mensaje = clsReferencias.MESSAGE_Exito_Delete;
+                o.OperationType = clsReferencias.TYPE_MESSAGE_Exito;
+                LoadListTarjeta();
+            }
+            catch (Exception ex)
+            {
+                o.Mensaje = new clsException(ex).ErrorMessage();
+                o.OperationType = clsReferencias.TYPE_MESSAGE_Error;
+            }
+            return o;
+        }
+
+        private Operacion EliminarBanco()
+        {
+            Operacion o = new Operacion();
+            try
+            {
+                controller().EliminarBanco((Banco)lstBanco.SelectedItem);
+
+                o.Mensaje = clsReferencias.MESSAGE_Exito_Delete;
+                o.OperationType = clsReferencias.TYPE_MESSAGE_Exito;
+                LoadListBanco();
+            }
+            catch (Exception ex)
+            {
+                o.Mensaje = new clsException(ex).ErrorMessage();
+                o.OperationType = clsReferencias.TYPE_MESSAGE_Error;
+            }
+            return o;
+        }
+
+        private Operacion EliminarFormaPago()
+        {
+            Operacion o = new Operacion();
+            try
+            {
+                controller().EliminarFormaPago((FormaPago)lstFormaPago.SelectedItem);
+
+                o.Mensaje = clsReferencias.MESSAGE_Exito_Delete;
+                o.OperationType = clsReferencias.TYPE_MESSAGE_Exito;
+                LoadListFormaPago();
+            }
+            catch (Exception ex)
+            {
+                o.Mensaje = new clsException(ex).ErrorMessage();
+                o.OperationType = clsReferencias.TYPE_MESSAGE_Error;
+            }
+            return o;
+        }
+
+        private Operacion EliminarFF()
+        {
+            Operacion o = new Operacion();
+            try
+            {
+                controller().EliminarFF((FuenteFinanciamiento)lstFF.SelectedItem);
+
+                o.Mensaje = clsReferencias.MESSAGE_Exito_Delete;
+                o.OperationType = clsReferencias.TYPE_MESSAGE_Exito;
+                LoadListFF();
+            }
+            catch (Exception ex)
+            {
+                o.Mensaje = new clsException(ex).ErrorMessage();
+                o.OperationType = clsReferencias.TYPE_MESSAGE_Error;
+            }
+            return o;
+        }
+
+        private Operacion EliminarMoneda()
+        {
+            Operacion o = new Operacion();
+            try
+            {
+                controller().EliminarMoneda((Moneda)lstMoneda.SelectedItem);
+
+                o.Mensaje = clsReferencias.MESSAGE_Exito_Delete;
+                o.OperationType = clsReferencias.TYPE_MESSAGE_Exito;
+                LoadListMoneda();
+            }
+            catch (Exception ex)
+            {
+                o.Mensaje = new clsException(ex).ErrorMessage();
+                o.OperationType = clsReferencias.TYPE_MESSAGE_Error;
+            }
+            return o;
+        }
+
+        private Operacion EliminarIdentificacion()
+        {
+            Operacion o = new Operacion();
+            try
+            {
+                controller().EliminarIdentificacion((IdentificacionAgenteExterno)lstIdentificacion.SelectedItem);
+
+                o.Mensaje = clsReferencias.MESSAGE_Exito_Delete;
+                o.OperationType = clsReferencias.TYPE_MESSAGE_Exito;
+                LoadListIdentificaciones();
+            }
+            catch (Exception ex)
+            {
+                o.Mensaje = new clsException(ex).ErrorMessage();
+                o.OperationType = clsReferencias.TYPE_MESSAGE_Error;
+            }
+            return o;
+        }
+
+        #endregion
+        private TesoreriaViewModel controller()
+        {
+            return new TesoreriaViewModel(pantalla);
+        }
+
+        #region Eventos
+
+
+        private void LstMovimientos_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (lstMovimientos.SelectedItem != null)
+            {
+                LoadTableDetalleMovimiento((MovimientoIngreso) lstMovimientos.SelectedItem);
+            }
+        }
+
+        private void BtnEditVariacion_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void btn_Exportar(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                if (controller().Authorize(((Button)sender).Tag.ToString()))
+                {
+                    Exportar export = new Exportar(GetDataTable.GetDataGridRows(tblCajas));
+                    export.ShowDialog();
+                }
+            }
+            catch (Exception ex)
+            {
+                clsUtilidades.OpenMessage(new Operacion() { Mensaje = new clsException(ex).ErrorMessage(), OperationType = clsReferencias.TYPE_MESSAGE_Error });
+            }
+        }
+
+        private void btnNew_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                if (controller().Authorize(((Button)sender).Tag.ToString()))
+                {
+                    GestionarCaja gc = new GestionarCaja(pantalla, btnNew.Tag.ToString());
+                    gc.ShowDialog();
+                }
+            }
+            catch (Exception ex)
+            {
+                clsUtilidades.OpenMessage(new Operacion() { Mensaje = new clsException(ex).ErrorMessage(), OperationType = clsReferencias.TYPE_MESSAGE_Error });
+            }
+        }
+
+        private void btnNewSerie_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                if (controller().Authorize(((Button)sender).Tag.ToString()))
+                {
+                    AddSerie ad = new AddSerie(pantalla);
+                    ad.ShowDialog();
+                }
+            }
+            catch (Exception ex)
+            {
+                clsUtilidades.OpenMessage(new Operacion() { Mensaje = new clsException(ex).ErrorMessage(), OperationType = clsReferencias.TYPE_MESSAGE_Error });
+            }
+        }
+
+        private void btnDelete_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                CajaSon son = ((CajaSon)tblCajas.CurrentItem);
+                if (controller().Authorize_Recinto(((Button)sender).Tag.ToString(), son.IdRecinto))
+                {
+                    if (controller().VeriricarAperturasArquedas(son))
+                    {
+                        if (clsUtilidades.OpenDeleteQuestionMessage())
+                        {
+                            clsUtilidades.OpenMessage(EliminarCaja());
+                        }
+                    }
+                    else
+                    {
+                        clsUtilidades.OpenMessage(new Operacion() { Mensaje = "La caja no puede ser eliminada debido a que aun existen arqueos pendientes en el equipo", OperationType = clsReferencias.TYPE_MESSAGE_Advertencia });
+                    }
+
+                }
+            }
+            catch (Exception ex)
+            {
+                clsUtilidades.OpenMessage(new Operacion() { Mensaje = new clsException(ex).ErrorMessage(), OperationType = clsReferencias.TYPE_MESSAGE_Error });
+
+            }
         }
 
         private void btnEdit_Click(object sender, RoutedEventArgs e)
@@ -576,25 +692,6 @@ namespace PruebaWPF.Views.Tesoreria
             }
         }
 
-        private Operacion EliminarTarjeta()
-        {
-            Operacion o = new Operacion();
-            try
-            {
-                controller().EliminarTarjeta((CiaTarjetaCredito)lstTarjeta.SelectedItem);
-
-                o.Mensaje = clsReferencias.MESSAGE_Exito_Delete;
-                o.OperationType = clsReferencias.TYPE_MESSAGE_Exito;
-                LoadListTarjeta();
-            }
-            catch (Exception ex)
-            {
-                o.Mensaje = new clsException(ex).ErrorMessage();
-                o.OperationType = clsReferencias.TYPE_MESSAGE_Error;
-            }
-            return o;
-        }
-
         private void btnNewBanco_Click(object sender, RoutedEventArgs e)
         {
             try
@@ -669,25 +766,6 @@ namespace PruebaWPF.Views.Tesoreria
             }
         }
 
-        private Operacion EliminarBanco()
-        {
-            Operacion o = new Operacion();
-            try
-            {
-                controller().EliminarBanco((Banco)lstBanco.SelectedItem);
-
-                o.Mensaje = clsReferencias.MESSAGE_Exito_Delete;
-                o.OperationType = clsReferencias.TYPE_MESSAGE_Exito;
-                LoadListBanco();
-            }
-            catch (Exception ex)
-            {
-                o.Mensaje = new clsException(ex).ErrorMessage();
-                o.OperationType = clsReferencias.TYPE_MESSAGE_Error;
-            }
-            return o;
-        }
-
         private void btnNewFormaPago_Click(object sender, RoutedEventArgs e)
         {
             try
@@ -718,7 +796,7 @@ namespace PruebaWPF.Views.Tesoreria
                             IdFormaPago = selected.IdFormaPago,
                             FormaPago1 = selected.FormaPago1,
                             isDoc = selected.isDoc,
-                            Identificador =selected.Identificador
+                            Identificador = selected.Identificador
                         };
                         GestionarT_B_FP gt = new GestionarT_B_FP(newEdit, pantalla);
                         gt.ShowDialog();
@@ -759,25 +837,6 @@ namespace PruebaWPF.Views.Tesoreria
                 clsUtilidades.OpenMessage(new Operacion() { Mensaje = new clsException(ex).ErrorMessage(), OperationType = clsReferencias.TYPE_MESSAGE_Error });
 
             }
-        }
-
-        private Operacion EliminarFormaPago()
-        {
-            Operacion o = new Operacion();
-            try
-            {
-                controller().EliminarFormaPago((FormaPago)lstFormaPago.SelectedItem);
-
-                o.Mensaje = clsReferencias.MESSAGE_Exito_Delete;
-                o.OperationType = clsReferencias.TYPE_MESSAGE_Exito;
-                LoadListFormaPago();
-            }
-            catch (Exception ex)
-            {
-                o.Mensaje = new clsException(ex).ErrorMessage();
-                o.OperationType = clsReferencias.TYPE_MESSAGE_Error;
-            }
-            return o;
         }
 
         private void btnNewFF_Click(object sender, RoutedEventArgs e)
@@ -857,25 +916,6 @@ namespace PruebaWPF.Views.Tesoreria
             }
         }
 
-        private Operacion EliminarFF()
-        {
-            Operacion o = new Operacion();
-            try
-            {
-                controller().EliminarFF((FuenteFinanciamiento)lstFF.SelectedItem);
-
-                o.Mensaje = clsReferencias.MESSAGE_Exito_Delete;
-                o.OperationType = clsReferencias.TYPE_MESSAGE_Exito;
-                LoadListFF();
-            }
-            catch (Exception ex)
-            {
-                o.Mensaje = new clsException(ex).ErrorMessage();
-                o.OperationType = clsReferencias.TYPE_MESSAGE_Error;
-            }
-            return o;
-        }
-
         private void btnNewMoneda_Click(object sender, RoutedEventArgs e)
         {
             try
@@ -947,25 +987,6 @@ namespace PruebaWPF.Views.Tesoreria
                 clsUtilidades.OpenMessage(new Operacion() { Mensaje = new clsException(ex).ErrorMessage(), OperationType = clsReferencias.TYPE_MESSAGE_Error });
 
             }
-        }
-
-        private Operacion EliminarMoneda()
-        {
-            Operacion o = new Operacion();
-            try
-            {
-                controller().EliminarMoneda((Moneda)lstMoneda.SelectedItem);
-
-                o.Mensaje = clsReferencias.MESSAGE_Exito_Delete;
-                o.OperationType = clsReferencias.TYPE_MESSAGE_Exito;
-                LoadListMoneda();
-            }
-            catch (Exception ex)
-            {
-                o.Mensaje = new clsException(ex).ErrorMessage();
-                o.OperationType = clsReferencias.TYPE_MESSAGE_Error;
-            }
-            return o;
         }
 
         private void btnNewIdentificacion_Click(object sender, RoutedEventArgs e)
@@ -1041,25 +1062,6 @@ namespace PruebaWPF.Views.Tesoreria
             }
         }
 
-        private Operacion EliminarIdentificacion()
-        {
-            Operacion o = new Operacion();
-            try
-            {
-                controller().EliminarIdentificacion((IdentificacionAgenteExterno)lstIdentificacion.SelectedItem);
-
-                o.Mensaje = clsReferencias.MESSAGE_Exito_Delete;
-                o.OperationType = clsReferencias.TYPE_MESSAGE_Exito;
-                LoadListIdentificaciones();
-            }
-            catch (Exception ex)
-            {
-                o.Mensaje = new clsException(ex).ErrorMessage();
-                o.OperationType = clsReferencias.TYPE_MESSAGE_Error;
-            }
-            return o;
-        }
-
         private void btnNewInfoRecibo_Click(object sender, RoutedEventArgs e)
         {
             try
@@ -1109,5 +1111,107 @@ namespace PruebaWPF.Views.Tesoreria
                 clsUtilidades.OpenMessage(new Operacion() { Mensaje = new clsException(ex).ErrorMessage(), OperationType = clsReferencias.TYPE_MESSAGE_Error });
             }
         }
+        #endregion
+
+        #region Tareas de Carga Asincrona
+
+
+        private Task<List<IdentificacionAgenteExterno>> FindAsyncIdentificaciones()
+        {
+            return Task.Run(() =>
+            {
+                return controller().FindAllIdentifiaciones();
+            });
+        }
+
+        private Task<List<MovimientoIngreso>> FindAsyncMovimientos()
+        {
+            return Task.Run(() =>
+            {
+                return controller().FindAllMovimientos();
+            });
+        }
+        private Task<List<DetalleMovimientoIngreso>> FindAsynDetalleMovimientos(int idmovimiento)
+        {
+            return Task.Run(() =>
+            {
+                return controller().FindAllDetallesMovimiento(idmovimiento);
+            });
+        }
+
+        private Task<List<CuentaContable>> FindAsyncVariaciones()
+        {
+            return Task.Run(() =>
+            {
+                return controller().FindVariaciones();
+            });
+        }
+
+        private Task<List<CajaSon>> FindAsyncCajas()
+        {
+            return Task.Run(() =>
+            {
+                return controller().FindAllCajas();
+            });
+        }
+
+        private Task<List<SerieRecibo>> FindAsyncSeires()
+        {
+            return Task.Run(() =>
+            {
+                return controller().FindAllSeries();
+            });
+        }
+
+        private Task<List<CiaTarjetaCredito>> FindAsyncTarjetas()
+        {
+            return Task.Run(() =>
+            {
+                return controller().FindAllTarjetas();
+            });
+        }
+
+        private Task<List<Banco>> FindAsyncBancos()
+        {
+            return Task.Run(() =>
+            {
+                return controller().FindAllBancos();
+            });
+        }
+
+        private Task<List<FormaPago>> FindAsyncFormasPago()
+        {
+            return Task.Run(() =>
+            {
+                return controller().FindAllFormasPago();
+            });
+        }
+
+        private Task<List<InfoReciboSon>> FindAsyncInfoRecibo()
+        {
+            return Task.Run(() =>
+            {
+                return controller().FindAllInfoRecibos();
+            });
+        }
+
+
+        private Task<List<Moneda>> FindAsyncMonedas()
+        {
+            return Task.Run(() =>
+            {
+                return controller().FindAllMonedas();
+            });
+        }
+        private Task<List<FuenteFinanciamientoSon>> FindAsyncFuentes()
+        {
+            return Task.Run(() =>
+            {
+                return controller().FindAllFuentesFinanciamiento();
+            });
+        }
+
+        #endregion
+
     }
 }

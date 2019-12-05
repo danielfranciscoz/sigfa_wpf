@@ -1,0 +1,95 @@
+﻿<Window x:Class="PruebaWPF.Views.Shared.CatalogoCuentas"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+        materialDesign:ShadowAssist.CacheMode="{x:Null}"
+        xmlns:local="clr-namespace:PruebaWPF.Views.Shared"        
+         xmlns:l="clr-namespace:PruebaWPF.Clases"
+        AllowsTransparency="True"
+        WindowStartupLocation="CenterScreen" 
+        WindowStyle="None" 
+        mc:Ignorable="d"
+        Title="CatalogoCuentas" Height="700" Width="1000"
+        Loaded="Window_Loaded"
+        Uid="CatalogoCuentasShared"
+        >
+    <Window.Background>
+        <SolidColorBrush Opacity="0"/>
+    </Window.Background>
+    <Window.Resources>
+        <l:BoolToStringConverter x:Key="convertidor" />
+    </Window.Resources>
+    <materialDesign:Card Height="700" Width="1000" >
+
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="auto"/>
+                <RowDefinition Height="auto"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="auto"/>
+                <RowDefinition Height="auto"/>
+
+            </Grid.RowDefinitions>
+
+            <Grid Background="{StaticResource Search_Button}" >
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"></ColumnDefinition>
+                    <ColumnDefinition Width="auto"></ColumnDefinition>
+                </Grid.ColumnDefinitions>
+                <StackPanel MouseLeftButtonDown="Border_MouseLeftButtonDown" Margin="10 0 0 0" Grid.Column="0" HorizontalAlignment="Left" VerticalAlignment="Center">
+                    <TextBlock Width="320" FontWeight="Bold" Text="Seleccionar cuenta contable."></TextBlock>
+                </StackPanel>
+                <StackPanel Grid.Column="1" HorizontalAlignment="Right">
+                    <Button x:Name="btnClose" Foreground="Black"  Width="30" BorderBrush="Transparent" Height="30" Background="Transparent" Padding="0" Click="Button_Click" MouseEnter="Button_MouseEnter" MouseLeave="Button_MouseLeave">
+                        <materialDesign:PackIcon Kind="WindowClose"></materialDesign:PackIcon>
+                    </Button>
+                </StackPanel>
+            </Grid>
+
+            <StackPanel Grid.Row="1" VerticalAlignment="Top">
+                <Grid  Width="auto">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+                    <TextBox Grid.Column="0" Margin="10" x:Name="txtFind" materialDesign:HintAssist.Hint="Búsqueda (Código o Cuenta)" materialDesign:HintAssist.IsFloating="True" FontSize="13" KeyUp="txtFind_KeyUp"/>
+                </Grid>
+              
+            </StackPanel>
+
+            <DockPanel x:Name="panelGrid" Grid.Row="2" Height="auto" VerticalAlignment="Stretch">
+                <DockPanel x:Name="panelListaCuentas">
+                    <DataGrid Name="tblCatalogo" CanUserDeleteRows="False" CanUserAddRows="False" AutoGenerateColumns="False" SelectionUnit="FullRow" SelectionMode="Single" >
+
+                        <DataGrid.Columns>
+                            <DataGridTextColumn CanUserReorder="False" CanUserResize="False" IsReadOnly="True" Header="Código" Width="auto" Binding="{Binding CuentaContable1}"></DataGridTextColumn>
+                            <DataGridTextColumn CanUserReorder="False" CanUserResize="False" IsReadOnly="True" Header="Cuenta" Width="auto" Binding="{Binding Descripcion}"></DataGridTextColumn>
+                            <DataGridTextColumn CanUserReorder="False" CanUserResize="False" IsReadOnly="True" Header="Naturaleza" Width="auto" Binding="{Binding Tipo, Converter={StaticResource convertidor},ConverterParameter='Acreedora;Deudora'}"></DataGridTextColumn>
+                            <DataGridTextColumn CanUserReorder="False" CanUserResize="False" IsReadOnly="True" Header="Tipo" Width="auto" Binding="{Binding TipoCuenta.TipoCuenta1}"></DataGridTextColumn>
+                        </DataGrid.Columns>
+
+                    </DataGrid>
+                </DockPanel>
+            </DockPanel>
+
+            <DockPanel Grid.Row="3" DockPanel.Dock="Bottom" HorizontalAlignment="Right">
+                <TextBlock FontWeight="Bold">Cantidad de registros:</TextBlock>
+                <TextBlock FontWeight="Bold" Margin="5 0 20 0" Name="lblCantidadRegitros" Text="{Binding ElementName=tblCatalogo,Path=Items.Count}"></TextBlock>
+                
+            </DockPanel>
+
+            <StackPanel Grid.Row="4" Height="auto" VerticalAlignment="Bottom" Background="{StaticResource Bar_BackgroundColor}">
+                <Grid>
+                    <StackPanel HorizontalAlignment="Right">
+                        <Button x:Name="btnSelect" Style="{DynamicResource MaterialDesignFlatButton}" Foreground="{StaticResource DarkGray_TextAccent}"  Margin="0 2 0 2" Click="btnSelect_Click" Content="{StaticResource Text_Seleccione}" FontWeight="Bold"></Button>
+                    </StackPanel>
+                    <StackPanel HorizontalAlignment="Left" VerticalAlignment="Center">
+                    </StackPanel>
+                </Grid>
+
+            </StackPanel>
+
+        </Grid>
+    </materialDesign:Card>
+</Window>

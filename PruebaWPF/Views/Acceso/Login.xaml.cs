@@ -113,18 +113,9 @@ namespace PruebaWPF.Views.Acceso
 
         }
 
-        private Task<bool> ValidarCredenciales(String Usuario, String Password)
+        public Task<bool> ValidarCredenciales(String Usuario, String Password)
         {
-            if (Usuario.Contains("@")) // Verificando la autenticación con Office365
-            {
-                var credencialesOffice = new wsOffice365.authSoapClient();
-                return Task.Run(() => credencialesOffice.Validate(Usuario, Password));
-            }
-            else //Verificando la autenticación con LDAP
-            {
-                var credencialesLdap = new wsLDAP.LDAPSoapClient();
-                return Task.Run(() => credencialesLdap.EsUsuarioValido(Usuario, Password));
-            }
+            return Task.Run(() => controller.ValidarCredenciales(Usuario, Password));
         }
 
         private void VerificarRoles(String Usuario)
@@ -212,12 +203,12 @@ namespace PruebaWPF.Views.Acceso
 
         private void WrongUserPass()
         {
-            OpenDialog("Usuario o contraseña incorrecta");
+            OpenDialog(clsReferencias.MESSAGE_Wrong_User);
         }
 
         private void NoAccess()
         {
-            OpenDialog("El usuario no posee accesos al sistema");
+            OpenDialog(clsReferencias.MESSAGE_User_NoAccess);
         }
 
         private void OpenDialog(string Message)
@@ -236,9 +227,8 @@ namespace PruebaWPF.Views.Acceso
 
         private void IniciarMain()
         {
-            controller.RecintosMemory(); //Cargo los recintos en memoria, para no estar realizando peticiones a la base de datos cuando haga validaciones de autorización
-            controller.AreasMemory();
-            controller.MacMemory();
+            
+            controller.MacMemory(); //Cargo en memoria el MAC de la computadora en la que se incia sesion
             this.Hide();
 
             clsConfiguration.saveUser(txtUsuario.Text);

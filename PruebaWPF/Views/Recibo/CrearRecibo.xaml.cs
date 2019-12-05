@@ -35,8 +35,6 @@ namespace PruebaWPF.Views.Recibo
         private int? IdMatricula = null;
         private int? IdPreMatricula = null;
 
-        //TODO Cambiar la forma de los recibos, ya no serán series sino recintos
-
         private bool isOrdenPago = false;
         public CrearRecibo()
         {
@@ -228,9 +226,12 @@ namespace PruebaWPF.Views.Recibo
                 CargarTipoAranceles();
                 if (isOrdenPago)
                 {
-                    cboTipoDeposito.SelectedValue = orden.IdTipoDeposito;
+                    CargarTiposDeposito(orden);
+
                     AsignarDatos(InformacionResult(orden.IdTipoDeposito, orden.Identificador, true));
-                    cboTipoArancel.SelectedValue = orden.DetOrdenPagoArancel.First().ArancelPrecio.ArancelArea.Arancel.IdTipoArancel; //Selecciono el primero TipoArancel debido a que todos los aranceles deberan en una orden de pago deben perternecer al mismo tipo de arancel
+
+                    var a = controller.getTipoArancelOrden(orden);
+                    cboTipoArancel.SelectedValue = a; //Selecciono el primero TipoArancel debido a que todos los aranceles deberan en una orden de pago deben perternecer al mismo tipo de arancel
                 }
             }
             catch (Exception ex)
@@ -241,6 +242,12 @@ namespace PruebaWPF.Views.Recibo
 
             tblDetallesPay.ItemsSource = formaPago;
 
+        }
+
+        private void CargarTiposDeposito(OrdenPagoSon orden)
+        {
+            cboTipoDeposito.Items.Add(orden.TipoDeposito);
+            cboTipoDeposito.SelectedValue = orden.IdTipoDeposito;
         }
 
         private void CargarTiposDeposito(string IdArea)
@@ -346,7 +353,7 @@ namespace PruebaWPF.Views.Recibo
                 if (lstEquivalenciaTotalPay.Items.Count == 0)
                 {
                     lstPendiente.Items.Add("Saldo en " + item.Moneda + " " + string.Format("{0:N}", item.Monto));
-                    pendiente.Add(new MonedaMonto() { Moneda = item.Moneda, Valor = Math.Round(item.Monto, 2) });
+                    pendiente.Add(new MonedaMonto() { Moneda = item.Moneda,IdMoneda=item.IdMoneda, Valor = Math.Round(item.Monto, 2) });
                 }
             }
 
@@ -389,9 +396,9 @@ namespace PruebaWPF.Views.Recibo
             }
 
             var SumETotal = Totales.GroupBy(a => new { a.IdMoneda, a.Moneda }).Select(b => new { Moneda = b.Key.Moneda, IdMoneda = b.Key.IdMoneda, Monto = b.Sum(c => c.Valor) }).OrderBy(o => o.IdMoneda).ToList();
-            pendiente = new List<MonedaMonto>();
             if (SumETotal.Count > 0)
             {
+                pendiente = new List<MonedaMonto>();
                 foreach (var item in SumETotal)
                 {
                     lstEquivalenciaTotalPay.Items.Add("Total en " + item.Moneda + " " + string.Format("{0:N}", item.Monto));
@@ -399,7 +406,7 @@ namespace PruebaWPF.Views.Recibo
                     MonedaMonto a = aPagar.Where(w => w.Moneda == item.Moneda).First();
 
                     lstPendiente.Items.Add("Saldo en " + item.Moneda + " " + string.Format("{0:N}", (a.Valor - item.Monto)));
-                    pendiente.Add(new MonedaMonto() { Moneda = item.Moneda, Valor = Math.Round(a.Valor - item.Monto, 2) });
+                    pendiente.Add(new MonedaMonto() { Moneda = item.Moneda,IdMoneda=item.IdMoneda, Valor = Math.Round(a.Valor - item.Monto, 2) });
                 }
             }
 
@@ -753,9 +760,10 @@ namespace PruebaWPF.Views.Recibo
             infoExterna = selectedResult;
             orden.Identificador = selectedResult.Id;
             orden.PorCuenta = selectedResult.Nombre;
+            orden.TextoIdentificador = selectedResult.Nombre;
 
-            recibo.Recibimos = selectedResult.Nombre;
-            txtRecibimos.Text = recibo.Recibimos;
+            txtRecibimos.Text = selectedResult.Nombre;
+
 
             ActualizarCampo(new TextBox[] { txtIdentificador, txtPorCuenta });
 
@@ -796,7 +804,7 @@ namespace PruebaWPF.Views.Recibo
                         CargarAranceles(orden.IdArea, orden.IdTipoDeposito);
 
                     }
-                    ActualizarCampo(new TextBox[] { txtIdentificador, txtPorCuenta, txtRecibimos });
+                    ActualizarCampo(new TextBox[] { txtIdentificador, txtPorCuenta });
                     items.Clear(); //Limpio los detalles a pagar porque se ha cambiado al tipo de depositante, y estos no poseen los mismos aranceles de pago
                 }
                 else
@@ -873,12 +881,13 @@ namespace PruebaWPF.Views.Recibo
                         {
                             if (tabControl.SelectedIndex == 1)
                             {
-                                var a = pendiente.Where(w => w.Valor != 0).ToList();
+                                List<MonedaMonto> diferencia = pendiente.Where(w => w.Valor != 0).ToList();
 
-                                if (a.Count() > 0)
+                                if (diferencia.Count == pendiente.Count())
                                 {
                                     string info = "";
-                                    foreach (var item in a)
+
+                                    foreach (var item in diferencia)
                                     {
                                         info = item.Moneda + "\t" + item.Valor + "\t" + (item.Valor < 0 ? "(Debe restar esta cantidad a alguna forma de pago)" : "El usuario aún debe entregar esta cantidad a la caja") + "\n" + info;
                                     }
@@ -890,7 +899,7 @@ namespace PruebaWPF.Views.Recibo
                                 }
                                 else
                                 {
-                                    GenerarRecibo();
+                                    GenerarRecibo(diferencia);
                                 }
                             }
                             else
@@ -919,10 +928,11 @@ namespace PruebaWPF.Views.Recibo
             }
         }
 
-        private void GenerarRecibo()
+        private void GenerarRecibo(List<MonedaMonto> diferencia)
         {
             orden.Identificador = infoExterna.IdInterno; //Le asigno el id interno de las tablas, porque el que tiene asignado previamente es el id visible a los usuarios
-            recibo = controller.GenerarRecibo(tipoArancel, recibo, orden, items.ToList(), formaPago.ToList(), IdMatricula, IdPreMatricula);
+            recibo.Recibimos = txtRecibimos.Text;
+            recibo = controller.GenerarRecibo(tipoArancel, recibo, orden, items.ToList(), formaPago.ToList(),diferencia, IdMatricula, IdPreMatricula);
             rptRecibo boucher = new rptRecibo(recibo, true);
             Finalizar();
             boucher.ShowDialog();
@@ -997,9 +1007,20 @@ namespace PruebaWPF.Views.Recibo
 
         private void CboTipoArancel_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            BotonBusquedaArea();
-            LimpiarArea();
-            LimpiarCargar();
+            if (orden != null)
+            {
+                if (!isOrdenPago)
+                {
+                    BotonBusquedaArea();
+                    LimpiarArea();
+                    LimpiarCargar();
+                }
+                else
+                {
+                    isOrdenPago = true;
+                }
+
+            }
         }
 
         private void BotonBusquedaArea()

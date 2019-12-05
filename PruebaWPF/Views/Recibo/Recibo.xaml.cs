@@ -216,12 +216,8 @@ namespace PruebaWPF.Views.Recibo
         private void Load()
         {
             tblRecibo.ItemsSource = items;
-            ContarRegistros();
-        }
-        private void ContarRegistros()
-        {
-            lblCantidadRegitros.Text = "" + tblRecibo.Items.Count;
-        }
+         }
+    
 
         private void ResizeGrid()
         {

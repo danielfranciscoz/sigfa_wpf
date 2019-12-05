@@ -4,8 +4,6 @@ using PruebaWPF.Referencias;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace PruebaWPF.ViewModel
 {
@@ -18,16 +16,6 @@ namespace PruebaWPF.ViewModel
             return db.Usuario.Where(w => w.Login == Usuario).FirstOrDefault();
         }
 
-        public void RecintosMemory()
-        {
-            clsSessionHelper.recintosMemory = db.vw_RecintosRH.ToList();
-        }
-        
-        public void AreasMemory()
-        {
-            clsSessionHelper.areasMemory = db.vw_Areas.ToList();
-        }
-
         public void MacMemory()
         {
             clsSessionHelper.MACMemory = new TesoreriaViewModel().FindMacActual();
@@ -35,13 +23,9 @@ namespace PruebaWPF.ViewModel
 
         public List<UsuarioPerfil> ObtenerPerfilesUsuario(String Usuario)
         {
-            return db.UsuarioPerfil.Where(w => (w.Login == Usuario || w.Usuario.LoginEmail == Usuario) && w.Perfil.isWeb==false && w.RegAnulado == false && w.Usuario.RegAnulado == false && w.Perfil.RegAnulado==false).ToList();
+            return db.UsuarioPerfil.Where(w => (w.Login == Usuario || w.Usuario.LoginEmail == Usuario) && w.Perfil.isWeb == false && w.RegAnulado == false && w.Usuario.RegAnulado == false && w.Perfil.RegAnulado == false).ToList();
         }
 
-        //public List<UsuarioPerfil> ObtenerPerfiles(String Usuario)
-        //{
-        //    return s.UsuarioPerfil.Where(w => w.Login == Usuario && w.RegAnulado == false).ToList();
-        //}
 
         public List<UsuarioPrograma> ObtenerProgramas(String Usuario)
         {
@@ -72,8 +56,34 @@ namespace PruebaWPF.ViewModel
 
         internal void SeleccionarPerfilUsuario(List<UsuarioPerfil> perfiles)
         {
-            clsSessionHelper.perfiles = perfiles;
+            //clsSessionHelper.perfiles = perfiles;
             clsSessionHelper.usuario = perfiles.FirstOrDefault().Usuario;
+        }
+
+        public bool ValidarCredenciales(String Usuario, String Password)
+        {
+            if (Usuario.Contains("@")) // Verificando la autenticación con Office365
+            {
+                var credencialesOffice = new wsOffice365.authSoapClient();
+                return credencialesOffice.Validate(Usuario, Password);
+            }
+            else //Verificando la autenticación con LDAP
+            {
+                var credencialesLdap = new wsLDAP.LDAPSoapClient();
+                return credencialesLdap.EsUsuarioValido(Usuario, Password);
+            }
+        }
+
+        public bool isCajero(String Usuario,SIFOPEntities db_Context)
+        {
+            if (db_Context==null)
+            {
+            return db.Usuario.Find(Usuario).UsuarioPerfil.ToList().Exists(w => w.IdPerfil == clsReferencias.PerfilCajero);
+            }
+            else
+            {
+            return db_Context.Usuario.Find(Usuario).UsuarioPerfil.ToList().Exists(w => w.IdPerfil == clsReferencias.PerfilCajero);
+            }
         }
     }
 }

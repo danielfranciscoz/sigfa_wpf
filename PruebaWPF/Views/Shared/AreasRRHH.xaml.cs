@@ -46,6 +46,7 @@ namespace PruebaWPF.Views.Shared
         {
             clsUtilidades.Dialog_Perfomance(this);
         }
+
         private void Border_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
             DragMove();

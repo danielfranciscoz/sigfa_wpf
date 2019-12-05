@@ -14,7 +14,7 @@ namespace PruebaWPF.ViewModel
 
         public bool AuthorizePantallaIncrustada(Pantalla pantalla, string PermisoName)
         {
-            if (new SecurityViewModel().Authorize(pantalla, PermisoName))
+            if (new SecurityViewModel(db).Authorize(pantalla, PermisoName))
             {
                 return true;
             }
@@ -28,7 +28,7 @@ namespace PruebaWPF.ViewModel
         {
 
             bool? isReingreso = false;
-            if (tipoarancel.Value == int.Parse(db.Configuracion.First(f => f.Llave == clsConfiguration.Llaves.IdMatricula.ToString()).Valor))
+            if (tipoarancel == int.Parse(db.Configuracion.First(f => f.Llave == clsConfiguration.Llaves.IdMatricula.ToString()).Valor))
             {
                 isReingreso = IsNewOrReingreso(criterio);
             }

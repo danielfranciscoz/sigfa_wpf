@@ -183,7 +183,7 @@ namespace PruebaWPF.Views.Administracion
         private void CargarRecintos()
         {
             recintos = new ObservableCollection<ListaExporta>(
-                controller.Recintos().ToList().Select(s => new ListaExporta(s.IdRecinto.ToString(), s.Siglas, false))
+                controller.Recintos().Select(s => new ListaExporta(s.IdRecinto.ToString(), s.Siglas, false))
                 );
             lstRecintos.ItemsSource = recintos;
         }

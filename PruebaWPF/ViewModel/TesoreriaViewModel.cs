@@ -13,11 +13,11 @@ namespace PruebaWPF.ViewModel
     {
         private SIFOPEntities db = new SIFOPEntities();
         private Pantalla pantalla;
-        List<vw_RecintosRH> r;
+        IQueryable<vw_RecintosRH> r;
         private SecurityViewModel seguridad;
         public TesoreriaViewModel(Pantalla pantalla)
         {
-            seguridad = new SecurityViewModel();
+            seguridad = new SecurityViewModel(db);
             r = seguridad.RecintosPermiso(pantalla);
 
             this.pantalla = pantalla;
@@ -33,18 +33,24 @@ namespace PruebaWPF.ViewModel
         public List<CajaSon> FindAllCajas()
         {
 
-            return db.Caja.Where(w => w.regAnulado == false).OrderByDescending(o => o.IdCaja).Take(clsConfiguration.Actual().TopRow).ToList().Select(s => new CajaSon()
-            {
-                IdCaja = s.IdCaja,
-                Nombre = s.Nombre,
-                MAC = s.MAC,
-                UsuarioCreacion = s.UsuarioCreacion,
-                IdRecinto = s.IdRecinto,
-                IdSerie = s.IdSerie,
-                regAnulado = s.regAnulado,
-                FechaCreacion = s.FechaCreacion,
-                Recinto = clsSessionHelper.recintosMemory.Where(w => w.IdRecinto == s.IdRecinto).Select(a => a.Siglas).FirstOrDefault().ToString(),
-            }).Where(b => r.Any(a => b.IdRecinto == a.IdRecinto)).ToList();
+            return db.Caja
+                 .Join(db.vw_RecintosRH,
+                caja => caja.IdRecinto,
+                recinto => recinto.IdRecinto,
+                (caja, recinto) => new { caja, recinto }
+                )
+                .Where(w => w.caja.regAnulado == false).OrderByDescending(o => o.caja.IdCaja).Take(clsConfiguration.Actual().TopRow).ToList().Select(s => new CajaSon()
+                {
+                    IdCaja = s.caja.IdCaja,
+                    Nombre = s.caja.Nombre,
+                    MAC = s.caja.MAC,
+                    UsuarioCreacion = s.caja.UsuarioCreacion,
+                    IdRecinto = s.caja.IdRecinto,
+                    IdSerie = s.caja.IdSerie,
+                    regAnulado = s.caja.regAnulado,
+                    FechaCreacion = s.caja.FechaCreacion,
+                    Recinto = s.recinto.Siglas,
+                }).Where(b => r.Any(a => b.IdRecinto == a.IdRecinto)).ToList();
         }
 
         public string FindMacActual()
@@ -118,9 +124,8 @@ namespace PruebaWPF.ViewModel
         /// <returns> si todas las aperturas se encuentran arqueadas, False en caso contrario</returns>
         public bool VeriricarAperturasArquedas(Caja caja)
         {
-            List<DetAperturaCaja> aperturas = db.DetAperturaCaja.Where(w => w.IdCaja == caja.IdCaja).ToList();
-            var asd = db.Arqueo.ToList().Where(w => aperturas.Any(a => a.IdDetAperturaCaja == w.IdArqueoDetApertura && w.isFinalizado));
-            return db.Arqueo.ToList().Where(w => aperturas.Any(a => a.IdDetAperturaCaja == w.IdArqueoDetApertura && w.isFinalizado)).Count() == aperturas.Count();
+            IQueryable<DetAperturaCaja> aperturas = db.DetAperturaCaja.Where(w => w.IdCaja == caja.IdCaja);
+            return db.Arqueo.Where(w => aperturas.Any(a => a.IdDetAperturaCaja == w.IdArqueoDetApertura && w.isFinalizado)).Count() == aperturas.Count();
         }
 
         private void ExcepcionCaja()
@@ -324,7 +329,7 @@ namespace PruebaWPF.ViewModel
                 {
                     formapago.Identificador = null;
                 }
-               
+
                 db.Entry(formapago).State = System.Data.Entity.EntityState.Modified;
 
             }
@@ -515,17 +520,23 @@ namespace PruebaWPF.ViewModel
 
         public List<InfoReciboSon> FindAllInfoRecibos()
         {
-            return db.InfoRecibo.Where(w => w.regAnulado == false).ToList().Select(s => new InfoReciboSon()
-            {
-                IdInfoRecibo = s.IdInfoRecibo,
-                IdRecinto = s.IdRecinto,
-                Encabezado = s.Encabezado,
-                Pie = s.Pie,
-                UsuarioCreacion = s.UsuarioCreacion,
-                FechaCreacion = s.FechaCreacion,
-                Recinto = clsSessionHelper.recintosMemory.Where(w => w.IdRecinto == s.IdRecinto).Select(a => a.Siglas).FirstOrDefault().ToString(),
-                regAnulado = s.regAnulado
-            }).Where(b => r.Any(a => b.IdRecinto == a.IdRecinto)).ToList();
+            return db.InfoRecibo
+               .Join(db.vw_RecintosRH,
+                recinto => recinto.IdRecinto,
+                recibo => recibo.IdRecinto,
+                (recibo, recinto) => new { recibo, recinto }
+                )
+                .Where(w => w.recibo.regAnulado == false).Select(s => new InfoReciboSon()
+                {
+                    IdInfoRecibo = s.recibo.IdInfoRecibo,
+                    IdRecinto = s.recibo.IdRecinto,
+                    Encabezado = s.recibo.Encabezado,
+                    Pie = s.recibo.Pie,
+                    UsuarioCreacion = s.recibo.UsuarioCreacion,
+                    FechaCreacion = s.recibo.FechaCreacion,
+                    Recinto = s.recinto.Siglas,
+                    regAnulado = s.recibo.regAnulado
+                }).Where(b => r.Any(a => b.IdRecinto == a.IdRecinto)).ToList();
         }
 
         public void SaveInfoRecibo(InfoRecibo infoRecibo)
@@ -547,15 +558,59 @@ namespace PruebaWPF.ViewModel
 
         public List<vw_RecintosRH> RecintosInfo(string PermisoName)
         {
-            var recintos = seguridad.RecintosPermiso(pantalla, PermisoName).ToList();
+            var recintos = seguridad.RecintosPermiso(pantalla, PermisoName);
 
-            var b = db.InfoRecibo.Where(w => w.regAnulado == false).Select(s => s.IdRecinto).ToList();
+            var b = db.InfoRecibo.Where(w => w.regAnulado == false).Select(s => s.IdRecinto);
 
             return recintos.Where(w => b.All(c => c != w.IdRecinto)).ToList();
 
         }
 
 
+        #endregion
+
+        #region Parametrizacion de cuentas contables
+
+        public List<MovimientoIngreso> FindAllMovimientos()
+        {
+            List<MovimientoIngreso> movimientos = db.MovimientoIngreso
+                .Join(
+                db.vw_RecintosRH,
+                mov => mov.IdRecinto,
+                recinto => recinto.IdRecinto,
+                (movimiento, recinto) => new { movimiento, recinto }
+                )
+                .Where(w => w.movimiento.FormaPago.regAnulado == false && w.movimiento.Moneda.regAnulado == false
+                  && r.Any(a => w.recinto.IdRecinto == a.IdRecinto)
+                ).OrderBy(o=>o.movimiento.IdFormaPago).ThenBy(t=>t.movimiento.IdMoneda).ToList().Select(s => new MovimientoIngreso()
+                {
+                    Recinto = s.recinto.Siglas,
+                    IdFormaPago = s.movimiento.IdFormaPago,
+                    FormaPago = s.movimiento.FormaPago,
+                    IdMoneda = s.movimiento.IdMoneda,
+                    Moneda = s.movimiento.Moneda,
+                    IdRecinto = s.movimiento.IdRecinto,
+                    IdMovimientoIngreso = s.movimiento.IdMovimientoIngreso
+                }).ToList()
+                ;
+
+            return movimientos;
+        }
+
+        public List<DetalleMovimientoIngreso> FindAllDetallesMovimiento(int IdMovimiento)
+        {
+            List<DetalleMovimientoIngreso> detalles = db.DetalleMovimientoIngreso.Where(w => w.IdMovimientoIngreso == IdMovimiento && w.regAnulado == false).OrderBy(o=>o.Naturaleza).ThenByDescending(t=>t.FactorPorcentual).ToList();
+
+            return detalles;
+        }
+
+        public List<CuentaContable> FindVariaciones()
+        {
+            var cuentas = db.Configuracion.Where(w => w.Llave == clsConfiguration.Llaves.Variacion_Negativa.ToString() || w.Llave == clsConfiguration.Llaves.Variacion_Positiva.ToString()).Select(s => s.Valor);
+
+            List<CuentaContable> c = db.CuentaContable.Where(w => cuentas.Any(a => a == w.IdCuentaContable.ToString())).ToList();
+            return c;
+        }
         #endregion
         public List<vw_RecintosRH> Recintos(string PermisoName)
         {
@@ -570,7 +625,7 @@ namespace PruebaWPF.ViewModel
             }
             else
             {
-                throw new AuthorizationException(PermisoName, IdRecinto);
+                throw new AuthorizationException(PermisoName, IdRecinto, db);
             }
         }
 

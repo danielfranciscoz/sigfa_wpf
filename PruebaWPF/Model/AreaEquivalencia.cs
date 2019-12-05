@@ -12,17 +12,11 @@ namespace PruebaWPF.Model
     using System;
     using System.Collections.Generic;
     
-    public partial class VariacionCambiaria
+    public partial class AreaEquivalencia
     {
-        public int IdVariacionCambiaria { get; set; }
-        public int IdMoneda { get; set; }
-        public System.DateTime Fecha { get; set; }
-        public decimal Valor { get; set; }
-        public string LoginCreacion { get; set; }
-        public bool RegAnulado { get; set; }
-        public Nullable<System.DateTime> FechaCreacion { get; set; }
-    
-        public virtual Moneda Moneda { get; set; }
-        public virtual Usuario Usuario { get; set; }
+        public int IdAreaFinanzas { get; set; }
+        public string IdAreaRRHH { get; set; }
+        public System.DateTime FechaCreacion { get; set; }
+        public string UsuarioCreacion { get; set; }
     }
 }

@@ -18,6 +18,7 @@ namespace PruebaWPF.Model
         public Usuario()
         {
             this.Arqueo = new HashSet<Arqueo>();
+            this.ArqueoDocumento = new HashSet<ArqueoDocumento>();
             this.ArqueoNoEfectivo = new HashSet<ArqueoNoEfectivo>();
             this.NoCuentasBankArea = new HashSet<NoCuentasBankArea>();
             this.TipoTransaccionBank = new HashSet<TipoTransaccionBank>();
@@ -26,6 +27,7 @@ namespace PruebaWPF.Model
             this.IdentificacionAgenteExterno = new HashSet<IdentificacionAgenteExterno>();
             this.DenominacionMoneda = new HashSet<DenominacionMoneda>();
             this.Moneda = new HashSet<Moneda>();
+            this.DetalleMovimientoIngreso = new HashSet<DetalleMovimientoIngreso>();
             this.Actividad = new HashSet<Actividad>();
             this.AutorizarRestricciones = new HashSet<AutorizarRestricciones>();
             this.BalanzaComprobacion = new HashSet<BalanzaComprobacion>();
@@ -84,6 +86,7 @@ namespace PruebaWPF.Model
             this.UsuarioPerfil = new HashSet<UsuarioPerfil>();
             this.UsuarioPrograma = new HashSet<UsuarioPrograma>();
             this.VariacionCambiaria = new HashSet<VariacionCambiaria>();
+            this.MovimientoIngreso = new HashSet<MovimientoIngreso>();
         }
     
         public string Login { get; set; }
@@ -111,6 +114,8 @@ namespace PruebaWPF.Model
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Arqueo> Arqueo { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<ArqueoDocumento> ArqueoDocumento { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<ArqueoNoEfectivo> ArqueoNoEfectivo { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<NoCuentasBankArea> NoCuentasBankArea { get; set; }
@@ -126,6 +131,8 @@ namespace PruebaWPF.Model
         public virtual ICollection<DenominacionMoneda> DenominacionMoneda { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Moneda> Moneda { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<DetalleMovimientoIngreso> DetalleMovimientoIngreso { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Actividad> Actividad { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
@@ -242,5 +249,7 @@ namespace PruebaWPF.Model
         public virtual ICollection<UsuarioPrograma> UsuarioPrograma { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<VariacionCambiaria> VariacionCambiaria { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<MovimientoIngreso> MovimientoIngreso { get; set; }
     }
 }

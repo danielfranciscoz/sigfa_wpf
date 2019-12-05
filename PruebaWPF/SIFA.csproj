@@ -172,10 +172,16 @@
     <Compile Include="Model\ArancelTipoDeposito.cs">
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
+    <Compile Include="Model\AreaEquivalencia.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
     <Compile Include="Model\AreaPagoDelegado.cs">
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
     <Compile Include="Model\Arqueo.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Model\ArqueoDocumento.cs">
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
     <Compile Include="Model\ArqueoEfectivo.cs">
@@ -188,6 +194,9 @@
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
     <Compile Include="Model\ASD.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Model\Asiento.cs">
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
     <Compile Include="Model\AutorizarRestricciones.cs">
@@ -276,6 +285,9 @@
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
     <Compile Include="Model\Departamento.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Model\DetalleMovimientoIngreso.cs">
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
     <Compile Include="Model\DetallePago.cs">
@@ -557,6 +569,9 @@
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
     <Compile Include="Model\MonedaMonto.cs" />
+    <Compile Include="Model\MovimientoIngreso.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
     <Compile Include="Model\Municipio.cs">
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
@@ -739,6 +754,9 @@
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
     <Compile Include="Model\ReciboDetalle.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Model\ReciboDiferencias.cs">
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
     <Compile Include="Model\ReciboFlujoEfectivo.cs">
@@ -996,6 +1014,9 @@
     <Compile Include="Model\vw_Aranceles.cs">
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
+    <Compile Include="Model\vw_AreaEquivalencia.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
     <Compile Include="Model\vw_Areas.cs">
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
@@ -1147,6 +1168,7 @@
     <Compile Include="ViewModel\AgenteExternoViewModel.cs" />
     <Compile Include="ViewModel\AperturaCajaViewModel.cs" />
     <Compile Include="ViewModel\ArqueoViewModel.cs" />
+    <Compile Include="ViewModel\CatalogoCuentasViewModel.cs" />
     <Compile Include="ViewModel\ExportaViewModel.cs" />
     <Compile Include="ViewModel\LoginViewModel.cs" />
     <Compile Include="ViewModel\OrdenPagoViewModel.cs" />
@@ -1229,6 +1251,9 @@
     <Compile Include="Views\Shared\BoxMessage.xaml.cs">
       <DependentUpon>BoxMessage.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Views\Shared\CatalogoCuentas.xaml.cs">
+      <DependentUpon>CatalogoCuentas.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\Shared\Exportar.xaml.cs">
       <DependentUpon>Exportar.xaml</DependentUpon>
     </Compile>
@@ -1237,6 +1262,9 @@
     </Compile>
     <Compile Include="Views\Shared\Loading.xaml.cs">
       <DependentUpon>Loading.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Shared\LoginValidate.xaml.cs">
+      <DependentUpon>LoginValidate.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\Shared\rptInforme.xaml.cs">
       <DependentUpon>rptInforme.xaml</DependentUpon>
@@ -1394,6 +1422,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Views\Shared\CatalogoCuentas.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Views\Shared\Exportar.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -1403,6 +1435,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\Shared\Loading.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\Shared\LoginValidate.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

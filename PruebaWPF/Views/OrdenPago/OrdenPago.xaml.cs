@@ -49,7 +49,7 @@ namespace PruebaWPF.Views.OrdenPago
         private void Load()
         {
             tblOrdenPago.ItemsSource = items;
-            ContarRegistros();
+           
         }
 
         private async void LoadTable(string text)
@@ -100,15 +100,8 @@ namespace PruebaWPF.Views.OrdenPago
             }
         }
 
-        private void AddEventItems(ObservableCollection<OrdenPagoSon> items)
-        {
-            items.CollectionChanged += new System.Collections.Specialized.NotifyCollectionChangedEventHandler(Categories_CollectionChanged);
-        }
 
-        private void Categories_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
-        {
-            ContarRegistros();
-        }
+    
 
         private void LoadTitle()
         {
@@ -122,12 +115,6 @@ namespace PruebaWPF.Views.OrdenPago
         {
             LoadTable(txtFind.Text);
         }
-
-        private void ContarRegistros()
-        {
-            lblCantidadRegitros.Text = "" + tblOrdenPago.Items.Count;
-        }
-
 
         private void btn_Exportar(object sender, System.Windows.RoutedEventArgs e)
         {

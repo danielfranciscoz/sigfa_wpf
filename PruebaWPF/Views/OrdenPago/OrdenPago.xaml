@@ -60,7 +60,7 @@
                         <DataGridTextColumn CanUserReorder="False" CanUserResize="False" IsReadOnly="True" Header="Area" Width="auto" Binding="{Binding Area}"></DataGridTextColumn>
                         <DataGridTextColumn CanUserReorder="False" CanUserResize="False" IsReadOnly="True" Header="Tipo Depósito" Width="auto" Binding="{Binding TipoDeposito.Nombre}"></DataGridTextColumn>
                         <DataGridTextColumn CanUserReorder="False" CanUserResize="False" IsReadOnly="True" Header="Por Cuenta" Width="auto" Binding="{Binding TextoIdentificador}"></DataGridTextColumn>
-                        <DataGridTextColumn CanUserReorder="False" CanUserResize="False" IsReadOnly="True" Header="Pagos" Width="auto" Binding="{Binding CantidadPagos}"></DataGridTextColumn>
+                        <DataGridTextColumn CanUserReorder="False" CanUserResize="False" IsReadOnly="True" Header="Aranceles" Width="auto" Binding="{Binding CantidadPagos}"></DataGridTextColumn>
                         <DataGridTextColumn CanUserReorder="False" CanUserResize="False" IsReadOnly="True" Header="Fecha de Envío" Width="auto" Binding="{Binding FechaEnvio}"></DataGridTextColumn>
                         <DataGridTextColumn CanUserReorder="False" CanUserResize="False" IsReadOnly="True" Header="Sistema" Width="auto" Binding="{Binding Sistema}"></DataGridTextColumn>
                         <DataGridTextColumn CanUserReorder="False" CanUserResize="False" IsReadOnly="True" Header="Enviado por" Width="auto" Binding="{Binding UsuarioRemitente}"></DataGridTextColumn>
@@ -71,7 +71,7 @@
 
             <DockPanel Grid.Row="2" DockPanel.Dock="Bottom" HorizontalAlignment="Right">
                 <TextBlock FontWeight="Bold">Cantidad de registros:</TextBlock>
-                <TextBlock FontWeight="Bold" Margin="5 0 20 0" Name="lblCantidadRegitros"> 0</TextBlock>
+                <TextBlock FontWeight="Bold" Margin="5 0 20 0" Name="lblCantidadRegitros" Text="{Binding ElementName=tblOrdenPago,Path=Items.Count}"></TextBlock>
             </DockPanel>
         </Grid>
 

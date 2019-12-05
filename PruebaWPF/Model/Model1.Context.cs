@@ -28,6 +28,7 @@ namespace PruebaWPF.Model
         }
     
         public virtual DbSet<Arqueo> Arqueo { get; set; }
+        public virtual DbSet<ArqueoDocumento> ArqueoDocumento { get; set; }
         public virtual DbSet<ArqueoEfectivo> ArqueoEfectivo { get; set; }
         public virtual DbSet<ArqueoNoEfectivo> ArqueoNoEfectivo { get; set; }
         public virtual DbSet<ArqueoRecibo> ArqueoRecibo { get; set; }
@@ -41,9 +42,12 @@ namespace PruebaWPF.Model
         public virtual DbSet<TransaccionesServicio> TransaccionesServicio { get; set; }
         public virtual DbSet<UserBank> UserBank { get; set; }
         public virtual DbSet<AgenteExternoCat> AgenteExternoCat { get; set; }
+        public virtual DbSet<AreaEquivalencia> AreaEquivalencia { get; set; }
         public virtual DbSet<IdentificacionAgenteExterno> IdentificacionAgenteExterno { get; set; }
         public virtual DbSet<DenominacionMoneda> DenominacionMoneda { get; set; }
         public virtual DbSet<Moneda> Moneda { get; set; }
+        public virtual DbSet<Asiento> Asiento { get; set; }
+        public virtual DbSet<DetalleMovimientoIngreso> DetalleMovimientoIngreso { get; set; }
         public virtual DbSet<Actividad> Actividad { get; set; }
         public virtual DbSet<AgenteExterno> AgenteExterno { get; set; }
         public virtual DbSet<AutorizarRestricciones> AutorizarRestricciones { get; set; }
@@ -188,6 +192,7 @@ namespace PruebaWPF.Model
         public virtual DbSet<ReciboAnulado> ReciboAnulado { get; set; }
         public virtual DbSet<ReciboDatos> ReciboDatos { get; set; }
         public virtual DbSet<ReciboDet> ReciboDet { get; set; }
+        public virtual DbSet<ReciboDiferencias> ReciboDiferencias { get; set; }
         public virtual DbSet<ReciboPago> ReciboPago { get; set; }
         public virtual DbSet<ReciboPagoBono> ReciboPagoBono { get; set; }
         public virtual DbSet<ReciboPagoCheque> ReciboPagoCheque { get; set; }
@@ -210,6 +215,7 @@ namespace PruebaWPF.Model
         public virtual DbSet<TmpComprobantePrint> TmpComprobantePrint { get; set; }
         public virtual DbSet<TmpSolicitudesArchivo> TmpSolicitudesArchivo { get; set; }
         public virtual DbSet<vw_Aranceles> vw_Aranceles { get; set; }
+        public virtual DbSet<vw_AreaEquivalencia> vw_AreaEquivalencia { get; set; }
         public virtual DbSet<vw_Areas> vw_Areas { get; set; }
         public virtual DbSet<vw_FuentesSIPPSI> vw_FuentesSIPPSI { get; set; }
         public virtual DbSet<vw_Prematricula> vw_Prematricula { get; set; }
@@ -284,6 +290,7 @@ namespace PruebaWPF.Model
         public virtual DbSet<w_LibroMayorAcumulado_VA> w_LibroMayorAcumulado_VA { get; set; }
         public virtual DbSet<w_LibroMayorAcumulado_VEP> w_LibroMayorAcumulado_VEP { get; set; }
         public virtual DbSet<w_LibroMayorAcumulado_Vlast> w_LibroMayorAcumulado_Vlast { get; set; }
+        public virtual DbSet<MovimientoIngreso> MovimientoIngreso { get; set; }
     
         [DbFunction("SIFOPEntities", "fn_TotalesArqueo")]
         public virtual IQueryable<fn_TotalesArqueo_Result> fn_TotalesArqueo(Nullable<int> idArqueo, Nullable<bool> isDoc)

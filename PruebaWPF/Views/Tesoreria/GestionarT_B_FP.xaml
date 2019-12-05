@@ -61,7 +61,7 @@
                         </StackPanel>
 
                         <!--Forma Pago-->
-                        <StackPanel x:Name="panelFormaPago" Visibility="Visible" >
+                        <StackPanel x:Name="panelFormaPago" Visibility="Collapsed" >
                             <TextBox Margin="0 15 0 10" x:Name="txtFormaPago" materialDesign:HintAssist.Hint="* Forma de Pago" materialDesign:HintAssist.IsFloating="True" FontSize="12" Text="{Binding FormaPago1}"/>
                             <DockPanel HorizontalAlignment="Stretch" ToolTip="Si: la forma de pago corresponde a un documento que representa efectivo o una transacción exitosa de efectivo.">
                                 <TextBlock Foreground="{StaticResource DarkGray}">¿Es un documento de efectivo?</TextBlock>

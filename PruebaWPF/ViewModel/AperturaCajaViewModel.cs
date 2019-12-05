@@ -13,12 +13,12 @@ namespace PruebaWPF.ViewModel
     {
         private SIFOPEntities db = new SIFOPEntities();
         private Pantalla pantalla;
-        List<vw_RecintosRH> r;
+        IQueryable<vw_RecintosRH> r;
         private SecurityViewModel seguridad;
 
         public AperturaCajaViewModel(Pantalla pantalla)
         {
-            seguridad = new SecurityViewModel();
+            seguridad = new SecurityViewModel(db);
             r = seguridad.RecintosPermiso(pantalla);
 
             this.pantalla = pantalla;
@@ -38,19 +38,28 @@ namespace PruebaWPF.ViewModel
         {
 
 
-            return db.DetAperturaCaja.OrderByDescending(o => o.IdDetAperturaCaja).Take(clsConfiguration.Actual().TopRow).ToList()
+            return db.DetAperturaCaja
+                .Join(
+                    db.vw_RecintosRH,
+                    a => a.AperturaCaja.IdRecinto,
+                    recinto => recinto.IdRecinto,
+                    (a, recinto) => new { a, recinto }
+                )
                 .Select(s => new DetAperturaCajaSon()
                 {
-                    AperturaCaja = s.AperturaCaja,
-                    UsuarioCierre = s.UsuarioCierre,
-                    FechaCierre = s.FechaCierre,
-                    Caja = s.Caja,
-                    IdAperturaCaja = s.IdAperturaCaja,
-                    IdDetAperturaCaja = s.IdDetAperturaCaja,
-                    Recibo1 = s.Recibo1,
-                    Recinto = clsSessionHelper.recintosMemory.Find(w => w.IdRecinto == s.AperturaCaja.IdRecinto).Siglas,
-                    Arqueo = s.Arqueo
-                }).Where(w => r.Any(a => w.AperturaCaja.IdRecinto == a.IdRecinto)).ToList();
+                    AperturaCaja = s.a.AperturaCaja,
+                    UsuarioCierre = s.a.UsuarioCierre,
+                    FechaCierre = s.a.FechaCierre,
+                    Caja = s.a.Caja,
+                    IdAperturaCaja = s.a.IdAperturaCaja,
+                    IdDetAperturaCaja = s.a.IdDetAperturaCaja,
+                    Recibo1 = s.a.Recibo1,
+                    Recinto = s.recinto.Siglas,
+                    Arqueo = s.a.Arqueo
+                })
+                .Take(clsConfiguration.Actual().TopRow)
+                .Where(w => r.Any(a => w.AperturaCaja.IdRecinto == a.IdRecinto))
+                .OrderByDescending(o => o.IdDetAperturaCaja).ToList();
 
         }
 
@@ -85,21 +94,9 @@ namespace PruebaWPF.ViewModel
 
             if (!text.Equals(""))
             {
-                return db.DetAperturaCaja.OrderByDescending(o => o.IdDetAperturaCaja).ToList().Select(s => new DetAperturaCajaSon()
-                {
-                    AperturaCaja = s.AperturaCaja,
-                    UsuarioCierre = s.UsuarioCierre,
-                    FechaCierre = s.FechaCierre,
-                    Caja = s.Caja,
-                    IdAperturaCaja = s.IdAperturaCaja,
-                    IdDetAperturaCaja = s.IdDetAperturaCaja,
-                    Recibo1 = s.Recibo1,
-                    Recinto = clsSessionHelper.recintosMemory.Find(w => w.IdRecinto == s.AperturaCaja.IdRecinto).Siglas,
-                    Arqueo = s.Arqueo
-                })
-                .Where(b => r.Any(a => b.AperturaCaja.IdRecinto == a.IdRecinto) &&
+                return FindAllAperturas()
+                .Where(b => 
                     (b.AperturaCaja.FechaApertura.Year.ToString() + "/" + b.AperturaCaja.FechaApertura.ToString("MM")).Contains(text)).ToList();
-
             }
             else
             {
@@ -169,7 +166,7 @@ namespace PruebaWPF.ViewModel
             }
             else
             {
-                throw new AuthorizationException(PermisoName, IdRecinto);
+                throw new AuthorizationException(PermisoName, IdRecinto,db);
             }
         }
 

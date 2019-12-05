@@ -12,12 +12,12 @@ namespace PruebaWPF.ViewModel
     {
         private SIFOPEntities db = new SIFOPEntities();
         private Pantalla pantalla;
-        List<vw_RecintosRH> r;
+        IQueryable<vw_RecintosRH> r;
         private SecurityViewModel seguridad;
 
         public OrdenPagoViewModel(Pantalla pantalla)
         {
-            seguridad = new SecurityViewModel();
+            seguridad = new SecurityViewModel(db);
             r = seguridad.RecintosPermiso(pantalla);
 
             this.pantalla = pantalla;
@@ -44,31 +44,44 @@ namespace PruebaWPF.ViewModel
         public List<OrdenPagoSon> FindAll()
         {
             //Recuerda igualar las columnas de este select en el FindBytEXT
-            using (SIFOPEntities t = new SIFOPEntities())
-            {
-            return t.OrdenPago.Where(w => string.IsNullOrEmpty(w.CodRecibo) && w.regAnulado == false).OrderByDescending(o => o.IdOrdenPago).Take(clsConfiguration.Actual().TopRow).ToList().Select(a => new OrdenPagoSon
-            {
-                IdOrdenPago = a.IdOrdenPago,
-                NoOrdenPago = a.NoOrdenPago,
-                IdRecinto = a.IdRecinto,
-                TextoIdentificador = a.TextoIdentificador,
-                UsuarioRemitente = a.UsuarioRemitente,
-                Sistema = a.Sistema,
-                FechaEnvio = a.FechaEnvio,
-                regAnulado = a.regAnulado,
-                CodRecibo = a.CodRecibo,
-                Identificador = a.Identificador,
-                IdTipoDeposito = a.IdTipoDeposito,
-                TipoDeposito = a.TipoDeposito,
-                IdArea = a.IdArea,
-                DetOrdenPagoArancel = a.DetOrdenPagoArancel,
-                CantidadPagos = a.DetOrdenPagoArancel.Where(w => w.IdOrdenPago == a.IdOrdenPago && w.regAnulado == false).Count(),
-                Area = clsSessionHelper.areasMemory.Where(w => w.codigo == a.IdArea).FirstOrDefault().descripcion.ToUpper(),
-                Recinto = clsSessionHelper.recintosMemory.Where(w => w.IdRecinto == a.IdRecinto).Select(s => s.Siglas).FirstOrDefault().ToString()
-            }
-            ).Where(b => r.Any(a => b.IdRecinto == a.IdRecinto)).ToList();
+        
+            return db.OrdenPago.Where(w => string.IsNullOrEmpty(w.CodRecibo) && w.regAnulado == false && r.Any(a => w.IdRecinto == a.IdRecinto)).OrderByDescending(o => o.IdOrdenPago).Take(clsConfiguration.Actual().TopRow)
+                    .Join(
+                    db.vw_Areas,
+                    r => r.IdArea,
+                    area => area.codigo,
+                    (r, area) => new { areaInner = area, r }
+                )
+                .Join(
+                    db.vw_RecintosRH,
+                    r => r.r.IdRecinto,
+                    recinto => recinto.IdRecinto,
+                    (r, recinto) => new { r, recinto }
+                )
 
-            }
+                    .Select(a => new OrdenPagoSon
+            {
+                IdOrdenPago = a.r.r.IdOrdenPago,
+                NoOrdenPago = a.r.r.NoOrdenPago,
+                IdRecinto = a.r.r.IdRecinto,
+                TextoIdentificador = a.r.r.TextoIdentificador,
+                UsuarioRemitente = a.r.r.UsuarioRemitente,
+                Sistema = a.r.r.Sistema,
+                FechaEnvio = a.r.r.FechaEnvio,
+                regAnulado = a.r.r.regAnulado,
+                CodRecibo = a.r.r.CodRecibo,
+                Identificador = a.r.r.Identificador,
+                IdTipoDeposito = a.r.r.IdTipoDeposito,
+                TipoDeposito = a.r.r.TipoDeposito,
+                IdArea = a.r.r.IdArea,
+                DetOrdenPagoArancel = a.r.r.DetOrdenPagoArancel,
+                CantidadPagos = a.r.r.DetOrdenPagoArancel.Count(),
+                Recinto = a.recinto.Siglas,
+                Area = a.r.areaInner.descripcion.ToUpper()
+                    }
+            ).ToList();
+
+            
 
         }
 
@@ -86,29 +99,9 @@ namespace PruebaWPF.ViewModel
 
                 using (SIFOPEntities t = new SIFOPEntities())
                 {                    
-                    return t.OrdenPago.ToList().Select(a => new OrdenPagoSon
-                    {
-                        IdOrdenPago = a.IdOrdenPago,
-                        NoOrdenPago = a.NoOrdenPago,
-                        IdRecinto = a.IdRecinto,
-                        TextoIdentificador = a.TextoIdentificador,
-                        UsuarioRemitente = a.UsuarioRemitente,
-                        Sistema = a.Sistema,
-                        FechaEnvio = a.FechaEnvio,
-                        regAnulado = a.regAnulado,
-                        CodRecibo = a.CodRecibo,
-                        Identificador = a.Identificador,
-                        IdTipoDeposito = a.IdTipoDeposito,
-                        TipoDeposito = a.TipoDeposito,
-                        IdArea = a.IdArea,
-                        DetOrdenPagoArancel = a.DetOrdenPagoArancel,
-                        CantidadPagos = t.DetOrdenPagoArancel.Where(w => w.IdOrdenPago == a.IdOrdenPago && w.regAnulado == false).Count(),
-                        Area = clsSessionHelper.areasMemory.Where(w => w.codigo == a.IdArea).FirstOrDefault().descripcion.ToUpper(),
-                        Recinto = clsSessionHelper.recintosMemory.Find(w => w.IdRecinto == a.IdRecinto).Siglas
-                    }).Where(
-                       w => busqueda.All(a => w.TextoIdentificador.Contains(a))
-                    && (w.regAnulado == false && string.IsNullOrEmpty(w.CodRecibo))).ToList().Where(b => r.Any(a => b.IdRecinto == a.IdRecinto)).ToList();
-
+                    return FindAll().Where(
+                       w => busqueda.All(a => w.TextoIdentificador.Contains(a)))
+                    .ToList();
                 }
             }
             else
@@ -137,7 +130,7 @@ namespace PruebaWPF.ViewModel
             }
             else
             {
-                throw new AuthorizationException(PermisoName, IdRecinto);
+                throw new AuthorizationException(PermisoName, IdRecinto,db);
             }
         }
 

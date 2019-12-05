@@ -15,12 +15,12 @@ namespace PruebaWPF.ViewModel
 
         public AgenteExternoViewModel()
         {
-            seguridad = new SecurityViewModel();
+            seguridad = new SecurityViewModel(db);
         }
 
         public AgenteExternoViewModel(Pantalla pantalla)
         {
-            seguridad = new SecurityViewModel();
+            seguridad = new SecurityViewModel(db);
             this.pantalla = pantalla;
         }
         public bool Authorize(string PermisoName)
@@ -43,7 +43,7 @@ namespace PruebaWPF.ViewModel
             }
             else
             {
-                throw new AuthorizationException(PermisoName, IdRecinto);
+                throw new AuthorizationException(PermisoName, IdRecinto,db);
             }
         }
 

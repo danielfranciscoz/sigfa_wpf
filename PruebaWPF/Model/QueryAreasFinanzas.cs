@@ -14,6 +14,7 @@ namespace PruebaWPF.Model
     
     public partial class QueryAreasFinanzas
     {
+        public byte IdActividad { get; set; }
         public string IdInterfaz { get; set; }
         public string Descripcion { get; set; }
     }
