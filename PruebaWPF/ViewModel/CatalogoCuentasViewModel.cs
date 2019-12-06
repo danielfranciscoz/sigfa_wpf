@@ -53,6 +53,10 @@ namespace PruebaWPF.ViewModel
             return Finding().Where(w =>w.CuentaContable1.StartsWith(text) || w.Descripcion.Contains(text)).ToList();
         }
 
+        public bool esPadre(CuentaContable cuenta) {
+            return db.CuentaContable.Any(a => a.CuentaSuperior == cuenta.CuentaContable1);
+        }
+
         private IQueryable<CuentaContable> Finding() {
             return db.CuentaContable.Where(w => w.RegAnulado == false).OrderBy(o => o.CuentaContable1).ThenBy(t => t.IdOrden);
         }

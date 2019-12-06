@@ -162,6 +162,22 @@
                             </StackPanel>
                         </StackPanel>
 
+                        <!--Parametrización Variación cambiaria-->
+                        <StackPanel x:Name="panelVariacion" Visibility="Collapsed">
+                            <Grid>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition/>
+                                    <RowDefinition/>
+                                </Grid.RowDefinitions>
+                                <ComboBox Grid.Row="0" Margin="0 15 0 10" x:Name="cboLlavesVariacion" DisplayMemberPath="Nombre" SelectedValuePath="Valor" materialDesign:HintAssist.Hint="Parametrizar" materialDesign:HintAssist.IsFloating="True">
+                                </ComboBox>
+                                <TextBox Grid.Row="1" Margin="0 15 0 10" x:Name="txtCuenta" IsReadOnly="True" materialDesign:HintAssist.Hint="* Cuenta" materialDesign:HintAssist.IsFloating="True" FontSize="12" />
+                                <Button  Grid.Row="1" HorizontalAlignment="Right" Grid.Column="1" x:Name="btnFindAccount" Width="25" Height="25" Margin="12 0 0 0" Background="{StaticResource Search_Button_Third}" Style="{StaticResource MaterialDesignFloatingActionDarkButton}" BorderBrush="Transparent"  Click="BtnFindAccount_Click">
+                                    <materialDesign:PackIcon Kind="Folder"  VerticalAlignment="Center" Margin="0"></materialDesign:PackIcon>
+                                </Button>
+                            </Grid>
+                        </StackPanel>
+
                     </StackPanel>
 
                     <StackPanel Grid.Row="2" Height="auto" Margin="20 0 20 10">

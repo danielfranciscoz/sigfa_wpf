@@ -582,7 +582,7 @@ namespace PruebaWPF.ViewModel
                 )
                 .Where(w => w.movimiento.FormaPago.regAnulado == false && w.movimiento.Moneda.regAnulado == false
                   && r.Any(a => w.recinto.IdRecinto == a.IdRecinto)
-                ).OrderBy(o=>o.movimiento.IdFormaPago).ThenBy(t=>t.movimiento.IdMoneda).ToList().Select(s => new MovimientoIngreso()
+                ).OrderBy(o => o.movimiento.IdFormaPago).ThenBy(t => t.movimiento.IdMoneda).ToList().Select(s => new MovimientoIngreso()
                 {
                     Recinto = s.recinto.Siglas,
                     IdFormaPago = s.movimiento.IdFormaPago,
@@ -599,17 +599,47 @@ namespace PruebaWPF.ViewModel
 
         public List<DetalleMovimientoIngreso> FindAllDetallesMovimiento(int IdMovimiento)
         {
-            List<DetalleMovimientoIngreso> detalles = db.DetalleMovimientoIngreso.Where(w => w.IdMovimientoIngreso == IdMovimiento && w.regAnulado == false).OrderBy(o=>o.Naturaleza).ThenByDescending(t=>t.FactorPorcentual).ToList();
+            List<DetalleMovimientoIngreso> detalles = db.DetalleMovimientoIngreso.Where(w => w.IdMovimientoIngreso == IdMovimiento && w.regAnulado == false).OrderBy(o => o.Naturaleza).ThenByDescending(t => t.FactorPorcentual).ToList();
 
             return detalles;
         }
 
-        public List<CuentaContable> FindVariaciones()
+        private IQueryable<Configuracion> FindTipoVariacion()
         {
-            var cuentas = db.Configuracion.Where(w => w.Llave == clsConfiguration.Llaves.Variacion_Negativa.ToString() || w.Llave == clsConfiguration.Llaves.Variacion_Positiva.ToString()).Select(s => s.Valor);
+            return db.Configuracion.Where(w => w.Llave == clsConfiguration.Llaves.Variacion_Negativa.ToString() || w.Llave == clsConfiguration.Llaves.Variacion_Positiva.ToString());
+        }
 
-            List<CuentaContable> c = db.CuentaContable.Where(w => cuentas.Any(a => a == w.IdCuentaContable.ToString())).ToList();
+        public List<Configuracion> FindAllTipoVariacion()
+        {
+            return FindTipoVariacion().Where(w=>w.Valor == "0").ToList();
+        }
+
+        public List<CuentaContableVariacion> FindVariaciones()
+        {
+            IQueryable<Configuracion> cuentas = FindTipoVariacion();
+
+            List<CuentaContableVariacion> c = db.CuentaContable
+                .Join(
+                cuentas,
+                cc => cc.IdCuentaContable.ToString(),
+                v => v.Valor,
+                (cuenta, variacion) => new { cuenta, variacion }
+                ).Select(s => new CuentaContableVariacion()
+                {
+                    cuenta = s.cuenta,
+                    variacion = s.variacion
+                }).ToList();
             return c;
+        }
+
+        public void SaveUpdateParametrosVariacion(CuentaContable cuenta,Configuracion configuracion)
+        {
+            Configuracion c = db.Configuracion.Find(configuracion.Llave);
+            c.Valor = cuenta.IdCuentaContable.ToString();
+            c.UsuarioModificacion = clsSessionHelper.usuario.Login;
+            c.FechaModificacion = System.DateTime.Now;
+            
+            db.SaveChanges();
         }
         #endregion
         public List<vw_RecintosRH> Recintos(string PermisoName)
@@ -665,5 +695,11 @@ namespace PruebaWPF.ViewModel
     public class FuenteFinanciamientoSon : FuenteFinanciamiento
     {
         public string FuenteSIPPSI { get; set; }
+    }
+
+    public class CuentaContableVariacion
+    {
+        public CuentaContable cuenta { get; set; }
+        public Configuracion variacion { get; set; }
     }
 }

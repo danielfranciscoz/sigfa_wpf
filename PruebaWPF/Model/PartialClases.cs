@@ -1,5 +1,4 @@
-﻿using PruebaWPF.Helper;
-using PruebaWPF.Referencias;
+﻿using PruebaWPF.Referencias;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -55,8 +54,18 @@ namespace PruebaWPF.Model
         }
     }
 
+    public partial class CuentaContable {
+        public string CuentaCodigo => string.Format("{0} {1}",CuentaContable1,Descripcion);
+    }
+
     public partial class MovimientoIngreso
     {
         public string Recinto { get; set; }
+    }
+
+    public partial class DetalleMovimientoIngreso
+    {
+        public decimal? Debe => Naturaleza == false ? FactorPorcentual :(decimal?)null;
+        public decimal? Haber => Naturaleza ? FactorPorcentual : (decimal?)null;
     }
 }

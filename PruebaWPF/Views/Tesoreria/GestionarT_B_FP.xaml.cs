@@ -4,19 +4,11 @@ using PruebaWPF.Referencias;
 using PruebaWPF.ViewModel;
 using PruebaWPF.Views.Main;
 using PruebaWPF.Views.Recibo;
+using PruebaWPF.Views.Shared;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
 
 namespace PruebaWPF.Views.Tesoreria
 {
@@ -38,6 +30,8 @@ namespace PruebaWPF.Views.Tesoreria
         private IdentificacionAgenteExterno identificacion;
         private InfoRecibo info;
         private InfoReciboSon son;
+        private CuentaContableVariacion variacion;
+        private CuentaContable selectedCuenta;
         public GestionarT_B_FP()
         {
             InitializeComponent();
@@ -92,7 +86,7 @@ namespace PruebaWPF.Views.Tesoreria
             InitializeComponent();
             Diseñar();
             TituloCuerpo(ff.IdFuenteFinanciamiento.ToString());
-            CargarCombo();
+            CargarFuentes();
             DataContext = ff;
         }
 
@@ -137,12 +131,32 @@ namespace PruebaWPF.Views.Tesoreria
             CargarRecintos(PermisoName);
         }
 
+        public GestionarT_B_FP(CuentaContableVariacion variacion, Pantalla pantalla)
+        {
+            gestion = "Parametrización de Variaciones";
+            this.variacion = variacion;
+            this.pantalla = pantalla;
+            controller = new TesoreriaViewModel(pantalla);
+
+            InitializeComponent();
+            Diseñar();
+            TituloCuerpo(variacion.cuenta == null ? "0" : variacion.cuenta.IdCuentaContable.ToString());
+            DataContext = variacion;
+            CargarTipoVariacion(variacion.cuenta == null ? "0" : variacion.variacion.Llave);
+        }
+
         private void Diseñar()
         {
             clsUtilidades.Dialog_ModalDesign(this);
         }
 
-        private void CargarCombo()
+        private void CargarTipoVariacion(string llaveEdit)
+        {
+            cboLlavesVariacion.ItemsSource = controller.FindAllTipoVariacion();
+
+        }
+
+        private void CargarFuentes()
         {
             cboFuentesSIPPSI.ItemsSource = controller.FindAllFuentesSIPSSI();
             cboFuentesSIPPSI.SelectedValue = ff.IdFuente_SIPPSI;
@@ -204,6 +218,10 @@ namespace PruebaWPF.Views.Tesoreria
                     panelInfoRecibo.Visibility = Visibility.Visible;
                     btnPreview.Visibility = Visibility.Visible;
                     validate.AsignarBorderNormal(new Control[] { txtEncabezado, txtPie, cboRecinto });
+                    break;
+                case "Parametrización de Variaciones":
+                    panelVariacion.Visibility = Visibility.Visible;
+                    validate.AsignarBorderNormal(new Control[] { txtCuenta, cboLlavesVariacion });
                     break;
                 default:
                     Close();
@@ -273,6 +291,10 @@ namespace PruebaWPF.Views.Tesoreria
                     info.IdRecinto = int.Parse(cboRecinto.SelectedValue.ToString());
                     controller.SaveInfoRecibo(info);
                     break;
+                case "Parametrización de Variaciones":
+                    Configuracion c = (Configuracion)cboLlavesVariacion.SelectedItem;
+                    controller.SaveUpdateParametrosVariacion(selectedCuenta,c);
+                    break;
                 default:
                     break;
             }
@@ -316,8 +338,11 @@ namespace PruebaWPF.Views.Tesoreria
                 case "Encabezado y Pie de Recibo":
                     flag = clsValidateInput.ValidateALL(new Control[] { txtEncabezado, txtPie, cboRecinto });
                     break;
+                case "Parametrización de Variaciones":
+                    flag = clsValidateInput.ValidateALL(new Control[] { txtCuenta, cboLlavesVariacion });
+                    break;
                 default:
-                    flag = true;
+                    flag = false;
                     break;
             }
             return flag;
@@ -336,24 +361,7 @@ namespace PruebaWPF.Views.Tesoreria
         {
             switch (gestion)
             {
-                case "Tarjeta":
 
-                    break;
-                case "Banco":
-
-                    break;
-                case "Forma de Pago":
-
-                    break;
-                case "Fuente de Financiamiento":
-
-                    break;
-                case "Moneda":
-
-                    break;
-                case "Documento de Identidad":
-
-                    break;
                 case "Encabezado y Pie de Recibo":
                     if (cboRecinto.Items.Count == 0)
                     {
@@ -361,9 +369,22 @@ namespace PruebaWPF.Views.Tesoreria
                         Close();
                     }
                     break;
+
                 default:
 
                     break;
+            }
+        }
+
+        private void BtnFindAccount_Click(object sender, RoutedEventArgs e)
+        {
+            CatalogoCuentas c = new CatalogoCuentas();
+            c.ShowDialog();
+
+            if (c.SelectedCuentaContable != null)
+            {
+                selectedCuenta = c.SelectedCuentaContable;
+                txtCuenta.Text = selectedCuenta.CuentaCodigo;
             }
         }
     }

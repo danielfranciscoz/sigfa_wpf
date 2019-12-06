@@ -32,7 +32,7 @@ namespace PruebaWPF.Views.Tesoreria
         private List<InfoReciboSon> infoRecibos;
 
         private List<MovimientoIngreso> movimientosIngreso;
-        private List<CuentaContable> cuentasContable;
+        private List<CuentaContableVariacion> cuentasContable;
 
         public static Boolean Cambios = false;
         public Tesoreria()
@@ -194,11 +194,17 @@ namespace PruebaWPF.Views.Tesoreria
                 cuentasContable = await FindAsyncVariaciones();
                 tblVariaciones.ItemsSource = cuentasContable;
                 tblVariaciones.Height = panelGridVariaciones.ActualHeight;
+                HabilitarBotonAddVariacion();
             }
             catch (Exception ex)
             {
                 clsUtilidades.OpenMessage(new Operacion() { Mensaje = new clsException(ex).ErrorMessage(), OperationType = clsReferencias.TYPE_MESSAGE_Error });
             }
+        }
+
+        private void HabilitarBotonAddVariacion()
+        {
+            btnNewVariacion.IsEnabled = (cuentasContable.Count != 2); // Se evalua contra 2 puesto que solo puede exisir perdida o ganancia, o sea que la tabla solo puede tener 2 registros como máximo
         }
 
         private async void LoadListIdentificaciones()
@@ -485,13 +491,8 @@ namespace PruebaWPF.Views.Tesoreria
         {
             if (lstMovimientos.SelectedItem != null)
             {
-                LoadTableDetalleMovimiento((MovimientoIngreso) lstMovimientos.SelectedItem);
+                LoadTableDetalleMovimiento((MovimientoIngreso)lstMovimientos.SelectedItem);
             }
-        }
-
-        private void BtnEditVariacion_Click(object sender, RoutedEventArgs e)
-        {
-
         }
 
         private void btn_Exportar(object sender, RoutedEventArgs e)
@@ -1111,6 +1112,43 @@ namespace PruebaWPF.Views.Tesoreria
                 clsUtilidades.OpenMessage(new Operacion() { Mensaje = new clsException(ex).ErrorMessage(), OperationType = clsReferencias.TYPE_MESSAGE_Error });
             }
         }
+
+        private void BtnNewVariacion_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                if (controller().Authorize(((Button)sender).Tag.ToString()))
+                {
+                    GestionarT_B_FP gt = new GestionarT_B_FP(new CuentaContableVariacion(), pantalla);
+                    gt.ShowDialog();
+                }
+            }
+            catch (Exception ex)
+            {
+                clsUtilidades.OpenMessage(new Operacion() { Mensaje = new clsException(ex).ErrorMessage(), OperationType = clsReferencias.TYPE_MESSAGE_Error });
+            }
+        }
+
+        private void BtnEditVariacion_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                if (controller().Authorize(((Button)sender).Tag.ToString()))
+                {
+
+                    CuentaContableVariacion item = (CuentaContableVariacion)tblVariaciones.CurrentItem;
+                    GestionarT_B_FP gt = new GestionarT_B_FP(item, pantalla);
+                    gt.ShowDialog();
+                }
+
+            }
+            catch (Exception ex)
+            {
+                clsUtilidades.OpenMessage(new Operacion() { Mensaje = new clsException(ex).ErrorMessage(), OperationType = clsReferencias.TYPE_MESSAGE_Error });
+
+            }
+        }
+
         #endregion
 
         #region Tareas de Carga Asincrona
@@ -1139,7 +1177,7 @@ namespace PruebaWPF.Views.Tesoreria
             });
         }
 
-        private Task<List<CuentaContable>> FindAsyncVariaciones()
+        private Task<List<CuentaContableVariacion>> FindAsyncVariaciones()
         {
             return Task.Run(() =>
             {

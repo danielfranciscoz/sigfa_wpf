@@ -3,12 +3,9 @@ using PruebaWPF.Model;
 using PruebaWPF.Referencias;
 using PruebaWPF.ViewModel;
 using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
 
@@ -70,7 +67,7 @@ namespace PruebaWPF.Views.Shared
             {
                 cuentas = await FindAsyncCatalogo(text);
                 CargarTabla();
-              
+
             }
             catch (Exception ex)
             {
@@ -84,7 +81,7 @@ namespace PruebaWPF.Views.Shared
             tblCatalogo.ItemsSource = cuentas;
         }
 
-   
+
 
         private Task<ObservableCollection<CuentaContable>> FindAsyncCatalogo(String text)
         {
@@ -121,8 +118,37 @@ namespace PruebaWPF.Views.Shared
 
         private void btnSelect_Click(object sender, RoutedEventArgs e)
         {
-            //Seleccionar();
+            Seleccionar();
         }
-        
+
+        private void Seleccionar()
+        {
+            if (tblCatalogo.SelectedItem != null)
+            {
+
+                CuentaContable c = (CuentaContable)tblCatalogo.SelectedItem;
+                if (!controller().esPadre(c))
+                {
+                    SelectedCuentaContable = c;
+                    this.Close();
+                }
+                else
+                {
+                    panelError.Visibility = Visibility.Visible;
+                }
+            }
+            else
+            {
+                clsUtilidades.OpenMessage(new Operacion() { Mensaje = clsReferencias.MESSAGE_NoSelection, OperationType = clsReferencias.TYPE_MESSAGE_Advertencia });
+            }
+        }
+
+        private void TblCatalogo_MouseDoubleClick(object sender, MouseButtonEventArgs e)
+        {
+            if (tblCatalogo.SelectedItem != null)
+            {
+                Seleccionar();
+            }
+        }
     }
 }

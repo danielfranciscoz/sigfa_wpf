@@ -1,9 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace PruebaWPF.Clases
 {
@@ -14,9 +11,8 @@ namespace PruebaWPF.Clases
         public object Convert(object value, Type targetType, object parameter,
                               CultureInfo culture)
         {
-            var strings = ((string)parameter).Split(Separator);
-            var trueString = strings[0];
-            var falseString = strings[1];
+            string[] strings;
+
             bool boolValue = false;
 
             if (value != null)
@@ -24,14 +20,39 @@ namespace PruebaWPF.Clases
                 boolValue = (bool)value;
             }
 
-            if (boolValue)
+
+            if (parameter.ToString().Contains(';'))
             {
-                return trueString;
+                strings = ((string)parameter).Split(Separator);
+
+                if (boolValue)
+                {
+                    return strings[0]; //Verdadero
+                }
+                else
+                {
+                    return strings[1]; //Falso
+                }
             }
             else
             {
-                return falseString;
+
+                return "";
+
             }
+
+            //var trueString = strings[0];
+            //var falseString = strings[1];
+
+
+            //if (boolValue)
+            //{
+            //    return trueString;
+            //}
+            //else
+            //{
+            //    return falseString;
+            //}
         }
 
         public object ConvertBack(object value, Type targetType, object parameter,

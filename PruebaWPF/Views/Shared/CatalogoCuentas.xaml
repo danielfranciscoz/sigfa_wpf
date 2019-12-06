@@ -55,30 +55,48 @@
                     </Grid.ColumnDefinitions>
                     <TextBox Grid.Column="0" Margin="10" x:Name="txtFind" materialDesign:HintAssist.Hint="Búsqueda (Código o Cuenta)" materialDesign:HintAssist.IsFloating="True" FontSize="13" KeyUp="txtFind_KeyUp"/>
                 </Grid>
-              
+
             </StackPanel>
 
             <DockPanel x:Name="panelGrid" Grid.Row="2" Height="auto" VerticalAlignment="Stretch">
-                <DockPanel x:Name="panelListaCuentas">
-                    <DataGrid Name="tblCatalogo" CanUserDeleteRows="False" CanUserAddRows="False" AutoGenerateColumns="False" SelectionUnit="FullRow" SelectionMode="Single" >
+                <DockPanel>
+                   
+                    <DockPanel x:Name="panelListaCuentas">
+                        <DataGrid Name="tblCatalogo" CanUserDeleteRows="False" CanUserAddRows="False" AutoGenerateColumns="False" SelectionUnit="FullRow" SelectionMode="Single" MouseDoubleClick="TblCatalogo_MouseDoubleClick">
 
-                        <DataGrid.Columns>
-                            <DataGridTextColumn CanUserReorder="False" CanUserResize="False" IsReadOnly="True" Header="Código" Width="auto" Binding="{Binding CuentaContable1}"></DataGridTextColumn>
-                            <DataGridTextColumn CanUserReorder="False" CanUserResize="False" IsReadOnly="True" Header="Cuenta" Width="auto" Binding="{Binding Descripcion}"></DataGridTextColumn>
-                            <DataGridTextColumn CanUserReorder="False" CanUserResize="False" IsReadOnly="True" Header="Naturaleza" Width="auto" Binding="{Binding Tipo, Converter={StaticResource convertidor},ConverterParameter='Acreedora;Deudora'}"></DataGridTextColumn>
-                            <DataGridTextColumn CanUserReorder="False" CanUserResize="False" IsReadOnly="True" Header="Tipo" Width="auto" Binding="{Binding TipoCuenta.TipoCuenta1}"></DataGridTextColumn>
-                        </DataGrid.Columns>
+                            <DataGrid.Columns>
+                                <DataGridTextColumn CanUserReorder="False" CanUserResize="False" IsReadOnly="True" Header="Código" Width="auto" Binding="{Binding CuentaContable1}"></DataGridTextColumn>
+                                <DataGridTextColumn CanUserReorder="False" CanUserResize="False" IsReadOnly="True" Header="Cuenta" Width="auto" Binding="{Binding Descripcion}"></DataGridTextColumn>
+                                <DataGridTextColumn CanUserReorder="False" CanUserResize="False" IsReadOnly="True" Header="Naturaleza" Width="auto" Binding="{Binding Tipo, Converter={StaticResource convertidor},ConverterParameter='Acreedora;Deudora'}"></DataGridTextColumn>
+                                <DataGridTextColumn CanUserReorder="False" CanUserResize="False" IsReadOnly="True" Header="Tipo" Width="auto" Binding="{Binding TipoCuenta.TipoCuenta1}"></DataGridTextColumn>
+                            </DataGrid.Columns>
 
-                    </DataGrid>
+                        </DataGrid>
+                    </DockPanel>
+
+
                 </DockPanel>
             </DockPanel>
 
-            <DockPanel Grid.Row="3" DockPanel.Dock="Bottom" HorizontalAlignment="Right">
+            <DockPanel Grid.Row="3" DockPanel.Dock="Bottom">
+                 <DockPanel Grid.Row="3" DockPanel.Dock="Top" HorizontalAlignment="Right">
                 <TextBlock FontWeight="Bold">Cantidad de registros:</TextBlock>
                 <TextBlock FontWeight="Bold" Margin="5 0 20 0" Name="lblCantidadRegitros" Text="{Binding ElementName=tblCatalogo,Path=Items.Count}"></TextBlock>
-                
-            </DockPanel>
 
+            </DockPanel>
+                <DockPanel x:Name="panelError" DockPanel.Dock="Bottom" Background="{StaticResource ErrorAlert}" Height="80" Visibility="Collapsed">
+                <Grid Margin="10">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="auto"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+                    <materialDesign:PackIcon Foreground="{StaticResource ErrorMsj}" Kind="AlertCircle" Width="30" Height="30" Grid.Column="0" VerticalAlignment="Center">
+                    </materialDesign:PackIcon>
+                    <TextBlock x:Name="txtError" Margin="10 0 0 0" Foreground="{StaticResource DarkGray}" Grid.Column="1" TextWrapping="Wrap" VerticalAlignment="Center">No es posible usar la cuenta seleccionada debido a que posee sub cuentas, por lo tanto no se pueden efectuar movimientos contables con la misma, por favor seleccione una cuenta que no posea sub cuentas</TextBlock>
+                </Grid>
+            </DockPanel>
+            </DockPanel>
+           
             <StackPanel Grid.Row="4" Height="auto" VerticalAlignment="Bottom" Background="{StaticResource Bar_BackgroundColor}">
                 <Grid>
                     <StackPanel HorizontalAlignment="Right">
