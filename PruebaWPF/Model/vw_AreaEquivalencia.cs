@@ -20,5 +20,8 @@ namespace PruebaWPF.Model
         public byte IdF { get; set; }
         public string DescripcionF { get; set; }
         public byte EstadoF { get; set; }
+        public string IdInterfaz { get; set; }
+        public string UsuarioCreacion { get; set; }
+        public System.DateTime FechaCreacion { get; set; }
     }
 }

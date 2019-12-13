@@ -11,6 +11,7 @@ namespace PruebaWPF.Clases
     {
         public const int OnlyNumber = 0;
         public const int DecimalNumber = 2;
+        public const int Porcentaje = 3;
 
         SolidColorBrush c = clsUtilidades.BorderNormal();
 
@@ -28,9 +29,6 @@ namespace PruebaWPF.Clases
                         e.Handled = regex.IsMatch(e.Text);
                         break;
                     case DecimalNumber:
-                        //CultureInfo.CurrentCulture.NumberFormat.NumberDecimalSeparator;
-                        //regex = new Regex("[^0-9" + CultureInfo.CurrentCulture.NumberFormat.NumberDecimalSeparator.ToString() + "]+");
-                        //e.Handled = regex.IsMatch(e.Text);
                         char punto = Convert.ToChar(CultureInfo.CurrentCulture.NumberFormat.NumberDecimalSeparator);
                         char c = char.Parse(e.Text);
                         if (!Char.IsDigit(c) && c != punto)
@@ -204,6 +202,22 @@ namespace PruebaWPF.Clases
                         {
                             flag = false;
                             txt.BorderBrush = clsUtilidades.BorderError();
+                        }
+                        break;
+
+                    case Porcentaje:
+                        if (!double.TryParse(txt.Text, out valorDouble))
+                        {
+                            flag = false;
+                            txt.BorderBrush = clsUtilidades.BorderError();
+                        }
+                        else
+                        {
+                            if (valorDouble > 100)
+                            {
+                                flag = false;
+                                txt.BorderBrush = clsUtilidades.BorderError();
+                            }
                         }
                         break;
                 }

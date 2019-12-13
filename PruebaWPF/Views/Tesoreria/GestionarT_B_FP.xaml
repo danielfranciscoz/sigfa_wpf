@@ -6,9 +6,13 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:PruebaWPF.Views.Tesoreria"
+        xmlns:l="clr-namespace:PruebaWPF.Clases"
         mc:Ignorable="d"
         WindowStyle="None" 
         Title="GestionarTarjeta" Loaded="Window_Loaded">
+    <Window.Resources>
+        <l:BoolToStringConverter x:Key="convertidor" />
+    </Window.Resources>
     <Grid>
         <Grid>
             <Grid.ColumnDefinitions>
@@ -23,7 +27,7 @@
             </Grid.RowDefinitions>
 
 
-            <materialDesign:Card  Grid.Column="1" Grid.Row="1" Height="auto" Width="400">
+            <materialDesign:Card  Grid.Column="1" Grid.Row="1" Height="auto" MinWidth="400">
                 <Grid >
                     <Grid.RowDefinitions>
                         <RowDefinition Height="auto"/>
@@ -38,7 +42,7 @@
                             <ColumnDefinition Width="auto"></ColumnDefinition>
                         </Grid.ColumnDefinitions>
                         <StackPanel  Grid.Column="0" HorizontalAlignment="Left" VerticalAlignment="Center">
-                            <TextBlock x:Name="txtTitle" Width="320" FontSize="18" FontWeight="Bold" Text="Agregar / Editar"></TextBlock>
+                            <TextBlock x:Name="txtTitle" Width="auto" FontSize="18" FontWeight="Bold" Text="Agregar / Editar"></TextBlock>
                         </StackPanel>
                         <StackPanel Grid.Column="1" HorizontalAlignment="Right">
                             <Button x:Name="btnClose" Foreground="Black" Style="{DynamicResource MaterialDesignToolButton}"  Width="auto" BorderBrush="Transparent"  Background="Transparent" Padding="0" Click="btnCancel_Click">
@@ -169,13 +173,91 @@
                                     <RowDefinition/>
                                     <RowDefinition/>
                                 </Grid.RowDefinitions>
-                                <ComboBox Grid.Row="0" Margin="0 15 0 10" x:Name="cboLlavesVariacion" DisplayMemberPath="Nombre" SelectedValuePath="Valor" materialDesign:HintAssist.Hint="Parametrizar" materialDesign:HintAssist.IsFloating="True">
+                                <ComboBox Grid.Row="0" Margin="0 15 0 10" x:Name="cboLlavesVariacion" DisplayMemberPath="Nombre" SelectedValuePath="Llave" materialDesign:HintAssist.Hint="Parametrizar" materialDesign:HintAssist.IsFloating="True">
                                 </ComboBox>
                                 <TextBox Grid.Row="1" Margin="0 15 0 10" x:Name="txtCuenta" IsReadOnly="True" materialDesign:HintAssist.Hint="* Cuenta" materialDesign:HintAssist.IsFloating="True" FontSize="12" />
                                 <Button  Grid.Row="1" HorizontalAlignment="Right" Grid.Column="1" x:Name="btnFindAccount" Width="25" Height="25" Margin="12 0 0 0" Background="{StaticResource Search_Button_Third}" Style="{StaticResource MaterialDesignFloatingActionDarkButton}" BorderBrush="Transparent"  Click="BtnFindAccount_Click">
                                     <materialDesign:PackIcon Kind="Folder"  VerticalAlignment="Center" Margin="0"></materialDesign:PackIcon>
                                 </Button>
                             </Grid>
+                        </StackPanel>
+
+                        <!--Parametrización ingresos contables-->
+                        <StackPanel x:Name="panelParametrizacion" Visibility="Collapsed" Width="800">
+                            <StackPanel Orientation="Horizontal" VerticalAlignment="Top" HorizontalAlignment="Left">
+                                <StackPanel Margin="0 0 10 0" HorizontalAlignment="Left">
+                                    <ComboBox Margin="0 0 0 0"  x:Name="cboRecintoParametrizacion" materialDesign:HintAssist.Hint="* Recinto" materialDesign:HintAssist.IsFloating="True" FontSize="12" SelectedValuePath="IdRecinto" DisplayMemberPath="Siglas" SelectionChanged="CboRecintoParametrizacion_SelectionChanged"></ComboBox>
+                                    <StackPanel Margin="0 10 0 0" Orientation="Horizontal">
+                                        <TextBlock VerticalAlignment="Center" FontSize="10" Text="Se muestran recintos en base a sus permisos de ususario." Foreground="{StaticResource DarkGray}"/>
+                                    </StackPanel>
+
+                                </StackPanel>
+                                <ComboBox Margin="0 0 10 0" VerticalAlignment="Top" x:Name="cboMoneda" materialDesign:HintAssist.Hint="* Moneda" materialDesign:HintAssist.IsFloating="True" FontSize="12" SelectedValuePath="IdMoneda" DisplayMemberPath="Moneda1" Width="263" SelectionChanged="CboMoneda_SelectionChanged"></ComboBox>
+                                <ComboBox  VerticalAlignment="Top"  x:Name="cboFormaPago" materialDesign:HintAssist.Hint="* Forma de Pago" materialDesign:HintAssist.IsFloating="True" FontSize="12" SelectedValuePath="IdFormaPago" DisplayMemberPath="FormaPago1" Width="263"></ComboBox>
+                            </StackPanel>
+                            <StackPanel  Margin="0 20 3 0" Orientation="Vertical">
+                                <TextBlock VerticalAlignment="Center" FontWeight="Bold">Detalle de la Parametrización</TextBlock>
+                                <Separator/>
+                            </StackPanel>
+                            <StackPanel Orientation="Horizontal" VerticalAlignment="Top" HorizontalAlignment="Left">
+                                <StackPanel Margin="0 0 10 0" Orientation="Horizontal">
+                                    <TextBox Margin="0 0 0 0" x:Name="txtCuentaParametrizacion" IsReadOnly="True" materialDesign:HintAssist.Hint="* Cuenta" materialDesign:HintAssist.IsFloating="True" FontSize="12" Width="455"/>
+                                    <Button HorizontalAlignment="Right" VerticalAlignment="Bottom" x:Name="btnFindAccountParametrizacion" Width="30" Height="30" Margin="10 0 0 0" Background="{StaticResource Search_Button_Third}" Style="{StaticResource MaterialDesignFloatingActionDarkButton}" BorderBrush="Transparent"  Click="BtnFindAccount_Click">
+                                        <materialDesign:PackIcon Kind="Folder"  VerticalAlignment="Center" Margin="0"></materialDesign:PackIcon>
+                                    </Button>
+                                </StackPanel>
+                                <ComboBox Margin="5 0 0 0" VerticalAlignment="Bottom" x:Name="cboNaturaleza" materialDesign:HintAssist.Hint="* Afecta" materialDesign:HintAssist.IsFloating="True" FontSize="12" Width="120">
+                                    <ComboBox.Items>
+                                        <ComboBoxItem Content="Debe"></ComboBoxItem>
+                                        <ComboBoxItem Content="Haber"></ComboBoxItem>
+                                    </ComboBox.Items>
+                                </ComboBox>
+                                <TextBox Margin="10 15 10 0" VerticalAlignment="Bottom" x:Name="txtPorcentaje"  materialDesign:HintAssist.Hint="* Factor Porcentual" materialDesign:HintAssist.IsFloating="True" FontSize="12" Width="120"/>
+                                <Button VerticalAlignment="Bottom" x:Name="btnAddParametrizacion" Click="BtnAddParametrizacion_Click" Grid.Row="0" Grid.Column="8" Width="30" Height="30" Background="{StaticResource Export_Button}" Style="{StaticResource MaterialDesignFloatingActionDarkButton}" BorderBrush="Transparent">
+                                    <materialDesign:PackIcon Kind="Plus"  VerticalAlignment="Center" Margin="0 0 0 0"></materialDesign:PackIcon>
+                                </Button>
+                            </StackPanel>
+                            <DockPanel Margin="0 10 0 0" Height="300" x:Name="panelGridDetalleMovimientos" VerticalAlignment="Stretch">
+                                <StackPanel Background="{StaticResource Gray_BackgroundDisabled}" Height="25" Orientation="Horizontal" DockPanel.Dock="Bottom" >
+                                    <Grid Margin="50 0 0 0" Width="{Binding ElementName=Codigo,Path=ActualWidth}">
+                                        <TextBlock Margin="5,0,0,0" Text=""></TextBlock>
+                                    </Grid>
+                                    <Grid Width="{Binding ElementName=Cuenta,Path=ActualWidth}">
+                                        <TextBlock Margin="5,0,0,0" Text="TOTAL"  Foreground="{StaticResource DarkGray}" FontWeight="Bold" VerticalAlignment="Center" HorizontalAlignment="Right"></TextBlock>
+                                    </Grid>
+                                    <Grid Width="{Binding ElementName=Debe,Path=ActualWidth}">
+                                        <TextBlock Text="00.00%" x:Name="txtDebe" Foreground="{StaticResource DarkGray}" HorizontalAlignment="Center" VerticalAlignment="Center" FontWeight="Bold"></TextBlock>
+                                    </Grid>
+                                    <Grid Width="{Binding ElementName=Haber,Path=ActualWidth}">
+                                        <TextBlock Text="00.00%" x:Name="txtHaber" Foreground="{StaticResource DarkGray}" HorizontalAlignment="Center" VerticalAlignment="Center" FontWeight="Bold"></TextBlock>
+                                    </Grid>
+                                </StackPanel>
+                                <DataGrid x:Name="tblDetalleMovimientos" CanUserDeleteRows="False" CanUserReorderColumns="False" CanUserAddRows="False" AutoGenerateColumns="False" SelectionUnit="FullRow" SelectionMode="Single" >
+                                    <DataGrid.Columns>
+                                        <DataGridTemplateColumn CanUserResize="False" Width="50" Header="">
+                                            <DataGridTemplateColumn.CellTemplate>
+                                                <DataTemplate>
+                                                    <StackPanel>
+                                                        <Button x:Name="btnDelete" Visibility="{Binding canDelete, Converter={StaticResource convertidor},ConverterParameter='Visible;Hidden'}" Background="{StaticResource Delete_Button}" Height="20" Width="20" Style="{StaticResource MaterialDesignToolButton}" BorderBrush="Transparent" Click="btnDelete_Click">
+                                                            <materialDesign:PackIcon Kind="Delete" HorizontalAlignment="Center"  VerticalAlignment="Center" Margin="0 0 0 0"></materialDesign:PackIcon>
+                                                        </Button>
+                                                    </StackPanel>
+                                                </DataTemplate>
+                                            </DataGridTemplateColumn.CellTemplate>
+                                        </DataGridTemplateColumn>
+                                        <DataGridTextColumn IsReadOnly="True" x:Name="Codigo" Width="auto" Header="Codigo" Binding="{Binding CuentaContable.CuentaContable1}"  />
+                                        <DataGridTextColumn IsReadOnly="True" x:Name="Cuenta" Width="250" Header="Cuenta" Binding="{Binding CuentaContable.Descripcion}" />
+                                        <DataGridTextColumn IsReadOnly="True" x:Name="Debe" Width="auto" Header="Debe" Binding="{Binding Debe,StringFormat='{}{0:0.00%}'}" />
+                                        <DataGridTextColumn IsReadOnly="True" x:Name="Haber" Width="auto" Header="Haber" Binding="{Binding Haber,StringFormat='{}{0:0.00%}'}" />
+                                        <DataGridTextColumn IsReadOnly="True" Width="180" Header="Tipo de Cuenta" Binding="{Binding CuentaContable.TipoCuenta.TipoCuenta1}" />
+
+                                    </DataGrid.Columns>
+                                </DataGrid>
+                               
+                            </DockPanel>
+
+
+
                         </StackPanel>
 
                     </StackPanel>

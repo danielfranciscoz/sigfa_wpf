@@ -78,6 +78,17 @@
                             </DataGrid.RowStyle>
                             
                             <DataGrid.Columns>
+                                <DataGridTemplateColumn CanUserResize="False" Width="50" Header="">
+                                    <DataGridTemplateColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <StackPanel>
+                                                <Button x:Name="btnVerAsiento" Tag="{StaticResource Permiso_Editar}" Background="{StaticResource Delete_Button}" Height="20" Width="20" Style="{StaticResource MaterialDesignToolButton}" BorderBrush="Transparent" Click="BtnVerAsiento_Click">
+                                                    <materialDesign:PackIcon Kind="Eye" HorizontalAlignment="Center"  VerticalAlignment="Center" Margin="0 0 0 0"></materialDesign:PackIcon>
+                                                </Button>
+                                            </StackPanel>
+                                        </DataTemplate>
+                                    </DataGridTemplateColumn.CellTemplate>
+                                </DataGridTemplateColumn>
                                 <DataGridTextColumn CanUserReorder="False" CanUserResize="False" IsReadOnly="True" Header="No.Recibo" Width="auto" Binding="{Binding IdRecibo}"></DataGridTextColumn>
                                 <DataGridTextColumn CanUserReorder="False" CanUserResize="False" IsReadOnly="True" Header="Serie" Width="auto" Binding="{Binding Serie}"></DataGridTextColumn>
                                 <DataGridTextColumn CanUserReorder="False" CanUserResize="False" IsReadOnly="True" Header="Caja" Width="auto" Binding="{Binding DetAperturaCaja.Caja.Nombre}"></DataGridTextColumn>

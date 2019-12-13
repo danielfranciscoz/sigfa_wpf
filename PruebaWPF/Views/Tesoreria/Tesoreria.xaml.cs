@@ -33,6 +33,7 @@ namespace PruebaWPF.Views.Tesoreria
 
         private List<MovimientoIngreso> movimientosIngreso;
         private List<CuentaContableVariacion> cuentasContable;
+        private List<DetalleMovimientoIngreso> detallesMovimiento;
 
         public static Boolean Cambios = false;
         public Tesoreria()
@@ -164,8 +165,9 @@ namespace PruebaWPF.Views.Tesoreria
             try
             {
                 movimientosIngreso = await FindAsyncMovimientos();
-                lstMovimientos.ItemsSource = movimientosIngreso;
-                lstMovimientos.Height = panelGridMovimiento.ActualHeight;
+                tblMovimientos.ItemsSource = movimientosIngreso;
+                tblMovimientos.Height = panelGridMovimiento.ActualHeight;
+                lstDetalleMovimientos.ItemsSource = null;
             }
             catch (Exception ex)
             {
@@ -177,8 +179,8 @@ namespace PruebaWPF.Views.Tesoreria
         {
             try
             {
-                var detalle = await FindAsynDetalleMovimientos(movimiento.IdMovimientoIngreso);
-                lstDetalleMovimientos.ItemsSource = detalle;
+                detallesMovimiento = await FindAsynDetalleMovimientos(movimiento.IdMovimientoIngreso);
+                lstDetalleMovimientos.ItemsSource = detallesMovimiento;
                 lstDetalleMovimientos.Height = panelGridDetalleMovimientos.ActualHeight;
             }
             catch (Exception ex)
@@ -489,9 +491,9 @@ namespace PruebaWPF.Views.Tesoreria
 
         private void LstMovimientos_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            if (lstMovimientos.SelectedItem != null)
+            if (tblMovimientos.SelectedItem != null)
             {
-                LoadTableDetalleMovimiento((MovimientoIngreso)lstMovimientos.SelectedItem);
+                LoadTableDetalleMovimiento((MovimientoIngreso)tblMovimientos.SelectedItem);
             }
         }
 
@@ -1146,6 +1148,50 @@ namespace PruebaWPF.Views.Tesoreria
             {
                 clsUtilidades.OpenMessage(new Operacion() { Mensaje = new clsException(ex).ErrorMessage(), OperationType = clsReferencias.TYPE_MESSAGE_Error });
 
+            }
+        }
+
+        private void BtnNewConta_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                string Permiso = ((Button)sender).Tag.ToString();
+                if (controller().Authorize(((Button)sender).Tag.ToString()))
+                {
+                    GestionarT_B_FP gt = new GestionarT_B_FP(new MovimientoIngreso(), null, pantalla, Permiso);
+                    gt.ShowDialog();
+                }
+            }
+            catch (Exception ex)
+            {
+                clsUtilidades.OpenMessage(new Operacion() { Mensaje = new clsException(ex).ErrorMessage(), OperationType = clsReferencias.TYPE_MESSAGE_Error });
+            }
+        }
+
+        private void BtnEditMovimiento_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                string Permiso = ((Button)sender).Tag.ToString();
+                if (controller().Authorize(Permiso))
+                {
+                    if (tblMovimientos.SelectedItem != null)
+                    {
+                        MovimientoIngreso selected = (MovimientoIngreso)tblMovimientos.SelectedItem;
+
+
+                        GestionarT_B_FP gt = new GestionarT_B_FP(selected, detallesMovimiento, pantalla, Permiso);
+                        gt.ShowDialog();
+                    }
+                    else
+                    {
+                        clsUtilidades.OpenMessage(new Operacion() { Mensaje = clsReferencias.MESSAGE_NoSelection, OperationType = clsReferencias.TYPE_MESSAGE_Advertencia });
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                clsUtilidades.OpenMessage(new Operacion() { Mensaje = new clsException(ex).ErrorMessage(), OperationType = clsReferencias.TYPE_MESSAGE_Error });
             }
         }
 

@@ -289,7 +289,7 @@ advertencia 6002: La tabla o vista 'SIFOP.coin.Parametro' no tiene definida ning
           <Key>
             <PropertyRef Name="IdMovimientoIngreso" />
           </Key>
-          <Property Name="IdMovimientoIngreso" Type="int" Nullable="false" />
+          <Property Name="IdMovimientoIngreso" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="IdFormaPago" Type="int" Nullable="false" />
           <Property Name="IdMoneda" Type="int" Nullable="false" />
           <Property Name="IdRecinto" Type="int" Nullable="false" />
@@ -2557,6 +2557,7 @@ advertencia 6002: La tabla o vista 'SIFOP.dbo.TmpSolicitudesArchivo' no tiene de
           <Property Name="Identificador" Type="varchar" MaxLength="20" Nullable="false" />
           <Property Name="TextoIdentificador" Type="varchar" MaxLength="80" Nullable="false" />
           <Property Name="UsuarioRemitente" Type="varchar" MaxLength="30" Nullable="false" />
+          <Property Name="EmailNotificacion" Type="varchar" MaxLength="50" />
           <Property Name="Sistema" Type="varchar" MaxLength="20" Nullable="false" />
           <Property Name="FechaEnvio" Type="datetime" Nullable="false" />
           <Property Name="CodRecibo" Type="varchar" MaxLength="25" />
@@ -2898,13 +2899,18 @@ advertencia 6002: La tabla o vista 'SIFOP.cat.vw_AreaEquivalencia' no tiene defi
             <PropertyRef Name="IdF" />
             <PropertyRef Name="DescripcionF" />
             <PropertyRef Name="EstadoF" />
+            <PropertyRef Name="UsuarioCreacion" />
+            <PropertyRef Name="FechaCreacion" />
           </Key>
           <Property Name="CodRH" Type="varchar" MaxLength="3" Nullable="false" />
           <Property Name="DescripcionRH" Type="varchar" MaxLength="200" />
           <Property Name="EstadoRH" Type="varchar" MaxLength="1" />
           <Property Name="IdF" Type="tinyint" Nullable="false" />
+          <Property Name="IdInterfaz" Type="nvarchar" MaxLength="10" />
           <Property Name="DescripcionF" Type="nvarchar" MaxLength="100" Nullable="false" />
           <Property Name="EstadoF" Type="tinyint" Nullable="false" />
+          <Property Name="UsuarioCreacion" Type="nvarchar" MaxLength="20" Nullable="false" />
+          <Property Name="FechaCreacion" Type="datetime" Nullable="false" />
         </EntityType>
         <!--Errores durante la generación:
 advertencia 6002: La tabla o vista 'SIFOP.cat.vw_Areas' no tiene definida ninguna clave principal. Se ha inferido la clave y la definición se creado como una vista o tabla de solo lectura.-->
@@ -10784,8 +10790,11 @@ advertencia 6002: La tabla o vista 'SIFOP.dbo.w_LibroMayorAcumulado_Vlast' no ti
     [vw_AreaEquivalencia].[DescripcionRH] AS [DescripcionRH], 
     [vw_AreaEquivalencia].[EstadoRH] AS [EstadoRH], 
     [vw_AreaEquivalencia].[IdF] AS [IdF], 
+    [vw_AreaEquivalencia].[IdInterfaz] AS [IdInterfaz], 
     [vw_AreaEquivalencia].[DescripcionF] AS [DescripcionF], 
-    [vw_AreaEquivalencia].[EstadoF] AS [EstadoF]
+    [vw_AreaEquivalencia].[EstadoF] AS [EstadoF], 
+    [vw_AreaEquivalencia].[UsuarioCreacion] AS [UsuarioCreacion], 
+    [vw_AreaEquivalencia].[FechaCreacion] AS [FechaCreacion]
     FROM [cat].[vw_AreaEquivalencia] AS [vw_AreaEquivalencia]</DefiningQuery>
           </EntitySet>
           <EntitySet Name="vw_Areas" EntityType="Self.vw_Areas" store:Type="Views" store:Schema="cat">
@@ -16944,6 +16953,7 @@ advertencia 6002: La tabla o vista 'SIFOP.dbo.w_LibroMayorAcumulado_Vlast' no ti
           <NavigationProperty Name="TipoDeposito" Relationship="Self.FK_OrdenPago_TipoDeposito" FromRole="OrdenPago" ToRole="TipoDeposito" />
           <NavigationProperty Name="Recibo1" Relationship="Self.FK_Recibo_OrdenPago" FromRole="OrdenPago" ToRole="Recibo1" />
           <NavigationProperty Name="ReciboAnulado" Relationship="Self.FK_ReciboAnulado_OrdenPago" FromRole="OrdenPago" ToRole="ReciboAnulado" />
+          <Property Name="EmailNotificacion" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
         </EntityType>
         <EntityType Name="TipoArancel">
           <Key>
@@ -17473,6 +17483,8 @@ advertencia 6002: La tabla o vista 'SIFOP.dbo.w_LibroMayorAcumulado_Vlast' no ti
             <PropertyRef Name="IdF" />
             <PropertyRef Name="DescripcionF" />
             <PropertyRef Name="EstadoF" />
+            <PropertyRef Name="UsuarioCreacion" />
+            <PropertyRef Name="FechaCreacion" />
           </Key>
           <Property Name="CodRH" Type="String" MaxLength="3" FixedLength="false" Unicode="false" Nullable="false" />
           <Property Name="DescripcionRH" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
@@ -17480,6 +17492,9 @@ advertencia 6002: La tabla o vista 'SIFOP.dbo.w_LibroMayorAcumulado_Vlast' no ti
           <Property Name="IdF" Type="Byte" Nullable="false" />
           <Property Name="DescripcionF" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
           <Property Name="EstadoF" Type="Byte" Nullable="false" />
+          <Property Name="IdInterfaz" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+          <Property Name="UsuarioCreacion" Type="String" Nullable="false" MaxLength="20" FixedLength="false" Unicode="true" />
+          <Property Name="FechaCreacion" Type="DateTime" Nullable="false" Precision="3" />
         </EntityType>
         <EntityType Name="vw_Areas">
           <Key>
@@ -27251,6 +27266,7 @@ advertencia 6002: La tabla o vista 'SIFOP.dbo.w_LibroMayorAcumulado_Vlast' no ti
           <EntitySetMapping Name="OrdenPago">
             <EntityTypeMapping TypeName="SIFOPModel.OrdenPago">
               <MappingFragment StoreEntitySet="OrdenPago">
+                <ScalarProperty Name="EmailNotificacion" ColumnName="EmailNotificacion" />
                 <ScalarProperty Name="IdOrdenPago" ColumnName="IdOrdenPago" />
                 <ScalarProperty Name="NoOrdenPago" ColumnName="NoOrdenPago" />
                 <ScalarProperty Name="IdArea" ColumnName="IdArea" />
@@ -27702,6 +27718,9 @@ advertencia 6002: La tabla o vista 'SIFOP.dbo.w_LibroMayorAcumulado_Vlast' no ti
           <EntitySetMapping Name="vw_AreaEquivalencia">
             <EntityTypeMapping TypeName="SIFOPModel.vw_AreaEquivalencia">
               <MappingFragment StoreEntitySet="vw_AreaEquivalencia">
+                <ScalarProperty Name="FechaCreacion" ColumnName="FechaCreacion" />
+                <ScalarProperty Name="UsuarioCreacion" ColumnName="UsuarioCreacion" />
+                <ScalarProperty Name="IdInterfaz" ColumnName="IdInterfaz" />
                 <ScalarProperty Name="CodRH" ColumnName="CodRH" />
                 <ScalarProperty Name="DescripcionRH" ColumnName="DescripcionRH" />
                 <ScalarProperty Name="EstadoRH" ColumnName="EstadoRH" />

@@ -54,8 +54,9 @@ namespace PruebaWPF.Model
         }
     }
 
-    public partial class CuentaContable {
-        public string CuentaCodigo => string.Format("{0} {1}",CuentaContable1,Descripcion);
+    public partial class CuentaContable
+    {
+        public string CuentaCodigo => string.Format("{0} {1}", CuentaContable1, Descripcion);
     }
 
     public partial class MovimientoIngreso
@@ -65,7 +66,15 @@ namespace PruebaWPF.Model
 
     public partial class DetalleMovimientoIngreso
     {
-        public decimal? Debe => Naturaleza == false ? FactorPorcentual :(decimal?)null;
+        public bool canDelete { get; set; } = true;
+        public decimal? Debe => Naturaleza == false ? FactorPorcentual : (decimal?)null;
         public decimal? Haber => Naturaleza ? FactorPorcentual : (decimal?)null;
+    }
+
+    public partial class Asiento
+    {
+        public decimal? Debe => Naturaleza == false ? Monto : (decimal?)null;
+        public decimal? Haber => Naturaleza ? Monto : (decimal?)null;
+        public string Area { get; set; }
     }
 }

@@ -74,8 +74,8 @@ namespace PruebaWPF.ViewModel
 
         private int GetIfNumber(string a)
         {
-            int value=0;
-            int.TryParse(a, out value );
+            int value = 0;
+            int.TryParse(a, out value);
 
             return value;
         }
@@ -93,31 +93,6 @@ namespace PruebaWPF.ViewModel
 
         public List<VariacionCambiariaSon> FindTipoCambio(ReciboSon recibo, List<DetReciboSon> detalleR)
         {
-            //List<VariacionCambiariaSon> datos = new List<VariacionCambiariaSon>();
-
-            //List<Moneda> monedasDetalles;
-
-            //if (detalleR == null)
-            //{
-            //    monedasDetalles = DetallesRecibo(recibo).Select(s => s.ArancelPrecio.Moneda).ToList();
-            //}
-            //else
-            //{
-            //    monedasDetalles = detalleR.Select(s => s.ArancelPrecio.Moneda).ToList();
-            //}
-
-            //var monedasPago = recibo.ReciboPago.Select(s => s.Moneda);
-            //var monedas = monedasDetalles.Union(monedasPago).GroupBy(g => new { g.IdMoneda, g.Simbolo, g.Moneda1 }).ToList();
-
-            //foreach (var item in monedas)
-            //{
-            //    VariacionCambiariaSon v = new VariacionCambiariaSon()
-            //    {
-            //        Moneda = new Moneda() { IdMoneda = item.Key.IdMoneda, Moneda1 = item.Key.Moneda1, Simbolo = item.Key.Simbolo },
-            //        Valor = ObtenerTasaCambio(item.Key.IdMoneda, recibo.Fecha).Valor
-            //    };
-            //    datos.Add(v);
-            //}
 
             //Obtengo todos los tipos de cambio en base a la fecha del recibo
             List<VariacionCambiariaSon> cambios = db.Moneda.Where(w => w.regAnulado == false).ToList().Select(s => new VariacionCambiariaSon()
@@ -134,51 +109,73 @@ namespace PruebaWPF.ViewModel
         {
 
             List<ReciboSon> ReciboCompleto = (from r in recibo
-                        join recintos in db.vw_RecintosRH on r.InfoRecibo.IdRecinto equals recintos.IdRecinto into ReciboRecinto
-                        from RecintoTable in ReciboRecinto
-                        join recibodatos in db.ReciboDatos on new { r.IdRecibo, r.Serie } equals new { recibodatos.IdRecibo, recibodatos.Serie } into ReciboDatoRecibo
-                        from ReciboDatoTable in ReciboDatoRecibo.DefaultIfEmpty()
-                        join orden in db.OrdenPago on r.IdOrdenPago equals orden.IdOrdenPago into OrdenRecibo
-                        from OrdenTable in OrdenRecibo.DefaultIfEmpty()
-                        join reciboanulado in db.ReciboAnulado on new { r.IdRecibo, r.Serie } equals new { reciboanulado.IdRecibo, reciboanulado.Serie } into ReciboAnuladoRecibo
-                        from ReciboAnuladoTable in ReciboAnuladoRecibo.DefaultIfEmpty()
-                        join ordenanulada in db.OrdenPago on ReciboAnuladoTable.IdOrdenPago equals ordenanulada.IdOrdenPago into OrdenAnulada
-                        from OrdenAnuladaTable in OrdenAnulada.DefaultIfEmpty()
-                        join area in db.vw_Areas on (ReciboDatoTable!=null?ReciboDatoTable.IdArea:OrdenTable!=null?OrdenTable.IdArea:OrdenAnuladaTable.IdArea) equals area.codigo into Areas
-                        from AreaTable in Areas
-                        orderby r.IdRecibo descending,r.Serie descending 
-                        select new ReciboSon()
-                        {
-                            IdRecibo = r.IdRecibo,
-                            Serie = r.Serie,
-                            IdDetAperturaCaja = r.IdDetAperturaCaja,
-                            IdArea = ReciboDatoTable != null ? ReciboDatoTable.IdArea : OrdenTable != null ? OrdenTable.IdArea : OrdenAnuladaTable.IdArea,
-                            IdFuenteFinanciamiento = r.IdFuenteFinanciamiento,
-                            IdTipoDeposito = ReciboDatoTable != null ? ReciboDatoTable.IdTipoDeposito : OrdenTable != null ? OrdenTable.IdTipoDeposito: OrdenAnuladaTable.IdTipoDeposito,
-                            Identificador = ReciboDatoTable != null ? ReciboDatoTable.Identificador : OrdenTable != null ? OrdenTable.Identificador: OrdenAnuladaTable.Identificador,
-                            TextoIdentificador = ReciboDatoTable != null ? ReciboDatoTable.TextoIdentificador : OrdenTable != null ? OrdenTable.TextoIdentificador: OrdenAnuladaTable.TextoIdentificador,
-                            TipoDeposito = ReciboDatoTable != null ? ReciboDatoTable.TipoDeposito : OrdenTable != null ? OrdenTable.TipoDeposito: OrdenAnuladaTable.TipoDeposito,
-                            Recibimos = r.Recibimos,
-                            Fecha = r.Fecha,
-                            IdOrdenPago = r.IdOrdenPago,
-                            regAnulado = r.regAnulado,
-                            IdInfoRecibo = r.IdInfoRecibo,
-                            InfoRecibo = r.InfoRecibo,
-                            DetAperturaCaja = r.DetAperturaCaja,
-                            OrdenPago = OrdenTable,
-                            FuenteFinanciamiento = r.FuenteFinanciamiento,
-                            UsuarioCreacion = r.UsuarioCreacion,
-                            Recinto = RecintoTable.Siglas,
-                            Area = AreaTable.descripcion.ToUpper(),
-                            ReciboAnulado = ReciboAnuladoTable
-                        }
-                        
+                                              join recintos in db.vw_RecintosRH on r.InfoRecibo.IdRecinto equals recintos.IdRecinto into ReciboRecinto
+                                              from RecintoTable in ReciboRecinto
+                                              join recibodatos in db.ReciboDatos on new { r.IdRecibo, r.Serie } equals new { recibodatos.IdRecibo, recibodatos.Serie } into ReciboDatoRecibo
+                                              from ReciboDatoTable in ReciboDatoRecibo.DefaultIfEmpty()
+                                              join orden in db.OrdenPago on r.IdOrdenPago equals orden.IdOrdenPago into OrdenRecibo
+                                              from OrdenTable in OrdenRecibo.DefaultIfEmpty()
+                                              join reciboanulado in db.ReciboAnulado on new { r.IdRecibo, r.Serie } equals new { reciboanulado.IdRecibo, reciboanulado.Serie } into ReciboAnuladoRecibo
+                                              from ReciboAnuladoTable in ReciboAnuladoRecibo.DefaultIfEmpty()
+                                              join ordenanulada in db.OrdenPago on ReciboAnuladoTable.IdOrdenPago equals ordenanulada.IdOrdenPago into OrdenAnulada
+                                              from OrdenAnuladaTable in OrdenAnulada.DefaultIfEmpty()
+                                              join area in db.vw_Areas on (ReciboDatoTable != null ? ReciboDatoTable.IdArea : OrdenTable != null ? OrdenTable.IdArea : OrdenAnuladaTable.IdArea) equals area.codigo into Areas
+                                              from AreaTable in Areas
+                                              orderby r.IdRecibo descending, r.Serie descending
+                                              select new ReciboSon()
+                                              {
+                                                  IdRecibo = r.IdRecibo,
+                                                  Serie = r.Serie,
+                                                  IdDetAperturaCaja = r.IdDetAperturaCaja,
+                                                  IdArea = ReciboDatoTable != null ? ReciboDatoTable.IdArea : OrdenTable != null ? OrdenTable.IdArea : OrdenAnuladaTable.IdArea,
+                                                  IdFuenteFinanciamiento = r.IdFuenteFinanciamiento,
+                                                  IdTipoDeposito = ReciboDatoTable != null ? ReciboDatoTable.IdTipoDeposito : OrdenTable != null ? OrdenTable.IdTipoDeposito : OrdenAnuladaTable.IdTipoDeposito,
+                                                  Identificador = ReciboDatoTable != null ? ReciboDatoTable.Identificador : OrdenTable != null ? OrdenTable.Identificador : OrdenAnuladaTable.Identificador,
+                                                  TextoIdentificador = ReciboDatoTable != null ? ReciboDatoTable.TextoIdentificador : OrdenTable != null ? OrdenTable.TextoIdentificador : OrdenAnuladaTable.TextoIdentificador,
+                                                  TipoDeposito = ReciboDatoTable != null ? ReciboDatoTable.TipoDeposito : OrdenTable != null ? OrdenTable.TipoDeposito : OrdenAnuladaTable.TipoDeposito,
+                                                  Recibimos = r.Recibimos,
+                                                  Fecha = r.Fecha,
+                                                  IdOrdenPago = r.IdOrdenPago,
+                                                  regAnulado = r.regAnulado,
+                                                  IdInfoRecibo = r.IdInfoRecibo,
+                                                  InfoRecibo = r.InfoRecibo,
+                                                  DetAperturaCaja = r.DetAperturaCaja,
+                                                  OrdenPago = OrdenTable,
+                                                  FuenteFinanciamiento = r.FuenteFinanciamiento,
+                                                  UsuarioCreacion = r.UsuarioCreacion,
+                                                  Recinto = RecintoTable.Siglas,
+                                                  Area = AreaTable.descripcion.ToUpper(),
+                                                  ReciboAnulado = ReciboAnuladoTable
+                                              }
+
                         ).ToList();
 
 
-          
+
             return ReciboCompleto;
         }
+
+        public List<Asiento> FindAsientoRecibo(ReciboSon recibo)
+        {
+            List<Asiento> asientos = (from a in db.Asiento
+                                      join area in db.vw_Areas on a.IdArea equals area.codigo into Areas
+                                      from AsientoTable in Areas.DefaultIfEmpty()
+                                      orderby a.Naturaleza, a.Monto descending
+                                      where a.IdRecibo == recibo.IdRecibo && a.Serie == recibo.Serie
+                                      select new { a, AsientoTable }
+                                      ).ToList().Select(s => new Asiento()
+                                      {
+                                          IdRecibo = s.a.IdRecibo,
+                                          Serie = s.a.Serie,
+                                          Area = s.AsientoTable?.descripcion,
+                                          CuentaContable = s.a.CuentaContable,
+                                          Naturaleza = s.a.Naturaleza,
+                                          Monto = s.a.Monto
+                                      }).ToList();
+
+            return asientos;
+        }
+
 
         public int getTipoArancelOrden(OrdenPagoSon orden)
         {
@@ -493,10 +490,11 @@ namespace PruebaWPF.ViewModel
 
                         if (ordenPago.IdOrdenPago == 0) // se crea el recibo sin una orden de pago
                         {
+                            //TODO Unable to determine the principal end of the 'SIFOPModel.FK_ReciboDatos_Recibo' relationship. Multiple added entities may have the same primary key.
                             datos = new ReciboDatos();
-
-                            datos.IdRecibo = recibo.IdRecibo;
-                            datos.Serie = recibo.Serie;
+                            datos.Recibo1 = roc;
+                            datos.IdRecibo = roc.IdRecibo;
+                            datos.Serie = roc.Serie;
                             datos.IdArea = ordenPago.IdArea == "" ? "000" : ordenPago.IdArea;
                             datos.IdTipoDeposito = ordenPago.IdTipoDeposito;
                             datos.Identificador = ordenPago.Identificador;
@@ -559,6 +557,7 @@ namespace PruebaWPF.ViewModel
                                 }
                             }
 
+                            db.Recibo1.Add(roc);
                             db.ReciboDatos.Add(datos);
 
                         }
@@ -580,10 +579,10 @@ namespace PruebaWPF.ViewModel
 
                             db.Entry(orden).State = System.Data.Entity.EntityState.Modified;
 
+                            db.Recibo1.Add(roc);
 
                         }
 
-                        db.Recibo1.Add(roc);
 
                         Asiento asientoVariacion = new Asiento();
 
@@ -698,7 +697,7 @@ namespace PruebaWPF.ViewModel
 
                             //Creando el asiento contable para el movimiento del recibo, previamente ya tengo en memoria el registro de ingreso y la variacion cambiaria, esto viene a realizar la partida doble
                             MovimientoIngreso movimiento = db.MovimientoIngreso.FirstOrDefault(f => f.IdFormaPago == item.IdFormaPago && f.IdMoneda == item.IdMoneda && f.IdRecinto == roc.InfoRecibo.IdRecinto);
-                            
+
                             if (movimiento != null)
                             {
 
@@ -806,6 +805,14 @@ namespace PruebaWPF.ViewModel
                             db.sp_RevertirPagoSIRA(r.ReciboDatos.Identificador, r.IdRecibo, r.Serie, reciboAnulado.Motivo, r.ReciboSIRA.isMatricula);
                         }
                     }
+
+                    List<Asiento> asientos = db.Asiento.Where(w => w.IdRecibo == reciboAnulado.IdRecibo && w.Serie == reciboAnulado.Serie).ToList();
+
+                    asientos.ForEach(a =>
+                    {
+                        a.regAnulado = true;
+                        db.Entry(a).State = System.Data.Entity.EntityState.Modified;
+                    });
 
                     db.SaveChanges();
                     transaction.Commit();
@@ -964,7 +971,7 @@ namespace PruebaWPF.ViewModel
             }
             else
             {
-                throw new AuthorizationException(PermisoName, IdRecinto,db);
+                throw new AuthorizationException(PermisoName, IdRecinto, db);
             }
         }
 

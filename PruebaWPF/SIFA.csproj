@@ -1233,6 +1233,9 @@
     <Compile Include="Views\Recibo\AnularRecibo.xaml.cs">
       <DependentUpon>AnularRecibo.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Views\Recibo\AsientoRecibo.xaml.cs">
+      <DependentUpon>AsientoRecibo.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\Recibo\CrearRecibo.xaml.cs">
       <DependentUpon>CrearRecibo.xaml</DependentUpon>
     </Compile>
@@ -1395,6 +1398,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\Recibo\AnularRecibo.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\Recibo\AsientoRecibo.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

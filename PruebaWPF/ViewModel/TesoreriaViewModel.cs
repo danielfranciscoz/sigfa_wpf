@@ -2,6 +2,7 @@
 using PruebaWPF.Helper;
 using PruebaWPF.Interface;
 using PruebaWPF.Model;
+using PruebaWPF.Referencias;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -582,7 +583,7 @@ namespace PruebaWPF.ViewModel
                 )
                 .Where(w => w.movimiento.FormaPago.regAnulado == false && w.movimiento.Moneda.regAnulado == false
                   && r.Any(a => w.recinto.IdRecinto == a.IdRecinto)
-                ).OrderBy(o => o.movimiento.IdFormaPago).ThenBy(t => t.movimiento.IdMoneda).ToList().Select(s => new MovimientoIngreso()
+                ).OrderBy(o => o.movimiento.IdFormaPago).ThenBy(t => t.recinto.IdRecinto).ThenBy(t => t.movimiento.IdMoneda).ToList().Select(s => new MovimientoIngreso()
                 {
                     Recinto = s.recinto.Siglas,
                     IdFormaPago = s.movimiento.IdFormaPago,
@@ -599,19 +600,46 @@ namespace PruebaWPF.ViewModel
 
         public List<DetalleMovimientoIngreso> FindAllDetallesMovimiento(int IdMovimiento)
         {
-            List<DetalleMovimientoIngreso> detalles = db.DetalleMovimientoIngreso.Where(w => w.IdMovimientoIngreso == IdMovimiento && w.regAnulado == false).OrderBy(o => o.Naturaleza).ThenByDescending(t => t.FactorPorcentual).ToList();
-
-            return detalles;
+            List<DetalleMovimientoIngreso> detalles = db.DetalleMovimientoIngreso.Where(w => w.IdMovimientoIngreso == IdMovimiento && w.regAnulado == false).ToList();
+            detalles.Insert(0, new DetalleMovimientoIngreso()
+            {
+                canDelete = false,
+                Naturaleza = clsReferencias.Haber,
+                FactorPorcentual = 1,
+                CuentaContable = new CuentaContable()
+                {
+                    CuentaContable1 = "4",
+                    Descripcion = "INGRESOS DEL RECIBO",
+                    TipoCuenta = new TipoCuenta()
+                    {
+                        TipoCuenta1 = "INGRESOS (Autogenerado)"
+                    }
+                }
+            });
+            return detalles.OrderBy(o => o.Naturaleza).ThenByDescending(t => t.FactorPorcentual).ToList();
         }
 
+        public List<FormaPago> FindFormaPagoMovimientoMoneda(int IdRecinto, int IdMoneda)
+        {
+            var b = db.MovimientoIngreso.Where(w => w.IdMoneda == IdMoneda && w.IdRecinto == IdRecinto).Select(s => s.IdFormaPago);
+
+            return db.FormaPago.Where(w => w.regAnulado == false && b.All(c => c != w.IdFormaPago)).OrderBy(o => o.FormaPago1).ToList();
+        }
         private IQueryable<Configuracion> FindTipoVariacion()
         {
             return db.Configuracion.Where(w => w.Llave == clsConfiguration.Llaves.Variacion_Negativa.ToString() || w.Llave == clsConfiguration.Llaves.Variacion_Positiva.ToString());
         }
 
-        public List<Configuracion> FindAllTipoVariacion()
+        public List<Configuracion> FindAllTipoVariacion(Configuracion llave)
         {
-            return FindTipoVariacion().Where(w=>w.Valor == "0").ToList();
+            if (llave != null)
+            {
+                return FindTipoVariacion().Where(w => w.Llave == llave.Llave).ToList();
+            }
+            else
+            {
+                return FindTipoVariacion().Where(w => w.Valor == "0").ToList();
+            }
         }
 
         public List<CuentaContableVariacion> FindVariaciones()
@@ -632,15 +660,82 @@ namespace PruebaWPF.ViewModel
             return c;
         }
 
-        public void SaveUpdateParametrosVariacion(CuentaContable cuenta,Configuracion configuracion)
+        public void SaveUpdateParametrosVariacion(CuentaContable cuenta, Configuracion configuracion)
         {
             Configuracion c = db.Configuracion.Find(configuracion.Llave);
             c.Valor = cuenta.IdCuentaContable.ToString();
             c.UsuarioModificacion = clsSessionHelper.usuario.Login;
             c.FechaModificacion = System.DateTime.Now;
-            
+
             db.SaveChanges();
         }
+
+        public void SaveUpdateParametrizacion(MovimientoIngreso movimiento, List<DetalleMovimientoIngreso> detalles, List<DetalleMovimientoIngreso> detallesDeleted)
+        {
+            using (var transaction = db.Database.BeginTransaction())
+            {
+                try
+                {
+                    detalles.RemoveAt(0); //Elimino el primer elemento de la lista porque corresponde al ingreso autogenerado
+
+                    if (movimiento.IdMovimientoIngreso == 0) //El movimiento solo puede tener INSERT, no se hace nada de UPDATE
+                    {
+                        movimiento.FechaCreacion = System.DateTime.Now;
+                        movimiento.UsuarioCreacion = clsSessionHelper.usuario.Login;
+                        db.MovimientoIngreso.Add(movimiento);
+
+
+                        db.DetalleMovimientoIngreso.AddRange(detalles.Select(s => new DetalleMovimientoIngreso()
+                        {
+                            IdMovimientoIngreso = movimiento.IdMovimientoIngreso,
+                            canDelete = s.canDelete,
+                            Naturaleza = s.Naturaleza,
+                            FactorPorcentual = s.FactorPorcentual,
+                            IdCuentaContable = s.CuentaContable.IdCuentaContable,
+                            FechaCreacion = System.DateTime.Now,
+                            UsuarioCreacion = clsSessionHelper.usuario.Login
+                        }
+                        ));
+                    }
+                    else
+                    {
+                        DetalleMovimientoIngreso del;
+
+                        detallesDeleted.ForEach(deleted =>
+                        {
+                            del = db.DetalleMovimientoIngreso.Find(deleted.IdDetalleMovimientoIngreso);
+                            del.regAnulado = true;
+
+                            db.Entry(del).State = System.Data.Entity.EntityState.Modified;
+                        });
+
+                        db.DetalleMovimientoIngreso.AddRange(detalles.Select(s => new DetalleMovimientoIngreso()
+                        {
+                            IdMovimientoIngreso = movimiento.IdMovimientoIngreso,
+                            canDelete = s.canDelete,
+                            Naturaleza = s.Naturaleza,
+                            FactorPorcentual = s.FactorPorcentual,
+                            IdCuentaContable = s.CuentaContable.IdCuentaContable,
+                            FechaCreacion = System.DateTime.Now,
+                            UsuarioCreacion = clsSessionHelper.usuario.Login
+                        }
+                        ).Where(w => w.IdDetalleMovimientoIngreso == 0));
+
+                    }
+                    db.SaveChanges();
+                    transaction.Commit();
+                }
+                catch (Exception ex)
+                {
+
+                    transaction.Rollback();
+
+                    throw ex;
+                }
+            }
+
+        }
+
         #endregion
         public List<vw_RecintosRH> Recintos(string PermisoName)
         {

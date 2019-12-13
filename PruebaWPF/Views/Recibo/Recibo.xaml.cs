@@ -7,18 +7,10 @@ using PruebaWPF.Views.Shared;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 
 namespace PruebaWPF.Views.Recibo
 {
@@ -115,7 +107,7 @@ namespace PruebaWPF.Views.Recibo
             {
                 //if (isOpening)
                 //{
-                
+
                 if (clsConfiguration.Actual().AutoLoad)
                 {
                     AutomaticReloadTask();
@@ -216,8 +208,8 @@ namespace PruebaWPF.Views.Recibo
         private void Load()
         {
             tblRecibo.ItemsSource = items;
-         }
-    
+        }
+
 
         private void ResizeGrid()
         {
@@ -290,6 +282,12 @@ namespace PruebaWPF.Views.Recibo
             {
                 clsUtilidades.OpenMessage(new Operacion() { Mensaje = new clsException(ex).ErrorMessage(), OperationType = clsReferencias.TYPE_MESSAGE_Error });
             }
+        }
+
+        private void BtnVerAsiento_Click(object sender, RoutedEventArgs e)
+        {
+            AsientoRecibo asiento = new AsientoRecibo((ReciboSon)tblRecibo.CurrentItem);
+            asiento.ShowDialog();
         }
     }
 }

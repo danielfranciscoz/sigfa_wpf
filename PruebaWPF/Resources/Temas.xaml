@@ -50,6 +50,7 @@
     <sys:String x:Key="Text_Export_Button">EXPORTAR REGISTROS</sys:String>
     <sys:String x:Key="Text_Print_Button">IMPRIMIR</sys:String>
     <sys:String x:Key="Text_Add_Button">AGREGAR</sys:String>
+    <sys:String x:Key="Text_Acept_Button">ACEPTAR</sys:String>
     <sys:String x:Key="Text_Next_Button">CONTINUAR</sys:String>
     <sys:String x:Key="Text_Back_Button">REGRESAR</sys:String>
     <sys:String x:Key="Text_Find_Button">BUSCAR</sys:String>
