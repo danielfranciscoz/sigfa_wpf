@@ -78,7 +78,7 @@ namespace PruebaWPF.Views.Recibo
             txtIdentificador.IsEnabled = false;
 
             cboArancel.IsEnabled = false;
-            cboMonedaDeuda.IsEnabled = false;
+            //cboMonedaDeuda.IsEnabled = false;
             cboTipoDeposito.IsEnabled = false;
 
             btnSelectArea.IsEnabled = false;
@@ -100,7 +100,7 @@ namespace PruebaWPF.Views.Recibo
             formaPago = new ObservableCollection<ReciboPagoSon>();
             formaPago.CollectionChanged += new System.Collections.Specialized.NotifyCollectionChangedEventHandler(Pagos_CollectionChanged);
 
-            monedas = controller.ObtenerMonedas();
+            monedas = controller.ObtenerMonedas(null);
             ActivarValidadorCampos();
         }
 
@@ -138,7 +138,7 @@ namespace PruebaWPF.Views.Recibo
             clsValidateInput.Validate(txtAutorizacion, clsValidateInput.OnlyNumber);
             clsValidateInput.Validate(txtTarjeta, clsValidateInput.OnlyNumber);
 
-            validate.AsignarBorderNormal(new Control[] { txtArea, cboTipoDeposito, txtIdentificador, txtPorCuenta, txtRecibimos, cboFuenteFinanciamiento, cboTipoArancel, cboArancel, txtMonto, cboMonedaDeuda, cboFormaPago, txtMontoPago, cboMonedaPago, txtEmisor, txtBono, cboBanco, txtCuenta, txtNumeroCK, cboTarjeta, txtAutorizacion, txtTarjeta, cboTipo, txtTransaccion });
+            validate.AsignarBorderNormal(new Control[] { txtArea, cboTipoDeposito, txtIdentificador, txtPorCuenta, txtRecibimos, cboFuenteFinanciamiento, cboTipoArancel, cboArancel, txtMonto, cboFormaPago, txtMontoPago, cboMonedaPago, txtEmisor, txtBono, cboBanco, txtCuenta, txtNumeroCK, cboTarjeta, txtAutorizacion, txtTarjeta, cboTipo, txtTransaccion });
 
         }
 
@@ -277,8 +277,7 @@ namespace PruebaWPF.Views.Recibo
 
         private void CargarMonedas()
         {
-            cboMonedaDeuda.ItemsSource = monedas;
-            cboMonedaPago.ItemsSource = monedas;
+           // cboMonedaPago.ItemsSource = monedas;
 
         }
 
@@ -316,26 +315,30 @@ namespace PruebaWPF.Views.Recibo
             var SumTotal = items.GroupBy(a => new { a.ArancelPrecio.Moneda }).Select(b => new { Moneda = b.Key.Moneda.Simbolo, IdMoneda = b.Key.Moneda.IdMoneda, Monto = b.Sum(c => c.Total) }).OrderBy(o => o.IdMoneda).ToList();
 
             List<MonedaMonto> Totales = new List<MonedaMonto>();
-            foreach (var item in SumTotal)
-            {
-                lstSumatoria.Items.Add("Detalles en " + item.Moneda + " " + string.Format("{0:N}", item.Monto));
 
+            foreach (var item in items)
+            {
                 foreach (var i in monedas)
                 {
-                    if (i.IdMoneda == item.IdMoneda)
+                    if (i.IdMoneda == item.ArancelPrecio.IdMoneda)
                     {
-                        Totales.Add(new MonedaMonto { Valor = (Double)item.Monto, IdMoneda = item.IdMoneda, Moneda = item.Moneda });
+                        Totales.Add(new MonedaMonto { Valor = (Double)item.Total, IdMoneda = item.ArancelPrecio.IdMoneda, Moneda = item.ArancelPrecio.Moneda.Simbolo });
                     }
                     else
                     {
                         Totales.Add(new MonedaMonto
                         {
-                            Valor = controller.ConvertirDivisa(item.IdMoneda, i.IdMoneda, item.Monto),
+                            Valor = Math.Round(controller.ConvertirDivisa(item.ArancelPrecio.IdMoneda, i.IdMoneda, item.Total), 2, MidpointRounding.AwayFromZero),
                             IdMoneda = i.IdMoneda,
                             Moneda = i.Simbolo
                         });
                     }
                 }
+            }
+
+            foreach (var item in SumTotal)
+            {
+                lstSumatoria.Items.Add("Detalles en " + item.Moneda + " " + string.Format("{0:N}", item.Monto));
             }
 
             var SumETotal = Totales.GroupBy(a => new { a.IdMoneda, a.Moneda }).Select(b => new { Moneda = b.Key.Moneda, IdMoneda = b.Key.IdMoneda, Monto = b.Sum(c => c.Valor) }).OrderBy(o => o.IdMoneda).ToList();
@@ -353,7 +356,7 @@ namespace PruebaWPF.Views.Recibo
                 if (lstEquivalenciaTotalPay.Items.Count == 0)
                 {
                     lstPendiente.Items.Add("Saldo en " + item.Moneda + " " + string.Format("{0:N}", item.Monto));
-                    pendiente.Add(new MonedaMonto() { Moneda = item.Moneda,IdMoneda=item.IdMoneda, Valor = Math.Round(item.Monto, 2) });
+                    pendiente.Add(new MonedaMonto() { Moneda = item.Moneda, IdMoneda = item.IdMoneda, Valor = Math.Round(item.Monto, 2) });
                 }
             }
 
@@ -373,26 +376,31 @@ namespace PruebaWPF.Views.Recibo
 
 
             List<MonedaMonto> Totales = new List<MonedaMonto>();
-            foreach (var item in SumTotal)
+            foreach (var item in formaPago)
             {
-                lstSumatoriaPay.Items.Add("Pagos en " + item.Moneda + " " + string.Format("{0:N}", item.Monto));
 
                 foreach (var i in monedas)
                 {
                     if (i.IdMoneda == item.IdMoneda)
                     {
-                        Totales.Add(new MonedaMonto { Valor = (Double)item.Monto, IdMoneda = item.IdMoneda, Moneda = item.Moneda });
+                        Totales.Add(new MonedaMonto { Valor = (Double)item.Monto, IdMoneda = item.IdMoneda, Moneda = item.Moneda.Simbolo });
                     }
                     else
                     {
                         Totales.Add(new MonedaMonto
                         {
-                            Valor = controller.ConvertirDivisa(item.IdMoneda, i.IdMoneda, item.Monto),
+                            Valor = Math.Round(controller.ConvertirDivisa(item.IdMoneda, i.IdMoneda, item.Monto), 2, MidpointRounding.AwayFromZero),
                             IdMoneda = i.IdMoneda,
                             Moneda = i.Simbolo
                         });
                     }
                 }
+            }
+
+            foreach (var item in SumTotal)
+            {
+                lstSumatoriaPay.Items.Add("Pagos en " + item.Moneda + " " + string.Format("{0:N}", item.Monto));
+
             }
 
             var SumETotal = Totales.GroupBy(a => new { a.IdMoneda, a.Moneda }).Select(b => new { Moneda = b.Key.Moneda, IdMoneda = b.Key.IdMoneda, Monto = b.Sum(c => c.Valor) }).OrderBy(o => o.IdMoneda).ToList();
@@ -406,7 +414,7 @@ namespace PruebaWPF.Views.Recibo
                     MonedaMonto a = aPagar.Where(w => w.Moneda == item.Moneda).First();
 
                     lstPendiente.Items.Add("Saldo en " + item.Moneda + " " + string.Format("{0:N}", (a.Valor - item.Monto)));
-                    pendiente.Add(new MonedaMonto() { Moneda = item.Moneda,IdMoneda=item.IdMoneda, Valor = Math.Round(a.Valor - item.Monto, 2) });
+                    pendiente.Add(new MonedaMonto() { Moneda = item.Moneda, IdMoneda = item.IdMoneda, Valor = Math.Round(a.Valor - item.Monto, 2) });
                 }
             }
 
@@ -434,7 +442,7 @@ namespace PruebaWPF.Views.Recibo
 
         private void btnAdd_Click(object sender, RoutedEventArgs e)
         {
-            if (clsValidateInput.ValidateALL(new Control[] { cboArancel, txtMonto, cboMonedaDeuda }))
+            if (clsValidateInput.ValidateALL(new Control[] { cboArancel, txtMonto }))
             {
                 Dictionary<TextBox, int> c = new Dictionary<TextBox, int>();
                 c.Add(txtMonto, clsValidateInput.DecimalNumber);
@@ -565,7 +573,7 @@ namespace PruebaWPF.Views.Recibo
             //cboArancel.ItemsSource = null;
             //cboArancel.ItemsSource = aranceles;
 
-            LimpiarCampos(new Control[] { cboArancel, txtMonto, cboMonedaDeuda, txtConcepto });
+            LimpiarCampos(new Control[] { cboArancel, txtMonto, txtMonedaDeuda, txtConcepto });
             txtMonto.IsEnabled = true;
         }
 
@@ -932,7 +940,7 @@ namespace PruebaWPF.Views.Recibo
         {
             orden.Identificador = infoExterna.IdInterno; //Le asigno el id interno de las tablas, porque el que tiene asignado previamente es el id visible a los usuarios
             recibo.Recibimos = txtRecibimos.Text;
-            recibo = controller.GenerarRecibo(tipoArancel, recibo, orden, items.ToList(), formaPago.ToList(),diferencia, IdMatricula, IdPreMatricula);
+            recibo = controller.GenerarRecibo(tipoArancel, recibo, orden, items.ToList(), formaPago.ToList(), diferencia, IdMatricula, IdPreMatricula);
             rptRecibo boucher = new rptRecibo(recibo, true);
             Finalizar();
             boucher.ShowDialog();
@@ -964,20 +972,18 @@ namespace PruebaWPF.Views.Recibo
             if (arancel is null)
             {
                 txtMonto.Text = "";
-                cboMonedaDeuda.SelectedValue = null;
-                cboMonedaDeuda.IsEnabled = true;
+                txtMonedaDeuda.Text = "";
             }
             else
             {
-                txtMonto.Text = arancel.Precio.ToString();
-                cboMonedaDeuda.SelectedValue = arancel.IdMoneda;
+                txtMonto.Text = arancel.ArancelArea.Arancel.isPrecioVariable ? "" : arancel.Precio.ToString();
+                txtMonedaDeuda.Text = arancel.Moneda.Simbolo;
 
                 txtMonto.IsEnabled = true;
                 txtMonto.Focus();
                 txtMonto.IsEnabled = arancel.ArancelArea.Arancel.isPrecioVariable;
 
                 //Las 3 lineas anteriores son necesarias para borrar el borde de error en caso de que el campo lo haya estado marcando
-                cboMonedaDeuda.IsEnabled = false;
             }
         }
 
@@ -988,7 +994,9 @@ namespace PruebaWPF.Views.Recibo
 
         private void cboFormaPago_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            VerCamposAdicionales(int.Parse(cboFormaPago.SelectedValue.ToString()));
+            int selected = int.Parse(cboFormaPago.SelectedValue.ToString());
+            cboMonedaPago.ItemsSource = controller.ObtenerMonedas(selected);
+            VerCamposAdicionales(selected);
         }
 
         private void OcultarVerAdicionales(Panel visible, Panel[] ocultos)

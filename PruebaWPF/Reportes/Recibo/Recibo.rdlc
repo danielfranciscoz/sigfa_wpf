@@ -2112,7 +2112,7 @@ IIF(string.IsNullOrEmpty(Fields!Concepto.Value),Fields!Arancel.Value,Fields!Conc
                                 <TextRun>
                                   <Value>=Fields!Valor.Value</Value>
                                   <Style>
-                                    <Format>0.00</Format>
+                                    <Format>0.0000</Format>
                                   </Style>
                                 </TextRun>
                               </TextRuns>

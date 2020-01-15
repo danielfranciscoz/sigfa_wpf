@@ -273,10 +273,10 @@
                                                     <TextBlock Grid.Row="1" Grid.Column="0" Width="230"  VerticalAlignment="Center" >
                                                         <TextBlock.Inlines>
                                                             <Run Foreground="{StaticResource ErrorMsj}" Text="*"></Run>
-                                                            <Run Text="Monto:"></Run>
+                                                            <Run Text="Moneda:"></Run>
                                                         </TextBlock.Inlines>
                                                     </TextBlock>
-                                                    <TextBox x:Name="txtMonto" Grid.Row="1" Grid.Column="1" Width="260" VerticalAlignment="Center" TextAlignment="Right"></TextBox>
+                                                    <TextBox x:Name="txtMonto" Grid.Row="1" Grid.Column="4" Width="260" VerticalAlignment="Center" HorizontalAlignment="Left" TextAlignment="Right"></TextBox>
 
                                                     <!--<TextBlock Grid.Row="1" Grid.Column="3" VerticalAlignment="Center" >Exonerado:</TextBlock>-->
                                                     <!--<TextBox x:Name="txtExonerado" Grid.Row="1" Grid.Column="4" Width="230" HorizontalAlignment="Left" VerticalAlignment="Center" TextAlignment="Right"></TextBox>-->
@@ -284,12 +284,12 @@
                                                     <TextBlock Grid.Row="1" Grid.Column="3" Width="110"  VerticalAlignment="Center" >
                                                         <TextBlock.Inlines>
                                                             <Run Foreground="{StaticResource ErrorMsj}" Text="*"></Run>
-                                                            <Run Text="Moneda:"></Run>
+                                                            <Run Text="Monto:"></Run>
                                                         </TextBlock.Inlines>
                                                     </TextBlock>
-                                                    <ComboBox x:Name="cboMonedaDeuda" SelectedValuePath="IdMoneda" DisplayMemberPath="Simbolo" Grid.Row="1" Grid.Column="4" Width="230" materialDesign:HintAssist.Hint="Seleccione" VerticalAlignment="Center" HorizontalAlignment="Left">
+                                                    <TextBox x:Name="txtMonedaDeuda" IsEnabled="False" Grid.Row="1" Grid.Column="1" Width="260" materialDesign:HintAssist.Hint="Seleccione un arancel" VerticalAlignment="Center" HorizontalAlignment="Left">
 
-                                                    </ComboBox>
+                                                    </TextBox>
                                                     <Button Background="{StaticResource Add_Button}" BorderBrush="Transparent" Grid.Row="1" Grid.Column="4" Height="30"  Width="120" HorizontalAlignment="Right" x:Name="btnAdd" Click="btnAdd_Click" Content="{StaticResource Text_Add_Button}">
 
                                                     </Button>
@@ -404,18 +404,18 @@
                                             <TextBlock Grid.Row="0" Grid.Column="3" VerticalAlignment="Center" >
                                                 <TextBlock.Inlines>
                                                     <Run Foreground="{StaticResource ErrorMsj}" Text="*"></Run>
-                                                    <Run Text="Monto:"></Run>
+                                                    <Run Text="Moneda:"></Run>
                                                 </TextBlock.Inlines>
                                             </TextBlock>
-                                            <TextBox x:Name="txtMontoPago" Grid.Row="0" Grid.Column="4"  VerticalAlignment="Center"  TextAlignment="Right"></TextBox>
+                                            <TextBox x:Name="txtMontoPago" Grid.Row="0" Grid.Column="7"  VerticalAlignment="Center"  TextAlignment="Right"></TextBox>
 
                                             <TextBlock Grid.Row="0" Grid.Column="6"  VerticalAlignment="Center">
                                                 <TextBlock.Inlines>
                                                     <Run Foreground="{StaticResource ErrorMsj}" Text="*"></Run>
-                                                    <Run Text="Moneda:"></Run>
+                                                    <Run Text="Monto:"></Run>
                                                 </TextBlock.Inlines>
                                             </TextBlock>
-                                            <ComboBox x:Name="cboMonedaPago" SelectedValuePath="IdMoneda" DisplayMemberPath="Simbolo" Grid.Row="0" Grid.Column="7" materialDesign:HintAssist.Hint="Seleccione">
+                                            <ComboBox x:Name="cboMonedaPago" SelectedValuePath="IdMoneda" DisplayMemberPath="Simbolo" Grid.Row="0" Grid.Column="4" materialDesign:HintAssist.Hint="Seleccione">
 
                                             </ComboBox>
 

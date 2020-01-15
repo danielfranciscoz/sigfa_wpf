@@ -676,7 +676,7 @@ namespace PruebaWPF.ViewModel
             {
                 try
                 {
-                    detalles.RemoveAt(0); //Elimino el primer elemento de la lista porque corresponde al ingreso autogenerado
+                    detalles = detalles.Where(w => w.canDelete && w.IdDetalleMovimientoIngreso == 0).ToList(); //Elimino el primer elemento de la lista porque corresponde al ingreso autogenerado
 
                     if (movimiento.IdMovimientoIngreso == 0) //El movimiento solo puede tener INSERT, no se hace nada de UPDATE
                     {
@@ -684,18 +684,6 @@ namespace PruebaWPF.ViewModel
                         movimiento.UsuarioCreacion = clsSessionHelper.usuario.Login;
                         db.MovimientoIngreso.Add(movimiento);
 
-
-                        db.DetalleMovimientoIngreso.AddRange(detalles.Select(s => new DetalleMovimientoIngreso()
-                        {
-                            IdMovimientoIngreso = movimiento.IdMovimientoIngreso,
-                            canDelete = s.canDelete,
-                            Naturaleza = s.Naturaleza,
-                            FactorPorcentual = s.FactorPorcentual,
-                            IdCuentaContable = s.CuentaContable.IdCuentaContable,
-                            FechaCreacion = System.DateTime.Now,
-                            UsuarioCreacion = clsSessionHelper.usuario.Login
-                        }
-                        ));
                     }
                     else
                     {
@@ -709,19 +697,22 @@ namespace PruebaWPF.ViewModel
                             db.Entry(del).State = System.Data.Entity.EntityState.Modified;
                         });
 
-                        db.DetalleMovimientoIngreso.AddRange(detalles.Select(s => new DetalleMovimientoIngreso()
-                        {
-                            IdMovimientoIngreso = movimiento.IdMovimientoIngreso,
-                            canDelete = s.canDelete,
-                            Naturaleza = s.Naturaleza,
-                            FactorPorcentual = s.FactorPorcentual,
-                            IdCuentaContable = s.CuentaContable.IdCuentaContable,
-                            FechaCreacion = System.DateTime.Now,
-                            UsuarioCreacion = clsSessionHelper.usuario.Login
-                        }
-                        ).Where(w => w.IdDetalleMovimientoIngreso == 0));
+                        var a = detalles.Where(w => w.IdDetalleMovimientoIngreso == 0).ToList();
 
                     }
+
+                    db.DetalleMovimientoIngreso.AddRange(detalles.Select(s => new DetalleMovimientoIngreso() //Agregando todos los nuevos registros
+                    {
+                        IdMovimientoIngreso = movimiento.IdMovimientoIngreso,
+                        canDelete = s.canDelete,
+                        Naturaleza = s.Naturaleza,
+                        FactorPorcentual = s.FactorPorcentual,
+                        IdCuentaContable = s.CuentaContable.IdCuentaContable,
+                        FechaCreacion = System.DateTime.Now,
+                        UsuarioCreacion = clsSessionHelper.usuario.Login
+                    }
+                      ));
+
                     db.SaveChanges();
                     transaction.Commit();
                 }

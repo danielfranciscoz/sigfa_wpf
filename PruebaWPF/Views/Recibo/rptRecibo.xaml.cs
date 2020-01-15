@@ -6,7 +6,11 @@ using PruebaWPF.Referencias;
 using PruebaWPF.ViewModel;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
+using System.Net.Mail;
+using System.Text;
+using System.Threading.Tasks;
 using System.Windows;
 
 
@@ -145,7 +149,7 @@ namespace PruebaWPF.Views.Recibo
             CargarVisor(recibos, ordenPago, barcode, infos, cuenta, detrecibo, formaPago, variacionCambiarias);
         }
 
-        private void CargarVisor(List<ReciboSon> recibos, List<Model.OrdenPago> ordenPago, List<clsBarCode> barcode, List<InfoRecibo> infos, List<fn_ConsultarInfoExterna_Result> cuenta, List<DetReciboSon> detrecibo, List<ReciboPagoSon> formaPago, List<VariacionCambiariaSon> variacionCambiarias)
+        private async void CargarVisor(List<ReciboSon> recibos, List<Model.OrdenPago> ordenPago, List<clsBarCode> barcode, List<InfoRecibo> infos, List<fn_ConsultarInfoExterna_Result> cuenta, List<DetReciboSon> detrecibo, List<ReciboPagoSon> formaPago, List<VariacionCambiariaSon> variacionCambiarias)
         {
             ReportDataSource[] datasSource = new ReportDataSource[8];
 
@@ -158,14 +162,31 @@ namespace PruebaWPF.Views.Recibo
             datasSource[6] = new ReportDataSource("FormaPago", formaPago);
             datasSource[7] = new ReportDataSource("TipoCambio", variacionCambiarias);
 
-            
+
             clsUtilidades.InformeDataSource(informe, datasSource);
             informe.LocalReport.ReportEmbeddedResource = "PruebaWPF.Reportes.Recibo.Recibo.rdlc";
             informe.LocalReport.SetParameters(new ReportParameter("isFirstTime", isFirtTime.ToString()));
 
+            if (isFirtTime) //Cuando es primera vez, se realiza la verificacion para ver si se enviará correo
+            {
+                if (ordenPago.Any())
+                {
+                    Model.OrdenPago o = ordenPago.FirstOrDefault();
+                    string emailTo = o.EmailNotificacion;
+                    if (!string.IsNullOrEmpty(emailTo))
+                    {
+                        Email e = new Email();
+                        e.SendRecibo(informe, string.Format("{0}-{1}", recibo.IdRecibo, recibo.Serie), cuenta.First().Nombre,emailTo,o.Usuario.LoginEmail);
+
+                    }
+                }
+            }
+
             informe.SetDisplayMode(Microsoft.Reporting.WinForms.DisplayMode.PrintLayout);
             informe.LocalReport.Refresh();
+
         }
 
     }
+
 }

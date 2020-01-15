@@ -14,7 +14,7 @@ namespace PruebaWPF.ViewModel
 
         public void Eliminar(VariacionCambiariaSon variacion)
         {
-            if (variacion.Fecha < DateTime.Now)
+            if (variacion.Fecha.Date < DateTime.Now.Date)
             {
                 throw new Exception("No es posible eliminar la tasa cambiaria de una fecha pasada");
             }
@@ -73,12 +73,13 @@ namespace PruebaWPF.ViewModel
         public String GetTipoCambioBD()
         {
             String tipo = "";
-            var cambios = db.VariacionCambiaria.Where(w => w.Fecha == System.DateTime.Today);
-            foreach (var item in cambios)
+            var cambios = db.VariacionCambiaria.Where(w => w.Fecha == System.DateTime.Today).Select(s => s.Moneda.Moneda1 + " " + s.Valor);
+
+            if (cambios.Any())
             {
-                tipo = (tipo.Equals("") ? "" : ", ") + item.Moneda.Moneda1 + " " + item.Valor;
+                tipo = string.Join(",", cambios.ToList());
             }
-            if (tipo.Equals(""))
+            else
             {
                 tipo = "0.00";
             }
@@ -89,7 +90,7 @@ namespace PruebaWPF.ViewModel
         public List<Moneda> ObtenerMonedas()
         {
             //Solo se obtienen las monedas que poseen servicio web asociado, esta información la obtengo por medio de una configuración
-            return db.Moneda.Where(w => w.WebService).ToList();
+            return db.Moneda.Where(w => w.WebService && !w.regAnulado).ToList();
         }
 
         public void VariacionAutomatica()

@@ -624,7 +624,7 @@
                                                 </DataGridTemplateColumn>
                                                 <DataGridTextColumn Width="auto" IsReadOnly="True" Header="Codigo" Binding="{Binding cuenta.CuentaContable1}" />
                                                 <DataGridTextColumn Width="auto" IsReadOnly="True" Header="Cuenta" Binding="{Binding cuenta.Descripcion}" />
-                                                <DataGridTextColumn Width="auto" IsReadOnly="True" Header="Naturaleza" Binding="{Binding cuenta.Tipo, Converter={StaticResource convertidor},ConverterParameter='Deudora;Acreedora'}" />
+                                                <DataGridTextColumn Width="auto" IsReadOnly="True" Header="Naturaleza" Binding="{Binding cuenta.Tipo, Converter={StaticResource convertidor},ConverterParameter='Acreedora;Deudora'}" />
                                                 <DataGridTextColumn Width="auto" IsReadOnly="True" Header="Tipo de Cuenta" Binding="{Binding cuenta.TipoCuenta.TipoCuenta1}" />
                                             </DataGrid.Columns>
                                         </DataGrid>

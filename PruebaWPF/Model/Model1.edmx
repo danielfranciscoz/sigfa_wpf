@@ -78,6 +78,21 @@
           <Property Name="IdMoneda" Type="int" Nullable="false" />
           <Property Name="Monto" Type="decimal" Precision="18" Scale="2" Nullable="false" />
         </EntityType>
+        <EntityType Name="Errors">
+          <Key>
+            <PropertyRef Name="IdError" />
+          </Key>
+          <Property Name="IdError" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Message" Type="varchar(max)" Nullable="false" />
+          <Property Name="InnerMessage" Type="varchar(max)" Nullable="false" />
+          <Property Name="Source" Type="varchar" MaxLength="500" Nullable="false" />
+          <Property Name="Metodo" Type="varchar" MaxLength="300" Nullable="false" />
+          <Property Name="StackTrace" Type="varchar(max)" Nullable="false" />
+          <Property Name="Computadora" Type="varchar" MaxLength="100" Nullable="false" />
+          <Property Name="Sistema" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="Usuario" Type="nvarchar" MaxLength="20" Nullable="false" />
+          <Property Name="FechaCreacion" Type="datetime" Nullable="false" />
+        </EntityType>
         <EntityType Name="AnulacionPago">
           <Key>
             <PropertyRef Name="IdAnulacionPago" />
@@ -2556,7 +2571,7 @@ advertencia 6002: La tabla o vista 'SIFOP.dbo.TmpSolicitudesArchivo' no tiene de
           <Property Name="IdTipoDeposito" Type="int" Nullable="false" />
           <Property Name="Identificador" Type="varchar" MaxLength="20" Nullable="false" />
           <Property Name="TextoIdentificador" Type="varchar" MaxLength="80" Nullable="false" />
-          <Property Name="UsuarioRemitente" Type="varchar" MaxLength="30" Nullable="false" />
+          <Property Name="UsuarioRemitente" Type="nvarchar" MaxLength="20" Nullable="false" />
           <Property Name="EmailNotificacion" Type="varchar" MaxLength="50" />
           <Property Name="Sistema" Type="varchar" MaxLength="20" Nullable="false" />
           <Property Name="FechaEnvio" Type="datetime" Nullable="false" />
@@ -2813,7 +2828,7 @@ advertencia 6002: La tabla o vista 'SIFOP.dbo.TmpSolicitudesArchivo' no tiene de
           </Key>
           <Property Name="Llave" Type="varchar" MaxLength="30" Nullable="false" />
           <Property Name="Nombre" Type="varchar" MaxLength="80" Nullable="false" />
-          <Property Name="Valor" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="Valor" Type="varchar" MaxLength="150" Nullable="false" />
           <Property Name="FechaModificacion" Type="datetime" Nullable="false" />
           <Property Name="UsuarioModificacion" Type="nvarchar" MaxLength="20" Nullable="false" />
         </EntityType>
@@ -6306,6 +6321,18 @@ advertencia 6002: La tabla o vista 'SIFOP.dbo.w_LibroMayorAcumulado_Vlast' no ti
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_Errors_Usuario">
+          <End Role="Usuario" Type="Self.Usuario" Multiplicity="1" />
+          <End Role="Errors" Type="Self.Errors" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Usuario">
+              <PropertyRef Name="Login" />
+            </Principal>
+            <Dependent Role="Errors">
+              <PropertyRef Name="Usuario" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_EstructuraCuentaContable_Actividad">
           <End Role="Actividad" Type="Self.Actividad" Multiplicity="1" />
           <End Role="EstructuraCuenta" Type="Self.EstructuraCuenta" Multiplicity="*" />
@@ -6699,6 +6726,18 @@ advertencia 6002: La tabla o vista 'SIFOP.dbo.w_LibroMayorAcumulado_Vlast' no ti
             </Principal>
             <Dependent Role="NoCuentasBankArea">
               <PropertyRef Name="UsuarioCreacion" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_OrdenPago_OrdenPago">
+          <End Role="Usuario" Type="Self.Usuario" Multiplicity="1" />
+          <End Role="OrdenPago" Type="Self.OrdenPago" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Usuario">
+              <PropertyRef Name="Login" />
+            </Principal>
+            <Dependent Role="OrdenPago">
+              <PropertyRef Name="UsuarioRemitente" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -10514,6 +10553,7 @@ advertencia 6002: La tabla o vista 'SIFOP.dbo.w_LibroMayorAcumulado_Vlast' no ti
           <EntitySet Name="ArqueoNoEfectivo" EntityType="Self.ArqueoNoEfectivo" Schema="arq" store:Type="Tables" />
           <EntitySet Name="ArqueoRecibo" EntityType="Self.ArqueoRecibo" Schema="arq" store:Type="Tables" />
           <EntitySet Name="DiferenciasArqueo" EntityType="Self.DiferenciasArqueo" Schema="arq" store:Type="Tables" />
+          <EntitySet Name="Errors" EntityType="Self.Errors" Schema="audit" store:Type="Tables" />
           <EntitySet Name="AnulacionPago" EntityType="Self.AnulacionPago" Schema="Bank" store:Type="Tables" />
           <EntitySet Name="DetallePago" EntityType="Self.DetallePago" Schema="Bank" store:Type="Tables" />
           <EntitySet Name="NoCuentasBankArea" EntityType="Self.NoCuentasBankArea" Schema="Bank" store:Type="Tables" />
@@ -12578,6 +12618,10 @@ advertencia 6002: La tabla o vista 'SIFOP.dbo.w_LibroMayorAcumulado_Vlast' no ti
             <End Role="EPComprobantePago" EntitySet="EPComprobantePago" />
             <End Role="EPLineaComprobantePago" EntitySet="EPLineaComprobantePago" />
           </AssociationSet>
+          <AssociationSet Name="FK_Errors_Usuario" Association="Self.FK_Errors_Usuario">
+            <End Role="Usuario" EntitySet="Usuario" />
+            <End Role="Errors" EntitySet="Errors" />
+          </AssociationSet>
           <AssociationSet Name="FK_EstructuraCuentaContable_Actividad" Association="Self.FK_EstructuraCuentaContable_Actividad">
             <End Role="Actividad" EntitySet="Actividad" />
             <End Role="EstructuraCuenta" EntitySet="EstructuraCuenta" />
@@ -12709,6 +12753,10 @@ advertencia 6002: La tabla o vista 'SIFOP.dbo.w_LibroMayorAcumulado_Vlast' no ti
           <AssociationSet Name="FK_NoCuentasBankArea_Usuario" Association="Self.FK_NoCuentasBankArea_Usuario">
             <End Role="Usuario" EntitySet="Usuario" />
             <End Role="NoCuentasBankArea" EntitySet="NoCuentasBankArea" />
+          </AssociationSet>
+          <AssociationSet Name="FK_OrdenPago_OrdenPago" Association="Self.FK_OrdenPago_OrdenPago">
+            <End Role="Usuario" EntitySet="Usuario" />
+            <End Role="OrdenPago" EntitySet="OrdenPago" />
           </AssociationSet>
           <AssociationSet Name="FK_OrdenPago_TipoDeposito" Association="Self.FK_OrdenPago_TipoDeposito">
             <End Role="TipoDeposito" EntitySet="TipoDeposito" />
@@ -16749,6 +16797,8 @@ advertencia 6002: La tabla o vista 'SIFOP.dbo.w_LibroMayorAcumulado_Vlast' no ti
           <NavigationProperty Name="UsuarioPrograma" Relationship="Self.FK_UsuarioPrograma_Usuario" FromRole="Usuario" ToRole="UsuarioPrograma" />
           <NavigationProperty Name="VariacionCambiaria" Relationship="Self.FK_VariacionCambiaria_Usuario" FromRole="Usuario" ToRole="VariacionCambiaria" />
           <NavigationProperty Name="MovimientoIngreso" Relationship="SIFOPModel.FK_MovimientoIngreso_Usuario" FromRole="Usuario" ToRole="MovimientoIngreso" />
+          <NavigationProperty Name="OrdenPago" Relationship="SIFOPModel.FK_OrdenPago_OrdenPago" FromRole="Usuario" ToRole="OrdenPago" />
+          <NavigationProperty Name="Errors" Relationship="SIFOPModel.FK_Errors_Usuario" FromRole="Usuario" ToRole="Errors" />
         </EntityType>
         <EntityType Name="UsuarioArea">
           <Key>
@@ -16944,7 +16994,7 @@ advertencia 6002: La tabla o vista 'SIFOP.dbo.w_LibroMayorAcumulado_Vlast' no ti
           <Property Name="IdTipoDeposito" Type="Int32" Nullable="false" />
           <Property Name="Identificador" Type="String" MaxLength="20" FixedLength="false" Unicode="false" Nullable="false" />
           <Property Name="TextoIdentificador" Type="String" MaxLength="80" FixedLength="false" Unicode="false" Nullable="false" />
-          <Property Name="UsuarioRemitente" Type="String" MaxLength="30" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="UsuarioRemitente" Type="String" MaxLength="20" FixedLength="false" Unicode="true" Nullable="false" />
           <Property Name="Sistema" Type="String" MaxLength="20" FixedLength="false" Unicode="false" Nullable="false" />
           <Property Name="FechaEnvio" Type="DateTime" Nullable="false" Precision="3" />
           <Property Name="CodRecibo" Type="String" MaxLength="25" FixedLength="false" Unicode="false" />
@@ -16954,6 +17004,7 @@ advertencia 6002: La tabla o vista 'SIFOP.dbo.w_LibroMayorAcumulado_Vlast' no ti
           <NavigationProperty Name="Recibo1" Relationship="Self.FK_Recibo_OrdenPago" FromRole="OrdenPago" ToRole="Recibo1" />
           <NavigationProperty Name="ReciboAnulado" Relationship="Self.FK_ReciboAnulado_OrdenPago" FromRole="OrdenPago" ToRole="ReciboAnulado" />
           <Property Name="EmailNotificacion" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="Usuario" Relationship="SIFOPModel.FK_OrdenPago_OrdenPago" FromRole="OrdenPago" ToRole="Usuario" />
         </EntityType>
         <EntityType Name="TipoArancel">
           <Key>
@@ -17285,7 +17336,7 @@ advertencia 6002: La tabla o vista 'SIFOP.dbo.w_LibroMayorAcumulado_Vlast' no ti
           </Key>
           <Property Name="Llave" Type="String" MaxLength="30" FixedLength="false" Unicode="false" Nullable="false" />
           <Property Name="Nombre" Type="String" MaxLength="80" FixedLength="false" Unicode="false" Nullable="false" />
-          <Property Name="Valor" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Valor" Type="String" MaxLength="150" FixedLength="false" Unicode="false" Nullable="false" />
           <Property Name="FechaModificacion" Type="DateTime" Nullable="false" Precision="3" />
           <Property Name="UsuarioModificacion" Type="String" MaxLength="20" FixedLength="false" Unicode="true" Nullable="false" />
           <NavigationProperty Name="Usuario" Relationship="Self.FK_Configuracion_Usuario" FromRole="Configuracion" ToRole="Usuario" />
@@ -24718,6 +24769,15 @@ advertencia 6002: La tabla o vista 'SIFOP.dbo.w_LibroMayorAcumulado_Vlast' no ti
             <End Role="Usuario" EntitySet="Usuario" />
             <End Role="MovimientoIngreso" EntitySet="MovimientoIngreso" />
           </AssociationSet>
+          <AssociationSet Name="FK_OrdenPago_OrdenPago" Association="SIFOPModel.FK_OrdenPago_OrdenPago">
+            <End Role="Usuario" EntitySet="Usuario" />
+            <End Role="OrdenPago" EntitySet="OrdenPago" />
+          </AssociationSet>
+          <EntitySet Name="Errors" EntityType="SIFOPModel.Errors" />
+          <AssociationSet Name="FK_Errors_Usuario" Association="SIFOPModel.FK_Errors_Usuario">
+            <End Role="Usuario" EntitySet="Usuario" />
+            <End Role="Errors" EntitySet="Errors" />
+          </AssociationSet>
         </EntityContainer>
         <ComplexType Name="dt_getpropertiesbyid_Result">
           <Property Type="String" Name="property" Nullable="false" MaxLength="64" />
@@ -24849,6 +24909,46 @@ advertencia 6002: La tabla o vista 'SIFOP.dbo.w_LibroMayorAcumulado_Vlast' no ti
             </Principal>
             <Dependent Role="MovimientoIngreso">
               <PropertyRef Name="UsuarioCreacion" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_OrdenPago_OrdenPago">
+          <End Type="SIFOPModel.Usuario" Role="Usuario" Multiplicity="1" />
+          <End Type="SIFOPModel.OrdenPago" Role="OrdenPago" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Usuario">
+              <PropertyRef Name="Login" />
+            </Principal>
+            <Dependent Role="OrdenPago">
+              <PropertyRef Name="UsuarioRemitente" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="Errors">
+          <Key>
+            <PropertyRef Name="IdError" />
+          </Key>
+          <Property Name="IdError" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Message" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="Source" Type="String" Nullable="false" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="Metodo" Type="String" Nullable="false" MaxLength="300" FixedLength="false" Unicode="false" />
+          <Property Name="StackTrace" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="Computadora" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="Sistema" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Usuario" Type="String" Nullable="false" MaxLength="20" FixedLength="false" Unicode="true" />
+          <Property Name="FechaCreacion" Type="DateTime" Nullable="false" Precision="3" />
+          <NavigationProperty Name="Usuario1" Relationship="SIFOPModel.FK_Errors_Usuario" FromRole="Errors" ToRole="Usuario" />
+          <Property Name="InnerMessage" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="false" />
+        </EntityType>
+        <Association Name="FK_Errors_Usuario">
+          <End Type="SIFOPModel.Usuario" Role="Usuario" Multiplicity="1" />
+          <End Type="SIFOPModel.Errors" Role="Errors" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Usuario">
+              <PropertyRef Name="Login" />
+            </Principal>
+            <Dependent Role="Errors">
+              <PropertyRef Name="Usuario" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -30678,6 +30778,22 @@ advertencia 6002: La tabla o vista 'SIFOP.dbo.w_LibroMayorAcumulado_Vlast' no ti
                 <ScalarProperty Name="IdMoneda" ColumnName="IdMoneda" />
                 <ScalarProperty Name="IdFormaPago" ColumnName="IdFormaPago" />
                 <ScalarProperty Name="IdMovimientoIngreso" ColumnName="IdMovimientoIngreso" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Errors">
+            <EntityTypeMapping TypeName="SIFOPModel.Errors">
+              <MappingFragment StoreEntitySet="Errors">
+                <ScalarProperty Name="InnerMessage" ColumnName="InnerMessage" />
+                <ScalarProperty Name="FechaCreacion" ColumnName="FechaCreacion" />
+                <ScalarProperty Name="Usuario" ColumnName="Usuario" />
+                <ScalarProperty Name="Sistema" ColumnName="Sistema" />
+                <ScalarProperty Name="Computadora" ColumnName="Computadora" />
+                <ScalarProperty Name="StackTrace" ColumnName="StackTrace" />
+                <ScalarProperty Name="Metodo" ColumnName="Metodo" />
+                <ScalarProperty Name="Source" ColumnName="Source" />
+                <ScalarProperty Name="Message" ColumnName="Message" />
+                <ScalarProperty Name="IdError" ColumnName="IdError" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

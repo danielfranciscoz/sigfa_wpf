@@ -53,35 +53,45 @@
                     </StackPanel>
                 </Grid>
 
-                <DockPanel HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Grid.Row="1" >
-                    <StackPanel Background="{StaticResource Gray_BackgroundDisabled}" Height="25" Orientation="Horizontal" DockPanel.Dock="Bottom" >
-                        <Grid Margin="0 0 0 0" Width="{Binding ElementName=Codigo,Path=ActualWidth}">
-                            <TextBlock Margin="5,0,0,0" Text=""></TextBlock>
+                <DockPanel x:Name="panel" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Grid.Row="1" >
+
+                    <ScrollViewer Height="{Binding ElementName=panel,Path=ActualHeight}" VerticalContentAlignment="Stretch" VerticalAlignment="Top" HorizontalScrollBarVisibility="Auto">
+
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="*"/>
+                                <RowDefinition Height="auto"/>
+                            </Grid.RowDefinitions>
+                            <ListView Grid.Row="0" x:Name="lstAsiento" SelectionMode="Single" ScrollViewer.HorizontalScrollBarVisibility="Disabled">
+                                <ListView.View>
+                                    <GridView>
+                                        <GridViewColumn x:Name="Codigo" Width="120" Header="Codigo" DisplayMemberBinding="{Binding CuentaContable.CuentaContable1}"  />
+                                        <GridViewColumn x:Name="Cuenta" Width="280" Header="Cuenta" DisplayMemberBinding="{Binding CuentaContable.Descripcion}" />
+                                        <GridViewColumn x:Name="Area" Width="200" Header="Area" DisplayMemberBinding="{Binding Area}" />
+                                        <GridViewColumn x:Name="Debe" Width="90" Header="Debe" DisplayMemberBinding="{Binding Debe,StringFormat='{}{0:0,0.00}'}" />
+                                        <GridViewColumn x:Name="Haber" Width="90" Header="Haber" DisplayMemberBinding="{Binding Haber,StringFormat='{}{0:0,0.00}'}" />
+                                    </GridView>
+                                </ListView.View>
+                            </ListView>
+                            <StackPanel Grid.Row="1" Background="{StaticResource Gray_BackgroundDisabled}" Height="25" Orientation="Horizontal" >
+                                <Grid Margin="0 0 0 0" Width="{Binding ElementName=Codigo,Path=ActualWidth}">
+                                    <TextBlock Margin="5,0,0,0" Text=""></TextBlock>
+                                </Grid>
+                                <Grid Width="{Binding ElementName=Cuenta,Path=ActualWidth}">
+                                    <TextBlock Margin="5,0,0,0" Text=""  Foreground="{StaticResource DarkGray}" FontWeight="Bold" VerticalAlignment="Center" HorizontalAlignment="Right"></TextBlock>
+                                </Grid>
+                                <Grid Width="{Binding ElementName=Area,Path=ActualWidth}">
+                                    <TextBlock Margin="0,0,0,0" Text="TOTAL"  Foreground="{StaticResource DarkGray}" FontWeight="Bold" VerticalAlignment="Center" HorizontalAlignment="Right"></TextBlock>
+                                </Grid>
+                                <Grid Width="{Binding ElementName=Debe,Path=ActualWidth}">
+                                    <TextBlock Text="00.00" x:Name="txtDebe" Margin="16 0 0 0" Foreground="{StaticResource DarkGray}" HorizontalAlignment="Left" VerticalAlignment="Center" FontWeight="Bold"></TextBlock>
+                                </Grid>
+                                <Grid Width="{Binding ElementName=Haber,Path=ActualWidth}">
+                                    <TextBlock Text="00.00" x:Name="txtHaber" Margin="16 0 0 0" Foreground="{StaticResource DarkGray}" HorizontalAlignment="left" VerticalAlignment="Center" FontWeight="Bold"></TextBlock>
+                                </Grid>
+                            </StackPanel>
                         </Grid>
-                        <Grid Width="{Binding ElementName=Cuenta,Path=ActualWidth}">
-                            <TextBlock Margin="5,0,0,0" Text=""  Foreground="{StaticResource DarkGray}" FontWeight="Bold" VerticalAlignment="Center" HorizontalAlignment="Right"></TextBlock>
-                        </Grid>
-                        <Grid Width="{Binding ElementName=Area,Path=ActualWidth}">
-                            <TextBlock Margin="0,0,0,0" Text="TOTAL"  Foreground="{StaticResource DarkGray}" FontWeight="Bold" VerticalAlignment="Center" HorizontalAlignment="Right"></TextBlock>
-                        </Grid>
-                        <Grid Width="{Binding ElementName=Debe,Path=ActualWidth}">
-                            <TextBlock Text="00.00" x:Name="txtDebe" Margin="16 0 0 0" Foreground="{StaticResource DarkGray}" HorizontalAlignment="Left" VerticalAlignment="Center" FontWeight="Bold"></TextBlock>
-                        </Grid>
-                        <Grid Width="{Binding ElementName=Haber,Path=ActualWidth}">
-                            <TextBlock Text="00.00" x:Name="txtHaber" Margin="16 0 0 0" Foreground="{StaticResource DarkGray}" HorizontalAlignment="left" VerticalAlignment="Center" FontWeight="Bold"></TextBlock>
-                        </Grid>
-                    </StackPanel>
-                    <ListView x:Name="lstAsiento" SelectionMode="Single">
-                        <ListView.View>
-                            <GridView>
-                                <GridViewColumn x:Name="Codigo" Width="100" Header="Codigo" DisplayMemberBinding="{Binding CuentaContable.CuentaContable1}"  />
-                                <GridViewColumn x:Name="Cuenta" Width="auto" Header="Cuenta" DisplayMemberBinding="{Binding CuentaContable.Descripcion}" />
-                                <GridViewColumn x:Name="Area" Width="auto" Header="Area" DisplayMemberBinding="{Binding Area}" />
-                                <GridViewColumn x:Name="Debe" Width="auto" Header="Debe" DisplayMemberBinding="{Binding Debe,StringFormat='{}{0:0,0.00}'}" />
-                                <GridViewColumn x:Name="Haber" Width="auto" Header="Haber" DisplayMemberBinding="{Binding Haber,StringFormat='{}{0:0,0.00}'}" />
-                            </GridView>
-                        </ListView.View>
-                    </ListView>
+                    </ScrollViewer>
 
                 </DockPanel>
 

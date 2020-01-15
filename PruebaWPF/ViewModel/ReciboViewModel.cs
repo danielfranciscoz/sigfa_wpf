@@ -221,7 +221,7 @@ namespace PruebaWPF.ViewModel
                         throw new Exception(arancelesSIRA.First().Mensaje);
                     }
 
-                    var arancel = db.ArancelPrecio.ToList().Where(w => arancelesSIRA.Any(a => a.IdArancelPrecio == w.IdArancelPrecio));
+                    var arancel = db.ArancelPrecio.ToList().Where(w => arancelesSIRA.Any(a => a.IdArancelPrecio == w.IdArancelPrecio)).OrderBy(o => o.ArancelArea.Arancel.Nombre);
 
                     return arancel.ToList();
                 }
@@ -246,7 +246,7 @@ namespace PruebaWPF.ViewModel
             var IdIntersect = TipoDepositos.Intersect(areas).ToList();
 
             //Finalmente con los Ids recuperados por la intersección se obtienen los aranceles.     
-            var r = db.ArancelPrecio.Where(w => IdIntersect.Any(w1 => w.ArancelArea.IdArancel == w1 && w.ArancelArea.IdArea == IdArea) && w.regAnulado == false).ToList();
+            var r = db.ArancelPrecio.Where(w => IdIntersect.Any(w1 => w.ArancelArea.IdArancel == w1 && w.ArancelArea.IdArea == IdArea) && w.regAnulado == false).OrderBy(o => o.ArancelArea.Arancel.Nombre).ToList();
 
             return r;
         }
@@ -518,7 +518,7 @@ namespace PruebaWPF.ViewModel
                             {
                                 IdRecibo = roc.IdRecibo,
                                 Serie = roc.Serie,
-                                Monto = s.Monto * new ReciboViewModel().ObtenerTasaCambioDia(s.ArancelPrecio.IdMoneda).Valor,
+                                Monto = Math.Round(s.Monto * new ReciboViewModel().ObtenerTasaCambioDia(s.ArancelPrecio.IdMoneda).Valor, 2, MidpointRounding.AwayFromZero),
                                 IdArea = datos.IdArea,
                                 IdCuentaContable = s.ArancelPrecio.ArancelArea.Arancel.IdCuentaContable,
                                 Naturaleza = clsReferencias.Haber,
@@ -571,7 +571,7 @@ namespace PruebaWPF.ViewModel
                             {
                                 IdRecibo = roc.IdRecibo,
                                 Serie = roc.Serie,
-                                Monto = s.Total * new ReciboViewModel().ObtenerTasaCambioDia(s.ArancelPrecio.IdMoneda).Valor,
+                                Monto = Math.Round(s.Total * new ReciboViewModel().ObtenerTasaCambioDia(s.ArancelPrecio.IdMoneda).Valor, 2, MidpointRounding.AwayFromZero),
                                 IdArea = orden.IdArea,
                                 IdCuentaContable = s.ArancelPrecio.ArancelArea.Arancel.IdCuentaContable,
                                 Naturaleza = clsReferencias.Haber,
@@ -595,6 +595,7 @@ namespace PruebaWPF.ViewModel
                                 IdRecibo = roc.IdRecibo,
                                 Serie = roc.Serie,
                                 IdMoneda = s.IdMoneda,
+                                Recibo1 = roc,
                                 Monto = Decimal.Parse(s.Valor.ToString())
                             }).Where(w => w.Monto != 0 && w.IdMoneda == idCordoba).FirstOrDefault();
 
@@ -701,20 +702,21 @@ namespace PruebaWPF.ViewModel
                             if (movimiento != null)
                             {
 
-                                asientos = movimiento.DetalleMovimientoIngreso.Select(s => new Asiento()
+                                asientos = movimiento.DetalleMovimientoIngreso.Where(w => w.regAnulado == false).Select(s => new Asiento()
                                 {
                                     IdRecibo = roc.IdRecibo,
                                     Serie = roc.Serie,
                                     IdCuentaContable = s.IdCuentaContable,
                                     Naturaleza = s.Naturaleza,
-                                    Monto = item.TipoCambio * item.Monto * s.FactorPorcentual
+                                    Monto =Math.Round( Math.Round(item.TipoCambio * item.Monto, 2, MidpointRounding.AwayFromZero) * s.FactorPorcentual, 2,MidpointRounding.AwayFromZero)
+                                    //el doble redondeo es 100% necesario NUNCA TOCAR, se hace asi porque el sistema realiza el calculo del diferencial cambiario en base a una cifra redondeda, en este caso es necesario llegar a esa cifra redondeando, luego se hace la multiplicacion por el factor porcentual y se vuelve a redondear para continuar con los calculos.
                                 }).Union(asientos).ToList();
 
                                 idpago++;
                             }
                             else
                             {
-                                throw new Exception(string.Format("No se ha encontrado la parametrización contable para el pago de {0}{1} en {2}, no es posible continuar hasta que se ingrese esta información", item.Monto, item.SimboloMoneda, item.FormaPago.FormaPago1));
+                                throw new Exception(string.Format("No se ha encontrado la parametrización contable para el pago de {0} {1} en {2}, no es posible continuar hasta que se ingrese esta información", item.SimboloMoneda, item.Monto, item.FormaPago.FormaPago1));
                             }
 
                         }
@@ -931,14 +933,26 @@ namespace PruebaWPF.ViewModel
             }
         }
 
-        public List<Moneda> ObtenerMonedas()
+        public List<Moneda> ObtenerMonedas(int? IdFormaPago)
         {
-            return db.Moneda.ToList();
+            if (IdFormaPago.HasValue)
+            {
+            //Obtengo las monedas pertenecientes a la forma de pago parametrizada
+                return db.MovimientoIngreso.Where(w => w.IdFormaPago == IdFormaPago && !w.Moneda.regAnulado).Select(s => s.Moneda).Distinct().ToList();
+
+            }
+            else
+            {
+                //Obtengo todas las monedas, esto es usado para los calculos de variaciones cambiaras
+                return db.Moneda.Where(w => !w.regAnulado).ToList();
+            }
         }
 
         public List<FormaPago> ObtenerFormasPago()
         {
-            return db.FormaPago.Where(w => w.regAnulado == false).OrderBy(o => o.FormaPago1).ToList();
+            //Obtengo las formas de pago que se encuentran parametrizadas
+
+            return db.MovimientoIngreso.Select(s => s.FormaPago).Distinct().Where(w => !w.regAnulado).OrderBy(o => o.FormaPago1).ToList();
         }
 
         /// <summary>

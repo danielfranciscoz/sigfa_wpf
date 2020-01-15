@@ -517,6 +517,9 @@
         <AssociationConnector Association="SIFOPModel.FK_DetalleMovimientoIngreso_MovimientoIngreso" />
         <AssociationConnector Association="SIFOPModel.FK_MovimientoIngreso_FormaPago" />
         <AssociationConnector Association="SIFOPModel.FK_MovimientoIngreso_Usuario" />
+        <AssociationConnector Association="SIFOPModel.FK_OrdenPago_OrdenPago" />
+        <EntityTypeShape EntityType="SIFOPModel.Errors" Width="1.5" PointX="3" PointY="161.625" />
+        <AssociationConnector Association="SIFOPModel.FK_Errors_Usuario" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

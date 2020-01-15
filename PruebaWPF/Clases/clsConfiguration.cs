@@ -60,7 +60,8 @@ namespace PruebaWPF.Clases
             Id_Efectivo,
             Moneda_Nacional,
             Variacion_Positiva,
-            Variacion_Negativa
+            Variacion_Negativa,
+            Email
         };
 
         public void Save()

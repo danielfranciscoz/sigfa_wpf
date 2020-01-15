@@ -1,7 +1,11 @@
-﻿using PruebaWPF.Helper;
+﻿using PruebaWPF.Clases;
+using PruebaWPF.Helper;
 using PruebaWPF.Model;
+using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
+using System.Reflection;
 
 namespace PruebaWPF.ViewModel
 {
@@ -53,6 +57,37 @@ namespace PruebaWPF.ViewModel
             else
             {
                 return ObtenerAreasRH(idtipoArancel);
+            }
+        }
+
+        public Configuracion Configuracion(string llave)
+        {
+            return db.Configuracion.Find(llave);
+        }
+
+        public void SaveError(Exception ex)
+        {
+            try
+            {
+
+                Errors e = new Errors();
+
+                e.Message = ex.Message;
+                e.InnerMessage = new clsException(ex).ErrorMessage();
+                e.Source = ex.Source;
+                e.Metodo = ex.TargetSite.Name;
+                e.StackTrace = ex.StackTrace;
+                e.Usuario = clsSessionHelper.usuario.Login;
+                e.Computadora = Dns.GetHostName();
+                e.FechaCreacion = System.DateTime.Now;
+                e.Sistema = clsUtilidades.AppName();
+
+                db.Errors.Add(e);
+                db.SaveChanges();
+            }
+            catch (Exception exception)
+            {
+                //Si ocurre un error al guardar no hago nada para no interferir el proceso del recibo
             }
         }
 

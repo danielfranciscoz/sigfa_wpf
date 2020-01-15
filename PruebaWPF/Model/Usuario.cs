@@ -87,6 +87,8 @@ namespace PruebaWPF.Model
             this.UsuarioPrograma = new HashSet<UsuarioPrograma>();
             this.VariacionCambiaria = new HashSet<VariacionCambiaria>();
             this.MovimientoIngreso = new HashSet<MovimientoIngreso>();
+            this.OrdenPago = new HashSet<OrdenPago>();
+            this.Errors = new HashSet<Errors>();
         }
     
         public string Login { get; set; }
@@ -251,5 +253,9 @@ namespace PruebaWPF.Model
         public virtual ICollection<VariacionCambiaria> VariacionCambiaria { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<MovimientoIngreso> MovimientoIngreso { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<OrdenPago> OrdenPago { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Errors> Errors { get; set; }
     }
 }

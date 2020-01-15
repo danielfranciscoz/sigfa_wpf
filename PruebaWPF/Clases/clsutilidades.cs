@@ -11,6 +11,7 @@ using System.Windows;
 using System.Drawing;
 using System.Windows.Controls.Primitives;
 using Microsoft.Reporting.WinForms;
+using System.Reflection;
 
 namespace PruebaWPF.Clases
 {
@@ -153,6 +154,11 @@ namespace PruebaWPF.Clases
             {
                 informe.LocalReport.DataSources.Add(datasources[i]);
             }
+        }
+
+        public static string AppName()
+        {
+            return ((AssemblyTitleAttribute)Attribute.GetCustomAttribute(Assembly.GetExecutingAssembly(), typeof(AssemblyTitleAttribute), false)).Title;
         }
     }
 }
