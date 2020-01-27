@@ -581,7 +581,7 @@
             </Paragraphs>
             <rd:DefaultName>Encabezado</rd:DefaultName>
             <Height>0.6cm</Height>
-            <Width>7.29cm</Width>
+            <Width>6.4cm</Width>
             <Style>
               <Border>
                 <Style>None</Style>
@@ -615,7 +615,7 @@
             <rd:DefaultName>Textbox8</rd:DefaultName>
             <Top>1.82245cm</Top>
             <Height>0.6cm</Height>
-            <Width>7.29cm</Width>
+            <Width>6.4cm</Width>
             <ZIndex>1</ZIndex>
             <Style>
               <Border>
@@ -630,8 +630,11 @@
           <Line Name="Line1">
             <Top>0.94634cm</Top>
             <Height>0cm</Height>
-            <Width>7.29cm</Width>
+            <Width>6.4cm</Width>
             <ZIndex>2</ZIndex>
+            <Visibility>
+              <Hidden>true</Hidden>
+            </Visibility>
             <Style>
               <Border>
                 <Style>Solid</Style>
@@ -645,7 +648,7 @@
             <Sizing>Fit</Sizing>
             <Top>14.23141cm</Top>
             <Height>1.83cm</Height>
-            <Width>7.29cm</Width>
+            <Width>6.4cm</Width>
             <ZIndex>3</ZIndex>
             <Style>
               <Border>
@@ -656,8 +659,11 @@
           <Line Name="Line2">
             <Top>13.93789cm</Top>
             <Height>0cm</Height>
-            <Width>7.29cm</Width>
+            <Width>6.4cm</Width>
             <ZIndex>4</ZIndex>
+            <Visibility>
+              <Hidden>true</Hidden>
+            </Visibility>
             <Style>
               <Border>
                 <Style>Solid</Style>
@@ -708,7 +714,7 @@
             <rd:DefaultName>Textbox8</rd:DefaultName>
             <Top>12.80873cm</Top>
             <Height>1.02333cm</Height>
-            <Width>7.29cm</Width>
+            <Width>6.4cm</Width>
             <ZIndex>5</ZIndex>
             <Style>
               <Border>
@@ -741,7 +747,7 @@
             <rd:DefaultName>Pie</rd:DefaultName>
             <Top>18.38016cm</Top>
             <Height>0.6cm</Height>
-            <Width>7.29cm</Width>
+            <Width>6.4cm</Width>
             <ZIndex>6</ZIndex>
             <Style>
               <Border>
@@ -762,24 +768,28 @@
                   <TextRun>
                     <Value>Recibo No.</Value>
                     <Style>
+                      <FontSize>12pt</FontSize>
                       <FontWeight>Bold</FontWeight>
                     </Style>
                   </TextRun>
                   <TextRun>
                     <Value>=First(Fields!IdRecibo.Value, "Recibo")</Value>
                     <Style>
+                      <FontSize>12pt</FontSize>
                       <FontWeight>Bold</FontWeight>
                     </Style>
                   </TextRun>
                   <TextRun>
                     <Value>-</Value>
                     <Style>
+                      <FontSize>12pt</FontSize>
                       <FontWeight>Bold</FontWeight>
                     </Style>
                   </TextRun>
                   <TextRun>
                     <Value>=First(Fields!Serie.Value, "Recibo")</Value>
                     <Style>
+                      <FontSize>12pt</FontSize>
                       <FontWeight>Bold</FontWeight>
                     </Style>
                   </TextRun>
@@ -792,7 +802,7 @@
             <rd:DefaultName>Textbox1</rd:DefaultName>
             <Top>1.12273cm</Top>
             <Height>0.6cm</Height>
-            <Width>7.29cm</Width>
+            <Width>6.4cm</Width>
             <ZIndex>7</ZIndex>
             <Style>
               <Border>
@@ -846,7 +856,7 @@
             <rd:DefaultName>Textbox8</rd:DefaultName>
             <Top>2.45cm</Top>
             <Height>0.6cm</Height>
-            <Width>7.29cm</Width>
+            <Width>6.4cm</Width>
             <ZIndex>8</ZIndex>
             <Style>
               <Border>
@@ -889,7 +899,7 @@
             <rd:DefaultName>Textbox7</rd:DefaultName>
             <Top>3.05745cm</Top>
             <Height>0.6cm</Height>
-            <Width>5.86125cm</Width>
+            <Width>6.4cm</Width>
             <ZIndex>9</ZIndex>
             <Style>
               <Border>
@@ -922,7 +932,7 @@
             <rd:DefaultName>Textbox11</rd:DefaultName>
             <Top>4.57495cm</Top>
             <Height>0.6cm</Height>
-            <Width>7.29cm</Width>
+            <Width>6.4cm</Width>
             <ZIndex>10</ZIndex>
             <Style>
               <Border>
@@ -938,16 +948,16 @@
             <TablixBody>
               <TablixColumns>
                 <TablixColumn>
-                  <Width>0.76313cm</Width>
+                  <Width>0.92705cm</Width>
                 </TablixColumn>
                 <TablixColumn>
-                  <Width>4.04395cm</Width>
+                  <Width>3.43503cm</Width>
                 </TablixColumn>
                 <TablixColumn>
-                  <Width>0.76313cm</Width>
+                  <Width>0.54063cm</Width>
                 </TablixColumn>
                 <TablixColumn>
-                  <Width>1.71979cm</Width>
+                  <Width>1.49729cm</Width>
                 </TablixColumn>
               </TablixColumns>
               <TablixRows>
@@ -1505,7 +1515,7 @@ IIF(string.IsNullOrEmpty(Fields!Concepto.Value),Fields!Arancel.Value,Fields!Conc
             <DataSetName>DetalleRecibo</DataSetName>
             <Top>5.24551cm</Top>
             <Height>2cm</Height>
-            <Width>7.29cm</Width>
+            <Width>6.4cm</Width>
             <ZIndex>11</ZIndex>
             <Style>
               <Border>
@@ -1516,7 +1526,7 @@ IIF(string.IsNullOrEmpty(Fields!Concepto.Value),Fields!Arancel.Value,Fields!Conc
           <Line Name="Line3">
             <Top>4.44383cm</Top>
             <Height>0cm</Height>
-            <Width>7.29cm</Width>
+            <Width>6.4cm</Width>
             <ZIndex>12</ZIndex>
             <Style>
               <Border>
@@ -1545,7 +1555,7 @@ IIF(string.IsNullOrEmpty(Fields!Concepto.Value),Fields!Arancel.Value,Fields!Conc
             <rd:DefaultName>Textbox11</rd:DefaultName>
             <Top>7.87161cm</Top>
             <Height>0.6cm</Height>
-            <Width>7.29cm</Width>
+            <Width>6.4cm</Width>
             <ZIndex>13</ZIndex>
             <Style>
               <Border>
@@ -1560,7 +1570,7 @@ IIF(string.IsNullOrEmpty(Fields!Concepto.Value),Fields!Arancel.Value,Fields!Conc
           <Line Name="Line4">
             <Top>7.74049cm</Top>
             <Height>0cm</Height>
-            <Width>7.29cm</Width>
+            <Width>6.4cm</Width>
             <ZIndex>14</ZIndex>
             <Style>
               <Border>
@@ -1572,13 +1582,13 @@ IIF(string.IsNullOrEmpty(Fields!Concepto.Value),Fields!Arancel.Value,Fields!Conc
             <TablixBody>
               <TablixColumns>
                 <TablixColumn>
-                  <Width>4.80708cm</Width>
+                  <Width>4.51629cm</Width>
                 </TablixColumn>
                 <TablixColumn>
-                  <Width>0.76313cm</Width>
+                  <Width>0.46352cm</Width>
                 </TablixColumn>
                 <TablixColumn>
-                  <Width>1.71979cm</Width>
+                  <Width>1.42018cm</Width>
                 </TablixColumn>
               </TablixColumns>
               <TablixRows>
@@ -1984,6 +1994,9 @@ IIF(string.IsNullOrEmpty(Fields!Concepto.Value),Fields!Arancel.Value,Fields!Conc
             <TablixRowHierarchy>
               <TablixMembers>
                 <TablixMember>
+                  <Visibility>
+                    <Hidden>true</Hidden>
+                  </Visibility>
                   <KeepWithGroup>After</KeepWithGroup>
                 </TablixMember>
                 <TablixMember>
@@ -2012,7 +2025,7 @@ IIF(string.IsNullOrEmpty(Fields!Concepto.Value),Fields!Arancel.Value,Fields!Conc
             <DataSetName>FormaPago</DataSetName>
             <Top>8.47161cm</Top>
             <Height>2cm</Height>
-            <Width>7.29cm</Width>
+            <Width>6.4cm</Width>
             <ZIndex>15</ZIndex>
             <Style>
               <Border>
@@ -2024,13 +2037,13 @@ IIF(string.IsNullOrEmpty(Fields!Concepto.Value),Fields!Arancel.Value,Fields!Conc
             <TablixBody>
               <TablixColumns>
                 <TablixColumn>
-                  <Width>0.75431cm</Width>
+                  <Width>3.60153cm</Width>
                 </TablixColumn>
                 <TablixColumn>
-                  <Width>1.14536cm</Width>
+                  <Width>1.17537cm</Width>
                 </TablixColumn>
                 <TablixColumn>
-                  <Width>1.71097cm</Width>
+                  <Width>1.65192cm</Width>
                 </TablixColumn>
               </TablixColumns>
               <TablixRows>
@@ -2153,9 +2166,8 @@ IIF(string.IsNullOrEmpty(Fields!Concepto.Value),Fields!Arancel.Value,Fields!Conc
             </TablixRowHierarchy>
             <DataSetName>TipoCambio</DataSetName>
             <Top>11.75314cm</Top>
-            <Left>3.67936cm</Left>
             <Height>0.6cm</Height>
-            <Width>3.61064cm</Width>
+            <Width>6.42882cm</Width>
             <ZIndex>16</ZIndex>
             <Style>
               <Border>
@@ -2184,7 +2196,7 @@ IIF(string.IsNullOrEmpty(Fields!Concepto.Value),Fields!Arancel.Value,Fields!Conc
             <rd:DefaultName>Textbox11</rd:DefaultName>
             <Top>11.15314cm</Top>
             <Height>0.6cm</Height>
-            <Width>7.29cm</Width>
+            <Width>6.4cm</Width>
             <ZIndex>17</ZIndex>
             <Style>
               <Border>
@@ -2199,7 +2211,7 @@ IIF(string.IsNullOrEmpty(Fields!Concepto.Value),Fields!Arancel.Value,Fields!Conc
           <Line Name="Line5">
             <Top>10.97676cm</Top>
             <Height>0cm</Height>
-            <Width>7.29cm</Width>
+            <Width>6.4cm</Width>
             <ZIndex>18</ZIndex>
             <Style>
               <Border>
@@ -2211,10 +2223,10 @@ IIF(string.IsNullOrEmpty(Fields!Concepto.Value),Fields!Arancel.Value,Fields!Conc
             <Source>Embedded</Source>
             <Value>anulado</Value>
             <Sizing>FitProportional</Sizing>
-            <Top>1.82245cm</Top>
+            <Top>1.89912cm</Top>
             <Left>0.1cm</Left>
-            <Height>10.23055cm</Height>
-            <Width>7.19cm</Width>
+            <Height>3.94639cm</Height>
+            <Width>1.50146cm</Width>
             <ZIndex>19</ZIndex>
             <Visibility>
               <Hidden>=First(Fields!regAnulado.Value, "Recibo")=False</Hidden>
@@ -2232,17 +2244,15 @@ IIF(string.IsNullOrEmpty(Fields!Concepto.Value),Fields!Arancel.Value,Fields!Conc
               <Paragraph>
                 <TextRuns>
                   <TextRun>
-                    <Value>RECIBO EMITIDO A FAVOR DE </Value>
+                    <Value>Recibo emitido a favor de </Value>
                     <Style>
-                      <FontSize>8pt</FontSize>
                       <FontWeight>Bold</FontWeight>
                     </Style>
                   </TextRun>
                   <TextRun>
                     <Value>=First(Fields!Area.Value, "Recibo")</Value>
                     <Style>
-                      <FontSize>8pt</FontSize>
-                      <FontWeight>Bold</FontWeight>
+                      <FontWeight>Normal</FontWeight>
                     </Style>
                   </TextRun>
                 </TextRuns>
@@ -2254,7 +2264,7 @@ IIF(string.IsNullOrEmpty(Fields!Concepto.Value),Fields!Arancel.Value,Fields!Conc
             <rd:DefaultName>Area</rd:DefaultName>
             <Top>16.64002cm</Top>
             <Height>0.6cm</Height>
-            <Width>7.29cm</Width>
+            <Width>6.4cm</Width>
             <ZIndex>20</ZIndex>
             <Style>
               <Border>
@@ -2273,17 +2283,15 @@ IIF(string.IsNullOrEmpty(Fields!Concepto.Value),Fields!Arancel.Value,Fields!Conc
               <Paragraph>
                 <TextRuns>
                   <TextRun>
-                    <Value>ORDEN DE PAGO NO. </Value>
+                    <Value>Orden de Pago No. </Value>
                     <Style>
-                      <FontSize>8pt</FontSize>
                       <FontWeight>Bold</FontWeight>
                     </Style>
                   </TextRun>
                   <TextRun>
                     <Value>=First(Fields!NoOrdenPago.Value,"OrdenPago")</Value>
                     <Style>
-                      <FontSize>8pt</FontSize>
-                      <FontWeight>Bold</FontWeight>
+                      <FontWeight>Normal</FontWeight>
                     </Style>
                   </TextRun>
                 </TextRuns>
@@ -2295,7 +2303,7 @@ IIF(string.IsNullOrEmpty(Fields!Concepto.Value),Fields!Arancel.Value,Fields!Conc
             <rd:DefaultName>OrdenPago</rd:DefaultName>
             <Top>17.2885cm</Top>
             <Height>0.6cm</Height>
-            <Width>7.29cm</Width>
+            <Width>6.4cm</Width>
             <ZIndex>21</ZIndex>
             <Visibility>
               <Hidden>=IIF(First(Fields!NoOrdenPago.Value,"OrdenPago") =nothing, true, false)</Hidden>
@@ -2332,7 +2340,7 @@ IIF(string.IsNullOrEmpty(Fields!Concepto.Value),Fields!Arancel.Value,Fields!Conc
             <rd:DefaultName>Textbox1</rd:DefaultName>
             <Top>3.65745cm</Top>
             <Height>0.6cm</Height>
-            <Width>7.29cm</Width>
+            <Width>6.4cm</Width>
             <ZIndex>22</ZIndex>
             <Visibility>
               <Hidden>=Parameters!isFirstTime.Value=True</Hidden>
@@ -2350,41 +2358,43 @@ IIF(string.IsNullOrEmpty(Fields!Concepto.Value),Fields!Arancel.Value,Fields!Conc
           <Line Name="Line6">
             <Top>16.37925cm</Top>
             <Height>0cm</Height>
-            <Width>7.29cm</Width>
+            <Width>6.4cm</Width>
             <ZIndex>23</ZIndex>
             <Style>
               <Border>
                 <Style>Solid</Style>
+                <Width>0.5pt</Width>
               </Border>
             </Style>
           </Line>
           <Line Name="Line7">
             <Top>18.12925cm</Top>
             <Height>0cm</Height>
-            <Width>7.29cm</Width>
+            <Width>6.4cm</Width>
             <ZIndex>24</ZIndex>
             <Style>
               <Border>
                 <Style>Solid</Style>
+                <Width>0.5pt</Width>
               </Border>
             </Style>
           </Line>
         </ReportItems>
-        <Height>20.5907cm</Height>
+        <Height>19.45299cm</Height>
         <Style>
           <Border>
             <Style>None</Style>
           </Border>
         </Style>
       </Body>
-      <Width>7.29cm</Width>
+      <Width>6.42882cm</Width>
       <Page>
-        <PageHeight>17cm</PageHeight>
-        <PageWidth>7.9cm</PageWidth>
-        <LeftMargin>0.3cm</LeftMargin>
-        <RightMargin>0.3cm</RightMargin>
-        <TopMargin>0.3cm</TopMargin>
-        <BottomMargin>0.3cm</BottomMargin>
+        <PageHeight>16.99999cm</PageHeight>
+        <PageWidth>7.62cm</PageWidth>
+        <LeftMargin>0cm</LeftMargin>
+        <RightMargin>0cm</RightMargin>
+        <TopMargin>0cm</TopMargin>
+        <BottomMargin>0cm</BottomMargin>
         <ColumnSpacing>0.13cm</ColumnSpacing>
         <Style>
           <Border>

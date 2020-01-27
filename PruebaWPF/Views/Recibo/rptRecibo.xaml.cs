@@ -6,11 +6,7 @@ using PruebaWPF.Referencias;
 using PruebaWPF.ViewModel;
 using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
-using System.Net.Mail;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 
 
@@ -149,7 +145,7 @@ namespace PruebaWPF.Views.Recibo
             CargarVisor(recibos, ordenPago, barcode, infos, cuenta, detrecibo, formaPago, variacionCambiarias);
         }
 
-        private async void CargarVisor(List<ReciboSon> recibos, List<Model.OrdenPago> ordenPago, List<clsBarCode> barcode, List<InfoRecibo> infos, List<fn_ConsultarInfoExterna_Result> cuenta, List<DetReciboSon> detrecibo, List<ReciboPagoSon> formaPago, List<VariacionCambiariaSon> variacionCambiarias)
+        private void CargarVisor(List<ReciboSon> recibos, List<Model.OrdenPago> ordenPago, List<clsBarCode> barcode, List<InfoRecibo> infos, List<fn_ConsultarInfoExterna_Result> cuenta, List<DetReciboSon> detrecibo, List<ReciboPagoSon> formaPago, List<VariacionCambiariaSon> variacionCambiarias)
         {
             ReportDataSource[] datasSource = new ReportDataSource[8];
 
@@ -172,17 +168,22 @@ namespace PruebaWPF.Views.Recibo
                 if (ordenPago.Any())
                 {
                     Model.OrdenPago o = ordenPago.FirstOrDefault();
-                    string emailTo = o.EmailNotificacion;
-                    if (!string.IsNullOrEmpty(emailTo))
+                    if (o != null)
                     {
-                        Email e = new Email();
-                        e.SendRecibo(informe, string.Format("{0}-{1}", recibo.IdRecibo, recibo.Serie), cuenta.First().Nombre,emailTo,o.Usuario.LoginEmail);
+                        string emailTo = o.EmailNotificacion;
+                        if (!string.IsNullOrEmpty(emailTo))
+                        {
+                            Email e = new Email();
+                            e.SendRecibo(informe, string.Format("{0}-{1}", recibo.IdRecibo, recibo.Serie), cuenta.First().Nombre, emailTo, o.Usuario.LoginEmail);
+
+                        }
 
                     }
                 }
             }
 
             informe.SetDisplayMode(Microsoft.Reporting.WinForms.DisplayMode.PrintLayout);
+
             informe.LocalReport.Refresh();
 
         }

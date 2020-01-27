@@ -11,6 +11,7 @@ namespace PruebaWPF.Model
     public partial class Recibo1
     {
         public string NoOrdenPago => IdOrdenPago == null ? (regAnulado ? (ReciboAnulado.IdOrdenPago == null ? "" : ReciboAnulado.OrdenPago.NoOrdenPago) : "") : OrdenPago.NoOrdenPago;
+        public string IdAreaUnion => IdOrdenPago == null ? ReciboDatos.IdArea : OrdenPago.IdArea;
     }
 
     public partial class DiferenciasArqueo

@@ -7976,6 +7976,7 @@ advertencia 6002: La tabla o vista 'SIFOP.dbo.w_LibroMayorAcumulado_Vlast' no ti
           <Parameter Name="CriterioInterno" Type="bit" Mode="In" />
           <Parameter Name="Texto" Type="varchar" Mode="In" />
           <Parameter Name="Top" Type="int" Mode="In" />
+          <Parameter Name="UseLike" Type="bit" Mode="In" />
           <Parameter Name="isReingreso" Type="bit" Mode="In" />
           <ReturnType>
             <CollectionType>
@@ -23593,6 +23594,7 @@ advertencia 6002: La tabla o vista 'SIFOP.dbo.w_LibroMayorAcumulado_Vlast' no ti
             <Parameter Name="CriterioInterno" Mode="In" Type="Boolean" />
             <Parameter Name="Texto" Mode="In" Type="String" />
             <Parameter Name="Top" Mode="In" Type="Int32" />
+            <Parameter Name="UseLike" Mode="In" Type="Boolean" />
             <Parameter Name="isReingreso" Mode="In" Type="Boolean" />
           </FunctionImport>
           <FunctionImport Name="fn_ObtenerTasaCambio" IsComposable="true" ReturnType="Collection(SIFOPModel.fn_ObtenerTasaCambio_Result)">

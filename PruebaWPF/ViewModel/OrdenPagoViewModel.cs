@@ -1,5 +1,4 @@
 ﻿using PruebaWPF.Clases;
-using PruebaWPF.Helper;
 using PruebaWPF.Interface;
 using PruebaWPF.Model;
 using System;
@@ -41,11 +40,20 @@ namespace PruebaWPF.ViewModel
         {
             throw new NotImplementedException();
         }
+
         public List<OrdenPagoSon> FindAll()
         {
+            throw new NotImplementedException();
+        }
+
+        public List<OrdenPagoSon> FindAll(bool allRecintos)
+        {
+            return FindAllOrders(allRecintos).ToList();
+        }
+        private IQueryable<OrdenPagoSon> FindAllOrders(bool allRecintos)
+        {
             //Recuerda igualar las columnas de este select en el FindBytEXT
-        
-            return db.OrdenPago.Where(w => string.IsNullOrEmpty(w.CodRecibo) && w.regAnulado == false && r.Any(a => w.IdRecinto == a.IdRecinto)).OrderByDescending(o => o.IdOrdenPago).Take(clsConfiguration.Actual().TopRow)
+            var consulta = db.OrdenPago.Where(w => string.IsNullOrEmpty(w.CodRecibo) && w.regAnulado == false).OrderByDescending(o => o.IdOrdenPago).Take(clsConfiguration.Actual().TopRow)
                     .Join(
                     db.vw_Areas,
                     r => r.IdArea,
@@ -58,47 +66,76 @@ namespace PruebaWPF.ViewModel
                     recinto => recinto.IdRecinto,
                     (r, recinto) => new { r, recinto }
                 )
-
                     .Select(a => new OrdenPagoSon
-            {
-                IdOrdenPago = a.r.r.IdOrdenPago,
-                NoOrdenPago = a.r.r.NoOrdenPago,
-                IdRecinto = a.r.r.IdRecinto,
-                TextoIdentificador = a.r.r.TextoIdentificador,
-                UsuarioRemitente = a.r.r.UsuarioRemitente,
-                Sistema = a.r.r.Sistema,
-                FechaEnvio = a.r.r.FechaEnvio,
-                regAnulado = a.r.r.regAnulado,
-                CodRecibo = a.r.r.CodRecibo,
-                Identificador = a.r.r.Identificador,
-                IdTipoDeposito = a.r.r.IdTipoDeposito,
-                TipoDeposito = a.r.r.TipoDeposito,
-                IdArea = a.r.r.IdArea,
-                DetOrdenPagoArancel = a.r.r.DetOrdenPagoArancel,
-                CantidadPagos = a.r.r.DetOrdenPagoArancel.Count(),
-                Recinto = a.recinto.Siglas,
-                Area = a.r.areaInner.descripcion.ToUpper()
+                    {
+                        IdOrdenPago = a.r.r.IdOrdenPago,
+                        NoOrdenPago = a.r.r.NoOrdenPago,
+                        IdRecinto = a.r.r.IdRecinto,
+                        TextoIdentificador = a.r.r.TextoIdentificador,
+                        UsuarioRemitente = a.r.r.UsuarioRemitente,
+                        Sistema = a.r.r.Sistema,
+                        FechaEnvio = a.r.r.FechaEnvio,
+                        regAnulado = a.r.r.regAnulado,
+                        CodRecibo = a.r.r.CodRecibo,
+                        Identificador = a.r.r.Identificador,
+                        IdTipoDeposito = a.r.r.IdTipoDeposito,
+                        TipoDeposito = a.r.r.TipoDeposito,
+                        IdArea = a.r.r.IdArea,
+                        DetOrdenPagoArancel = a.r.r.DetOrdenPagoArancel,
+                        CantidadPagos = a.r.r.DetOrdenPagoArancel.Count(),
+                        Recinto = a.recinto.Siglas,
+                        Area = a.r.areaInner.descripcion.ToUpper()
                     }
-            ).ToList();
+            );
 
-            
+            if (allRecintos)
+            {
+                return consulta;
+            }
+            else
+            {
+                return consulta.Where(w => r.Any(a => w.IdRecinto == a.IdRecinto));
+            }
 
         }
 
         public OrdenPagoSon FindById(int Id)
         {
-
             return (OrdenPagoSon)db.OrdenPago.Find(Id);
         }
 
         public List<OrdenPagoSon> FindByText(string text)
+        {
+            throw new NotImplementedException();
+        }
+
+        public List<OrdenPagoSon> FindByText(bool allRecintos, string text)
         {
             if (!text.Equals(""))
             {
                 string[] busqueda = text.Trim().Split(' ');
 
                 using (SIFOPEntities t = new SIFOPEntities())
-                {                    
+                {
+                    return FindAllOrders(allRecintos).Where(
+                       w => busqueda.All(a => w.TextoIdentificador.Contains(a)))
+                    .ToList();
+                }
+            }
+            else
+            {
+                return FindAll(allRecintos);
+            }
+        }
+
+        public List<OrdenPagoSon> FindByTextIgnoreRecinto(string text)
+        {
+            if (!text.Equals(""))
+            {
+                string[] busqueda = text.Trim().Split(' ');
+
+                using (SIFOPEntities t = new SIFOPEntities())
+                {
                     return FindAll().Where(
                        w => busqueda.All(a => w.TextoIdentificador.Contains(a)))
                     .ToList();
@@ -130,7 +167,7 @@ namespace PruebaWPF.ViewModel
             }
             else
             {
-                throw new AuthorizationException(PermisoName, IdRecinto,db);
+                throw new AuthorizationException(PermisoName, IdRecinto, db);
             }
         }
 

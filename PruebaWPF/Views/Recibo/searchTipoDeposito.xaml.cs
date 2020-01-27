@@ -269,7 +269,7 @@ namespace PruebaWPF.Views.Recibo
             try
             {
                 string texto = Texto.Length > 0 ? "%" + Texto.Replace(' ', '%') + "%" : "";
-                var informacion = controller.ObtenerTipoDeposito(TipoDeposito, Criterio, false, texto, clsConfiguration.Actual().TopRow, IdTipoArancel);
+                var informacion = controller.ObtenerTipoDeposito(TipoDeposito, Criterio, false, texto, clsConfiguration.Actual().TopRow,true, IdTipoArancel);
                 items = new ObservableCollection<fn_ConsultarInfoExterna_Result>(informacion);
 
                 if (informacion.Any())

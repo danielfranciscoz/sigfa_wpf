@@ -144,7 +144,8 @@ namespace PruebaWPF.Clases
 
         public static Byte[] CodigoBarraRecibo(string texto)
         {
-            return CodigoBarra(texto, 276, 69);
+            //6.4cm; 1.83cm
+            return CodigoBarra(texto, 241, 69);
         }
 
         public static void InformeDataSource(ReportViewer informe, ReportDataSource[] datasources)

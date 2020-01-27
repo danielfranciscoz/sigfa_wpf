@@ -24,7 +24,7 @@ namespace PruebaWPF.ViewModel
             }
         }
 
-        public List<fn_ConsultarInfoExterna_Result> ObtenerTipoDeposito(int tipodeposito, string criterio, bool busquedainterna, string texto, int top, int? tipoarancel)
+        public List<fn_ConsultarInfoExterna_Result> ObtenerTipoDeposito(int tipodeposito, string criterio, bool busquedainterna, string texto, int top,bool useLike, int? tipoarancel)
         {
 
             bool? isReingreso = false;
@@ -36,7 +36,7 @@ namespace PruebaWPF.ViewModel
             {
                 isReingreso = null;
             }
-            List<fn_ConsultarInfoExterna_Result> items = db.fn_ConsultarInfoExterna(tipodeposito, criterio, busquedainterna, texto, top, isReingreso).ToList().Select(s =>
+            List<fn_ConsultarInfoExterna_Result> items = db.fn_ConsultarInfoExterna(tipodeposito, criterio, busquedainterna, texto, top,useLike, isReingreso).ToList().Select(s =>
               new fn_ConsultarInfoExterna_Result()
               {
                   IdInterno = s.IdInterno,

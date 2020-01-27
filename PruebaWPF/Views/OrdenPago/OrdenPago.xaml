@@ -9,9 +9,9 @@
       materialDesign:ShadowAssist.CacheMode="{x:Null}"
       xmlns:ViewModel="clr-namespace:PruebaWPF.ViewModel" x:Class="PruebaWPF.Views.OrdenPago.OrdenPago"
       mc:Ignorable="d" 
-      d:DesignHeight="350" d:DesignWidth="700"
+      d:DesignHeight="350"
       Title="Visualización de Órdenes de pago"
-    Loaded="Page_Loaded" Uid="OrdenPago"
+    Loaded="Page_Loaded" Uid="OrdenPago" 
      >
 
     <Grid Background="White">
@@ -29,7 +29,7 @@
         <Grid Grid.Row="1">
             <Grid.RowDefinitions>
                 <RowDefinition Height="auto"/>
- 
+
                 <RowDefinition Height="*"/>
                 <RowDefinition Height="auto"/>
             </Grid.RowDefinitions>
@@ -42,9 +42,11 @@
                     </Grid.ColumnDefinitions>
                     <StackPanel Grid.Column="0" Orientation="Horizontal">
                         <Button BorderBrush="Transparent"  Background="{StaticResource Save_Button}" Margin="5 5 5 5" Click="Button_Click">CREAR RECIBO</Button>
-                       <Button Tag="{StaticResource Permiso_Exportar}" BorderBrush="Transparent" Background="{StaticResource Export_Button}" Margin="5" Click="btn_Exportar" Height="Auto" Content="{StaticResource Text_Export_Button}"></Button>
+                        <Button Tag="{StaticResource Permiso_Exportar}" BorderBrush="Transparent" Background="{StaticResource Export_Button}" Margin="5" Click="btn_Exportar" Height="Auto" Content="{StaticResource Text_Export_Button}"></Button>
                     </StackPanel>
-                    <StackPanel HorizontalAlignment="Right" Grid.Column="1" Orientation="Horizontal">
+
+                    <StackPanel  HorizontalAlignment="Right" Grid.Column="1" Orientation="Horizontal">
+                        <CheckBox VerticalAlignment="Bottom" Margin="0 0 20 0" x:Name="chkAll" materialDesign:HintAssist.Hint="Búsqueda (No.Orden)" materialDesign:HintAssist.IsFloating="True" FontSize="13" KeyDown="TxtFindOrder_KeyDown">Incluir Ordenes de Otros recintos</CheckBox>
                         <TextBox SpellCheck.IsEnabled="True" Language="es-419" Margin="0 0 20 0"  x:Name="txtFind" Width="250" materialDesign:HintAssist.Hint="Búsqueda (Recibiremos)" materialDesign:HintAssist.IsFloating="True" FontSize="13" KeyUp="txtFindText" />
                     </StackPanel>
                 </Grid>

@@ -837,11 +837,11 @@ namespace PruebaWPF.Views.Recibo
             if (cboTipoArancel.SelectedIndex != -1)
             {
                 tipoArancel = (TipoArancel)cboTipoArancel.SelectedItem;
-                return (new SearchTipoDepositoViewModel().ObtenerTipoDeposito(id, Identificador, BusquedaInterna, "", 1, tipoArancel.IdTipoArancel).FirstOrDefault());
+                return (new SearchTipoDepositoViewModel().ObtenerTipoDeposito(id, Identificador, BusquedaInterna, "", 1,false, tipoArancel.IdTipoArancel).FirstOrDefault());
             }
             else
             {
-                return (new SearchTipoDepositoViewModel().ObtenerTipoDeposito(id, Identificador, BusquedaInterna, "", 1, null).FirstOrDefault());
+                return (new SearchTipoDepositoViewModel().ObtenerTipoDeposito(id, Identificador, BusquedaInterna, "", 1, false, null).FirstOrDefault());
 
             }
         }

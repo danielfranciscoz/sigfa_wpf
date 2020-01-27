@@ -308,7 +308,7 @@ namespace PruebaWPF.Model
         }
     
         [DbFunction("SIFOPEntities", "fn_ConsultarInfoExterna")]
-        public virtual IQueryable<fn_ConsultarInfoExterna_Result> fn_ConsultarInfoExterna(Nullable<int> tipoDeposito, string criterio, Nullable<bool> criterioInterno, string texto, Nullable<int> top, Nullable<bool> isReingreso)
+        public virtual IQueryable<fn_ConsultarInfoExterna_Result> fn_ConsultarInfoExterna(Nullable<int> tipoDeposito, string criterio, Nullable<bool> criterioInterno, string texto, Nullable<int> top, Nullable<bool> useLike, Nullable<bool> isReingreso)
         {
             var tipoDepositoParameter = tipoDeposito.HasValue ?
                 new ObjectParameter("TipoDeposito", tipoDeposito) :
@@ -330,11 +330,15 @@ namespace PruebaWPF.Model
                 new ObjectParameter("Top", top) :
                 new ObjectParameter("Top", typeof(int));
     
+            var useLikeParameter = useLike.HasValue ?
+                new ObjectParameter("UseLike", useLike) :
+                new ObjectParameter("UseLike", typeof(bool));
+    
             var isReingresoParameter = isReingreso.HasValue ?
                 new ObjectParameter("isReingreso", isReingreso) :
                 new ObjectParameter("isReingreso", typeof(bool));
     
-            return ((IObjectContextAdapter)this).ObjectContext.CreateQuery<fn_ConsultarInfoExterna_Result>("[SIFOPEntities].[fn_ConsultarInfoExterna](@TipoDeposito, @Criterio, @CriterioInterno, @Texto, @Top, @isReingreso)", tipoDepositoParameter, criterioParameter, criterioInternoParameter, textoParameter, topParameter, isReingresoParameter);
+            return ((IObjectContextAdapter)this).ObjectContext.CreateQuery<fn_ConsultarInfoExterna_Result>("[SIFOPEntities].[fn_ConsultarInfoExterna](@TipoDeposito, @Criterio, @CriterioInterno, @Texto, @Top, @UseLike, @isReingreso)", tipoDepositoParameter, criterioParameter, criterioInternoParameter, textoParameter, topParameter, useLikeParameter, isReingresoParameter);
         }
     
         [DbFunction("SIFOPEntities", "fn_ObtenerTasaCambio")]

@@ -23,11 +23,12 @@ namespace PruebaWPF.Clases
                   name,
                   mailTo,
                   mailCC,
-                  "Confirmación de pago - UNIVERSIDAD NACIONAL DE INGENIERÍA"
+                  "Confirmación de pago - UNIVERSIDAD NACIONAL DE INGENIERÍA",
+                  clsConfiguration.Llaves.Email_Finanzas.ToString()
                   );
         }
 
-        private async Task SendPDF(ReportViewer reportViewer, string tittle, string filename, string name, string mailTo, string mailCC, string Asunto)
+        private async Task SendPDF(ReportViewer reportViewer, string tittle, string filename, string name, string mailTo, string mailCC, string Asunto, string EmailKey)
         {
             Warning[] warnings;
             string[] streamids;
@@ -40,7 +41,7 @@ namespace PruebaWPF.Clases
                 try
                 {
                     byte[] bytes = reportViewer.LocalReport.Render("PDF", null, out mimeType, out encoding, out extension, out streamids, out warnings);
-                    Object[] conf = CredencialesSMTP();
+                    Object[] conf = CredencialesSMTP(EmailKey);
                     SmtpClient smtp = (SmtpClient)conf[0];
                     String userMail = conf[1].ToString();
                     String MailNotify = conf[2].ToString();
@@ -49,7 +50,7 @@ namespace PruebaWPF.Clases
                     memoryStream.Seek(0, SeekOrigin.Begin);
 
                     MailMessage message = new MailMessage();
-                    Attachment attachment = new Attachment(memoryStream, tittle  + ".pdf");
+                    Attachment attachment = new Attachment(memoryStream, tittle + ".pdf");
                     message.Attachments.Add(attachment);
 
                     message.From = new MailAddress(userMail);
@@ -88,9 +89,9 @@ namespace PruebaWPF.Clases
             });
         }
 
-        private Object[] CredencialesSMTP()
+        private Object[] CredencialesSMTP(string EmailKey)
         {
-            Configuracion config = s.Configuracion(clsConfiguration.Llaves.Email.ToString());
+            Configuracion config = s.Configuracion(EmailKey);
 
             string[] datos = config.Valor.Split(';');
             string[] variables = new string[datos.Length];

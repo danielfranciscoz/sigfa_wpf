@@ -140,7 +140,7 @@ namespace PruebaWPF.ViewModel
                                                   IdInfoRecibo = r.IdInfoRecibo,
                                                   InfoRecibo = r.InfoRecibo,
                                                   DetAperturaCaja = r.DetAperturaCaja,
-                                                  OrdenPago = OrdenTable,
+                                                  OrdenPago = r.regAnulado ? ReciboAnuladoTable.IdOrdenPago.HasValue ? OrdenAnuladaTable : null : r.OrdenPago,
                                                   FuenteFinanciamiento = r.FuenteFinanciamiento,
                                                   UsuarioCreacion = r.UsuarioCreacion,
                                                   Recinto = RecintoTable.Siglas,
@@ -708,7 +708,7 @@ namespace PruebaWPF.ViewModel
                                     Serie = roc.Serie,
                                     IdCuentaContable = s.IdCuentaContable,
                                     Naturaleza = s.Naturaleza,
-                                    Monto =Math.Round( Math.Round(item.TipoCambio * item.Monto, 2, MidpointRounding.AwayFromZero) * s.FactorPorcentual, 2,MidpointRounding.AwayFromZero)
+                                    Monto = Math.Round(Math.Round(item.TipoCambio * item.Monto, 2, MidpointRounding.AwayFromZero) * s.FactorPorcentual, 2, MidpointRounding.AwayFromZero)
                                     //el doble redondeo es 100% necesario NUNCA TOCAR, se hace asi porque el sistema realiza el calculo del diferencial cambiario en base a una cifra redondeda, en este caso es necesario llegar a esa cifra redondeando, luego se hace la multiplicacion por el factor porcentual y se vuelve a redondear para continuar con los calculos.
                                 }).Union(asientos).ToList();
 
@@ -937,7 +937,7 @@ namespace PruebaWPF.ViewModel
         {
             if (IdFormaPago.HasValue)
             {
-            //Obtengo las monedas pertenecientes a la forma de pago parametrizada
+                //Obtengo las monedas pertenecientes a la forma de pago parametrizada
                 return db.MovimientoIngreso.Where(w => w.IdFormaPago == IdFormaPago && !w.Moneda.regAnulado).Select(s => s.Moneda).Distinct().ToList();
 
             }

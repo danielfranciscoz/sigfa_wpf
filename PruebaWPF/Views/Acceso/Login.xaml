@@ -41,7 +41,7 @@
                 <materialDesign:ColorZone Mode="PrimaryMid" Background="{StaticResource PrimaryDark}">
                     <TextBlock FontSize="15" TextAlignment="Center" Padding="20 20 0 20" FontWeight="Bold">UNIVERSIDAD NACIONAL DE INGENIERÍA <LineBreak/>DIVISIÓN DE FINANZAS <LineBreak/>SISTEMA DE GESTIÓN FINANCIERA SIGFA-UNI</TextBlock>
                 </materialDesign:ColorZone>
-                <Image HorizontalAlignment="Left" Height="51" Margin="20,20,0,19" Width="84" Source="/PruebaWPF;component/Images/logoUNI.png" VerticalAlignment="Center" RenderTransformOrigin="0.917,0.725"/>
+                <Image HorizontalAlignment="Left" Height="51" Margin="20,20,0,19" Width="84" Source="/Images/logoUNI.png" VerticalAlignment="Center" RenderTransformOrigin="0.917,0.725"/>
                 
             </Grid>
 

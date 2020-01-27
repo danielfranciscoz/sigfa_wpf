@@ -1,20 +1,18 @@
-﻿using PruebaWPF.UserControls;
+﻿using PruebaWPF.Clases;
+using PruebaWPF.Model;
+using PruebaWPF.Referencias;
+using PruebaWPF.UserControls;
 using PruebaWPF.ViewModel;
+using PruebaWPF.Views.Main;
+using PruebaWPF.Views.Recibo;
+using PruebaWPF.Views.Shared;
 using System;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.Threading.Tasks;
+using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
-using PruebaWPF.Views.Main;
-using PruebaWPF.Views.Shared;
-using System.Windows;
-using PruebaWPF.Model;
-using PruebaWPF.Clases;
-using PruebaWPF.Referencias;
-using PruebaWPF.Views.Recibo;
-using System.Collections.ObjectModel;
-using System.Collections.Specialized;
-using System.Threading.Tasks;
-using System.Collections;
-using System.Collections.Generic;
 
 namespace PruebaWPF.Views.OrdenPago
 {
@@ -49,25 +47,25 @@ namespace PruebaWPF.Views.OrdenPago
         private void Load()
         {
             tblOrdenPago.ItemsSource = items;
-           
+
         }
 
-        private async void LoadTable(string text)
+        private async void LoadTable(bool allRecintos,string text)
         {
             try
             {
                 //if (isOpening)
                 //{
                 //    isOpening = false;
-                    if (clsConfiguration.Actual().AutoLoad)
-                    {
-                        AutomaticReloadTask();
-                    }
-                    else
-                    {
-                        items = await FindAsync(text);
-                        Load();
-                    }
+                if (clsConfiguration.Actual().AutoLoad)
+                {
+                    AutomaticReloadTask();
+                }
+                else
+                {
+                    items = await FindAsync(allRecintos,text);
+                    Load();
+                }
                 //}
                 //else
                 //{
@@ -82,26 +80,26 @@ namespace PruebaWPF.Views.OrdenPago
             }
         }
 
-        private Task<ObservableCollection<OrdenPagoSon>> FindAsync(String text)
+        private Task<ObservableCollection<OrdenPagoSon>> FindAsync(bool isMultiRecinto,String text )
         {
             if (text.Equals(""))
             {
                 return Task.Run(() =>
                 {
-                    return new ObservableCollection<OrdenPagoSon>(controller.FindAll());
+                    return new ObservableCollection<OrdenPagoSon>(controller.FindAll(isMultiRecinto));
                 });
             }
             else
             {
                 return Task.Run(() =>
                 {
-                    return new ObservableCollection<OrdenPagoSon>(controller.FindByText(text)); ;
+                        return new ObservableCollection<OrdenPagoSon>(controller.FindByText(isMultiRecinto,text));
                 });
             }
         }
 
 
-    
+
 
         private void LoadTitle()
         {
@@ -113,7 +111,7 @@ namespace PruebaWPF.Views.OrdenPago
 
         private void txtFindText(object sender, KeyEventArgs e)
         {
-            LoadTable(txtFind.Text);
+            LoadTable(chkAll.IsChecked.Value,txtFind.Text);
         }
 
         private void btn_Exportar(object sender, System.Windows.RoutedEventArgs e)
@@ -173,10 +171,10 @@ namespace PruebaWPF.Views.OrdenPago
                 LoadTitle();
                 ResizeGrid();
 
-                if (items==null || isOpening)
+                if (items == null || isOpening)
                 {
                     isOpening = false;
-                    LoadTable(txtFind.Text);
+                    LoadTable(chkAll.IsChecked.Value,txtFind.Text);
                 }
             }
             catch (Exception ex)
@@ -248,6 +246,14 @@ namespace PruebaWPF.Views.OrdenPago
              });
         }
 
+
+        private void TxtFindOrder_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.Key == Key.Return)
+            {
+                LoadTable(chkAll.IsChecked.Value,txtFind.Text);
+            }
+        }
     }
 
 }
