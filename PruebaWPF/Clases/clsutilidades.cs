@@ -1,17 +1,20 @@
 ﻿using MaterialDesignThemes.Wpf;
+using Microsoft.Reporting.WinForms;
 using PruebaWPF.Referencias;
 using PruebaWPF.Views.Main;
 using PruebaWPF.Views.Shared;
 using System;
+using System.Collections.Generic;
+using System.Drawing;
+using System.IO.Ports;
+using System.Linq;
+using System.Net.NetworkInformation;
+using System.Reflection;
+using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Controls.Primitives;
 using System.Windows.Data;
 using System.Windows.Media;
-using PruebaWPF.Model;
-using System.Windows;
-using System.Drawing;
-using System.Windows.Controls.Primitives;
-using Microsoft.Reporting.WinForms;
-using System.Reflection;
 
 namespace PruebaWPF.Clases
 {
@@ -82,7 +85,7 @@ namespace PruebaWPF.Clases
 
         public static void UpdateControl(Control control)
         {
-           
+
             if (control is TextBox)
             {
                 BindingOperations.GetBindingExpression(control, TextBox.TextProperty).UpdateTarget();
@@ -160,6 +163,37 @@ namespace PruebaWPF.Clases
         public static string AppName()
         {
             return ((AssemblyTitleAttribute)Attribute.GetCustomAttribute(Assembly.GetExecutingAssembly(), typeof(AssemblyTitleAttribute), false)).Title;
+        }
+
+        public static string FindMacActual()
+        {
+
+            byte[] bytes = NetworkInterface.GetAllNetworkInterfaces().ToList().FirstOrDefault().GetPhysicalAddress().GetAddressBytes();
+
+            string MAC = "";
+            for (int i = 0; i < bytes.Length; i++)
+            {
+
+                MAC = MAC + "" + bytes[i].ToString("X2");
+
+                if (i != bytes.Length - 1)
+                {
+                    MAC = MAC + "-";
+
+                }
+            }
+
+            return MAC;
+        }
+
+        public static String[] GetSerialPorts()
+        {
+            //var n = SerialPort.GetPortNames();
+            //foreach (String comport in SerialPort.GetPortNames())
+            //{
+            //    var a = comport;
+            //}
+            return SerialPort.GetPortNames();
         }
     }
 }

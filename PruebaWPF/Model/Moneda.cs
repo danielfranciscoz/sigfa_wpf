@@ -28,6 +28,7 @@ namespace PruebaWPF.Model
             this.ReciboPago = new HashSet<ReciboPago>();
             this.VariacionCambiaria = new HashSet<VariacionCambiaria>();
             this.MovimientoIngreso = new HashSet<MovimientoIngreso>();
+            this.VoucherBanco = new HashSet<VoucherBanco>();
         }
     
         public int IdMoneda { get; set; }
@@ -37,6 +38,7 @@ namespace PruebaWPF.Model
         public string UsuarioCreacion { get; set; }
         public System.DateTime FechaCreacion { get; set; }
         public bool regAnulado { get; set; }
+        public string CodigoISO { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<ArqueoEfectivo> ArqueoEfectivo { get; set; }
@@ -61,5 +63,7 @@ namespace PruebaWPF.Model
         public virtual ICollection<VariacionCambiaria> VariacionCambiaria { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<MovimientoIngreso> MovimientoIngreso { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<VoucherBanco> VoucherBanco { get; set; }
     }
 }

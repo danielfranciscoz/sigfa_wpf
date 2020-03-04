@@ -2355,7 +2355,7 @@
                 <Paragraph>
                   <TextRuns>
                     <TextRun>
-                      <Value>INFORME DE CIERRE DE CAJA</Value>
+                      <Value>REPORTE DE CIERRE DE CAJA</Value>
                       <Style>
                         <FontSize>11pt</FontSize>
                         <FontWeight>Bold</FontWeight>
@@ -2368,8 +2368,9 @@
                 </Paragraph>
               </Paragraphs>
               <rd:DefaultName>Textbox5</rd:DefaultName>
+              <Left>2.99931cm</Left>
               <Height>1.88cm</Height>
-              <Width>18.56cm</Width>
+              <Width>12.50779cm</Width>
               <Style>
                 <Border>
                   <Style>None</Style>
@@ -2392,7 +2393,7 @@
               <Source>Embedded</Source>
               <Value>LogoUNI</Value>
               <Sizing>FitProportional</Sizing>
-              <Left>0.39146cm</Left>
+              <Top>0.04923cm</Top>
               <Height>1.78153cm</Height>
               <Width>2.82292cm</Width>
               <ZIndex>2</ZIndex>
@@ -2600,6 +2601,7 @@
       <ImageData>iVBORw0KGgoAAAANSUhEUgAAARkAAACwCAMAAAAMquq3AAAAVFBMVEX///8/ZqN/mcK/zOD///8ANIX///////////////+PpskQQIzf5vDP2ehvjLofTZRfgLJPc6svWptvjbqzwtpjg7SoutXv8vcnU5gbSpKnudVfgLNhOzJaAAAACnRSTlPA////IP//gEAw0nX2NgAAAAlwSFlzAAAFiQAABYkBbWid+gAAAZ9JREFUeNrt3TlywzAMBVBRiu3EkbxkX+5/zxQuzILSDEhHSfF+LQzIV1EFBl0nxTx0WynmnsyCzJQiOVyL3x4j+Uzt+Qh1fM0uegj1mS4ywyaSdO223/zvZEfdplDlQIYMGTJkyJAhQ4YMGTJkyJAhQ4YMGTJkyJAhQ4YMGTJkyJAhQ4YMGTJkyJAhQ4YMGTJkyJAh80syL6HCp6E9p1DH50xmCvV5b5SpLqxOH+rYt843kSFDhgwZMmTIkIkWjqEH6XgLmXXntasLqy9YL7PufxMZMmTIkCFDhgwZMmTIkCFDhgwZMmTIkCFDhgwZMmTIkCFDhgwZMmTIkCFDhgwZMmTIkCFDhgwZMmTIkCFDhgwZMmTILF9w/VF9MmTIkCFDhgwZMmT+QObYtyetI5OylsdQ5VeNzPqplqnPngwZMmTIkCFDhgwZMmTIkCFDhgwZMmTIkCFDhgwZMmTIkCFDhgwZMmTIkCFDhgwZMmTIkCFDZllmnJkoOReXcp9vMKtyKu/7nvl6yGbn+8j+8O/qA44XGZnbVi9lmZ0Uc/cD83fS41wclBMAAAAASUVORK5CYII=</ImageData>
     </EmbeddedImage>
   </EmbeddedImages>
+  <Language>es-NI</Language>
   <rd:ReportUnitType>Cm</rd:ReportUnitType>
   <rd:ReportID>5950757c-d16f-4b1c-b957-a84dc6b372a4</rd:ReportID>
 </Report>

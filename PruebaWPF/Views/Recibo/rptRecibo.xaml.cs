@@ -9,7 +9,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Windows;
 
-
 namespace PruebaWPF.Views.Recibo
 {
     /// <summary>
@@ -73,7 +72,7 @@ namespace PruebaWPF.Views.Recibo
             infos.Add(info);
 
             List<clsBarCode> barcode = new List<clsBarCode>();
-            barcode.Add(new clsBarCode() { texto = "CBR-0000" });
+            barcode.Add(new clsBarCode() { texto = "0000-A" });
 
             List<fn_ConsultarInfoExterna_Result> cuenta = new List<fn_ConsultarInfoExterna_Result>();
             cuenta.Add(new fn_ConsultarInfoExterna_Result() { Id = "ESTO NO ES UN RECIBO OFICIAL DE CAJA" });
@@ -82,15 +81,15 @@ namespace PruebaWPF.Views.Recibo
             detrecibo.Add(new DetReciboSon() { Concepto = "", Monto = 0, ArancelPrecio = new ArancelPrecio() { ArancelArea = new ArancelArea() { Arancel = new Arancel() { Nombre = "Arancel pagado" } }, Moneda = new Moneda() } });
 
             List<ReciboPagoSon> formaPago = new List<ReciboPagoSon>();
-            formaPago.Add(new ReciboPagoSon() { Monto = 0, InfoAdicional = "", DetalleAdicional = "", Moneda = new Moneda(), FormaPago = new FormaPago() { FormaPago1 = "Forma de pago 1" } });
+            formaPago.Add(new ReciboPagoSon() { Monto = 0, ObjInfoAdicional = new object [2]{"","" }, Moneda = new Moneda(), FormaPago = new FormaPago() { FormaPago1 = "Forma de pago 1" } });
 
             List<VariacionCambiariaSon> variacionCambiarias = new List<VariacionCambiariaSon>();
             variacionCambiarias.Add(new VariacionCambiariaSon() { Valor = 0, Moneda = new Moneda() });
 
-            CargarVisor(recibos, ordenPago, barcode, infos, cuenta, detrecibo, formaPago, variacionCambiarias);
+            CargarVisor(recibos, ordenPago, barcode, infos, cuenta, detrecibo, formaPago, variacionCambiarias,true);
         }
 
-        private void VerRecibo()
+        public void VerRecibo()
         {
             //   SqlServerTypes.Utilities.LoadNativeAssemblies(AppDomain.CurrentDomain.BaseDirectory);
             ReciboViewModel modeloRecibo = new ReciboViewModel();
@@ -107,7 +106,7 @@ namespace PruebaWPF.Views.Recibo
             infos.Add(recibo.InfoRecibo);
 
             List<clsBarCode> barcode = new List<clsBarCode>();
-            barcode.Add(new clsBarCode() { texto = "CBR-" + recibo.IdRecibo + "-" + recibo.Serie });
+            barcode.Add(new clsBarCode() { texto =  recibo.IdRecibo + "-" + recibo.Serie });
 
             List<fn_ConsultarInfoExterna_Result> cuenta = new List<fn_ConsultarInfoExterna_Result>();
 
@@ -142,10 +141,10 @@ namespace PruebaWPF.Views.Recibo
 
             List<VariacionCambiariaSon> variacionCambiarias = modeloRecibo.FindTipoCambio(recibo, detrecibo);
 
-            CargarVisor(recibos, ordenPago, barcode, infos, cuenta, detrecibo, formaPago, variacionCambiarias);
+            CargarVisor(recibos, ordenPago, barcode, infos, cuenta, detrecibo, formaPago, variacionCambiarias,false);
         }
 
-        private void CargarVisor(List<ReciboSon> recibos, List<Model.OrdenPago> ordenPago, List<clsBarCode> barcode, List<InfoRecibo> infos, List<fn_ConsultarInfoExterna_Result> cuenta, List<DetReciboSon> detrecibo, List<ReciboPagoSon> formaPago, List<VariacionCambiariaSon> variacionCambiarias)
+        private void CargarVisor(List<ReciboSon> recibos, List<Model.OrdenPago> ordenPago, List<clsBarCode> barcode, List<InfoRecibo> infos, List<fn_ConsultarInfoExterna_Result> cuenta, List<DetReciboSon> detrecibo, List<ReciboPagoSon> formaPago, List<VariacionCambiariaSon> variacionCambiarias,bool isPreview)
         {
             ReportDataSource[] datasSource = new ReportDataSource[8];
 
@@ -163,7 +162,7 @@ namespace PruebaWPF.Views.Recibo
             informe.LocalReport.ReportEmbeddedResource = "PruebaWPF.Reportes.Recibo.Recibo.rdlc";
             informe.LocalReport.SetParameters(new ReportParameter("isFirstTime", isFirtTime.ToString()));
 
-            if (isFirtTime) //Cuando es primera vez, se realiza la verificacion para ver si se enviará correo
+            if (isFirtTime && !isPreview) //Cuando es primera vez, se realiza la verificacion para ver si se enviará correo
             {
                 if (ordenPago.Any())
                 {
@@ -180,11 +179,19 @@ namespace PruebaWPF.Views.Recibo
 
                     }
                 }
+
+                AutoPrint autoprintme = new AutoPrint(informe.LocalReport);
+                autoprintme.Print();
+            }
+            else
+            {
+                informe.SetDisplayMode(Microsoft.Reporting.WinForms.DisplayMode.PrintLayout);
+                informe.LocalReport.Refresh();
             }
 
-            informe.SetDisplayMode(Microsoft.Reporting.WinForms.DisplayMode.PrintLayout);
 
-            informe.LocalReport.Refresh();
+
+
 
         }
 

@@ -33,23 +33,23 @@
         public const string MESSAGE_Exito_Save = "Se guardó la información con éxito.";
         public const string MESSAGE_Exito_Delete = "Se eliminó la información con éxito.";
         public const string MESSAGE_Exito_Anular = "La información fue anulada con éxito.";
-
         public const string MESSAGE_Exito_Save_COUNT = "Se guardó la información con éxito, registros insertados: ";
-
         public const string MESSAGE_Cero_Save = "Se intentó guardar, sin embargo toda la información ya se encuentra almacenada, utilice otros parámetros e intente de nuevo";
-
         public const string MESSAGE_Cero_Registro = "No se detectaron nuevos registros que guardar.";
 
         public const string MESSAGE_Cero_Registro_Table = "Para poder continuar debe agregar al menos un registro a la tabla.";
-
         public const string MESSAGE_Cero_Search = "No hemos encontrado resultados para sus criterios de búsqueda.";
-
         public const string MESSAGE_Confirm_Delete = "Esta a punto de eliminar un registro de la base de datos, este proceso es irreversible, ¿Realmente desea continuar?";
-
         public const string MESSAGE_Total_Menor_Cero = "No pueden existir montos menores a cero, por favor revise la información.";
 
-        public const string MESSAGE_Error_Title = "Ocurrió un error inesperado.";
 
+        //Mensajes de error
+        public const string MESSAGE_Error_Title = "Ocurrió un error inesperado.";
+        public const string Error_NoCaja = "No hemos encontrado este ordenador entre la lista de cajas disponibles para realizar pagos en el sistema, por favor pida ayuda al administrador de tesorería.";
+        public const string Error_Caja_NoAperturada = "Esta caja no se encuentra aperturada para realizar pagos, contacte al administrador de tesorería para dar apertura a la caja.";
+        public const string Error_No_EsCajero = "El usuario no posee privilegios de cajero, por lo tanto no puede acceder a esta pantalla aunque tenga permisos en su perfil.";
+        public const string Error_No_MismoCajero = "Los recibos solo pueden ser generados por un único cajero durante la caja esté aperturada.";
+        public const string Error_OP_Anulada = "La orden de pago ha sido ANULADA, no es posible generar el recibo, por favor actualice los registros de órdenes de pago y vuelva a intentarlo";
         public const string MESSAGE_Wrong_User = "Usuario o contraseña incorrecta.";
         public const string MESSAGE_User_NoAccess = "El usuario no posee accesos al sistema.";
         public const string MESSAGE_CajeroNoAutorizado = "Las credenciales proporcionadas no se corresponde con las del cajero que emitió recibos en esta caja, por favor verifique su información e intente nuevamente.";
@@ -64,7 +64,8 @@
         public enum Informes
         {
             cierre_caja = 1,
-            arqueo_caja = 2
+            arqueo_caja = 2,
+            informe_general_ingresos = 3
         }
 
     }

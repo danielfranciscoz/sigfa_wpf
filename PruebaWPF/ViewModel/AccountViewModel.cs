@@ -22,10 +22,10 @@ namespace PruebaWPF.ViewModel
             IQueryable<UsuarioPerfil> querable = sec.perfiles();
             IQueryable<Permiso> permisos = db.Permiso.Where(w => querable.Any(a => a.IdPerfil == w.IdPerfil) && w.Pantalla.isMenu && w.IdPermisoName == 1 && w.Pantalla.isWeb == false && w.Pantalla.regAnulado == false);
 
-            IQueryable<Pantalla> hijos = permisos.Where(w => w.Pantalla.Uid != null).Select(s => s.Pantalla).Distinct().OrderBy(o => o.Orden);
+            IQueryable<Pantalla> hijos = permisos.Where(w => w.Pantalla.Uid != null).Select(s => s.Pantalla).Distinct();
             IQueryable<Pantalla> padres = FindPadres(hijos);
 
-            return padres.ToList();
+            return padres.OrderBy(o => o.IdPadre).ThenBy(o => o.Orden).ToList();
         }
 
         public List<AccesoDirectoUsuarioSon> AccesosDirectoUsuario()

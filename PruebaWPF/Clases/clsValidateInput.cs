@@ -12,6 +12,7 @@ namespace PruebaWPF.Clases
         public const int OnlyNumber = 0;
         public const int DecimalNumber = 2;
         public const int Porcentaje = 3;
+        public const int Required = 4;
 
         SolidColorBrush c = clsUtilidades.BorderNormal();
 
@@ -42,6 +43,10 @@ namespace PruebaWPF.Clases
                         e.Handled = flag;
 
                         break;
+                    case Required:
+                        flag = string.IsNullOrEmpty(e.Text);
+                        break;
+                        e.Handled = flag;
                 }
             };
 

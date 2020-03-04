@@ -12,13 +12,14 @@
       mc:Ignorable="d" 
       d:DesignHeight="450" d:DesignWidth="800"
       Title="Informes"
+    Loaded="Page_Loaded"
       Uid="Informe">
     <Page.Resources>
         <l:BoolToStringConverter x:Key="convertidor" />
+        <l:IsNullConverter x:Key="convertidornull" />
     </Page.Resources>
     <Grid Background="White">
         <Grid.RowDefinitions>
-            <RowDefinition Height="auto"/>
             <RowDefinition Height="auto"/>
             <RowDefinition Height="auto"/>
             <RowDefinition Height="auto"/>
@@ -32,19 +33,29 @@
             </StackPanel>
         </StackPanel>
         <StackPanel Grid.Row="1" Margin="0 10 0 10">
-            <TextBlock HorizontalAlignment="Center" FontSize="17" FontWeight="Bold" Margin="0 0 0 10">INFORME GENERAL DE INGRESOS EN TESORERÍA</TextBlock>
+            <TextBlock HorizontalAlignment="Center" FontSize="17" FontWeight="Bold" Margin="0 0 0 10">REPORTE GENERAL DE INGRESOS</TextBlock>
             <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" >
                 <TextBlock VerticalAlignment="Center"  FontWeight="Bold">Desde:</TextBlock>
                 <DatePicker Margin=" 10 0 0 0" x:Name="dtInicio" Width="100"></DatePicker>
                 <TextBlock VerticalAlignment="Center" Margin=" 10 0 0 0" FontWeight="Bold">Hasta:</TextBlock>
-                <DatePicker Margin=" 10 0 0 0" Width="{Binding ElementName=dtInicio,Path=Width}"></DatePicker>
-                <Button Margin=" 10 0 0 0" BorderBrush="Transparent" Background="{StaticResource Print_Button}" Content="{StaticResource Text_Generate_Button}" Click="Button_Click"></Button>
+                <DatePicker x:Name="dtFin" Margin=" 10 0 0 0" Width="{Binding ElementName=dtInicio,Path=Width}"></DatePicker>
+                <Button x:Name="btnGenerar" Margin=" 10 0 0 0" BorderBrush="Transparent" Background="{StaticResource Print_Button}" Content="{StaticResource Text_Generate_Button}" Click="Button_Click"></Button>
+                <Button Margin=" 10 0 0 0" BorderBrush="Transparent" Background="{StaticResource Print_Button_Second}" Content="{StaticResource Text_SeeReport_Button}" IsEnabled="{Binding ElementName=tblRecintosResumen,Path=Items.IsEmpty,Converter={StaticResource convertidor},ConverterParameter='False;True'}" Click="Button_Click_1"></Button>
             </StackPanel>
+
         </StackPanel>
+        <ProgressBar Grid.Row="2" x:Name="progressbar" Visibility="Hidden" Foreground="{StaticResource Primary}" IsIndeterminate="True"></ProgressBar>
 
-        <Separator Grid.Row="2"/>
-
-        <Grid x:Name="panelFiltros" SizeChanged="PanelFiltros_SizeChanged" Grid.Row="3" Visibility="Visible" Margin="5">
+        <Separator Grid.Row="3"/>
+        <Grid Grid.Row="4">
+            <Grid>
+                
+            <Grid.RowDefinitions>
+                <RowDefinition Height="auto"/>
+                <RowDefinition Height="auto"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+        <Grid x:Name="panelFiltros" SizeChanged="PanelFiltros_SizeChanged" Grid.Row="0" Visibility="Visible" Margin="5">
             <Grid.RowDefinitions>
                 <RowDefinition/>
                 <RowDefinition/>
@@ -59,135 +70,186 @@
 
             <DockPanel x:Name="panelMain" Visibility="{Binding ElementName=seeFilters,Path=IsChecked,Converter={StaticResource convertidor},ConverterParameter='Visible;Collapsed'}"  Margin="0 0 10 0" HorizontalAlignment="Stretch"  Grid.Column="0" Grid.Row="0">
                 <TextBlock VerticalAlignment="Center" x:Name="lblRecinto" Width="60">Recinto</TextBlock>
-                <ComboBox></ComboBox>
+                <ComboBox x:Name="cboRecinto" DisplayMemberPath="Name" SelectedValuePath="IdInt" SelectionChanged="CboRecinto_SelectionChanged"></ComboBox>
             </DockPanel>
             <DockPanel Visibility="{Binding ElementName=panelMain,Path=Visibility}" Margin="0 0 10 0" HorizontalAlignment="Stretch" Grid.Column="0" Grid.Row="1">
                 <TextBlock VerticalAlignment="Center" Width="{Binding ElementName=lblRecinto,Path=Width}">Area</TextBlock>
-                <ComboBox></ComboBox>
+                <ComboBox x:Name="cboArea" DisplayMemberPath="Name" SelectedValuePath="IdString" SelectionChanged="CboArea_SelectionChanged"></ComboBox>
             </DockPanel>
-            <DockPanel Visibility="{Binding ElementName=panelMain,Path=Visibility}" Margin="0 0 10 0" HorizontalAlignment="Stretch"  Grid.Column="0" Grid.Row="2">
-                <TextBlock VerticalAlignment="Center" Width="{Binding ElementName=lblRecinto,Path=Width}">Caja</TextBlock>
-                <ComboBox></ComboBox>
-            </DockPanel>
-
             <DockPanel Visibility="{Binding ElementName=panelMain,Path=Visibility}" Margin="0 0 10 0" HorizontalAlignment="Stretch"  Grid.Column="1" Grid.Row="0">
-                <TextBlock VerticalAlignment="Center" Width="{Binding ElementName=lblTipoDeposito,Path=Width}">Fuente</TextBlock>
-                <ComboBox></ComboBox>
-            </DockPanel>
-            <DockPanel Visibility="{Binding ElementName=panelMain,Path=Visibility}" Margin="0 0 10 0" HorizontalAlignment="Stretch"  Grid.Column="1" Grid.Row="1">
-                <TextBlock VerticalAlignment="Center" x:Name="lblTipoDeposito" Width="100">Tipo de Depósito</TextBlock>
-                <ComboBox></ComboBox>
-            </DockPanel>
-            <DockPanel Visibility="{Binding ElementName=panelMain,Path=Visibility}" Margin="0 0 10 0" HorizontalAlignment="Stretch"  Grid.Column="1" Grid.Row="2">
-                <TextBlock VerticalAlignment="Center" Width="{Binding ElementName=lblTipoDeposito,Path=Width}">Tipo de Arancel</TextBlock>
-                <ComboBox></ComboBox>
+                <TextBlock VerticalAlignment="Center" Width="{Binding ElementName=lblRecinto,Path=Width}">Caja</TextBlock>
+                <ComboBox x:Name="cboCaja" DisplayMemberPath="Name" SelectedValuePath="IdInt" SelectionChanged="CboCaja_SelectionChanged"></ComboBox>
             </DockPanel>
 
+            <!--<DockPanel Visibility="{Binding ElementName=panelMain,Path=Visibility}" Margin="0 0 10 0" HorizontalAlignment="Stretch"  Grid.Column="1" Grid.Row="1">
+                <TextBlock VerticalAlignment="Center" Width="{Binding ElementName=lblRecinto,Path=Width}">Fuente</TextBlock>
+                <ComboBox x:Name="cboFuente" DisplayMemberPath="Nombre" SelectedValuePath="IdFuenteFinanciamiento"></ComboBox>
+            </DockPanel>-->
 
-            <DockPanel Visibility="{Binding ElementName=panelMain,Path=Visibility}" HorizontalAlignment="Stretch" Grid.Column="2" Grid.Row="0">
-                <TextBlock VerticalAlignment="Center" Width="{Binding ElementName=lblFormaPago,Path=Width}">Arancel</TextBlock>
-                <ComboBox></ComboBox>
-            </DockPanel>
-            <DockPanel Visibility="{Binding ElementName=panelMain,Path=Visibility}" HorizontalAlignment="Stretch"  Grid.Column="2" Grid.Row="1">
-                <TextBlock VerticalAlignment="Center" x:Name="lblFormaPago" Width="90">Forma de Pago</TextBlock>
-                <ComboBox></ComboBox>
-            </DockPanel>
-            <DockPanel Visibility="{Binding ElementName=panelMain,Path=Visibility}" HorizontalAlignment="Stretch"  Grid.Column="2" Grid.Row="2">
-                <TextBlock VerticalAlignment="Center" Width="{Binding ElementName=lblFormaPago,Path=Width}">Moneda</TextBlock>
-                <ComboBox></ComboBox>
-            </DockPanel>
+            <!--<DockPanel Visibility="{Binding ElementName=panelMain,Path=Visibility}" Margin="0 0 10 0" HorizontalAlignment="Stretch"   Grid.Column="2" Grid.Row="0">
+                <TextBlock VerticalAlignment="Center" Width="{Binding ElementName=lblRecinto,Path=Width}" >Moneda</TextBlock>
+                <ComboBox x:Name="cboMoneda" DisplayMemberPath="Coin" SelectedValuePath="SecondIdInt"></ComboBox>
+            </DockPanel>-->
 
-            <StackPanel Grid.Row="2" Grid.Column="3" HorizontalAlignment="Right" Orientation="Horizontal" VerticalAlignment="Center">
+            <StackPanel Grid.Row="0" Grid.Column="3" HorizontalAlignment="Right" Orientation="Horizontal" VerticalAlignment="Center">
                 <TextBlock Margin="0 0 0 0" Foreground="{StaticResource DarkGray}" Text="{Binding ElementName=seeFilters,Path=IsChecked,Converter={StaticResource convertidor},ConverterParameter='Ocultar Filtros;Mostrar Filtros'}">
-                    
                 </TextBlock>
                 <ToggleButton x:Name="seeFilters" Margin="10 0 20 0"  IsChecked="True" Unchecked="SeeFilters_Checked" Checked="SeeFilters_Checked" Style="{DynamicResource MaterialDesignSwitchToggleButton}">
                 </ToggleButton>
             </StackPanel>
         </Grid>
-
-        <Separator Grid.Row="4"/>
-        
-        <DockPanel Grid.Row="5"  HorizontalAlignment="Stretch" VerticalAlignment="Stretch" x:Name="panelResumen" Background="AliceBlue">
+        <Separator Grid.Row="1"/>
+        <DockPanel Grid.Row="2"  HorizontalAlignment="Stretch" VerticalAlignment="Stretch" x:Name="panelResumen" >
             <ScrollViewer Height="{Binding ElementName=panelResumen,Path=ActualHeight}" VerticalScrollBarVisibility="auto" >
-                <Grid  Background="#EEEEEE">
+                <Grid >
                     <Grid.ColumnDefinitions>
-                        <ColumnDefinition/>
+                        <ColumnDefinition Width="*"/>
                         <ColumnDefinition Width="10"/>
-                        <ColumnDefinition/>
-                        <ColumnDefinition/>
+                        <ColumnDefinition Width="*"/>
                     </Grid.ColumnDefinitions>
-                    <StackPanel Grid.Column="0" >
-                        <DockPanel Height="120" x:Name="panelRecintosCount" VerticalAlignment="Stretch">
-                            <ListView x:Name="lstRecintosCount" SelectionMode="Single">
-                                <ListView.View>
-                                    <GridView>
-                                        <GridViewColumn Width="200" Header="Recinto" DisplayMemberBinding="{Binding Name}"  />
-                                        <GridViewColumn Width="120" Header="Cantidad" DisplayMemberBinding="{Binding Count}" />
-                                    </GridView>
-                                </ListView.View>
-                            </ListView>
+
+                    <Grid Grid.Column="0" >
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="auto"/>
+                            <RowDefinition Height="10"/>
+                            <RowDefinition Height="auto"/>
+                            <RowDefinition Height="10"/>
+                            <RowDefinition Height="auto"/>
+                            <RowDefinition Height="10"/>
+                            <RowDefinition Height="auto"/>
+                            <RowDefinition Height="10"/>
+                            <RowDefinition Height="auto"/>
+                            <RowDefinition Height="10"/>
+                            <RowDefinition Height="auto"/>
+                            <RowDefinition Height="10"/>
+                            <RowDefinition Height="*"/>
+                        </Grid.RowDefinitions>
+                        <DockPanel Grid.Row="0" x:Name="panelRecintosResumen" VerticalAlignment="Stretch">
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="10"/>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
+                            <DataGrid Grid.Column="0" x:Name="tblRecintosResumen" CanUserDeleteRows="False" CanUserAddRows="False" AutoGenerateColumns="False" SelectionUnit="FullRow" SelectionMode="Single">
+                                <DataGrid.Columns>
+                                    <DataGridTextColumn CanUserReorder="False" CanUserResize="False" IsReadOnly="True" Width="auto" Header="Recinto" Binding="{Binding Name}"  />
+                                    <DataGridTextColumn CanUserReorder="False" CanUserResize="False" IsReadOnly="True" Width="auto" Header="ROCs" Binding="{Binding Count}"  />
+                                </DataGrid.Columns>
+                            </DataGrid>
+                            
+                            <GridSplitter Grid.Column="1" HorizontalAlignment="Stretch" Width="2" Background="{StaticResource Primary}"/>
+                                
+                            <DataGrid Grid.Column="2" x:Name="tblMoneyResumen" CanUserDeleteRows="False" CanUserAddRows="False" AutoGenerateColumns="False" SelectionUnit="FullRow" SelectionMode="Single">
+                                <DataGrid.Columns>
+                                    <DataGridTextColumn CanUserReorder="False" CanUserResize="False" IsReadOnly="True" Width="auto" Header="Moneda" Binding="{Binding Name}"  />
+                                    <DataGridTextColumn CanUserReorder="False" CanUserResize="False" IsReadOnly="True" Width="auto" Header="Monto" Binding="{Binding Total,StringFormat={}{0:n2}}"  />
+                                </DataGrid.Columns>
+                            </DataGrid>
+                            </Grid>
+
                         </DockPanel>
-                        <DockPanel Height="200" x:Name="panelCajasCount" VerticalAlignment="Stretch">
-                            <ListView x:Name="lstCajasCount" SelectionMode="Single">
-                                <ListView.View>
-                                    <GridView>
-                                        <GridViewColumn Width="200" Header="Caja" DisplayMemberBinding="{Binding Name}"  />
-                                        <GridViewColumn Width="120" Header="Cantidad" DisplayMemberBinding="{Binding Count}" />
-                                    </GridView>
-                                </ListView.View>
-                            </ListView>
+                        <GridSplitter Grid.Row="1" HorizontalAlignment="Stretch" Height="2" Background="{StaticResource Primary}"/>
+
+                        <DockPanel Grid.Row="2" x:Name="panelRecintosCount" VerticalAlignment="Stretch">
+                            <DataGrid x:Name="tblRecintosCount" CanUserDeleteRows="False" CanUserAddRows="False" AutoGenerateColumns="False" SelectionUnit="FullRow" SelectionMode="Single">
+                                <DataGrid.Columns>
+                                    <DataGridTextColumn CanUserReorder="False" CanUserResize="False" IsReadOnly="True" Width="auto" Header="Recinto" Binding="{Binding Name}"  />
+                                    <DataGridTextColumn CanUserReorder="False" CanUserResize="False" IsReadOnly="True" Width="auto" Header="Caja" Binding="{Binding SecondName}"  />
+                                    <DataGridTextColumn CanUserReorder="False" CanUserResize="False" IsReadOnly="True" Width="auto" Header="ROCs" Binding="{Binding Count}"  />
+                                </DataGrid.Columns>
+                            </DataGrid>
                         </DockPanel>
-                        <DockPanel Height="400" x:Name="panelAreasCount" VerticalAlignment="Stretch">
-                            <ListView x:Name="lstAreasCount" SelectionMode="Single">
-                                <ListView.View>
-                                    <GridView>
-                                        <GridViewColumn Width="200" Header="Area" DisplayMemberBinding="{Binding Name}"  />
-                                        <GridViewColumn Width="120" Header="Cantidad" DisplayMemberBinding="{Binding Count}" />
-                                    </GridView>
-                                </ListView.View>
-                            </ListView>
+                        <GridSplitter Grid.Row="3" HorizontalAlignment="Stretch" Height="2" Background="{StaticResource Primary}"/>
+
+                        <DockPanel Grid.Row="4" x:Name="panelRecintosMoney" VerticalAlignment="Stretch">
+                            <DataGrid x:Name="tblRecintosMoney" CanUserDeleteRows="False" CanUserAddRows="False" AutoGenerateColumns="False" SelectionUnit="FullRow" SelectionMode="Single">
+                                <DataGrid.Columns>
+                                    <DataGridTextColumn CanUserReorder="False" CanUserResize="False" IsReadOnly="True" Width="auto" Header="Recinto" Binding="{Binding Name}"  />
+                                    <DataGridTextColumn CanUserReorder="False" CanUserResize="False" IsReadOnly="True" Width="auto" Header="Caja" Binding="{Binding SecondName}"  />
+                                    <DataGridTextColumn CanUserReorder="False" CanUserResize="False" IsReadOnly="True" Width="auto" Header="Moneda" Binding="{Binding Coin}" />
+                                    <DataGridTextColumn CanUserReorder="False" CanUserResize="False" IsReadOnly="True" Width="auto" Header="Monto" Binding="{Binding Total,StringFormat={}{0:n2}}" />
+                                </DataGrid.Columns>
+                            </DataGrid>
                         </DockPanel>
-                    </StackPanel>
-                    <Separator Grid.Column="1">
-                        <Separator.LayoutTransform>
-                            <RotateTransform Angle="90" />
-                        </Separator.LayoutTransform>
-                    </Separator>
-                    <StackPanel Grid.Column="2" >
-                        <DockPanel Height="120" x:Name="panelRecintosMoney" VerticalAlignment="Stretch">
-                            <ListView x:Name="lstRecintosMoney" SelectionMode="Single">
-                                <ListView.View>
-                                    <GridView>
-                                        <GridViewColumn Width="200" Header="Recinto" DisplayMemberBinding="{Binding Nombre}"  />
-                                        <GridViewColumn Width="120" Header="Cantidad" DisplayMemberBinding="{Binding Siglas}" />
-                                    </GridView>
-                                </ListView.View>
-                            </ListView>
+                        <GridSplitter Grid.Row="5" HorizontalAlignment="Stretch" Height="2" Background="{StaticResource Primary}"/>
+                       
+                        <DockPanel Grid.Row="6" x:Name="panelAreasCount" VerticalAlignment="Stretch">
+                            <DataGrid x:Name="tblAreasCount" CanUserDeleteRows="False" CanUserAddRows="False" AutoGenerateColumns="False" SelectionUnit="FullRow" SelectionMode="Single">
+                                <DataGrid.Columns>
+                                    <DataGridTextColumn CanUserReorder="False" CanUserResize="False" IsReadOnly="True" Width="auto" Header="Area" Binding="{Binding Name}"  />
+                                    <DataGridTextColumn CanUserReorder="False" CanUserResize="False" IsReadOnly="True" Width="auto" Header="ROCs" Binding="{Binding Count}"  />
+                                </DataGrid.Columns>
+                            </DataGrid>
                         </DockPanel>
-                        <DockPanel Height="200" x:Name="panelCajasMoney" VerticalAlignment="Stretch">
-                            <ListView x:Name="lstCajasMoney" SelectionMode="Single">
-                                <ListView.View>
-                                    <GridView>
-                                        <GridViewColumn Width="200" Header="Caja" DisplayMemberBinding="{Binding Nombre}"  />
-                                        <GridViewColumn Width="120" Header="Cantidad" DisplayMemberBinding="{Binding Siglas}" />
-                                    </GridView>
-                                </ListView.View>
-                            </ListView>
+                        <GridSplitter Grid.Row="7" HorizontalAlignment="Stretch" Height="2" Background="{StaticResource Primary}"/>
+                      
+                        <DockPanel Grid.Row="8" x:Name="panelAreasMoney" VerticalAlignment="Stretch">
+                            <DataGrid x:Name="tblAreasMoney" CanUserDeleteRows="False" CanUserAddRows="False" AutoGenerateColumns="False" SelectionUnit="FullRow" SelectionMode="Extended">
+                                <DataGrid.Columns>
+                                    <DataGridTextColumn CanUserReorder="False" CanUserResize="False" IsReadOnly="True" Width="auto" Header="Area" Binding="{Binding Name}"  />
+                                    <DataGridTextColumn CanUserReorder="False" CanUserResize="False" IsReadOnly="True" Width="auto" Header="Moneda" Binding="{Binding Coin}" />
+                                    <DataGridTextColumn CanUserReorder="False" CanUserResize="False" IsReadOnly="True" Width="auto" Header="Monto" Binding="{Binding Total,StringFormat={}{0:n2}}" />
+                                </DataGrid.Columns>
+                            </DataGrid>
                         </DockPanel>
-                        <DockPanel Height="400" x:Name="panelAreasMoney" VerticalAlignment="Stretch">
-                            <ListView x:Name="lstAreasMoney" SelectionMode="Single">
-                                <ListView.View>
-                                    <GridView>
-                                        <GridViewColumn Width="200" Header="Area" DisplayMemberBinding="{Binding Nombre}"  />
-                                        <GridViewColumn Width="120" Header="Cantidad" DisplayMemberBinding="{Binding Siglas}" />
-                                    </GridView>
-                                </ListView.View>
-                            </ListView>
+                    </Grid>
+
+                    <GridSplitter Grid.Column="1" HorizontalAlignment="Stretch" Width="2" Background="{StaticResource Primary}"/>
+
+                    <Grid Grid.Column="2" >
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="auto"/>
+                            <RowDefinition Height="10"/>
+                            <RowDefinition Height="auto"/>
+                        </Grid.RowDefinitions>
+                        <DockPanel Grid.Row="0" x:Name="panelFormaPagoCount" VerticalAlignment="Stretch">
+                            <DataGrid x:Name="tblFormaPagoMoney" CanUserDeleteRows="False" CanUserAddRows="False" AutoGenerateColumns="False" SelectionUnit="FullRow" SelectionMode="Single">
+                                <DataGrid.Columns>
+                                    <DataGridTextColumn CanUserReorder="False" CanUserResize="False" IsReadOnly="True" Width="auto" Header="Forma de Pago" Binding="{Binding Name}"  />
+                                    <DataGridTextColumn CanUserReorder="False" CanUserResize="False" IsReadOnly="True" Width="auto" Header="Moneda" Binding="{Binding Coin}" />
+                                    <DataGridTextColumn CanUserReorder="False" CanUserResize="False" IsReadOnly="True" Width="auto" Header="Monto" Binding="{Binding Total,StringFormat={}{0:n2}}" />
+                                </DataGrid.Columns>
+                            </DataGrid>
                         </DockPanel>
-                    </StackPanel>
+                        <GridSplitter Grid.Row="1" HorizontalAlignment="Stretch" Height="2" Background="{StaticResource Primary}"/>
+                        <DockPanel Grid.Row="2" x:Name="panelRecibosCount" VerticalAlignment="Stretch">
+                            <DataGrid x:Name="tblReciboMoney" CanUserDeleteRows="False" CanUserAddRows="False" AutoGenerateColumns="False" SelectionUnit="FullRow" SelectionMode="Single">
+                                <DataGrid.Columns>
+                                    <DataGridTextColumn CanUserReorder="False" CanUserResize="False" IsReadOnly="True" Width="auto" Header="No.Recibo" Binding="{Binding IdRecibo}"  />
+                                    <DataGridTextColumn CanUserReorder="False" CanUserResize="False" IsReadOnly="True" Width="auto" Header="Serie" Binding="{Binding Serie}"  />
+                                    <DataGridTextColumn CanUserReorder="False" CanUserResize="False" IsReadOnly="True" Width="auto" Header="Fuente" Binding="{Binding FuenteFinanciamiento.Nombre}" />
+                                    <DataGridTextColumn CanUserReorder="False" CanUserResize="False" IsReadOnly="True" Width="auto" Header="Orden de Pago" Binding="{Binding OrdenPago.NoOrdenPago}" />
+                                    <DataGridTextColumn CanUserReorder="False" CanUserResize="False" IsReadOnly="True" Width="auto" Header="Fecha de Creación" Binding="{Binding Fecha}" />
+                                </DataGrid.Columns>
+                            </DataGrid>
+                        </DockPanel>
+
+                    </Grid>
                 </Grid>
             </ScrollViewer>
         </DockPanel>
+        </Grid>
+            
+            <DockPanel x:Name="panelInfoEmpty" Visibility="{Binding ElementName=tblRecintosResumen,Path=Items.IsEmpty,Converter={StaticResource convertidor},ConverterParameter='Visible;Hidden'}" Background="{StaticResource Bar_BackgroundColor}">
+            
+                <StackPanel Orientation="Vertical" VerticalAlignment="Center" HorizontalAlignment="Center">
+                <TextBlock FontSize="18" HorizontalAlignment="Center" Foreground="{StaticResource DarkGray}">
+                        <TextBlock.Inlines>
+                            <Run>Seleccione las fechas de inicio y fin, luego presione el botón </Run>
+                            <Run Text="{Binding ElementName=btnGenerar,Path=Content}"></Run>
+                        </TextBlock.Inlines>
+                </TextBlock>
+                <TextBlock Margin="0 10 0 3" Foreground="{StaticResource DarkGray}">Información de búsqueda</TextBlock>
+                    <StackPanel Margin="10 0 0 0">
+                        
+                <TextBlock Foreground="{StaticResource DarkGray}">1. Si no selecciona ninguna fecha, se consultará toda la información histórica</TextBlock>
+                    <TextBlock Foreground="{StaticResource DarkGray}">2. Si selecciona fecha de inicio pero no fecha de final, entonces se consultará la información desde la fecha seleccionada hasta la actualidad</TextBlock>
+                    <TextBlock Foreground="{StaticResource DarkGray}">2. Si selecciona fecha de fin pero no fecha de inicio, entonces se consultará la información desde el inicio hasta la fecha seleccionada</TextBlock>
+                    <TextBlock Foreground="{StaticResource DarkGray}">3. Si selecciona fecha de inicio y fecha de fin, entonces se consultará la información contenida entre el rango de fechas seleccionado</TextBlock>
+                    </StackPanel>    
+            </StackPanel>
+        </DockPanel>
+        </Grid>
     </Grid>
 </Page>

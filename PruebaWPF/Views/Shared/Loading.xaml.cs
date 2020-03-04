@@ -1,16 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using PruebaWPF.Clases;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
 
 namespace PruebaWPF.Views.Shared
 {
@@ -19,13 +8,36 @@ namespace PruebaWPF.Views.Shared
     /// </summary>
     public partial class Loading : Window
     {
-       
+
         public Loading()
-        {           
+        {
             InitializeComponent();
+            Diseñar();
         }
 
-        public void Show(string tt) {
+        public Loading(bool isPago) //true es pagando, false anulando
+        {
+            InitializeComponent();
+            Diseñar();
+            OcultarIconos(isPago);
+        }
+
+        private void OcultarIconos(bool isPago)
+        {
+            if (!isPago)
+            {
+                iconoPanel.Visibility = Visibility.Collapsed;
+                icono2.Visibility = Visibility.Visible;
+                txtMensaje.Text = "ESTAMOS ANULANDO LA TRANSACCIÓN, POR FAVOR ESPERE";
+            }
+        }
+
+        private void Diseñar()
+        {
+            clsUtilidades.Dialog_ModalDesign(this);
+        }
+        public void Show(string tt)
+        {
             Show();
         }
     }

@@ -871,6 +871,7 @@
               </Paragraph>
             </Paragraphs>
             <rd:DefaultName>Textbox6</rd:DefaultName>
+            <Top>0cm</Top>
             <Left>9.3652cm</Left>
             <Height>0.6cm</Height>
             <Width>9.1948cm</Width>
@@ -1354,7 +1355,7 @@
             <DataSetName>Arqueo</DataSetName>
             <Top>0.6635cm</Top>
             <Height>1.8cm</Height>
-            <Width>18.56cm</Width>
+            <Width>18.55998cm</Width>
             <ZIndex>2</ZIndex>
             <Style>
               <Border>
@@ -3350,7 +3351,7 @@
                 <DataSetName>DiferenciasArqueo</DataSetName>
                 <Top>0.13316cm</Top>
                 <Height>1.2cm</Height>
-                <Width>18.56cm</Width>
+                <Width>18.56001cm</Width>
                 <Style>
                   <Border>
                     <Style>None</Style>
@@ -3371,7 +3372,7 @@
             <KeepTogether>true</KeepTogether>
             <Top>22.46067cm</Top>
             <Height>1.36844cm</Height>
-            <Width>18.56cm</Width>
+            <Width>18.56001cm</Width>
             <ZIndex>12</ZIndex>
             <Visibility>
               <Hidden>=CountRows("DiferenciasArqueo") = 0</Hidden>
@@ -4575,7 +4576,7 @@
         <Height>12.03803in</Height>
         <Style />
       </Body>
-      <Width>18.56cm</Width>
+      <Width>18.56001cm</Width>
       <Page>
         <PageHeader>
           <Height>2.02599cm</Height>
@@ -4586,8 +4587,7 @@
               <Source>Embedded</Source>
               <Value>LogoUNI</Value>
               <Sizing>FitProportional</Sizing>
-              <Top>0.0125cm</Top>
-              <Left>0.44505cm</Left>
+              <Top>0.07639cm</Top>
               <Height>1.78153cm</Height>
               <Width>2.82292cm</Width>
               <Style>
@@ -4658,8 +4658,9 @@
                 </Paragraph>
               </Paragraphs>
               <rd:DefaultName>Textbox5</rd:DefaultName>
+              <Left>2.99931cm</Left>
               <Height>1.88cm</Height>
-              <Width>18.56cm</Width>
+              <Width>12.50779cm</Width>
               <ZIndex>1</ZIndex>
               <Style>
                 <Border>
@@ -4878,6 +4879,7 @@
       <ImageData>iVBORw0KGgoAAAANSUhEUgAAARkAAACwCAMAAAAMquq3AAAAVFBMVEX///8/ZqN/mcK/zOD///8ANIX///////////////+PpskQQIzf5vDP2ehvjLofTZRfgLJPc6svWptvjbqzwtpjg7SoutXv8vcnU5gbSpKnudVfgLNhOzJaAAAACnRSTlPA////IP//gEAw0nX2NgAAAAlwSFlzAAAFiQAABYkBbWid+gAAAZ9JREFUeNrt3TlywzAMBVBRiu3EkbxkX+5/zxQuzILSDEhHSfF+LQzIV1EFBl0nxTx0WynmnsyCzJQiOVyL3x4j+Uzt+Qh1fM0uegj1mS4ywyaSdO223/zvZEfdplDlQIYMGTJkyJAhQ4YMGTJkyJAhQ4YMGTJkyJAhQ4YMGTJkyJAhQ4YMGTJkyJAhQ4YMGTJkyJAh80syL6HCp6E9p1DH50xmCvV5b5SpLqxOH+rYt843kSFDhgwZMmTIkIkWjqEH6XgLmXXntasLqy9YL7PufxMZMmTIkCFDhgwZMmTIkCFDhgwZMmTIkCFDhgwZMmTIkCFDhgwZMmTIkCFDhgwZMmTIkCFDhgwZMmTIkCFDhgwZMmTILF9w/VF9MmTIkCFDhgwZMmT+QObYtyetI5OylsdQ5VeNzPqplqnPngwZMmTIkCFDhgwZMmTIkCFDhgwZMmTIkCFDhgwZMmTIkCFDhgwZMmTIkCFDhgwZMmTIkCFDZllmnJkoOReXcp9vMKtyKu/7nvl6yGbn+8j+8O/qA44XGZnbVi9lmZ0Uc/cD83fS41wclBMAAAAASUVORK5CYII=</ImageData>
     </EmbeddedImage>
   </EmbeddedImages>
+  <Language>es-NI</Language>
   <rd:ReportUnitType>Cm</rd:ReportUnitType>
   <rd:ReportID>3261d55c-70a4-4a92-8cad-4b24f7a1af26</rd:ReportID>
 </Report>

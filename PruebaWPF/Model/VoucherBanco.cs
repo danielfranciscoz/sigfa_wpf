@@ -12,27 +12,32 @@ namespace PruebaWPF.Model
     using System;
     using System.Collections.Generic;
     
-    public partial class Caja
+    public partial class VoucherBanco
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-        public Caja()
+        public VoucherBanco()
         {
-            this.DetAperturaCaja = new HashSet<DetAperturaCaja>();
+            this.ReciboPagoTarjeta = new HashSet<ReciboPagoTarjeta>();
         }
     
-        public int IdCaja { get; set; }
-        public string Nombre { get; set; }
-        public string MAC { get; set; }
-        public string IdSerie { get; set; }
-        public int IdRecinto { get; set; }
-        public string UsuarioCreacion { get; set; }
+        public int IdVoucherBanco { get; set; }
+        public int IdDetApertura { get; set; }
+        public string Autorizacion { get; set; }
+        public string Referencia { get; set; }
+        public string Factura { get; set; }
+        public string Stan { get; set; }
+        public string Tarjeta { get; set; }
+        public int IdMoneda { get; set; }
+        public decimal Monto { get; set; }
         public System.DateTime FechaCreacion { get; set; }
-        public bool regAnulado { get; set; }
-        public string ComPort { get; set; }
+        public string UsuarioCreacion { get; set; }
+        public string StanAnulado { get; set; }
+        public Nullable<System.DateTime> FechaAnulado { get; set; }
     
+        public virtual Moneda Moneda { get; set; }
         public virtual Usuario Usuario { get; set; }
-        public virtual SerieRecibo SerieRecibo { get; set; }
+        public virtual DetAperturaCaja DetAperturaCaja { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<DetAperturaCaja> DetAperturaCaja { get; set; }
+        public virtual ICollection<ReciboPagoTarjeta> ReciboPagoTarjeta { get; set; }
     }
 }

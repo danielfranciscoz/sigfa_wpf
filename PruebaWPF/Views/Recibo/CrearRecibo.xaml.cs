@@ -9,6 +9,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Collections.Specialized;
 using System.Linq;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
@@ -34,8 +35,12 @@ namespace PruebaWPF.Views.Recibo
         private TipoArancel tipoArancel;
         private int? IdMatricula = null;
         private int? IdPreMatricula = null;
-
         private bool isOrdenPago = false;
+        private bool IsPOSActive = false;
+        private bool isTarjeta = false;
+        private VoucherBanco voucher = null;
+        private POSBanpro pos = null;
+
         public CrearRecibo()
         {
 
@@ -69,7 +74,7 @@ namespace PruebaWPF.Views.Recibo
 
         private void BloqueoOrdenPago()
         {
-            txtRecibimos.IsEnabled = false;
+            //txtRecibimos.IsEnabled = false;
             txtConcepto.IsEnabled = false;
             txtMonto.IsEnabled = false;
             cboTipoArancel.IsEnabled = false;
@@ -273,11 +278,14 @@ namespace PruebaWPF.Views.Recibo
         private void CargarFormasPago()
         {
             cboFormaPago.ItemsSource = controller.ObtenerFormasPago();
+
+            //Esto se hace para que todo carguwe sin la parametrizacion, esta linea debe ser borrada al momento que se vuelva a activar la parametrizacion contable
+            cboMonedaPago.ItemsSource = controller.ObtenerMonedas(null);
         }
 
         private void CargarMonedas()
         {
-           // cboMonedaPago.ItemsSource = monedas;
+            // cboMonedaPago.ItemsSource = monedas;
 
         }
 
@@ -458,20 +466,27 @@ namespace PruebaWPF.Views.Recibo
 
         private void btnAddPay_Click(object sender, RoutedEventArgs e)
         {
-            if (clsValidateInput.ValidarSeleccion(cboFormaPago))
+            try
             {
-                int formapago = int.Parse(cboFormaPago.SelectedValue.ToString());
-                if (ValidarFormaPago(formapago))
+                if (clsValidateInput.ValidarSeleccion(cboFormaPago))
                 {
-                    Dictionary<TextBox, int> c = new Dictionary<TextBox, int>();
-                    c.Add(txtMontoPago, clsValidateInput.DecimalNumber);
-                    AgregarValidacionAdicional(c, formapago);
-
-                    if (ValidarNumericos(c))
+                    int formapago = int.Parse(cboFormaPago.SelectedValue.ToString());
+                    if (ValidarFormaPago(formapago))
                     {
-                        AddFormaPago();
+                        Dictionary<TextBox, int> c = new Dictionary<TextBox, int>();
+                        c.Add(txtMontoPago, clsValidateInput.DecimalNumber);
+                        AgregarValidacionAdicional(c, formapago);
+
+                        if (ValidarNumericos(c))
+                        {
+                            AddFormaPago();
+                        }
                     }
                 }
+            }
+            catch (Exception ex)
+            {
+                clsUtilidades.OpenMessage(new Operacion() { Mensaje = new clsException(ex).ErrorMessage(), OperationType = clsReferencias.TYPE_MESSAGE_Error });
             }
         }
 
@@ -530,22 +545,51 @@ namespace PruebaWPF.Views.Recibo
             Load();
         }
 
-        private void AddFormaPago()
+        private async void AddFormaPago()
         {
             FormaPago fp = (FormaPago)cboFormaPago.SelectedItem;
             Moneda m = (Moneda)cboMonedaPago.SelectedItem;
-            Object[] o = ObtenerObjetoAdicional(fp.IdFormaPago);
 
-            formaPago.Add(new ReciboPagoSon
+            ReciboPagoSon reciboPagoSon = new ReciboPagoSon();
+
+            reciboPagoSon.IdFormaPago = fp.IdFormaPago;
+            reciboPagoSon.FormaPago = fp;
+            reciboPagoSon.Moneda = m;
+            reciboPagoSon.IdMoneda = m.IdMoneda;
+            reciboPagoSon.Monto = Math.Round(Decimal.Parse(txtMontoPago.Text), 2);
+
+
+            if (IsPOSActive && isTarjeta)
             {
-                IdFormaPago = fp.IdFormaPago,
-                FormaPago = fp,
-                Moneda = m,
-                IdMoneda = m.IdMoneda,
-                Monto = Math.Round(Decimal.Parse(txtMontoPago.Text), 2),
-                DetalleAdicional = o[0],
-                InfoAdicional = o[1].ToString()
-            });
+                Loading loading = new Loading(true);
+                loading.Show();
+
+                try
+                {
+                    voucher = await GenerarVoucher(reciboPagoSon, recibo.IdDetAperturaCaja, pos);
+                    txtTarjeta.Text = voucher.Tarjeta;
+                    txtAutorizacion.Text = voucher.Autorizacion;
+                    clsUtilidades.OpenMessage(new Operacion() { Mensaje = "La transacción fue autorizada de manera exitosa.", OperationType = clsReferencias.TYPE_MESSAGE_Exito });
+
+                }
+                catch (Exception ex)
+                {
+                    clsUtilidades.OpenMessage(new Operacion() { Mensaje = new clsException(ex).ErrorMessage(), OperationType = clsReferencias.TYPE_MESSAGE_Error });
+                }
+                finally
+                {
+                    loading.Hide();
+                }
+
+            }
+
+            Object[] o = ObtenerObjetoAdicional(fp.IdFormaPago);
+            reciboPagoSon.ObjInfoAdicional[1] = o[1].ToString();
+            reciboPagoSon.ObjInfoAdicional[0] = o[0];
+
+
+
+            formaPago.Add(reciboPagoSon);
 
 
             LimpiarCampos(new Control[] { cboFormaPago });
@@ -553,6 +597,64 @@ namespace PruebaWPF.Views.Recibo
 
             VerCamposAdicionales(0); //Ocultará los campos adicionales al enviarle un id que no existe
             cboFormaPago.Focus();
+        }
+
+        private Task<VoucherBanco> GenerarVoucher(ReciboPagoSon reciboPago, int IdDetApertura, POSBanpro pos)
+        {
+            return Task.Run(() =>
+            {
+                return controller.GenerarVoucher(reciboPago, IdDetApertura, pos);
+            });
+        }
+
+        private async void EliminarFormaPago(ReciboPagoSon pagoSon)
+        {
+            if (pagoSon.ObjInfoAdicional[0] != null)
+            {
+                if (pagoSon.ObjInfoAdicional[0].GetType().BaseType == typeof(ReciboPagoTarjeta) && IsPOSActive)
+                {
+                    ReciboPagoTarjeta tarjeta = (ReciboPagoTarjeta)pagoSon.ObjInfoAdicional[0];
+                    if (tarjeta.IdVoucherBanco != null)
+                    {
+                        if (clsUtilidades.OpenDeleteQuestionMessage("Al eliminar esta forma de pago, también será anulado el voucher generado desde el POS, ¿realmente desea continuar?"))
+                        {
+                            Loading loading = new Loading(false);
+
+                            try
+                            {
+                                loading.Show();
+                                await Task.Run(() =>
+                                {
+                                    controller.AnularVoucher(tarjeta, pos);
+                                });
+
+                                formaPago.Remove(pagoSon);
+                            }
+                            catch (Exception ex)
+                            {
+                                clsUtilidades.OpenMessage(new Operacion() { Mensaje = new clsException(ex).ErrorMessage(), OperationType = clsReferencias.TYPE_MESSAGE_Error });
+                            }
+                            finally
+                            {
+                                loading.Hide();
+                            }
+                        }
+
+
+                    }
+
+                }
+                else
+                {
+                    formaPago.Remove(pagoSon);
+                }
+            }
+            else
+            {
+                formaPago.Remove(pagoSon);
+            }
+
+
         }
 
 
@@ -628,7 +730,8 @@ namespace PruebaWPF.Views.Recibo
                         CiaTarjetaCredito = (CiaTarjetaCredito)cboTarjeta.SelectedItem,
                         IdTarjeta = Byte.Parse(cboTarjeta.SelectedValue.ToString()),
                         Tarjeta = txtTarjeta.Text,
-                        Autorizacion = int.Parse(txtAutorizacion.Text.ToString())
+                        Autorizacion = int.Parse(txtAutorizacion.Text.ToString()),
+                        IdVoucherBanco = voucher?.IdVoucherBanco ?? null
                     };
 
                     o[0] = rt;
@@ -671,18 +774,38 @@ namespace PruebaWPF.Views.Recibo
 
             campos[0] = txtMontoPago;
             campos[1] = cboMonedaPago;
-
+            isTarjeta = false;
             switch (formapago)
             {
                 case 2: //Cheque
                     campos[2] = cboBanco;
                     campos[3] = txtCuenta;
                     campos[4] = txtNumeroCK;
+
                     break;
                 case 3: //Tarjeta
-                    campos[2] = cboTarjeta;
-                    campos[3] = txtTarjeta;
-                    campos[4] = txtAutorizacion;
+
+                    isTarjeta = true;
+                    if (!IsPOSActive)
+                    {
+                        pos = controller.VerificarPOS();
+                        if (!string.IsNullOrEmpty(pos.ComPort))
+                        {
+                            campos[2] = cboTarjeta;
+                            IsPOSActive = true;
+                        }
+                        else
+                        {
+                            campos[2] = cboTarjeta;
+                            campos[3] = txtTarjeta;
+                            campos[4] = txtAutorizacion;
+                        }
+                    }
+                    else
+                    {
+                        campos[2] = cboTarjeta;
+
+                    }
                     break;
                 case 4: //Bono
                     campos[2] = txtEmisor;
@@ -709,11 +832,14 @@ namespace PruebaWPF.Views.Recibo
                     c.Add(txtNumeroCK, clsValidateInput.OnlyNumber);
                     break;
                 case 3: //Tarjeta
-                    c.Add(txtTarjeta, clsValidateInput.OnlyNumber);
-                    c.Add(txtAutorizacion, clsValidateInput.OnlyNumber);
+                    if (!IsPOSActive)
+                    {
+                        c.Add(txtTarjeta, clsValidateInput.OnlyNumber);
+                        c.Add(txtAutorizacion, clsValidateInput.OnlyNumber);
+                    }
                     break;
                 case 5: //Deposito
-                    c.Add(txtTransaccion, clsValidateInput.OnlyNumber);
+                    c.Add(txtTransaccion, clsValidateInput.Required);
                     break;
                 default:
                     break;
@@ -837,7 +963,7 @@ namespace PruebaWPF.Views.Recibo
             if (cboTipoArancel.SelectedIndex != -1)
             {
                 tipoArancel = (TipoArancel)cboTipoArancel.SelectedItem;
-                return (new SearchTipoDepositoViewModel().ObtenerTipoDeposito(id, Identificador, BusquedaInterna, "", 1,false, tipoArancel.IdTipoArancel).FirstOrDefault());
+                return (new SearchTipoDepositoViewModel().ObtenerTipoDeposito(id, Identificador, BusquedaInterna, "", 1, false, tipoArancel.IdTipoArancel).FirstOrDefault());
             }
             else
             {
@@ -942,8 +1068,9 @@ namespace PruebaWPF.Views.Recibo
             recibo.Recibimos = txtRecibimos.Text;
             recibo = controller.GenerarRecibo(tipoArancel, recibo, orden, items.ToList(), formaPago.ToList(), diferencia, IdMatricula, IdPreMatricula);
             rptRecibo boucher = new rptRecibo(recibo, true);
+            boucher.VerRecibo();
             Finalizar();
-            boucher.ShowDialog();
+            //boucher.ShowDialog();
         }
 
         private void Finalizar()
@@ -958,7 +1085,7 @@ namespace PruebaWPF.Views.Recibo
 
         private void btnDeletePay_Click(object sender, RoutedEventArgs e)
         {
-            formaPago.Remove((ReciboPagoSon)tblDetallesPay.CurrentItem);
+            EliminarFormaPago((ReciboPagoSon)tblDetallesPay.CurrentItem);
         }
 
         private void cboArancel_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -995,7 +1122,11 @@ namespace PruebaWPF.Views.Recibo
         private void cboFormaPago_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             int selected = int.Parse(cboFormaPago.SelectedValue.ToString());
-            cboMonedaPago.ItemsSource = controller.ObtenerMonedas(selected);
+
+            //Esta linea se comentarea debido a que vamos a funcionar sin la parametrizacion de cuentas contables, sin embargo deberá ser reactivada al momento de hacer uso de la generacion de asientos contables desde aqui
+            //cboMonedaPago.ItemsSource = controller.ObtenerMonedas(selected);
+
+
             VerCamposAdicionales(selected);
         }
 

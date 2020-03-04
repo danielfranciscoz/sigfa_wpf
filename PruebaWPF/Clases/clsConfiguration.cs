@@ -42,7 +42,7 @@ namespace PruebaWPF.Clases
             return new clsConfiguration()
             {
                 Sleep = 3,
-                AutoLoad = true,
+                AutoLoad = false,
                 TopRow = 1000,
                 rememberMe = false,
                 userRemember = ""
@@ -61,7 +61,8 @@ namespace PruebaWPF.Clases
             Moneda_Nacional,
             Variacion_Positiva,
             Variacion_Negativa,
-            Email_Finanzas
+            Email_Finanzas,
+            POS_Banpro
         };
 
         public void Save()

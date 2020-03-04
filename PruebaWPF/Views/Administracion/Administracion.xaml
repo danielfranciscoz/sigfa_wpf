@@ -166,6 +166,12 @@
                                                     </TextBlock>
                                                     <TextBlock VerticalAlignment="Center" >
                                                         <TextBlock.Inlines>
+                                                            <Run>Usuario:</Run>
+                                                            <Run Text="{Binding usuario.Login}" Foreground="{StaticResource Primary}" FontWeight="Bold"></Run>
+                                                        </TextBlock.Inlines>
+                                                    </TextBlock>
+                                                    <TextBlock VerticalAlignment="Center" >
+                                                        <TextBlock.Inlines>
                                                             <Run>Correo Institucional:</Run>
                                                             <Run Text="{Binding usuario.LoginEmail}" Foreground="{StaticResource Primary}" FontWeight="Bold"></Run>
                                                         </TextBlock.Inlines>

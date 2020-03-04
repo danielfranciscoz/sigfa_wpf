@@ -36,6 +36,7 @@
     <SolidColorBrush x:Key="Edit_Button" Color="#D84315"/>
     <SolidColorBrush x:Key="Delete_Button" Color="#c62828"/>
     <SolidColorBrush x:Key="Print_Button" Color="#424242"/>
+    <SolidColorBrush x:Key="Print_Button_Second" Color="#0277BD"/>
     <SolidColorBrush x:Key="Search_Button" Color="#F9A825"/>
     <SolidColorBrush x:Key="Search_Button_Second" Color="#283593"/>
     <SolidColorBrush x:Key="Search_Button_Third" Color="#757575"/>
@@ -46,6 +47,7 @@
     <sys:String x:Key="Text_Save_Button">GUARDAR</sys:String>
     <sys:String x:Key="Text_Edit_Button">EDITAR</sys:String>
     <sys:String x:Key="Text_Delete_Button">ELIMINAR</sys:String>
+    <sys:String x:Key="Text_Delete_Config_Button">ELIMINAR CONFIGURACION</sys:String>
     <sys:String x:Key="Text_Anular_Button">ANULAR</sys:String>
     <sys:String x:Key="Text_Export_Button">EXPORTAR REGISTROS</sys:String>
     <sys:String x:Key="Text_Print_Button">IMPRIMIR</sys:String>
@@ -53,9 +55,12 @@
     <sys:String x:Key="Text_Acept_Button">ACEPTAR</sys:String>
     <sys:String x:Key="Text_Generate_Button">GENERAR</sys:String>
     <sys:String x:Key="Text_Next_Button">CONTINUAR</sys:String>
+    <sys:String x:Key="Text_See_Button">VER</sys:String>
+    <sys:String x:Key="Text_SeeReport_Button">VER REPORTE</sys:String>
     <sys:String x:Key="Text_Back_Button">REGRESAR</sys:String>
     <sys:String x:Key="Text_Find_Button">BUSCAR</sys:String>
     <sys:String x:Key="Text_Cancel_Button">CANCELAR</sys:String>
+    <sys:String x:Key="Text_TestConection_Button">PROBAR CONEXIÓN</sys:String>
 
     <sys:String x:Key="Permiso_Guardar">Guardar</sys:String>
     <sys:String x:Key="Permiso_Editar">Editar</sys:String>

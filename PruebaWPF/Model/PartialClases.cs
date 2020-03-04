@@ -78,4 +78,14 @@ namespace PruebaWPF.Model
         public decimal? Haber => Naturaleza ? Monto : (decimal?)null;
         public string Area { get; set; }
     }
+
+    public partial class ReciboPago
+    {
+        public string r => Serie + " " + IdRecibo +" " +IdReciboPago;
+        public string OrdenPago => Recibo1.IdOrdenPago != null ? Recibo1.OrdenPago.NoOrdenPago : "";
+        public string FechaROC => Recibo1.Fecha.ToString();
+        public string porCuenta => Recibo1.Recibimos;
+        public string FormaPago1 => FormaPago.FormaPago1;
+        public string Moneda1 => Moneda.Moneda1;
+    }
 }

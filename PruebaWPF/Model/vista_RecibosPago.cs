@@ -14,5 +14,7 @@ namespace PruebaWPF.Model
         public string FormaPago { get; set; }
         public string Moneda { get; set; }
         public double Monto { get; set; }
+        public string OrdenPago { get; set; }
+        public string FechaROC { get; set; }
     }
 }

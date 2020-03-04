@@ -196,7 +196,6 @@ namespace PruebaWPF.Model
         public virtual DbSet<ReciboPago> ReciboPago { get; set; }
         public virtual DbSet<ReciboPagoBono> ReciboPagoBono { get; set; }
         public virtual DbSet<ReciboPagoCheque> ReciboPagoCheque { get; set; }
-        public virtual DbSet<ReciboPagoDeposito> ReciboPagoDeposito { get; set; }
         public virtual DbSet<ReciboPagoTarjeta> ReciboPagoTarjeta { get; set; }
         public virtual DbSet<ReciboSIRA> ReciboSIRA { get; set; }
         public virtual DbSet<SerieRecibo> SerieRecibo { get; set; }
@@ -292,6 +291,9 @@ namespace PruebaWPF.Model
         public virtual DbSet<w_LibroMayorAcumulado_Vlast> w_LibroMayorAcumulado_Vlast { get; set; }
         public virtual DbSet<MovimientoIngreso> MovimientoIngreso { get; set; }
         public virtual DbSet<Errors> Errors { get; set; }
+        public virtual DbSet<ReciboPagoDeposito> ReciboPagoDeposito { get; set; }
+        public virtual DbSet<VoucherBanco> VoucherBanco { get; set; }
+        public virtual DbSet<ConfirmacionPago> ConfirmacionPago { get; set; }
     
         [DbFunction("SIFOPEntities", "fn_TotalesArqueo")]
         public virtual IQueryable<fn_TotalesArqueo_Result> fn_TotalesArqueo(Nullable<int> idArqueo, Nullable<bool> isDoc)

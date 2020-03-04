@@ -321,6 +321,11 @@ namespace PruebaWPF.ViewModel
             return db.ReciboPago.Count(c => c.Recibo1.IdDetAperturaCaja == IdArqueoDetApertura && c.FormaPago.isDoc && c.regAnulado == false);
         }
 
+        public int FindTotalPagos(int IdArqueoDetApertura)
+        {
+            return db.ReciboPago.Count(c => c.Recibo1.IdDetAperturaCaja == IdArqueoDetApertura && c.regAnulado == false);
+        }
+
 
         public void GuardarNoEfectivo(List<ArqueoNoEfectivoSon> documentosMemory, Arqueo arqueo)
         {

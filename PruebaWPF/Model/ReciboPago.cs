@@ -19,6 +19,8 @@ namespace PruebaWPF.Model
         {
             this.ArqueoDocumento = new HashSet<ArqueoDocumento>();
             this.ArqueoNoEfectivo = new HashSet<ArqueoNoEfectivo>();
+            this.ConfirmacionPago = new HashSet<ConfirmacionPago>();
+            this.ConfirmacionPago1 = new HashSet<ConfirmacionPago>();
         }
     
         public int IdReciboPago { get; set; }
@@ -30,6 +32,7 @@ namespace PruebaWPF.Model
         public System.DateTime FechaCreacion { get; set; }
         public string UsuarioCreacion { get; set; }
         public bool regAnulado { get; set; }
+        public bool isConfirmacion { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<ArqueoDocumento> ArqueoDocumento { get; set; }
@@ -41,7 +44,11 @@ namespace PruebaWPF.Model
         public virtual Recibo1 Recibo1 { get; set; }
         public virtual ReciboPagoBono ReciboPagoBono { get; set; }
         public virtual ReciboPagoCheque ReciboPagoCheque { get; set; }
-        public virtual ReciboPagoDeposito ReciboPagoDeposito { get; set; }
         public virtual ReciboPagoTarjeta ReciboPagoTarjeta { get; set; }
+        public virtual ReciboPagoDeposito ReciboPagoDeposito { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<ConfirmacionPago> ConfirmacionPago { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<ConfirmacionPago> ConfirmacionPago1 { get; set; }
     }
 }

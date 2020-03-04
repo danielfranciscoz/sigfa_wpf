@@ -24,6 +24,7 @@ namespace PruebaWPF.Model
         public string Usuario { get; set; }
         public System.DateTime FechaCreacion { get; set; }
         public string InnerMessage { get; set; }
+        public string EntityValidationErrors { get; set; }
     
         public virtual Usuario Usuario1 { get; set; }
     }

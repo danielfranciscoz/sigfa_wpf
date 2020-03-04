@@ -31,6 +31,56 @@ namespace PruebaWPF.ViewModel
 
         #region Caja
 
+        public void SaveComPort(POSBanpro pos)
+        {
+            Caja caja = GetIfCaja();
+
+            if (caja != null)
+            {
+                caja.ComPort = pos.ComPort;
+                db.Entry(caja).State = System.Data.Entity.EntityState.Modified;
+                db.SaveChanges();
+            }
+            else
+            {
+                throw new Exception(clsReferencias.Error_NoCaja);
+            }
+        }
+
+        public Caja GetIfCaja()
+        {
+            return db.Caja.FirstOrDefault(w1 => w1.MAC == clsSessionHelper.MACMemory && w1.regAnulado == false);
+        }
+
+        public POSBanpro GetConfiguracionPOS()
+        {
+            List<ConfiguracionPOS> configuracionesDB = db.Configuracion
+                .First(f => f.Llave == clsConfiguration.Llaves.POS_Banpro.ToString())
+                .Valor.Split(new char[] { ';' }, StringSplitOptions.RemoveEmptyEntries)
+                .Select(x => new ConfiguracionPOS()
+                {
+                    Atributo = x.Substring(0, x.IndexOf(":")),
+                    Valor = x.Substring(x.IndexOf(":") + 1)
+                }).ToList();
+
+            POSBanpro pos = new POSBanpro();
+
+            int timeout = -1;
+
+            pos.Baudrate = configuracionesDB[0].Valor;
+            pos.DataBits = configuracionesDB[1].Valor;
+            pos.Parity = configuracionesDB[2].Valor;
+            pos.StopBits = configuracionesDB[3].Valor;
+
+            int.TryParse(configuracionesDB[4].Valor, out timeout);
+
+            pos.Timeout = timeout;
+
+            pos.ComPort = GetIfCaja().ComPort;
+
+            return pos;
+        }
+
         public List<CajaSon> FindAllCajas()
         {
 
@@ -47,6 +97,7 @@ namespace PruebaWPF.ViewModel
                     MAC = s.caja.MAC,
                     UsuarioCreacion = s.caja.UsuarioCreacion,
                     IdRecinto = s.caja.IdRecinto,
+                    ComPort = s.caja.ComPort,
                     IdSerie = s.caja.IdSerie,
                     regAnulado = s.caja.regAnulado,
                     FechaCreacion = s.caja.FechaCreacion,
@@ -54,27 +105,7 @@ namespace PruebaWPF.ViewModel
                 }).Where(b => r.Any(a => b.IdRecinto == a.IdRecinto)).ToList();
         }
 
-        public string FindMacActual()
-        {
-
-            byte[] bytes = NetworkInterface.GetAllNetworkInterfaces().ToList().FirstOrDefault().GetPhysicalAddress().GetAddressBytes();
-
-            string MAC = "";
-            for (int i = 0; i < bytes.Length; i++)
-            {
-
-                MAC = MAC + "" + bytes[i].ToString("X2");
-
-                if (i != bytes.Length - 1)
-                {
-                    MAC = MAC + "-";
-
-                }
-            }
-
-            return MAC;
-        }
-
+  
         public void SaveUpdateCaja(Caja c)
         {
             var cajas = db.Caja.Where(w => (w.MAC == c.MAC || (w.Nombre == c.Nombre && w.IdRecinto == c.IdRecinto)) && w.regAnulado == false).ToList();
@@ -788,4 +819,6 @@ namespace PruebaWPF.ViewModel
         public CuentaContable cuenta { get; set; }
         public Configuracion variacion { get; set; }
     }
+
+
 }

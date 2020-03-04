@@ -113,6 +113,7 @@ namespace PruebaWPF.Views.Arqueo
 
                 datosIniciales.DataContext = apertura;
                 lblRecuento.DataContext = apertura;
+                lblRecuentoPagos.DataContext = controller.FindTotalPagos(apertura.IdDetAperturaCaja);
 
             }
             catch (Exception ex)
@@ -729,7 +730,8 @@ namespace PruebaWPF.Views.Arqueo
             if (lstRecibos.SelectedItem != null)
             {
                 Recibo1 selected = (Recibo1)lstRecibos.SelectedItem;
-                lstFormasPago.ItemsSource = selected.ReciboPago;
+
+                tblFormasPago.ItemsSource = new ReciboViewModel().ReciboFormaPago(new ReciboSon() { IdRecibo = selected.IdRecibo, Serie = selected.Serie });
             }
         }
     }

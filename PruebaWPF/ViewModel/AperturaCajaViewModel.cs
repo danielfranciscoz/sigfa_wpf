@@ -118,7 +118,7 @@ namespace PruebaWPF.ViewModel
                     db.AperturaCaja.Add(Obj);
                     List<DetAperturaCaja> det = new List<DetAperturaCaja>();
 
-                    int maxID = db.DetAperturaCaja.Max(m => m.IdDetAperturaCaja);
+                    int maxID = db.DetAperturaCaja.Max(m =>(int?) m.IdDetAperturaCaja)??0;
 
                     foreach (Caja c in cajas)
                     {

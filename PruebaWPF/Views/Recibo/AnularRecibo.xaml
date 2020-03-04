@@ -55,6 +55,7 @@
 
                     <TextBox Margin="0 15 0 10" x:Name="txtMotivo" materialDesign:HintAssist.Hint="* Motivo" materialDesign:HintAssist.IsFloating="True" FontSize="12" AcceptsReturn="True" MaxLines="4"/>
                     <TextBlock TextWrapping="Wrap" VerticalAlignment="Center" FontSize="10" Text="Este registro no será eliminado de la base de datos, sin embargo no podrá ser impreso nuevamente." Foreground="{StaticResource DarkGray}"/>
+                    <TextBlock TextWrapping="Wrap" VerticalAlignment="Center" FontSize="10" FontWeight="Bold" Text="RECUERDE ANULAR CADA VOUCHER BANCARIO EMITIDO DESDE EL POS" Foreground="{StaticResource DarkGray}"/>
 
                 </StackPanel>
 

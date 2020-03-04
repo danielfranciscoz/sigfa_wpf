@@ -60,10 +60,16 @@ namespace PruebaWPF.Clases
         }
 
 
-        public static List<T> GetFromProcedure(SIFOPEntities db, string query, List<SqlParameter> parameters)
+        public static List<T> GetFromQuery(SIFOPEntities db, string query, List<SqlParameter> parameters)
         {
             return new List<T>(db.Database.SqlQuery<T>(query, parameters.ToArray()));
         }
+
+        public static List<T> GetFromQuery(SIFOPEntities db, string query)
+        {
+            return new List<T>(db.Database.SqlQuery<T>(query));
+        }
+
     }
 
 

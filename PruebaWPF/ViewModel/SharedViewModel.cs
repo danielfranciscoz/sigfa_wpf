@@ -5,7 +5,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
-using System.Reflection;
 
 namespace PruebaWPF.ViewModel
 {
@@ -71,9 +70,11 @@ namespace PruebaWPF.ViewModel
             {
 
                 Errors e = new Errors();
+                clsException clsException = new clsException(ex);
 
                 e.Message = ex.Message;
-                e.InnerMessage = new clsException(ex).ErrorMessage();
+                e.InnerMessage = clsException.ErrorMessage();
+                e.EntityValidationErrors = clsException.DataValidationErrors();
                 e.Source = ex.Source;
                 e.Metodo = ex.TargetSite.Name;
                 e.StackTrace = ex.StackTrace;
@@ -85,7 +86,7 @@ namespace PruebaWPF.ViewModel
                 db.Errors.Add(e);
                 db.SaveChanges();
             }
-            catch (Exception exception)
+            catch (Exception)
             {
                 //Si ocurre un error al guardar no hago nada para no interferir el proceso del recibo
             }

@@ -50,7 +50,7 @@ namespace PruebaWPF.Views.OrdenPago
 
         }
 
-        private async void LoadTable(bool allRecintos,string text)
+        private async void LoadTable(bool allRecintos, string text)
         {
             try
             {
@@ -63,7 +63,7 @@ namespace PruebaWPF.Views.OrdenPago
                 }
                 else
                 {
-                    items = await FindAsync(allRecintos,text);
+                    items = await FindAsync(allRecintos, text);
                     Load();
                 }
                 //}
@@ -80,7 +80,7 @@ namespace PruebaWPF.Views.OrdenPago
             }
         }
 
-        private Task<ObservableCollection<OrdenPagoSon>> FindAsync(bool isMultiRecinto,String text )
+        private Task<ObservableCollection<OrdenPagoSon>> FindAsync(bool isMultiRecinto, String text)
         {
             if (text.Equals(""))
             {
@@ -93,7 +93,7 @@ namespace PruebaWPF.Views.OrdenPago
             {
                 return Task.Run(() =>
                 {
-                        return new ObservableCollection<OrdenPagoSon>(controller.FindByText(isMultiRecinto,text));
+                    return new ObservableCollection<OrdenPagoSon>(controller.FindByText(isMultiRecinto, text));
                 });
             }
         }
@@ -111,7 +111,7 @@ namespace PruebaWPF.Views.OrdenPago
 
         private void txtFindText(object sender, KeyEventArgs e)
         {
-            LoadTable(chkAll.IsChecked.Value,txtFind.Text);
+            LoadTable(chkAll.IsChecked.Value, txtFind.Text);
         }
 
         private void btn_Exportar(object sender, System.Windows.RoutedEventArgs e)
@@ -174,7 +174,7 @@ namespace PruebaWPF.Views.OrdenPago
                 if (items == null || isOpening)
                 {
                     isOpening = false;
-                    LoadTable(chkAll.IsChecked.Value,txtFind.Text);
+                    LoadTable(chkAll.IsChecked.Value, txtFind.Text);
                 }
             }
             catch (Exception ex)
@@ -192,7 +192,7 @@ namespace PruebaWPF.Views.OrdenPago
         {
             while (this.IsVisible && clsConfiguration.Actual().AutoLoad)
             {
-                Boolean data = await Reload(txtFind.Text);
+                Boolean data = await Reload(chkAll.IsChecked.Value, txtFind.Text);
                 if (data)
                 {
                     Load();
@@ -201,7 +201,7 @@ namespace PruebaWPF.Views.OrdenPago
             }
         }
 
-        private async Task<Boolean> Reload(String texto)
+        private async Task<Boolean> Reload(bool recintos, String texto)
         {
             bool needreload = false;
             await Task.Run(() =>
@@ -221,11 +221,11 @@ namespace PruebaWPF.Views.OrdenPago
 
                 if (texto.Equals(""))
                 {
-                    item3 = controller.FindAll();
+                    item3 = controller.FindAll(recintos);
                 }
                 else
                 {
-                    item3 = controller.FindByText(texto);
+                    item3 = controller.FindByText(recintos, texto);
                 }
 
                 if (!ClsComparer<OrdenPagoSon>.ListComparer(item2, item3))
@@ -251,7 +251,7 @@ namespace PruebaWPF.Views.OrdenPago
         {
             if (e.Key == Key.Return)
             {
-                LoadTable(chkAll.IsChecked.Value,txtFind.Text);
+                LoadTable(chkAll.IsChecked.Value, txtFind.Text);
             }
         }
     }

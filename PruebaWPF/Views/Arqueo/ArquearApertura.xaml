@@ -146,34 +146,76 @@
 
                                 <Grid Grid.Row="0">
                                     <Grid.ColumnDefinitions>
-                                        <ColumnDefinition Width="*"/>
+                                        <ColumnDefinition Width="350"/>
                                         <ColumnDefinition Width="10"/>
                                         <ColumnDefinition Width="*"/>
                                     </Grid.ColumnDefinitions>
 
-                                    <DockPanel Grid.Column="0">
-                                        <StackPanel x:Name="panelErrorRecibo" Visibility="Hidden" Background="{StaticResource ErrorAlert}"  DockPanel.Dock="Bottom" Height="100">
-                                            <TextBlock Margin="10" TextWrapping="Wrap" x:Name="lblErrorRecibo" Foreground="{StaticResource ErrorMsj}" FontWeight="SemiBold"></TextBlock>
+                                    <Grid Grid.Column="0">
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition Height="auto"/>
+                                            <RowDefinition Height="*"/>
+                                        </Grid.RowDefinitions>
 
-                                        </StackPanel>
+                                        <DockPanel Grid.Row="0">
+                                            <StackPanel x:Name="panelErrorRecibo" Visibility="Hidden" Background="{StaticResource ErrorAlert}"  DockPanel.Dock="Bottom" Height="100">
+                                                <TextBlock Margin="8" TextWrapping="Wrap" x:Name="lblErrorRecibo" Foreground="{StaticResource ErrorMsj}" FontWeight="SemiBold"></TextBlock>
 
-                                        <DockPanel>
-                                            <StackPanel Orientation="Vertical" VerticalAlignment="Center" HorizontalAlignment="Center">
-                                                <StackPanel Orientation="Horizontal"  Margin="0 0 0 10">
-                                                    <materialDesign:PackIcon Kind="BarcodeScan" Width="50" Height="50" HorizontalAlignment="Center"  VerticalAlignment="Center" Margin="0 0 20 0"></materialDesign:PackIcon>
-                                                    <TextBox x:Name="txtcodrecibo" KeyDown="codrecibo_KeyDown" Width="270" CharacterCasing="Upper" FontSize="30" TextAlignment="Center" ></TextBox>
+                                            </StackPanel>
+
+                                            <DockPanel>
+                                                <StackPanel Orientation="Vertical" VerticalAlignment="Center" HorizontalAlignment="Center">
+                                                    <StackPanel Orientation="Horizontal"  Margin="0 0 0 10">
+                                                        <materialDesign:PackIcon Kind="BarcodeScan" Width="50" Height="50" HorizontalAlignment="Center"  VerticalAlignment="Center" Margin="0 0 20 0"></materialDesign:PackIcon>
+                                                        <TextBox x:Name="txtcodrecibo" KeyDown="codrecibo_KeyDown" Width="270" CharacterCasing="Upper" FontSize="30" TextAlignment="Center" ></TextBox>
+                                                    </StackPanel>
+                                                    <TextBlock TextWrapping="Wrap" Foreground="{StaticResource DarkGray}">
+                                                        <TextBlock.Inlines>
+                                                            <Run Text="Ingrese el código de recibo, utilice el lector de código de barras, si no posee esta herramienta por favor ingrese el recibo manualmente bajo la siguiente nomensclatura "></Run>
+                                                            <Run FontWeight="Bold" Text="[No.Recibo]-[Serie]."></Run>
+                                                            <Run Text="No usar corchetes."></Run>
+                                                        </TextBlock.Inlines>
+                                                    </TextBlock>
                                                 </StackPanel>
-                                                <TextBlock TextWrapping="Wrap" Foreground="{StaticResource DarkGray}">
+
+                                            </DockPanel>
+                                        </DockPanel>
+                                        <DockPanel Grid.Row="1">
+                                            <StackPanel  DockPanel.Dock="Top" Height="auto" HorizontalAlignment="Left">
+                                                <TextBlock x:Name="lblRecuento" Margin="10" TextWrapping="Wrap" FontWeight="SemiBold" FontSize="25">
                                                     <TextBlock.Inlines>
-                                                        <Run Text="Ingrese el código de recibo, utilice el lector de código de barras, si no posee esta herramienta por favor ingrese el recibo manualmente bajo la siguiente nomensclatura "></Run>
-                                                        <Run FontWeight="Bold" Text="[No.Recibo]-[Serie]."></Run>
-                                                        <Run Text="No usar corchetes."></Run>
+                                                        <Run Text="Recuento de recibos:"></Run>
+                                                        <Run Text="{Binding ElementName=lstRecibos,Path=Items.Count,Mode=OneWay}"></Run>
+                                                        <Run Text="de"></Run>
+                                                        <Run Text="{Binding Recibo1.Count,Mode=OneWay}"></Run>
                                                     </TextBlock.Inlines>
                                                 </TextBlock>
                                             </StackPanel>
+                                            <StackPanel  DockPanel.Dock="Bottom" Height="auto" HorizontalAlignment="Left">
+                                                <TextBlock Text="Los registros tachados corresponden a recibos anulados." Foreground="{StaticResource DarkGray}"></TextBlock>
+                                            </StackPanel>
+                                            <DockPanel x:Name="panelListaRecibos" Background="{StaticResource Gray_BackgroundDisabled}">
 
+                                                <ListBox x:Name="lstRecibos" SelectionChanged="LstRecibos_SelectionChanged">
+                                                    <ListBox.ItemTemplate>
+                                                        <DataTemplate>
+                                                            <WrapPanel Orientation="Horizontal">
+                                                                <TextBlock Margin="0 0 10 0" TextDecorations="{Binding regAnulado, Converter={StaticResource convertidor},ConverterParameter='Strikethrough;'}">
+                                                                    <TextBlock.Inlines>
+                                                                        <Run Text="{Binding Path=IdRecibo}"></Run>
+                                                                        <Run>-</Run>
+                                                                        <Run Text="{Binding Path=Serie}"></Run>
+                                                                    </TextBlock.Inlines>
+                                                                </TextBlock>
+
+                                                            </WrapPanel>
+                                                        </DataTemplate>
+                                                    </ListBox.ItemTemplate>
+                                                </ListBox>
+                                            </DockPanel>
                                         </DockPanel>
-                                    </DockPanel>
+
+                                    </Grid>
 
                                     <Separator Grid.Column="1">
                                         <Separator.LayoutTransform>
@@ -182,56 +224,63 @@
                                     </Separator>
 
                                     <DockPanel Grid.Column="2">
-                                        <StackPanel  DockPanel.Dock="Top" Height="auto" HorizontalAlignment="Left">
-                                            <TextBlock x:Name="lblRecuento" Margin="10" TextWrapping="Wrap" FontWeight="SemiBold" FontSize="25">
+                                        <DockPanel DockPanel.Dock="Top">
+                                            <TextBlock  HorizontalAlignment="Center" FontSize="15" FontWeight="SemiBold" Padding="0 5 0 5" Foreground="{StaticResource DarkGray}">
                                                 <TextBlock.Inlines>
-                                                    <Run Text="Recuento de recibos:"></Run>
-                                                    <Run Text="{Binding ElementName=lstRecibos,Path=Items.Count,Mode=OneWay}"></Run>
+                                                    <Run>Detalle de pago del recibo</Run>
+                                                    <Run Text="{Binding ElementName=lstRecibos,Path=SelectedItem.IdRecibo}"></Run>
+                                                    <Run>-</Run>
+                                                    <Run Text="{Binding ElementName=lstRecibos,Path=SelectedItem.Serie}"></Run>
+                                                </TextBlock.Inlines>    
+                                            </TextBlock>
+                                        </DockPanel>
+                                        <StackPanel DockPanel.Dock="Bottom" >
+                                            <TextBlock x:Name="lblRecuentoPagos" Foreground="{StaticResource DarkGray}">
+                                                <TextBlock.Inlines>
+                                                    <Run Text="Se han confirmado"></Run>
+                                                    <Run x:Name="panelConfirmacionDocumentos">0</Run>
                                                     <Run Text="de"></Run>
-                                                    <Run Text="{Binding Recibo1.Count,Mode=OneWay}"></Run>
+                                                    <Run  Text="{Binding Mode=OneWay}"></Run>
+                                                    <Run Text="pagos"></Run>
                                                 </TextBlock.Inlines>
                                             </TextBlock>
                                         </StackPanel>
-                                        <StackPanel  DockPanel.Dock="Bottom" Height="auto" HorizontalAlignment="Left">
-                                            <TextBlock Text="Los registros tachados corresponden a recibos anulados." Foreground="{StaticResource DarkGray}"></TextBlock>
-                                        </StackPanel>
-                                        <DockPanel x:Name="panelListaRecibos" Background="{StaticResource Gray_BackgroundDisabled}">
-                                            <DockPanel DockPanel.Dock="Right" Width="200" Background="#EEEEEE">
-                                                <TextBlock DockPanel.Dock="Top" HorizontalAlignment="Center" FontWeight="Bold" Padding="0 5 0 5" Foreground="{StaticResource DarkGray}">Detalle de pago del recibo</TextBlock>
-                                            <ListBox x:Name="lstFormasPago" >
-                                                <ListBox.ItemTemplate>
-                                                    <DataTemplate>
-                                                        <StackPanel Orientation="Horizontal">
-                                                            <TextBlock Margin="0 0 10 0" TextDecorations="{Binding regAnulado, Converter={StaticResource convertidor},ConverterParameter='Strikethrough;'}">
-                                                                <TextBlock.Inlines>
-                                                                    <Run Text="{Binding Path=FormaPago.FormaPago1}" ></Run>
-                                                                    <Run Text="{Binding Path=Moneda.Simbolo}"></Run>
-                                                                    <Run Text="{Binding Path=Monto}"></Run>
-                                                                </TextBlock.Inlines>
-                                                            </TextBlock>
+                                        <DockPanel x:Name="panelFormasPagoRecibo" >
 
-                                                        </StackPanel>
-                                                    </DataTemplate>
-                                                </ListBox.ItemTemplate>
-                                            </ListBox>
-                                                
-                                            </DockPanel>
-                                            <ListBox x:Name="lstRecibos" SelectionChanged="LstRecibos_SelectionChanged">
-                                                <ListBox.ItemTemplate>
-                                                    <DataTemplate>
-                                                        <StackPanel Orientation="Horizontal">
-                                                            <TextBlock Margin="0 0 10 0" TextDecorations="{Binding regAnulado, Converter={StaticResource convertidor},ConverterParameter='Strikethrough;'}">
-                                                                <TextBlock.Inlines>
-                                                                    <Run Text="{Binding Path=IdRecibo}" ></Run>
-                                                                    <Run Text="{Binding Path=Serie}"></Run>
-                                                                </TextBlock.Inlines>
-                                                            </TextBlock>
-
-                                                        </StackPanel>
-                                                    </DataTemplate>
-                                                </ListBox.ItemTemplate>
-                                            </ListBox>
+                                            <DataGrid   HorizontalScrollBarVisibility="Auto" CanUserDeleteRows="False" CanUserAddRows="False" VerticalScrollBarVisibility="Auto" Name="tblFormasPago" AutoGenerateColumns="False" SelectionUnit="FullRow" SelectionMode="Single" >
+                                                <DataGrid.Columns>
+                                                    <DataGridTemplateColumn CanUserResize="False" Width="50" Header="">
+                                                        <DataGridTemplateColumn.CellTemplate>
+                                                            <DataTemplate>
+                                                                <StackPanel>
+                                                                    <Button x:Name="btnConfirmPay" Background="{StaticResource Delete_Button}" Height="20" Width="20" Style="{StaticResource MaterialDesignToolButton}" BorderBrush="Transparent">
+                                                                        <materialDesign:PackIcon Kind="Check" HorizontalAlignment="Center"  VerticalAlignment="Center" Margin="0 0 0 0"></materialDesign:PackIcon>
+                                                                    </Button>
+                                                                </StackPanel>
+                                                            </DataTemplate>
+                                                        </DataGridTemplateColumn.CellTemplate>
+                                                    </DataGridTemplateColumn>
+                                                 
+                                                    <DataGridTextColumn CanUserReorder="False" CanUserResize="True" IsReadOnly="True" Header="Forma de pago" Binding="{Binding FormaPago.FormaPago1}"></DataGridTextColumn>
+                                                    <DataGridTextColumn CanUserReorder="False" CanUserResize="True" IsReadOnly="True" Header="Moneda" Width="auto" Binding="{Binding Moneda.Simbolo}"></DataGridTextColumn>
+                                                    <DataGridTextColumn CanUserReorder="False" CanUserResize="True" IsReadOnly="True" Header="Monto" Width="auto" Binding="{Binding Monto, StringFormat={}{0:n2}}"></DataGridTextColumn>
+                                                    <DataGridTextColumn CanUserReorder="False" CanUserResize="True" IsReadOnly="True" Header="" Width="auto" Binding="{Binding ObjInfoAdicional[1]}"></DataGridTextColumn>
+                                                    <DataGridTemplateColumn CanUserResize="False" Width="50" Header="">
+                                                        <DataGridTemplateColumn.CellTemplate>
+                                                            <DataTemplate>
+                                                                <StackPanel>
+                                                                    <Button x:Name="btnEditPay" Background="{StaticResource Delete_Button}" Height="20" Width="20" Style="{StaticResource MaterialDesignToolButton}" BorderBrush="Transparent">
+                                                                        <materialDesign:PackIcon Kind="Pencil" HorizontalAlignment="Center"  VerticalAlignment="Center" Margin="0 0 0 0"></materialDesign:PackIcon>
+                                                                    </Button>
+                                                                </StackPanel>
+                                                            </DataTemplate>
+                                                        </DataGridTemplateColumn.CellTemplate>
+                                                    </DataGridTemplateColumn>
+                                            </DataGrid.Columns>
+                                            </DataGrid>
                                         </DockPanel>
+
+
                                     </DockPanel>
 
                                 </Grid>

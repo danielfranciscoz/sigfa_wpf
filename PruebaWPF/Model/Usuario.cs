@@ -89,6 +89,8 @@ namespace PruebaWPF.Model
             this.MovimientoIngreso = new HashSet<MovimientoIngreso>();
             this.OrdenPago = new HashSet<OrdenPago>();
             this.Errors = new HashSet<Errors>();
+            this.VoucherBanco = new HashSet<VoucherBanco>();
+            this.ConfirmacionPago = new HashSet<ConfirmacionPago>();
         }
     
         public string Login { get; set; }
@@ -257,5 +259,9 @@ namespace PruebaWPF.Model
         public virtual ICollection<OrdenPago> OrdenPago { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Errors> Errors { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<VoucherBanco> VoucherBanco { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<ConfirmacionPago> ConfirmacionPago { get; set; }
     }
 }

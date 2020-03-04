@@ -18,6 +18,7 @@ namespace PruebaWPF.Model
         public DetAperturaCaja()
         {
             this.Recibo1 = new HashSet<Recibo1>();
+            this.VoucherBanco = new HashSet<VoucherBanco>();
         }
     
         public int IdDetAperturaCaja { get; set; }
@@ -32,5 +33,7 @@ namespace PruebaWPF.Model
         public virtual Caja Caja { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Recibo1> Recibo1 { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<VoucherBanco> VoucherBanco { get; set; }
     }
 }

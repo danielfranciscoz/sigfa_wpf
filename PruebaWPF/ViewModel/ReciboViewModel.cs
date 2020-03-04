@@ -1,4 +1,6 @@
-﻿using PruebaWPF.Clases;
+﻿using Kinpos.comm;
+using Kinpos.Dcl;
+using PruebaWPF.Clases;
 using PruebaWPF.Helper;
 using PruebaWPF.Interface;
 using PruebaWPF.Model;
@@ -39,9 +41,21 @@ namespace PruebaWPF.ViewModel
 
         public List<ReciboSon> FindAll()
         {
+            bool usuarioCajero = new LoginViewModel().isCajero(clsSessionHelper.usuario.Login, db, validarOnlyCajero: true);
 
-            IQueryable<Recibo1> recibo = db.Recibo1.Take(clsConfiguration.Actual().TopRow).Where(w => r.Any(a => w.InfoRecibo.IdRecinto == a.IdRecinto));
-            //IQueryable<Recibo1> recibo = db.Recibo1;
+            IQueryable<Recibo1> recibo;
+
+            if (usuarioCajero)
+            {
+                recibo = db.Recibo1.Take(clsConfiguration.Actual().TopRow).Where(w => r.Any(a => w.InfoRecibo.IdRecinto == a.IdRecinto) && w.UsuarioCreacion == clsSessionHelper.usuario.Login);
+
+            }
+            else
+            {
+                recibo = db.Recibo1.Take(clsConfiguration.Actual().TopRow).Where(w => r.Any(a => w.InfoRecibo.IdRecinto == a.IdRecinto));
+
+            }
+
 
             return UnirRecibos(recibo);
         }
@@ -121,7 +135,7 @@ namespace PruebaWPF.ViewModel
                                               from OrdenAnuladaTable in OrdenAnulada.DefaultIfEmpty()
                                               join area in db.vw_Areas on (ReciboDatoTable != null ? ReciboDatoTable.IdArea : OrdenTable != null ? OrdenTable.IdArea : OrdenAnuladaTable.IdArea) equals area.codigo into Areas
                                               from AreaTable in Areas
-                                              orderby r.IdRecibo descending, r.Serie descending
+                                              orderby r.Fecha descending
                                               select new ReciboSon()
                                               {
                                                   IdRecibo = r.IdRecibo,
@@ -147,6 +161,7 @@ namespace PruebaWPF.ViewModel
                                                   Area = AreaTable.descripcion.ToUpper(),
                                                   ReciboAnulado = ReciboAnuladoTable
                                               }
+
 
                         ).ToList();
 
@@ -203,7 +218,7 @@ namespace PruebaWPF.ViewModel
                     p.Add(new SqlParameter("@carnet", criterio));
                     //p.Add(new SqlParameter("@isMatricula", true));
 
-                    arancelesSIRA = clsCallProcedure<ArancelSIRAValidate>.GetFromProcedure(db, "cat.sp_ArancelesSIRA @carnet", p).ToList();
+                    arancelesSIRA = clsCallProcedure<ArancelSIRAValidate>.GetFromQuery(db, CatalogoConsultas.arancelesSIRA, p).ToList();
 
                     if (!arancelesSIRA.Any())
                     {
@@ -233,7 +248,7 @@ namespace PruebaWPF.ViewModel
 
             if (arancelesSIRA != null)
             {
-                areas = db.ArancelArea.ToList().Where(w => w.IdArea.Equals(IdArea) && arancelesSIRA.Any(a => a.IdArancel == w.IdArancel)).Select(s => s.IdArancel).ToArray();
+                areas = db.ArancelArea.Where(w => w.IdArea == IdArea && arancelesSIRA.Any(a => a.IdArancel == w.IdArancel)).Select(s => s.IdArancel).ToArray();
             }
             else
             {
@@ -246,7 +261,7 @@ namespace PruebaWPF.ViewModel
             var IdIntersect = TipoDepositos.Intersect(areas).ToList();
 
             //Finalmente con los Ids recuperados por la intersección se obtienen los aranceles.     
-            var r = db.ArancelPrecio.Where(w => IdIntersect.Any(w1 => w.ArancelArea.IdArancel == w1 && w.ArancelArea.IdArea == IdArea) && w.regAnulado == false).OrderBy(o => o.ArancelArea.Arancel.Nombre).ToList();
+            var r = db.ArancelPrecio.Where(w => IdIntersect.Any(w1 => w.ArancelArea.IdArancel == w1 && w.ArancelArea.IdArea == IdArea && w.ArancelArea.regAnulado == false) && w.regAnulado == false).OrderBy(o => o.ArancelArea.Arancel.Nombre).ToList();
 
             return r;
         }
@@ -361,8 +376,7 @@ namespace PruebaWPF.ViewModel
         {
             return db.ReciboPago.Where(w => w.IdRecibo == recibo.IdRecibo && w.Serie == recibo.Serie).ToList().Select(s => new ReciboPagoSon()
             {
-                DetalleAdicional = ObtenerObjetoAdicional(s)[0],
-                InfoAdicional = ObtenerObjetoAdicional(s)[1].ToString(),
+                ObjInfoAdicional = GetDataAdicional(s),
                 IdReciboPago = s.IdReciboPago,
                 IdRecibo = s.IdRecibo,
                 Serie = s.Serie,
@@ -378,95 +392,204 @@ namespace PruebaWPF.ViewModel
             }).ToList();
         }
 
-        private object[] ObtenerObjetoAdicional(ReciboPago r)
+        public Object[] GetDataAdicional(ReciboPago r)
         {
-            Object[] o = new Object[2];
-            switch (r.IdFormaPago)
+            Object[] data = new object[2];
+            data[0] = null;
+            data[1] = "";
+
+
+
+            if (r.ReciboPagoCheque?.GetType().BaseType == typeof(ReciboPagoCheque))
             {
-                case 2: //Cheque
-                    ReciboPagoCheque rc = r.ReciboPagoCheque;
+                ReciboPagoCheque rc = r.ReciboPagoCheque;
 
-                    if (rc != null)
-                    {
-                        o[0] = rc;
-                        o[1] = string.Format("{0}, Cuenta {1}, Cheque No.{2}", rc.Banco.Nombre, rc.Cuenta, rc.NumeroCK);
-                    }
-                    else
-                    {
-                        o[0] = null;
-                        o[1] = "";
-                    }
-                    break;
-                case 3: //Tarjeta
-                    ReciboPagoTarjeta rt = r.ReciboPagoTarjeta;
+                if (rc != null)
+                {
+                    data[0] = rc;
+                    data[1] = string.Format("{0}, Cuenta {1}, Cheque No.{2}", rc.Banco.Nombre, rc.Cuenta, rc.NumeroCK);
+                }
+            }
+            else if (r.ReciboPagoTarjeta?.GetType().BaseType == typeof(ReciboPagoTarjeta))
+            {
+                ReciboPagoTarjeta rt = r.ReciboPagoTarjeta;
 
-                    if (rt != null)
-                    {
-                        o[0] = rt;
-                        o[1] = string.Format("{0}, Tarjeta ****{1} Autorización {2}", rt.CiaTarjetaCredito.Nombre, rt.Tarjeta, rt.Autorizacion);
-                    }
-                    else
-                    {
-                        o[0] = null;
-                        o[1] = "";
-                    }
-                    break;
-                case 4: //Bono
-                    ReciboPagoBono rb = r.ReciboPagoBono;
+                if (rt != null)
+                {
+                    data[0] = rt;
+                    data[1] = string.Format("{0}, Tarjeta ****{1} Autorización {2}", rt.CiaTarjetaCredito.Nombre, rt.Tarjeta, rt.Autorizacion);
+                }
+            }
+            else if (r.ReciboPagoDeposito?.GetType().BaseType == typeof(ReciboPagoDeposito))
+            {
+                ReciboPagoDeposito rd = r.ReciboPagoDeposito;
 
-                    if (rb != null)
-                    {
-                        o[0] = rb;
-                        o[1] = string.Format("Emitipo por {0}, Bono No.{1}", rb.Emisor, rb.Numero);
-                    }
-                    else
-                    {
-                        o[0] = null;
-                        o[1] = "";
-                    }
+                if (rd != null)
+                {
+                    data[0] = rd;
+                    data[1] = string.Format("{0}, Transacción No.{1}, Obs. {2}", rd.Tipo ? "Transferencia" : "Minuta", rd.Transaccion, rd.Observacion);
+                }
+            }
+            else if (r.ReciboPagoBono?.GetType().BaseType == typeof(ReciboPagoBono))
+            {
+                ReciboPagoBono rb = r.ReciboPagoBono;
 
-                    break;
-                case 5: //Deposito
-                    ReciboPagoDeposito rd = r.ReciboPagoDeposito;
-
-                    if (rd != null)
-                    {
-                        o[0] = rd;
-                        o[1] = string.Format("{0}, Transacción No.{1}, Obs. {2}", rd.Tipo ? "Transferencia" : "Minuta", rd.Transaccion, rd.Observacion);
-                    }
-                    else
-                    {
-                        o[0] = null;
-                        o[1] = "";
-                    }
-
-                    break;
-                default:
-                    o[0] = null;
-                    o[1] = "";
-                    break;
-                    //Efectivo
+                if (rb != null)
+                {
+                    data[0] = rb;
+                    data[1] = string.Format("Emitipo por {0}, Bono No.{1}", rb.Emisor, rb.Numero);
+                }
             }
 
-            return o;
+            return data;
+
         }
+
 
         public void Guardar(ReciboSon Obj)
         {
             throw new NotImplementedException();
         }
 
+        /// <summary>
+        /// Este método valida que en esta caja se haya configurado el COM Port para el pago automatico con tarjeta
+        /// </summary>
+        /// <returns></returns>
+        public POSBanpro VerificarPOS()
+        {
+
+            return new TesoreriaViewModel().GetConfiguracionPOS();
+        }
+
+        public VoucherBanco GenerarVoucher(ReciboPagoSon reciboPago, int IdDetApertura, POSBanpro pos)
+        {
+            VoucherBanco voucher = new VoucherBanco();
+
+            DCL_RS232 dcl = new DCL_RS232();
+
+            dcl.StopBits = pos.StopBits;
+            dcl.Baudrate = pos.Baudrate;
+            dcl.ComPort = pos.ComPort;
+            dcl.DataBits = pos.DataBits;
+            dcl.Parity = pos.Parity;
+            dcl.Timeout = pos.Timeout;
+            dcl.ProcessBIN = pos.ProcessBIN;
+            dcl.setAmount(reciboPago.Monto.ToString("00.00").Replace(".", "").Replace(",", ""));
+            dcl.setCurrency(reciboPago.Moneda.CodigoISO);
+            dcl.setPrintBeforeSendData(false);//En el codigo de ejemplo hace uso de un checkbox pero este siempre se encuentra en estado descheckeado, es decir False
+
+            DCL_Result returnedData = dcl.Sale(null);
+
+            if (returnedData != null)
+            {
+                String responseCode = returnedData.GetValue_ASCII2String(0);
+
+                var a = Kinpos.Dcl.Util.Utilidad.GetDCLResponseText(responseCode);
+                if (dcl.Success)
+                {
+                    if (responseCode.Equals("00"))
+                    {
+                        voucher.Autorizacion = returnedData.GetValue_ASCII2String(1);
+                        voucher.Referencia = returnedData.GetValue_ASCII2String(2);
+                        voucher.Factura = returnedData.GetValue_BCD2String(3);
+                        voucher.Stan = returnedData.GetValue_BCD2String(4);
+                        voucher.Tarjeta = returnedData.GetValue_ASCII2String(9).Replace("*", ""); //la tarjeta viene con asteriscos al inicio, eso no me interesa, por lo tanto los remuevo
+                        voucher.IdDetApertura = IdDetApertura;
+                        voucher.Monto = reciboPago.Monto;
+                        voucher.IdMoneda = reciboPago.Moneda.IdMoneda;
+                    }
+                }
+                else
+                {
+                    string reasonfail = Kinpos.Dcl.Util.Utilidad.GetDCLResponseText(dcl.DCL_ResponseCode);
+                    Exception exception = new Exception(reasonfail);
+                    new SharedViewModel().SaveError(exception);
+                    throw exception;
+
+                }
+            }
+
+            voucher.FechaCreacion = System.DateTime.Now;
+            voucher.UsuarioCreacion = clsSessionHelper.usuario.Login;
+            db.VoucherBanco.Add(voucher);
+
+            try
+            {
+                db.SaveChanges();
+            }
+            catch (Exception exception)
+            {
+                AnularVoucher(voucher.Factura, pos);
+                new SharedViewModel().SaveError(exception);
+                throw exception;
+            }
+
+            return voucher;
+        }
+
+        public void AnularVoucher(ReciboPagoTarjeta recibopago, POSBanpro pos)
+        {
+            VoucherBanco original = db.VoucherBanco.FirstOrDefault(f => f.IdVoucherBanco == recibopago.IdVoucherBanco.Value);
+
+            string anulaVoucher = AnularVoucher(original.Factura, pos);
+            if (anulaVoucher != null)
+            {
+                original.StanAnulado = anulaVoucher;
+                original.FechaAnulado = System.DateTime.Now;
+
+                db.Entry(original).State = System.Data.Entity.EntityState.Modified;
+                db.SaveChanges();
+
+            }
+            else
+            {
+                throw new Exception("No se pudo anular la transacción desde el POS, compruebe que el equipo se encuentra correctamente configurado.");
+            }
+        }
+
+        private string AnularVoucher(string factura, POSBanpro pos)
+        {
+            string data = null;
+
+            DCL_RS232 dcl = new DCL_RS232();
+            dcl.StopBits = pos.StopBits;
+            dcl.Baudrate = pos.Baudrate;
+            dcl.ComPort = pos.ComPort;
+            dcl.DataBits = pos.DataBits;
+            dcl.Parity = pos.Parity;
+            dcl.Timeout = pos.Timeout;
+            dcl.ProcessBIN = pos.ProcessBIN;
+            dcl.setInvoice(factura);
+            dcl.setPrintBeforeSendData(false);
+            DCL_Result returnedData = dcl.Void(null);
+            //Anulo el vouvher y no lo guardo en la base de datos porque esta anulacion ocurre cuando el voucher no pudo guardarse en la base de datos
+
+            if (returnedData != null)
+            {
+
+                String responseCode = returnedData.GetValue_ASCII2String(0);
+
+                if (responseCode.Equals("00"))
+                {
+                    data = returnedData.GetValue_BCD2String(4); //retorno el stan que es lo unico que cambia
+                }
+            }
+
+            return data;
+        }
+
         public ReciboSon GenerarRecibo(TipoArancel tipoArancel, ReciboSon recibo, OrdenPagoSon ordenPago, List<DetOrdenPagoSon> detalleRecibo, List<ReciboPagoSon> detallePago, List<MonedaMonto> diferencias, int? IdMatricula, int? IdPrematricula)
         {
+            //TODA LA LOGICA DEL ASIENTO CONTABLE SE ENCUENTRA COMENTAREADA, PARA ACTIVAR LOS ASIENTOS SOLO DEBEMOS QUITAR LOS COMENTARIOS
             bool? isSIRAPagado = null;
             bool isMatricula = true; //true:Matricula; false:Prematricula
             Recibo1 roc = new Recibo1();
             ReciboDatos datos = null; // no creo la instancia porque no se si será usado
-            List<Asiento> LineasIngreso; //Esta lista contiene todos los movimientos correspondientes al ingreso, luego será unida a la lista que contiene la contrapartida del ingreso y la variacion cambiaria
+            //List<Asiento> LineasIngreso; //Esta lista contiene todos los movimientos correspondientes al ingreso, luego será unida a la lista que contiene la contrapartida del ingreso y la variacion cambiaria
 
-            if (ValidarMismoCajero(recibo.IdDetAperturaCaja))
+            Exception exception = null;
+            if (ValidarOrdenActiva(ordenPago))
             {
-
 
                 using (var transaction = db.Database.BeginTransaction())
                 {
@@ -514,15 +637,15 @@ namespace PruebaWPF.ViewModel
                                 ArancelPrecio = s.ArancelPrecio
                             })).ToList();
 
-                            LineasIngreso = new List<Asiento>(detalles.Select(s => new Asiento()
-                            {
-                                IdRecibo = roc.IdRecibo,
-                                Serie = roc.Serie,
-                                Monto = Math.Round(s.Monto * new ReciboViewModel().ObtenerTasaCambioDia(s.ArancelPrecio.IdMoneda).Valor, 2, MidpointRounding.AwayFromZero),
-                                IdArea = datos.IdArea,
-                                IdCuentaContable = s.ArancelPrecio.ArancelArea.Arancel.IdCuentaContable,
-                                Naturaleza = clsReferencias.Haber,
-                            }));
+                            //LineasIngreso = new List<Asiento>(detalles.Select(s => new Asiento()
+                            //{
+                            //    IdRecibo = roc.IdRecibo,
+                            //    Serie = roc.Serie,
+                            //    Monto = Math.Round(s.Monto * new ReciboViewModel().ObtenerTasaCambioDia(s.ArancelPrecio.IdMoneda).Valor, 2, MidpointRounding.AwayFromZero),
+                            //    IdArea = datos.IdArea,
+                            //    IdCuentaContable = s.ArancelPrecio.ArancelArea.Arancel.IdCuentaContable,
+                            //    Naturaleza = clsReferencias.Haber,
+                            //}));
 
                             if (tipoArancel.IdTipoArancel == IdMatricula || tipoArancel.IdTipoArancel == IdPrematricula) //Si es matricula o prematricula hay que insertar el pago en el SIRA
                             {
@@ -567,15 +690,15 @@ namespace PruebaWPF.ViewModel
                             orden = db.OrdenPago.Find(ordenPago.IdOrdenPago);
                             orden.CodRecibo = roc.IdRecibo + "-" + roc.Serie;
 
-                            LineasIngreso = new List<Asiento>(FindAllDetailsOrderPay(orden).Select(s => new Asiento()
-                            {
-                                IdRecibo = roc.IdRecibo,
-                                Serie = roc.Serie,
-                                Monto = Math.Round(s.Total * new ReciboViewModel().ObtenerTasaCambioDia(s.ArancelPrecio.IdMoneda).Valor, 2, MidpointRounding.AwayFromZero),
-                                IdArea = orden.IdArea,
-                                IdCuentaContable = s.ArancelPrecio.ArancelArea.Arancel.IdCuentaContable,
-                                Naturaleza = clsReferencias.Haber,
-                            }));
+                            //LineasIngreso = new List<Asiento>(FindAllDetailsOrderPay(orden).Select(s => new Asiento()
+                            //{
+                            //    IdRecibo = roc.IdRecibo,
+                            //    Serie = roc.Serie,
+                            //    Monto = Math.Round(s.Total * new ReciboViewModel().ObtenerTasaCambioDia(s.ArancelPrecio.IdMoneda).Valor, 2, MidpointRounding.AwayFromZero),
+                            //    IdArea = orden.IdArea,
+                            //    IdCuentaContable = s.ArancelPrecio.ArancelArea.Arancel.IdCuentaContable,
+                            //    Naturaleza = clsReferencias.Haber,
+                            //}));
 
                             db.Entry(orden).State = System.Data.Entity.EntityState.Modified;
 
@@ -629,7 +752,7 @@ namespace PruebaWPF.ViewModel
                                         Naturaleza = cuenta.Tipo,
                                     };
 
-                                    LineasIngreso.Add(asientoVariacion);
+                                    //LineasIngreso.Add(asientoVariacion);
                                 }
                                 else
                                 {
@@ -645,7 +768,7 @@ namespace PruebaWPF.ViewModel
                             db.ReciboDet.AddRange(detalles);
                         }
 
-                        List<Asiento> asientos = new List<Asiento>();
+                        //List<Asiento> asientos = new List<Asiento>();
                         int idpago = 0;
                         foreach (ReciboPagoSon item in detallePago)
                         {
@@ -662,30 +785,29 @@ namespace PruebaWPF.ViewModel
                             };
 
                             db.ReciboPago.Add(pago);
-                            // db.SaveChanges();//Guardo para que se genere el IdPago que es Identity, si n ohago esto se genera un error de llave foránea
 
                             switch (item.IdFormaPago)
                             {
                                 case 2: //Cheque
-                                    ReciboPagoCheque rc = (ReciboPagoCheque)item.DetalleAdicional;
+                                    ReciboPagoCheque rc = (ReciboPagoCheque)item.ObjInfoAdicional[0];
                                     rc.IdReciboPago = pago.IdReciboPago;
 
                                     db.ReciboPagoCheque.Add(rc);
                                     break;
                                 case 3: //Tarjeta
-                                    ReciboPagoTarjeta rt = (ReciboPagoTarjeta)item.DetalleAdicional;
+                                    ReciboPagoTarjeta rt = (ReciboPagoTarjeta)item.ObjInfoAdicional[0];
                                     rt.IdReciboPago = pago.IdReciboPago;
 
                                     db.ReciboPagoTarjeta.Add(rt);
                                     break;
                                 case 4: //Bono
-                                    ReciboPagoBono rb = (ReciboPagoBono)item.DetalleAdicional;
+                                    ReciboPagoBono rb = (ReciboPagoBono)item.ObjInfoAdicional[0];
                                     rb.IdReciboPago = pago.IdReciboPago;
 
                                     db.ReciboPagoBono.Add(rb);
                                     break;
                                 case 5: //Deposito
-                                    ReciboPagoDeposito rd = (ReciboPagoDeposito)item.DetalleAdicional;
+                                    ReciboPagoDeposito rd = (ReciboPagoDeposito)item.ObjInfoAdicional[0];
                                     rd.IdReciboPago = pago.IdReciboPago;
 
                                     db.ReciboPagoDeposito.Add(rd);
@@ -696,37 +818,38 @@ namespace PruebaWPF.ViewModel
                                     //Efectivo
                             }
 
-                            //Creando el asiento contable para el movimiento del recibo, previamente ya tengo en memoria el registro de ingreso y la variacion cambiaria, esto viene a realizar la partida doble
-                            MovimientoIngreso movimiento = db.MovimientoIngreso.FirstOrDefault(f => f.IdFormaPago == item.IdFormaPago && f.IdMoneda == item.IdMoneda && f.IdRecinto == roc.InfoRecibo.IdRecinto);
+                            ////Creando el asiento contable para el movimiento del recibo, previamente ya tengo en memoria el registro de ingreso y la variacion cambiaria, esto viene a realizar la partida doble
+                            //MovimientoIngreso movimiento = db.MovimientoIngreso.FirstOrDefault(f => f.IdFormaPago == item.IdFormaPago && f.IdMoneda == item.IdMoneda && f.IdRecinto == roc.InfoRecibo.IdRecinto);
 
-                            if (movimiento != null)
-                            {
+                            //if (movimiento != null)
+                            //{
 
-                                asientos = movimiento.DetalleMovimientoIngreso.Where(w => w.regAnulado == false).Select(s => new Asiento()
-                                {
-                                    IdRecibo = roc.IdRecibo,
-                                    Serie = roc.Serie,
-                                    IdCuentaContable = s.IdCuentaContable,
-                                    Naturaleza = s.Naturaleza,
-                                    Monto = Math.Round(Math.Round(item.TipoCambio * item.Monto, 2, MidpointRounding.AwayFromZero) * s.FactorPorcentual, 2, MidpointRounding.AwayFromZero)
-                                    //el doble redondeo es 100% necesario NUNCA TOCAR, se hace asi porque el sistema realiza el calculo del diferencial cambiario en base a una cifra redondeda, en este caso es necesario llegar a esa cifra redondeando, luego se hace la multiplicacion por el factor porcentual y se vuelve a redondear para continuar con los calculos.
-                                }).Union(asientos).ToList();
+                            //    asientos = movimiento.DetalleMovimientoIngreso.Where(w => w.regAnulado == false).Select(s => new Asiento()
+                            //    {
+                            //        IdRecibo = roc.IdRecibo,
+                            //        Serie = roc.Serie,
+                            //        IdCuentaContable = s.IdCuentaContable,
+                            //        Naturaleza = s.Naturaleza,
+                            //        Monto = Math.Round(Math.Round(item.TipoCambio * item.Monto, 2, MidpointRounding.AwayFromZero) * s.FactorPorcentual, 2, MidpointRounding.AwayFromZero)
+                            //        //el doble redondeo es 100% necesario NUNCA TOCAR, se hace asi porque el sistema realiza el calculo del diferencial cambiario en base a una cifra redondeda, en este caso es necesario llegar a esa cifra redondeando, luego se hace la multiplicacion por el factor porcentual y se vuelve a redondear para continuar con los calculos.
+                            //    }).Union(asientos).ToList();
 
-                                idpago++;
-                            }
-                            else
-                            {
-                                throw new Exception(string.Format("No se ha encontrado la parametrización contable para el pago de {0} {1} en {2}, no es posible continuar hasta que se ingrese esta información", item.SimboloMoneda, item.Monto, item.FormaPago.FormaPago1));
-                            }
+                            idpago++;
+                            //}
+                            //else
+                            //{
+                            //    throw new Exception(string.Format("No se ha encontrado la parametrización contable para el pago de {0} {1} en {2}, no es posible continuar hasta que se ingrese esta información", item.SimboloMoneda, item.Monto, item.FormaPago.FormaPago1));
+                            //}
 
                         }
                         //db.ReciboPago.AddRange(pagos);
 
-                        asientos = LineasIngreso.Union(asientos).ToList();
-                        if (HayPartidaDoble(asientos))
-                        {
-                            db.Asiento.AddRange(asientos);
-                        }
+                        //asientos = LineasIngreso.Union(asientos).ToList();
+                        //if (HayPartidaDoble(asientos)) //Aun hay que corregir el error de decimales, podes usar de ejemplo la tasa 33.9366 pagando $50
+                        //// Se deja de esta manera puesto que el asiento contable no se generará desde este sistema por el momento, realizado el 10/02/2020
+                        //{
+                        //    db.Asiento.AddRange(asientos);
+                        //}
 
                         db.SaveChanges();
                         transaction.Commit();
@@ -742,13 +865,32 @@ namespace PruebaWPF.ViewModel
                         }
                         transaction.Rollback();
 
-                        throw ex;
+                        exception = ex;
                     }
+                }
+
+                if (exception != null)
+                {
+                    new SharedViewModel().SaveError(exception);
+                    throw exception;
                 }
 
             }
             return recibo;
 
+        }
+
+        private bool ValidarOrdenActiva(OrdenPagoSon ordenPago)
+        {
+            OrdenPago orden = db.OrdenPago.Find(ordenPago.IdOrdenPago);
+            if (orden != null)
+            {
+                if (!orden.regAnulado)
+                {
+                    throw new Exception(clsReferencias.Error_OP_Anulada);
+                }
+            }
+            return true;
         }
 
         private bool HayPartidaDoble(List<Asiento> asientos)
@@ -768,10 +910,6 @@ namespace PruebaWPF.ViewModel
         {
             bool isSame = db.Recibo1.Where(w => w.IdDetAperturaCaja == apertura).All(a => a.UsuarioCreacion == clsSessionHelper.usuario.Login);
 
-            if (!isSame)
-            {
-                throw new Exception("Los recibos solo pueden ser generados por un único cajero durante la caja esté aperturada");
-            }
             return isSame;
         }
 
@@ -848,25 +986,32 @@ namespace PruebaWPF.ViewModel
 
             if (serieCajero == null)
             {
-                throw new Exception("No hemos encontrado este ordenador entre la lista de cajas disponibles para realizar pagos en el sistema, por favor pida ayuda al administrador de tesorería.");
+                throw new Exception(clsReferencias.Error_NoCaja);
             }
 
             var apertura = db.DetAperturaCaja.Where(w => w.IdCaja == serieCajero.IdCaja).ToList().Where(w => w.AperturaCaja.FechaApertura.Date == System.DateTime.Now.Date && w.FechaCierre == null).ToList();
             if (apertura.Count == 0)
             {
-                throw new Exception("Esta caja no se encuentra aperturada para realizar pagos, contacte al administrador de tesorería para dar apertura a la caja.");
+                throw new Exception(clsReferencias.Error_Caja_NoAperturada);
             }
 
             bool usuarioCajero = new LoginViewModel().isCajero(clsSessionHelper.usuario.Login, db);
+
             if (!usuarioCajero)
             {
-                throw new Exception("El usuario no posee privilegios de cajero, por lo tanto no puede acceder a esta pantalla aunque tenga permisos en su perfil.");
+                throw new Exception(clsReferencias.Error_No_EsCajero);
             }
 
+            bool mismocajero = ValidarMismoCajero(apertura.First().IdDetAperturaCaja);
+            if (!mismocajero)
+            {
+                throw new Exception(clsReferencias.Error_No_MismoCajero);
+
+            }
             var r = db.Recibo1.Where(w => w.Serie.Equals(serieCajero.IdSerie.ToString()));
             int Idrecibo;
 
-            if (r.Count() > 0)
+            if (r.Any())
             {
                 Idrecibo = r.Max(s => s.IdRecibo);
             }
@@ -876,7 +1021,7 @@ namespace PruebaWPF.ViewModel
             }
 
 
-            InfoRecibo info = db.InfoRecibo.Where(w => w.IdRecinto == serieCajero.IdRecinto && w.regAnulado == false).FirstOrDefault();
+            InfoRecibo info = db.InfoRecibo.FirstOrDefault(w => w.IdRecinto == serieCajero.IdRecinto && w.regAnulado == false);
 
             if (Idrecibo == 0)
             {
@@ -950,9 +1095,10 @@ namespace PruebaWPF.ViewModel
 
         public List<FormaPago> ObtenerFormasPago()
         {
-            //Obtengo las formas de pago que se encuentran parametrizadas
+            ////Obtengo las formas de pago que se encuentran parametrizadas (QUEDA COMENTAREADO PARA EL FUTURO)
+            //return db.MovimientoIngreso.Select(s => s.FormaPago).Distinct().Where(w => !w.regAnulado).OrderBy(o => o.FormaPago1).ToList();
 
-            return db.MovimientoIngreso.Select(s => s.FormaPago).Distinct().Where(w => !w.regAnulado).OrderBy(o => o.FormaPago1).ToList();
+            return db.FormaPago.Where(w => !w.regAnulado).OrderBy(o => o.FormaPago1).ToList();
         }
 
         /// <summary>
@@ -1040,15 +1186,20 @@ namespace PruebaWPF.ViewModel
 
     public class ReciboPagoSon : ReciboPago
     {
+
+        public ReciboPagoSon()
+        {
+
+        }
+
         public decimal TipoCambio => new ReciboViewModel().ObtenerTasaCambioDia(IdMoneda).Valor;
 
         //Estos campos son creados para el reporte
         public string FormaPagoRecibo => FormaPago.FormaPago1;
         public string SimboloMoneda => Moneda.Simbolo;
-        public String InfoAdicional { get; set; }
-        public Object DetalleAdicional { get; set; }
+
+        public Object[] ObjInfoAdicional { get; set; } //Posicion 0 = Objeto, Posicion 1 Texto
+
     }
 
 }
-
-

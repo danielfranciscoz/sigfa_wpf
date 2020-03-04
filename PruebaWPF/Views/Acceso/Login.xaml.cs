@@ -29,7 +29,7 @@ namespace PruebaWPF.Views.Acceso
         {
             InitializeComponent();
             txtUsuario.Text = clsConfiguration.Actual().userRemember;
-            txtPassword.Password = "zamora2112u";
+            //txtPassword.Password = "zamora2112u";
             CamposNormales();
         }
 

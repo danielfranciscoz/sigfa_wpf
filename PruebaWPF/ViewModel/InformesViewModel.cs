@@ -1,6 +1,7 @@
 ﻿using PruebaWPF.Model;
 using System;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.Linq;
 
 namespace PruebaWPF.ViewModel
@@ -11,53 +12,166 @@ namespace PruebaWPF.ViewModel
 
         public InformesViewModel() { }
 
-        public Tuple<List<Recibo1>, List<ObjetoResumen>, List<ObjetoResumen>, List<ObjetoResumen>> InformeIngresos()
+        public Tuple<List<Recibo1>, List<ObjetoResumen>, List<ObjetoResumen>, List<ObjetoResumen>, List<ObjetoResumen>, List<ObjetoResumen>, Tuple<List<ReciboPago>>> InformeIngresos(DateTime? startTime, DateTime? endTime, int? IdRecinto, string IdArea, int? IdCaja)
         {
-            var recibos = db.Recibo1.Where(w => !w.regAnulado);
+            var recibos = db.Recibo1
+                .Where(w =>
 
-            var recintosCount = recibos.Select(s => s.InfoRecibo)
+                (
+                    (DbFunctions.TruncateTime(w.Fecha) >= startTime || startTime == null) && (DbFunctions.TruncateTime(w.Fecha) <= endTime || endTime == null)
+                )
+                &&
+                (w.InfoRecibo.IdRecinto == IdRecinto || IdRecinto == null) &&
+                (w.DetAperturaCaja.IdCaja == IdCaja || IdCaja == null) &&
+                (
+                    (
+                        w.IdOrdenPago != null ? w.OrdenPago.IdArea == IdArea : w.ReciboDatos.IdArea == IdArea) ||
+                        IdArea == null
+                ) &&
+                !w.regAnulado
+                );
+
+            var recintosCount = recibos.Select(s => new { s.InfoRecibo, s.DetAperturaCaja.Caja.Nombre })
+                .Join(db.vw_RecintosRH,
+                recibo => recibo.InfoRecibo.IdRecinto,
+                recinto => recinto.IdRecinto,
+                (recibo, recinto) => new { recibo, recinto }
+                )
+                .GroupBy(g => new { g.recinto.IdRecinto, g.recinto.Siglas, g.recibo.Nombre })
+                .OrderByDescending(o => o.Count()).ThenBy(o => o.Key.Siglas)
+                .Select(s => new ObjetoResumen
+                {
+                    IdInt = s.Key.IdRecinto,
+                    Name = s.Key.Siglas,
+                    SecondName = s.Key.Nombre,
+                    Count = s.Count()
+                })
+                .ToList();
+
+
+            var areasCount =
+                             (recibos
+                .Where(w => !w.regAnulado)
+                .Select(s => new
+                {
+                    IdArea = s.ReciboDatos.IdArea ?? s.OrdenPago.IdArea,
+                    OPAnulada = s.OrdenPago != null ? s.OrdenPago.regAnulado : false
+                })
+                ).Where(w => !w.OPAnulada)
+                .GroupBy(g => new { g.IdArea })
+                .Select(s => new
+                {
+                    s.Key.IdArea,
+                    Total = s.Count()
+                })
+                .Join(db.vw_Areas,
+                pa => pa.IdArea,
+                area => area.codigo,
+                (pay, area) => new ObjetoResumen
+                {
+                    Name = area.descripcion,
+                    IdString = area.codigo,
+                    Count = pay.Total
+                }).ToList();
+
+            var pago = db.ReciboPago.Where(w =>
+
+             (
+                (DbFunctions.TruncateTime(w.Recibo1.Fecha) >= startTime || startTime == null) && (DbFunctions.TruncateTime(w.Recibo1.Fecha) <= endTime || endTime == null)
+             )
+             &&
+                (w.Recibo1.InfoRecibo.IdRecinto == IdRecinto || IdRecinto == null) &&
+                (w.Recibo1.DetAperturaCaja.IdCaja == IdCaja || IdCaja == null) &&
+                (
+                    (
+                        w.Recibo1.IdOrdenPago != null ? w.Recibo1.OrdenPago.IdArea == IdArea : w.Recibo1.ReciboDatos.IdArea == IdArea) ||
+                        IdArea == null
+                ) &&
+             !w.Recibo1.regAnulado
+            );
+
+            var recintosMoney = pago
+                .Select(s => new
+                {
+                    s.Recibo1.DetAperturaCaja.Caja.Nombre,
+                    s.Recibo1.DetAperturaCaja.Caja.IdCaja,
+                    s.Recibo1.InfoRecibo.IdRecinto,
+                    s.Moneda.IdMoneda,
+                    s.Moneda.Moneda1,
+                    s.Monto
+                })
+                .GroupBy(g => new { g.IdRecinto, g.Nombre, g.IdCaja, g.Moneda1, g.IdMoneda })
+                .Select(s => new
+                {
+                    s.Key.Nombre,
+                    s.Key.IdCaja,
+                    s.Key.IdRecinto,
+                    s.Key.Moneda1,
+                    s.Key.IdMoneda,
+                    Monto = s.Sum(ss => ss.Monto)
+                })
                 .Join(db.vw_RecintosRH,
                 recibo => recibo.IdRecinto,
                 recinto => recinto.IdRecinto,
                 (recibo, recinto) => new { recibo, recinto }
                 )
-                .GroupBy(g => new { g.recibo.IdRecinto, g.recinto.Siglas }).Select(s => new ObjetoResumen
+                .OrderBy(o => o.recibo.Moneda1).ThenByDescending(o => o.recibo.Monto).ThenBy(o => o.recinto.Siglas)
+                .Select(s => new ObjetoResumen
                 {
-                    Name = s.Key.Siglas,
-                    Count = s.Count()
-                }).ToList();
+                    SecondIdInt = s.recibo.IdMoneda,
+                    IdInt = s.recibo.IdCaja,
+                    Name = s.recinto.Siglas,
+                    SecondName = s.recibo.Nombre,
+                    Coin = s.recibo.Moneda1,
+                    Total = s.recibo.Monto
+                })
+                .ToList();
 
-            var cajasCount = recibos.Select(s => s.DetAperturaCaja.Caja).GroupBy(g => new { g.IdCaja, g.Nombre }).Select(s => new ObjetoResumen
-            {
-                Name = s.Key.Nombre,
-                Count = s.Count()
-            }).ToList();
+            var areasMoney =
+                (pago
+                .Where(w => !w.regAnulado && !w.Recibo1.regAnulado)
+                .Select(s => new
+                {
+                    s.Moneda.Moneda1,
+                    s.Monto,
+                    IdArea = s.Recibo1.ReciboDatos.IdArea ?? s.Recibo1.OrdenPago.IdArea,
+                    OPAnulada = s.Recibo1.OrdenPago != null ? s.Recibo1.OrdenPago.regAnulado : false
+                })).Where(w => !w.OPAnulada)
+                .GroupBy(g => new { g.IdArea, g.Moneda1 })
+                .Select(s => new
+                {
+                    s.Key.Moneda1,
+                    Total = s.Sum(sum => sum.Monto),
+                    s.Key.IdArea
+                })
+                .Join(db.vw_Areas,
+                pa => pa.IdArea,
+                area => area.codigo,
+                (pay, area) => new ObjetoResumen
+                {
+                    Name = area.descripcion,
+                    Coin = pay.Moneda1,
+                    Total = pay.Total
+                }).ToList()
 
-            var areasCount = (
-                             from r in recibos
-                             join area in db.vw_Areas on (r.OrdenPago != null ? r.OrdenPago.IdArea : r.ReciboDatos.IdArea) equals area.codigo into Areas
-                             from AreaTable in Areas
-                             select new { r, AreaTable })
-                             .GroupBy(g => new { g.AreaTable.codigo, g.AreaTable.descripcion }).Select(s => new ObjetoResumen
-                              {
-                                  Name = s.Key.descripcion,
-                                  Count = s.Count()
-                              }).ToList();
+                ;
 
-            //var recintosmoney = (
-            //                 from r in recibos
-            //                 join area in db.vw_Areas on (r.OrdenPago != null ? r.OrdenPago.IdArea : r.ReciboDatos.IdArea) equals area.codigo into Areas
-            //                 from AreaTable in Areas
-            //                 join recinto in db.vw_RecintosRH on (r.OrdenPago != null?r.OrdenPago.IdRecinto:r.InfoRecibo.IdRecinto) equals recinto.IdRecinto into Recintos
-            //                 from RecintoTable in Recintos
-            //                 select new { r, Recintos })
-            //  .GroupBy(g => new { g.Recintos., g.recinto.Siglas }).Select(s => new ObjetoResumen
-            //  {
-            //      Name = s.Key.Siglas,
-            //      Count = s.Count()
-            //  }).ToList();
 
-            return new Tuple<List<Recibo1>, List<ObjetoResumen>, List<ObjetoResumen>, List<ObjetoResumen>>(recibos.ToList(), recintosCount, cajasCount, areasCount);
+            var FormaPagoMoney = pago.Select(s => new { s.FormaPago.FormaPago1, s.Moneda.Moneda1, s.Monto })
+                .GroupBy(g => new { g.FormaPago1, g.Moneda1 })
+                .OrderBy(o => o.Key.Moneda1).ThenByDescending(o => o.Sum(s1 => s1.Monto)).ThenBy(o => o.Key.FormaPago1)
+                .Select(s => new ObjetoResumen
+                {
+
+                    Name = s.Key.FormaPago1,
+                    Coin = s.Key.Moneda1,
+                    Total = s.Sum(s1 => s1.Monto)
+                })
+                .ToList();
+
+
+
+            return new Tuple<List<Recibo1>, List<ObjetoResumen>, List<ObjetoResumen>, List<ObjetoResumen>, List<ObjetoResumen>, List<ObjetoResumen>, Tuple<List<ReciboPago>>>(recibos.OrderByDescending(o => o.Serie).ThenBy(o => o.IdRecibo).ToList(), recintosCount, areasCount, recintosMoney, areasMoney, FormaPagoMoney, new Tuple<List<ReciboPago>>(pago.ToList()));
         }
 
         private static Tuple<int, int> IntegerDivide(int dividend, int divisor)
@@ -78,8 +192,13 @@ namespace PruebaWPF.ViewModel
 
     class ObjetoResumen
     {
+        public int? IdInt { get; set; }
+        public int SecondIdInt { get; set; }
+        public string IdString { get; set; }
         public string Name { get; set; }
-        public decimal Count { get; set; }
-        public string coin { get; set; }
+        public string SecondName { get; set; }
+        public decimal Total { get; set; }
+        public int Count { get; set; }
+        public string Coin { get; set; }
     }
 }

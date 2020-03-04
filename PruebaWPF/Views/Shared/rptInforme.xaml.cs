@@ -20,6 +20,9 @@ namespace PruebaWPF.Views.Shared
         private DetAperturaCajaSon detApertura;
         private Model.Arqueo arqueo;
         ReportDataSource[] datasSource;
+        private List<ReciboPago> pagos;
+        private ColumnasFiltro filtros;
+
         public rptInforme()
         {
             InitializeComponent();
@@ -29,7 +32,7 @@ namespace PruebaWPF.Views.Shared
             reporte_id = (int)clsReferencias.Informes.cierre_caja;
             this.detApertura = detApertura;
             InitializeComponent();
-            Title = "Informe de cierre de caja";
+            Title = "Reporte de cierre de caja";
         }
 
         public rptInforme(Model.Arqueo arqueo)
@@ -37,7 +40,16 @@ namespace PruebaWPF.Views.Shared
             reporte_id = (int)clsReferencias.Informes.arqueo_caja;
             this.arqueo = arqueo;
             InitializeComponent();
-            Title = "Informe de arqueo de caja";
+            Title = "Reporte de arqueo de caja";
+        }
+
+        public rptInforme(List<ReciboPago> pagos, ColumnasFiltro filtros)
+        {
+            reporte_id = (int)clsReferencias.Informes.informe_general_ingresos;
+            this.pagos = pagos;
+            this.filtros = filtros;
+            InitializeComponent();
+            Title = "Reporte general de ingresos";
         }
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
@@ -55,6 +67,9 @@ namespace PruebaWPF.Views.Shared
 
                 case (int)clsReferencias.Informes.arqueo_caja:
                     InformeArqueoCaja();
+                    break;
+                case (int)clsReferencias.Informes.informe_general_ingresos:
+                    InformeGeneralIngresos(pagos, filtros);
                     break;
 
                 default: break;
@@ -142,13 +157,15 @@ namespace PruebaWPF.Views.Shared
                 {
                     foreach (ReciboPagoSon pay in controller.ReciboFormaPago(item))
                     {
-                        vista_RecibosPago vr = new vista_RecibosPago();
-                        vr.IdRecibo = item.IdRecibo;
-                        vr.Serie = item.Serie;
-                        vr.porCuenta = item.Recibimos;
-                        vr.FormaPago = pay.FormaPago.FormaPago1;
-                        vr.Moneda = pay.Moneda.Moneda1;
-                        vr.Monto = Double.Parse(pay.Monto.ToString());
+                        vista_RecibosPago vr = new vista_RecibosPago
+                        {
+                            IdRecibo = item.IdRecibo,
+                            Serie = item.Serie,
+                            porCuenta = item.Recibimos,
+                            FormaPago = pay.FormaPago.FormaPago1,
+                            Moneda = pay.Moneda.Moneda1,
+                            Monto = Double.Parse(pay.Monto.ToString())
+                        };
                         vista.Add(vr);
                     }
                 }
@@ -171,6 +188,55 @@ namespace PruebaWPF.Views.Shared
             informe.ZoomMode = Microsoft.Reporting.WinForms.ZoomMode.Percent;
             informe.ZoomPercent = 100;
             informe.LocalReport.Refresh();
+        }
+
+        private void InformeGeneralIngresos(List<ReciboPago> pagos, ColumnasFiltro columnasFiltro)
+        {
+            ReciboViewModel controller = new ReciboViewModel();
+
+            List<ColumnasFiltro> columnas = new List<ColumnasFiltro>();
+            columnasFiltro.Fecha = GenerarFecha(columnasFiltro.startdate, columnasFiltro.enddate);
+            columnasFiltro.Recinto = columnasFiltro.Recinto != null ? columnasFiltro.Recinto : "TODOS LOS RECINTOS";
+            columnasFiltro.Area = columnasFiltro.Area != null ? columnasFiltro.Area : "TODAS LAS ÁREAS";
+            columnasFiltro.Caja = columnasFiltro.Caja != null ? columnasFiltro.Caja : "TODAS LAS CAJAS";
+            columnas.Add(columnasFiltro);
+
+            datasSource = new ReportDataSource[2];
+
+            datasSource[0] = new ReportDataSource("ReciboPagos", pagos);
+            datasSource[1] = new ReportDataSource("Filtros", columnas);
+
+            clsUtilidades.InformeDataSource(informe, datasSource);
+
+            ParametrosComunes(informe, "PruebaWPF.Reportes.Informes.InformeGeneralIngresos.rdlc");
+
+            informe.SetDisplayMode(Microsoft.Reporting.WinForms.DisplayMode.PrintLayout);
+            informe.ZoomMode = Microsoft.Reporting.WinForms.ZoomMode.Percent;
+            informe.ZoomPercent = 100;
+            informe.LocalReport.Refresh();
+        }
+
+        private string GenerarFecha(DateTime? startdate, DateTime? enddate)
+        {
+            string fecha = "";
+            if (startdate.HasValue && enddate.HasValue)
+            {
+                fecha = string.Format("Desde el {0} hasta el {1}", startdate.Value.ToString(@"dd \de MMMM \del yyyy"), enddate.Value.ToString(@"dd \de MMMM \del yyyy"));
+            }
+            else if (startdate.HasValue)
+            {
+                fecha = string.Format("Desde el {0} hasta la fecha de impresión de este informe", startdate.Value.ToString(@"dd \de MMMM \del yyyy"));
+            }
+            else if (enddate.HasValue)
+            {
+                fecha = string.Format("Desde el inicio hasta el {0}", enddate.Value.ToString(@"dd \de MMMM \del yyyy"));
+            }
+            else
+            {
+                fecha = string.Format("Desde el inicio hasta la fecha de impresión de este informe");
+            }
+
+            return fecha;
         }
 
         private void ParametrosComunes(ReportViewer informe, string reportURL)

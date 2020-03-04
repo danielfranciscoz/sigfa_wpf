@@ -1,4 +1,5 @@
-﻿using PruebaWPF.Helper;
+﻿using PruebaWPF.Clases;
+using PruebaWPF.Helper;
 using PruebaWPF.Model;
 using PruebaWPF.Referencias;
 using System;
@@ -18,7 +19,7 @@ namespace PruebaWPF.ViewModel
 
         public void MacMemory()
         {
-            clsSessionHelper.MACMemory = new TesoreriaViewModel().FindMacActual();
+            clsSessionHelper.MACMemory = clsUtilidades.FindMacActual();
         }
 
         public List<UsuarioPerfil> ObtenerPerfilesUsuario(String Usuario)
@@ -74,15 +75,32 @@ namespace PruebaWPF.ViewModel
             }
         }
 
-        public bool isCajero(String Usuario,SIFOPEntities db_Context)
+        /// <summary>
+        /// Este procedimiento valida que el usuario tenga asociado el perfil de cajero entre todos sus perfiles, 
+        /// En caso de que se necesite validar que solo posea perfil cajero (es decir puede tener muchos perfiles pero solo pueden ser de cajero, esto ocurre cuando se es cajero en varios recintos) se deberá hacer uso del parametro validarOnlyCajero
+        /// </summary>
+        /// <param name="Usuario"></param>
+        /// <param name="db_Context"></param>
+        /// <param name="validarOnlyCajero"></param>
+        /// <returns>Si el usuario es un cajero o no</returns>
+        public bool isCajero(String Usuario, SIFOPEntities db_Context, bool validarOnlyCajero = false)
         {
-            if (db_Context==null)
+            if (db_Context == null)
             {
-            return db.Usuario.Find(Usuario).UsuarioPerfil.ToList().Exists(w => w.IdPerfil == clsReferencias.PerfilCajero);
+                    return db.Usuario.Find(Usuario).UsuarioPerfil.Any(w => w.IdPerfil == clsReferencias.PerfilCajero);
             }
             else
             {
-            return db_Context.Usuario.Find(Usuario).UsuarioPerfil.ToList().Exists(w => w.IdPerfil == clsReferencias.PerfilCajero);
+                if (validarOnlyCajero)
+                {
+                    return db_Context.Usuario.Find(Usuario).UsuarioPerfil.Where(w=> !w.RegAnulado && !w.Perfil.isWeb ).All(w => w.IdPerfil == clsReferencias.PerfilCajero);
+
+                }
+                else
+                {
+                return db_Context.Usuario.Find(Usuario).UsuarioPerfil.Any(w => w.IdPerfil == clsReferencias.PerfilCajero);
+
+                }
             }
         }
     }

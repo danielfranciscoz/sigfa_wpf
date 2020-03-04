@@ -1,10 +1,8 @@
 ﻿using PruebaWPF.Model;
-using System.Collections.Generic;
 
 namespace PruebaWPF.Helper
 
 {
-    using System.Linq;
     class clsSessionHelper
     {
         public clsSessionHelper() { }

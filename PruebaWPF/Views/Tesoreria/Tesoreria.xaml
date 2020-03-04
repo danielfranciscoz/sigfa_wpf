@@ -97,6 +97,7 @@
 
                                             <DataGridTextColumn CanUserReorder="False" CanUserResize="False" IsReadOnly="True" Header="Nombre de la Caja" Width="auto" Binding="{Binding Nombre}"></DataGridTextColumn>
                                             <DataGridTextColumn CanUserReorder="False" CanUserResize="False" IsReadOnly="True" Header="Dirección MAC" Width="auto" Binding="{Binding MAC}"></DataGridTextColumn>
+                                            <DataGridTextColumn CanUserReorder="False" CanUserResize="False" IsReadOnly="True" Header="Com Port" Width="auto" Binding="{Binding ComPort}"></DataGridTextColumn>
                                             <DataGridTextColumn CanUserReorder="False" CanUserResize="False" IsReadOnly="True" Header="Serie" Width="100" Binding="{Binding IdSerie}"></DataGridTextColumn>
                                             <DataGridTextColumn CanUserReorder="False" CanUserResize="False" IsReadOnly="True" Header="Recinto" Width="100" Binding="{Binding Recinto}"></DataGridTextColumn>
                                             <DataGridTextColumn CanUserReorder="False" CanUserResize="False" IsReadOnly="True" Header="Creado por" Width="auto" Binding="{Binding UsuarioCreacion}"></DataGridTextColumn>
