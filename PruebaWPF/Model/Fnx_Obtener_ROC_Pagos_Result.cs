@@ -10,18 +10,15 @@
 namespace PruebaWPF.Model
 {
     using System;
-    using System.Collections.Generic;
     
-    public partial class vw_AreaEquivalencia
+    public partial class Fnx_Obtener_ROC_Pagos_Result
     {
-        public string CodRH { get; set; }
-        public string DescripcionRH { get; set; }
-        public string EstadoRH { get; set; }
-        public byte IdF { get; set; }
-        public string IdInterfaz { get; set; }
-        public string DescripcionF { get; set; }
-        public byte EstadoF { get; set; }
-        public string UsuarioCreacion { get; set; }
-        public System.DateTime FechaCreacion { get; set; }
+        public int IdRecibo { get; set; }
+        public string Serie { get; set; }
+        public System.DateTime Fecha { get; set; }
+        public int IdFormaPago { get; set; }
+        public string FormaPago { get; set; }
+        public Nullable<decimal> MN_Monto { get; set; }
+        public Nullable<decimal> ME_Monto { get; set; }
     }
 }

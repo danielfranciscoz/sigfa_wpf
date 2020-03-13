@@ -100,7 +100,7 @@ namespace PruebaWPF.ViewModel
 
         #endregion
 
-        #region Paso 2, contabilizando recibos
+        #region Paso 2, contabilizando recibos y confirmando pagos
         public Recibo1 ContabilizarRecibo(string codigo, DetAperturaCaja apertura)
         {
             Recibo1 r;
@@ -160,6 +160,20 @@ namespace PruebaWPF.ViewModel
         public List<Recibo1> FindRecibosContabilizados(Arqueo arqueo)
         {
             return db.ArqueoRecibo.Where(w => w.IdArqueo == arqueo.IdArqueoDetApertura).Select(s => s.Recibo1).OrderBy(o => o.Serie).ThenBy(t => t.IdRecibo).ToList();
+        }
+
+        public void ConfirmarPago(ReciboPago pago)
+        {
+            ConfirmacionPago confirmacion = new ConfirmacionPago()
+            {
+                IdReciboPago = pago.IdReciboPago,
+                IdConfirmacion = pago.IdReciboPago,
+                UsuarioCreacion = clsSessionHelper.usuario.Login,
+                FechaCreacion = DateTime.Now
+            };
+            db.ConfirmacionPago.Add(confirmacion);
+
+            db.SaveChanges();
         }
         #endregion
 
@@ -321,9 +335,19 @@ namespace PruebaWPF.ViewModel
             return db.ReciboPago.Count(c => c.Recibo1.IdDetAperturaCaja == IdArqueoDetApertura && c.FormaPago.isDoc && c.regAnulado == false);
         }
 
-        public int FindTotalPagos(int IdArqueoDetApertura)
+        /// <summary>
+        /// Este metodo retorna la cantidad de pagos que se realizaron en la apertura, y la cantidad de pagos que se han confirmado en el arqueo
+        /// [0] => cantidad de pagos
+        /// [1] => cantidad de pagos confirmados
+        /// </summary>
+        /// <param name="IdArqueoDetApertura"></param>
+        /// <returns></returns>
+        public int[] FindTotalPagos(int IdArqueoDetApertura)
         {
-            return db.ReciboPago.Count(c => c.Recibo1.IdDetAperturaCaja == IdArqueoDetApertura && c.regAnulado == false);
+            List<ReciboPago> pagos = db.ReciboPago.Where(c => c.Recibo1.IdDetAperturaCaja == IdArqueoDetApertura && c.regAnulado == false).ToList();
+            int totalPagos = pagos.Count();
+            int confirmados = pagos.Count(c => c.ConfirmacionPago != null);
+            return new int[] { totalPagos, confirmados };
         }
 
 

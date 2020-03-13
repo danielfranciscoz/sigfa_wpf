@@ -14,14 +14,14 @@ namespace PruebaWPF.Model
     
     public partial class ConfirmacionPago
     {
-        public Nullable<int> IdReciboPago { get; set; }
+        public int IdReciboPago { get; set; }
         public Nullable<int> IdConfirmacion { get; set; }
         public string Observacion { get; set; }
         public string UsuarioCreacion { get; set; }
         public System.DateTime FechaCreacion { get; set; }
     
-        public virtual Usuario Usuario { get; set; }
         public virtual ReciboPago ReciboPago { get; set; }
         public virtual ReciboPago ReciboPago1 { get; set; }
+        public virtual Usuario Usuario { get; set; }
     }
 }

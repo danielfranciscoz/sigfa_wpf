@@ -78,7 +78,7 @@
                             </DataGrid.RowStyle>
                             
                             <DataGrid.Columns>
-                                <DataGridTemplateColumn CanUserResize="False" Width="50" Header="">
+                                <DataGridTemplateColumn CanUserResize="False" Width="50" Visibility="Collapsed" Header="">
                                     <DataGridTemplateColumn.CellTemplate>
                                         <DataTemplate>
                                             <StackPanel>
@@ -99,7 +99,7 @@
                                 <DataGridTextColumn CanUserReorder="False" CanUserResize="False" IsReadOnly="True" Header="Tipo de Depósito" Width="auto" Binding="{Binding TipoDeposito.Nombre}"></DataGridTextColumn>
                                 <DataGridTextColumn CanUserReorder="False" CanUserResize="False" IsReadOnly="True" Header="Orden de Pago" Width="auto" Binding="{Binding OrdenPago.NoOrdenPago}"></DataGridTextColumn>
                                 <DataGridTextColumn CanUserReorder="False" CanUserResize="False" IsReadOnly="True" Header="Creado por" Width="auto" Binding="{Binding UsuarioCreacion}"></DataGridTextColumn>
-                                <DataGridTextColumn CanUserReorder="False" CanUserResize="False" IsReadOnly="True" Header="Fecha de Creación" Width="auto" Binding="{Binding Fecha}"></DataGridTextColumn>
+                                <DataGridTextColumn CanUserReorder="False" CanUserResize="False" IsReadOnly="True" Header="Fecha de Creación" Width="auto" Binding="{Binding Fecha,StringFormat={}{0:dd/MM/yyyy hh:mm:ss tt}}"></DataGridTextColumn>
                                 <DataGridTextColumn CanUserReorder="False" CanUserResize="False" IsReadOnly="True" Header="Estado" Width="auto" Binding="{Binding regAnulado , Converter={StaticResource convertidor},ConverterParameter='Anulado;'}"></DataGridTextColumn>
                                 <DataGridTextColumn CanUserReorder="False" CanUserResize="False" CanUserSort="False" IsReadOnly="True" Header="Motivo"  Visibility="Collapsed" Binding="{Binding ReciboAnulado.Motivo}"></DataGridTextColumn>
                             </DataGrid.Columns>

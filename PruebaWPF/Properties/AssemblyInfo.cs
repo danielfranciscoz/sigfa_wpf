@@ -8,10 +8,10 @@ using System.Windows;
 // conjunto de atributos. Cambie estos valores de atributo para modificar la información
 // asociada con un ensamblado.
 [assembly: AssemblyTitle("SIGFA-Tesorería")]
-[assembly: AssemblyDescription("")]
+[assembly: AssemblyDescription("Sistema para la gestión de ingresos de la UNI")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("UNI")]
-[assembly: AssemblyProduct("SIFA")]
+[assembly: AssemblyProduct("SIGFA-Tesoreria")]
 [assembly: AssemblyCopyright("Copyright ©  2020")]
 [assembly: AssemblyTrademark("Universidad Nacional de Ingeniería")]
 [assembly: AssemblyCulture("")]
@@ -51,5 +51,5 @@ using System.Windows;
 // Puede especificar todos los valores o utilizar los números de compilación y de revisión predeterminados
 // mediante el carácter '*', como se muestra a continuación:
 // [assembly: AssemblyVersion("1.0.*")]
-[assembly: AssemblyVersion("1.0.0.0")]
-[assembly: AssemblyFileVersion("1.0.0.0")]
+[assembly: AssemblyVersion("1.0.0.19")]
+[assembly: AssemblyFileVersion("1.0.0.19")]

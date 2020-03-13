@@ -143,7 +143,7 @@ namespace PruebaWPF.Views.Recibo
             clsValidateInput.Validate(txtAutorizacion, clsValidateInput.OnlyNumber);
             clsValidateInput.Validate(txtTarjeta, clsValidateInput.OnlyNumber);
 
-            validate.AsignarBorderNormal(new Control[] { txtArea, cboTipoDeposito, txtIdentificador, txtPorCuenta, txtRecibimos, cboFuenteFinanciamiento, cboTipoArancel, cboArancel, txtMonto, cboFormaPago, txtMontoPago, cboMonedaPago, txtEmisor, txtBono, cboBanco, txtCuenta, txtNumeroCK, cboTarjeta, txtAutorizacion, txtTarjeta, cboTipo, txtTransaccion });
+            validate.AsignarBorderNormal(new Control[] { txtArea, cboTipoDeposito, txtIdentificador, txtPorCuenta, txtRecibimos, cboFuenteFinanciamiento, cboTipoArancel, cboArancel, txtMonto, cboFormaPago, txtMontoPago, cboMonedaPago, txtEmisor, txtBono, cboBanco, txtCuenta, txtNumeroCK, cboTarjeta, txtAutorizacion, txtTarjeta, cboTipo, txtTransaccion,txtConcepto });
 
         }
 
@@ -241,6 +241,7 @@ namespace PruebaWPF.Views.Recibo
             }
             catch (Exception ex)
             {
+                new SharedViewModel().SaveError(ex);
                 clsUtilidades.OpenMessage(new Operacion() { Mensaje = new clsException(ex).ErrorMessage(), OperationType = clsReferencias.TYPE_MESSAGE_Error });
                 Close();
             }
@@ -457,12 +458,15 @@ namespace PruebaWPF.Views.Recibo
 
                 if (ValidarNumericos(c))
                 {
+
                     AddArancel();
+
                 }
 
             }
 
         }
+
 
         private void btnAddPay_Click(object sender, RoutedEventArgs e)
         {
@@ -500,7 +504,7 @@ namespace PruebaWPF.Views.Recibo
 
         private void btnDelete_Click(object sender, RoutedEventArgs e)
         {
-            aranceles.Add(((DetOrdenPagoSon)tblDetalles.CurrentItem).ArancelPrecio);
+            //aranceles.Add(((DetOrdenPagoSon)tblDetalles.CurrentItem).ArancelPrecio); //comentariado para soportar modelo de negocios del IES
             items.Remove((DetOrdenPagoSon)tblDetalles.CurrentItem);
 
         }
@@ -558,6 +562,7 @@ namespace PruebaWPF.Views.Recibo
             reciboPagoSon.IdMoneda = m.IdMoneda;
             reciboPagoSon.Monto = Math.Round(Decimal.Parse(txtMontoPago.Text), 2);
 
+            bool hayError = false;
 
             if (IsPOSActive && isTarjeta)
             {
@@ -575,6 +580,7 @@ namespace PruebaWPF.Views.Recibo
                 catch (Exception ex)
                 {
                     clsUtilidades.OpenMessage(new Operacion() { Mensaje = new clsException(ex).ErrorMessage(), OperationType = clsReferencias.TYPE_MESSAGE_Error });
+                    hayError = true;
                 }
                 finally
                 {
@@ -583,20 +589,20 @@ namespace PruebaWPF.Views.Recibo
 
             }
 
-            Object[] o = ObtenerObjetoAdicional(fp.IdFormaPago);
-            reciboPagoSon.ObjInfoAdicional[1] = o[1].ToString();
-            reciboPagoSon.ObjInfoAdicional[0] = o[0];
+            if (!hayError)
+            {
+                Object[] o = ObtenerObjetoAdicional(fp.IdFormaPago);
+                reciboPagoSon.ObjInfoAdicional = o;
+
+                formaPago.Add(reciboPagoSon);
 
 
+                LimpiarCampos(new Control[] { cboFormaPago });
+                LimpiarCampos(CamposAValidar(fp.IdFormaPago, iscleaning: true));
 
-            formaPago.Add(reciboPagoSon);
-
-
-            LimpiarCampos(new Control[] { cboFormaPago });
-            LimpiarCampos(CamposAValidar(fp.IdFormaPago));
-
-            VerCamposAdicionales(0); //Ocultará los campos adicionales al enviarle un id que no existe
-            cboFormaPago.Focus();
+                VerCamposAdicionales(0); //Ocultará los campos adicionales al enviarle un id que no existe
+                cboFormaPago.Focus();
+            }
         }
 
         private Task<VoucherBanco> GenerarVoucher(ReciboPagoSon reciboPago, int IdDetApertura, POSBanpro pos)
@@ -611,7 +617,7 @@ namespace PruebaWPF.Views.Recibo
         {
             if (pagoSon.ObjInfoAdicional[0] != null)
             {
-                if (pagoSon.ObjInfoAdicional[0].GetType().BaseType == typeof(ReciboPagoTarjeta) && IsPOSActive)
+                if (pagoSon.ObjInfoAdicional[0].GetType() == typeof(ReciboPagoTarjeta) && IsPOSActive)
                 {
                     ReciboPagoTarjeta tarjeta = (ReciboPagoTarjeta)pagoSon.ObjInfoAdicional[0];
                     if (tarjeta.IdVoucherBanco != null)
@@ -662,21 +668,30 @@ namespace PruebaWPF.Views.Recibo
         {
             ArancelPrecio a = (ArancelPrecio)cboArancel.SelectedItem;
             Exoneracion exoneracion = controller.FindExoneracionArancel(orden.Identificador, orden.IdTipoDeposito, a.IdArancelPrecio);
-            items.Add(new DetOrdenPagoSon()
+
+            DetOrdenPagoSon detalle = new DetOrdenPagoSon
             {
                 PrecioVariable = Decimal.Parse(txtMonto.Text.ToString()),
                 Concepto = txtConcepto.Text,
                 Exoneracion = exoneracion,
                 ArancelPrecio = a
-            });
+            };
+            if (!items.Any(w => w.ArancelPrecio.IdArancelPrecio == detalle.ArancelPrecio.IdArancelPrecio && w.Concepto == detalle.Concepto))
+            {
+                items.Add(detalle);
+                LimpiarCampos(new Control[] { cboArancel, txtMonto, txtMonedaDeuda, txtConcepto });
+                txtMonto.IsEnabled = true;
+            }
+            else
+            {
+                txtConcepto.BorderBrush = clsUtilidades.BorderError();
+            }
 
-            aranceles.Remove((ArancelPrecio)cboArancel.SelectedItem);
+            //aranceles.Remove((ArancelPrecio)cboArancel.SelectedItem); //comentariado para soportar modelo de negocio del IES
             //aranceles.RemoveAt(cboArancel.SelectedIndex);
             //cboArancel.ItemsSource = null;
             //cboArancel.ItemsSource = aranceles;
 
-            LimpiarCampos(new Control[] { cboArancel, txtMonto, txtMonedaDeuda, txtConcepto });
-            txtMonto.IsEnabled = true;
         }
 
         #region Esta region contiene las validaciones y cargas en dependencia de la forma de pago seleccionada
@@ -768,7 +783,7 @@ namespace PruebaWPF.Views.Recibo
             return o;
         }
 
-        private Control[] CamposAValidar(int formapago)
+        private Control[] CamposAValidar(int formapago, bool iscleaning = false)
         {
             Control[] campos = new Control[5];
 
@@ -786,7 +801,13 @@ namespace PruebaWPF.Views.Recibo
                 case 3: //Tarjeta
 
                     isTarjeta = true;
-                    if (!IsPOSActive)
+                    if (iscleaning) // si estoy llamando al metodo con el objetivo de limpiar los campos, entonces no verifico nada y retorno todos los campos para que los limpie
+                    {
+                        campos[2] = cboTarjeta;
+                        campos[3] = txtTarjeta;
+                        campos[4] = txtAutorizacion;
+                    }
+                    else if (!IsPOSActive)
                     {
                         pos = controller.VerificarPOS();
                         if (!string.IsNullOrEmpty(pos.ComPort))

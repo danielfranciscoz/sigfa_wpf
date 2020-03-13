@@ -32,7 +32,9 @@ namespace PruebaWPF.Model
         public virtual DbSet<ArqueoEfectivo> ArqueoEfectivo { get; set; }
         public virtual DbSet<ArqueoNoEfectivo> ArqueoNoEfectivo { get; set; }
         public virtual DbSet<ArqueoRecibo> ArqueoRecibo { get; set; }
+        public virtual DbSet<ConfirmacionPago> ConfirmacionPago { get; set; }
         public virtual DbSet<DiferenciasArqueo> DiferenciasArqueo { get; set; }
+        public virtual DbSet<Errors> Errors { get; set; }
         public virtual DbSet<AnulacionPago> AnulacionPago { get; set; }
         public virtual DbSet<DetallePago> DetallePago { get; set; }
         public virtual DbSet<NoCuentasBankArea> NoCuentasBankArea { get; set; }
@@ -48,6 +50,7 @@ namespace PruebaWPF.Model
         public virtual DbSet<Moneda> Moneda { get; set; }
         public virtual DbSet<Asiento> Asiento { get; set; }
         public virtual DbSet<DetalleMovimientoIngreso> DetalleMovimientoIngreso { get; set; }
+        public virtual DbSet<MovimientoIngreso> MovimientoIngreso { get; set; }
         public virtual DbSet<Actividad> Actividad { get; set; }
         public virtual DbSet<AgenteExterno> AgenteExterno { get; set; }
         public virtual DbSet<AutorizarRestricciones> AutorizarRestricciones { get; set; }
@@ -196,10 +199,17 @@ namespace PruebaWPF.Model
         public virtual DbSet<ReciboPago> ReciboPago { get; set; }
         public virtual DbSet<ReciboPagoBono> ReciboPagoBono { get; set; }
         public virtual DbSet<ReciboPagoCheque> ReciboPagoCheque { get; set; }
+        public virtual DbSet<ReciboPagoDeposito> ReciboPagoDeposito { get; set; }
         public virtual DbSet<ReciboPagoTarjeta> ReciboPagoTarjeta { get; set; }
         public virtual DbSet<ReciboSIRA> ReciboSIRA { get; set; }
         public virtual DbSet<SerieRecibo> SerieRecibo { get; set; }
         public virtual DbSet<TipoDeposito> TipoDeposito { get; set; }
+        public virtual DbSet<VoucherBanco> VoucherBanco { get; set; }
+        public virtual DbSet<TipoDocumento> TipoDocumento { get; set; }
+        public virtual DbSet<TmpDisponibilidad> TmpDisponibilidad { get; set; }
+        public virtual DbSet<TmpDisponibilidad_b> TmpDisponibilidad_b { get; set; }
+        public virtual DbSet<TmpFuenteFinanciamiento1> TmpFuenteFinanciamiento1 { get; set; }
+        public virtual DbSet<TmpTipoDocumento> TmpTipoDocumento { get; set; }
         public virtual DbSet<AccesoDirectoPerfil> AccesoDirectoPerfil { get; set; }
         public virtual DbSet<AccesoDirectoUsuario> AccesoDirectoUsuario { get; set; }
         public virtual DbSet<Configuracion> Configuracion { get; set; }
@@ -289,11 +299,7 @@ namespace PruebaWPF.Model
         public virtual DbSet<w_LibroMayorAcumulado_VA> w_LibroMayorAcumulado_VA { get; set; }
         public virtual DbSet<w_LibroMayorAcumulado_VEP> w_LibroMayorAcumulado_VEP { get; set; }
         public virtual DbSet<w_LibroMayorAcumulado_Vlast> w_LibroMayorAcumulado_Vlast { get; set; }
-        public virtual DbSet<MovimientoIngreso> MovimientoIngreso { get; set; }
-        public virtual DbSet<Errors> Errors { get; set; }
-        public virtual DbSet<ReciboPagoDeposito> ReciboPagoDeposito { get; set; }
-        public virtual DbSet<VoucherBanco> VoucherBanco { get; set; }
-        public virtual DbSet<ConfirmacionPago> ConfirmacionPago { get; set; }
+        public virtual DbSet<v_reciboPagos> v_reciboPagos { get; set; }
     
         [DbFunction("SIFOPEntities", "fn_TotalesArqueo")]
         public virtual IQueryable<fn_TotalesArqueo_Result> fn_TotalesArqueo(Nullable<int> idArqueo, Nullable<bool> isDoc)
@@ -1081,6 +1087,56 @@ namespace PruebaWPF.Model
                 new ObjectParameter("Enterprise", typeof(string));
     
             return ((IObjectContextAdapter)this).ObjectContext.CreateQuery<SisAccount_Result>("[SIFOPEntities].[SisAccount](@Enterprise)", enterpriseParameter);
+        }
+    
+        [DbFunction("SIFOPEntities", "Fnx_Obtener_ROC_Pagos")]
+        public virtual IQueryable<Fnx_Obtener_ROC_Pagos_Result> Fnx_Obtener_ROC_Pagos(Nullable<int> rOC, string serie)
+        {
+            var rOCParameter = rOC.HasValue ?
+                new ObjectParameter("ROC", rOC) :
+                new ObjectParameter("ROC", typeof(int));
+    
+            var serieParameter = serie != null ?
+                new ObjectParameter("Serie", serie) :
+                new ObjectParameter("Serie", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.CreateQuery<Fnx_Obtener_ROC_Pagos_Result>("[SIFOPEntities].[Fnx_Obtener_ROC_Pagos](@ROC, @Serie)", rOCParameter, serieParameter);
+        }
+    
+        [DbFunction("SIFOPEntities", "Fnx_Obtener_ROC_Periodo_Fuente1")]
+        public virtual IQueryable<Fnx_Obtener_ROC_Periodo_Fuente1_Result> Fnx_Obtener_ROC_Periodo_Fuente1(Nullable<int> annio, Nullable<int> mes, Nullable<int> idArea, Nullable<int> idFuente, Nullable<byte> tipoMoneda)
+        {
+            var annioParameter = annio.HasValue ?
+                new ObjectParameter("Annio", annio) :
+                new ObjectParameter("Annio", typeof(int));
+    
+            var mesParameter = mes.HasValue ?
+                new ObjectParameter("Mes", mes) :
+                new ObjectParameter("Mes", typeof(int));
+    
+            var idAreaParameter = idArea.HasValue ?
+                new ObjectParameter("IdArea", idArea) :
+                new ObjectParameter("IdArea", typeof(int));
+    
+            var idFuenteParameter = idFuente.HasValue ?
+                new ObjectParameter("IdFuente", idFuente) :
+                new ObjectParameter("IdFuente", typeof(int));
+    
+            var tipoMonedaParameter = tipoMoneda.HasValue ?
+                new ObjectParameter("TipoMoneda", tipoMoneda) :
+                new ObjectParameter("TipoMoneda", typeof(byte));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.CreateQuery<Fnx_Obtener_ROC_Periodo_Fuente1_Result>("[SIFOPEntities].[Fnx_Obtener_ROC_Periodo_Fuente1](@Annio, @Mes, @IdArea, @IdFuente, @TipoMoneda)", annioParameter, mesParameter, idAreaParameter, idFuenteParameter, tipoMonedaParameter);
+        }
+    
+        [DbFunction("SIFOPEntities", "Fnx_RecuperarDisponibilidad_Año1")]
+        public virtual IQueryable<Fnx_RecuperarDisponibilidad_Año1_Result> Fnx_RecuperarDisponibilidad_Año1(Nullable<int> annio)
+        {
+            var annioParameter = annio.HasValue ?
+                new ObjectParameter("Annio", annio) :
+                new ObjectParameter("Annio", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.CreateQuery<Fnx_RecuperarDisponibilidad_Año1_Result>("[SIFOPEntities].[Fnx_RecuperarDisponibilidad_Año1](@Annio)", annioParameter);
         }
     
         [DbFunction("SIFOPEntities", "fn_ObtenerMenu")]
@@ -4475,6 +4531,62 @@ namespace PruebaWPF.Model
                 new ObjectParameter("Sistema", typeof(string));
     
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("sp_InsertarOrdenPago", noOrdenParameter, recibimosParameter, conceptoParameter, montoParameter, tipoMonedaParameter, usuarioParameter, idAreaRRHHParameter, idCuentaContableParameter, sistemaParameter);
+        }
+    
+        public virtual int sproc_CargarDocumentosER(string loginCreacion)
+        {
+            var loginCreacionParameter = loginCreacion != null ?
+                new ObjectParameter("LoginCreacion", loginCreacion) :
+                new ObjectParameter("LoginCreacion", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("sproc_CargarDocumentosER", loginCreacionParameter);
+        }
+    
+        public virtual int sproc_CargarFuentes_Disponibilidad(string loginCreacion, Nullable<byte> evento)
+        {
+            var loginCreacionParameter = loginCreacion != null ?
+                new ObjectParameter("LoginCreacion", loginCreacion) :
+                new ObjectParameter("LoginCreacion", typeof(string));
+    
+            var eventoParameter = evento.HasValue ?
+                new ObjectParameter("Evento", evento) :
+                new ObjectParameter("Evento", typeof(byte));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("sproc_CargarFuentes_Disponibilidad", loginCreacionParameter, eventoParameter);
+        }
+    
+        public virtual int sproc_ObtenerDisponibilidad(Nullable<int> annio, Nullable<int> idArea, Nullable<byte> mesVigente)
+        {
+            var annioParameter = annio.HasValue ?
+                new ObjectParameter("Annio", annio) :
+                new ObjectParameter("Annio", typeof(int));
+    
+            var idAreaParameter = idArea.HasValue ?
+                new ObjectParameter("IdArea", idArea) :
+                new ObjectParameter("IdArea", typeof(int));
+    
+            var mesVigenteParameter = mesVigente.HasValue ?
+                new ObjectParameter("MesVigente", mesVigente) :
+                new ObjectParameter("MesVigente", typeof(byte));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("sproc_ObtenerDisponibilidad", annioParameter, idAreaParameter, mesVigenteParameter);
+        }
+    
+        public virtual int sproc_ObtenerDisponibilidad_b(Nullable<int> annio, Nullable<int> idArea, Nullable<byte> mesVigente)
+        {
+            var annioParameter = annio.HasValue ?
+                new ObjectParameter("Annio", annio) :
+                new ObjectParameter("Annio", typeof(int));
+    
+            var idAreaParameter = idArea.HasValue ?
+                new ObjectParameter("IdArea", idArea) :
+                new ObjectParameter("IdArea", typeof(int));
+    
+            var mesVigenteParameter = mesVigente.HasValue ?
+                new ObjectParameter("MesVigente", mesVigente) :
+                new ObjectParameter("MesVigente", typeof(byte));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("sproc_ObtenerDisponibilidad_b", annioParameter, idAreaParameter, mesVigenteParameter);
         }
     
         public virtual int fn_ObtenerInfoUsuario(string noInterno)

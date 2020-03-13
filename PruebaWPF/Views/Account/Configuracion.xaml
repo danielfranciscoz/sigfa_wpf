@@ -68,7 +68,7 @@
                     
                     <StackPanel Orientation="Horizontal" Margin="0 0 0 0">
                         <TextBlock  Margin="0 0 15 0"  TextWrapping="Wrap" VerticalAlignment="Center" Text="Activar/Desactivar carga automatizada" />
-                        <ToggleButton x:Name="Autoload" Style="{DynamicResource MaterialDesignSwitchToggleButton}" IsChecked="{Binding AutoLoad,Mode=TwoWay}">
+                        <ToggleButton x:Name="Autoload" Style="{DynamicResource MaterialDesignSwitchToggleButton}" IsChecked="{Binding AutoLoad,Mode=TwoWay}" IsEnabled="False">
                         </ToggleButton>
                     </StackPanel>
                     <TextBlock TextWrapping="Wrap" VerticalAlignment="Center" FontSize="10" Text="En equipos con pocos recursos de memoria RAM y procesamiento, es probable que cause sensación de lentitud, se recomienda hacer uso de esta función para equipos con Memoria RAM mayor o igual que 4GB y Procesador superior o igual a Corei3." Foreground="{StaticResource DarkGray}"/>

@@ -453,7 +453,7 @@
                                                                 <DataGridTextColumn CanUserReorder="False" CanUserResize="False" IsReadOnly="True" Header="Recinto" Width="auto" Binding="{Binding Recinto}"></DataGridTextColumn>
                                                                 <DataGridTextColumn CanUserReorder="False" CanUserResize="False" IsReadOnly="True" Header="Permiso" Width="auto" Binding="{Binding PermisoName.Nombre}"></DataGridTextColumn>
                                                                 <DataGridTextColumn CanUserReorder="False" CanUserResize="False" IsReadOnly="True" Header="Creado por" Width="auto" Binding="{Binding UsuarioCreacion}"></DataGridTextColumn>
-                                                                <DataGridTextColumn CanUserReorder="False" CanUserResize="False" IsReadOnly="True" Header="Fecha" Width="auto" Binding="{Binding FechaCreacion}"></DataGridTextColumn>
+                                                            <DataGridTextColumn CanUserReorder="False" CanUserResize="False" IsReadOnly="True" Header="Fecha" Width="auto" Binding="{Binding FechaCreacion,StringFormat={}{0:dd/MM/yyyy hh:mm:ss tt}}"></DataGridTextColumn>
                                                             </DataGrid.Columns>
                                                         </DataGrid>
                                                     </DockPanel>

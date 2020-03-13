@@ -79,7 +79,7 @@
                         <DataGridTextColumn CanUserReorder="False" CanUserResize="False" IsReadOnly="True" Header="No. de documento" Width="auto"  Binding="{Binding Identificacion}"></DataGridTextColumn>
                         <DataGridTextColumn CanUserReorder="False" CanUserResize="False" IsReadOnly="True" Header="Procedencia" Width="auto"  Binding="{Binding Procedencia}"></DataGridTextColumn>
                         <DataGridTextColumn CanUserReorder="False" CanUserResize="False" IsReadOnly="True" Header="Creado por" Width="auto"  Binding="{Binding UsuarioCreacion}"></DataGridTextColumn>
-                        <DataGridTextColumn CanUserReorder="False" CanUserResize="False" IsReadOnly="True" Header="Fecha de Creación" Width="auto"  Binding="{Binding FechaCreacion}"></DataGridTextColumn>
+                        <DataGridTextColumn CanUserReorder="False" CanUserResize="False" IsReadOnly="True" Header="Fecha de Creación" Width="auto"  Binding="{Binding FechaCreacion,StringFormat={}{0:dd/MM/yyyy hh:mm:ss tt}}"></DataGridTextColumn>
                     </DataGrid.Columns>
 
                 </DataGrid>

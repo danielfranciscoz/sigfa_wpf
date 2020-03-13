@@ -223,7 +223,15 @@ namespace PruebaWPF.Views.Recibo
             ReciboSon selected = (ReciboSon)tblRecibo.SelectedItem;
             tblReciboDet.ItemsSource = controller().DetallesRecibo(selected);
             tblReciboPay.ItemsSource = controller().ReciboFormaPago(selected);
-            btn_Anular.IsEnabled = !selected.regAnulado;
+
+            if (!selected.regAnulado)
+            {
+                btn_Anular.IsEnabled = (selected.Fecha.Date == DateTime.Now.Date);
+            }
+            else
+            {
+                btn_Anular.IsEnabled = !selected.regAnulado;
+            }
         }
 
         private void tblRecibo_SelectionChanged(object sender, SelectionChangedEventArgs e)

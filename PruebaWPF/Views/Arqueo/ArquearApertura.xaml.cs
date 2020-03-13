@@ -113,7 +113,10 @@ namespace PruebaWPF.Views.Arqueo
 
                 datosIniciales.DataContext = apertura;
                 lblRecuento.DataContext = apertura;
-                lblRecuentoPagos.DataContext = controller.FindTotalPagos(apertura.IdDetAperturaCaja);
+
+                int[] data = controller.FindTotalPagos(apertura.IdDetAperturaCaja);
+                lblRecuentoPagos.DataContext = data[0];
+                panelConfirmacionPagos.DataContext = data[1];
 
             }
             catch (Exception ex)
@@ -222,7 +225,14 @@ namespace PruebaWPF.Views.Arqueo
                 }
             }
 
+            ContarConfirmados();
 
+
+        }
+
+        private void ContarConfirmados()
+        {
+            //panelConfirmacionDocumentos.Text = 
         }
 
         private void Recibos_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
@@ -721,7 +731,6 @@ namespace PruebaWPF.Views.Arqueo
 
         private void BtnOkDocument_Click(object sender, RoutedEventArgs e)
         {
-            //documentos.Remove((DocumentosEfectivo)tblDocumentosEfectivo.CurrentItem);
             CalcularTotalesDocumento();
         }
 
@@ -732,6 +741,20 @@ namespace PruebaWPF.Views.Arqueo
                 Recibo1 selected = (Recibo1)lstRecibos.SelectedItem;
 
                 tblFormasPago.ItemsSource = new ReciboViewModel().ReciboFormaPago(new ReciboSon() { IdRecibo = selected.IdRecibo, Serie = selected.Serie });
+            }
+        }
+
+        private void BtnConfirmPay_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                ReciboPago pago = ((ReciboPago)tblFormasPago.CurrentItem);
+                controller.ConfirmarPago(pago);
+            }
+            catch (Exception ex)
+            {
+                clsUtilidades.OpenMessage(new Operacion() { Mensaje = new clsException(ex).ErrorMessage(), OperationType = clsReferencias.TYPE_MESSAGE_Error });
+
             }
         }
     }

@@ -12,20 +12,12 @@ namespace PruebaWPF.Model
     using System;
     using System.Collections.Generic;
     
-    public partial class Errors
+    public partial class TipoDocumento
     {
-        public int IdError { get; set; }
-        public string Message { get; set; }
-        public string InnerMessage { get; set; }
-        public string EntityValidationErrors { get; set; }
-        public string Source { get; set; }
-        public string Metodo { get; set; }
-        public string StackTrace { get; set; }
-        public string Computadora { get; set; }
-        public string Sistema { get; set; }
-        public string Usuario { get; set; }
+        public byte IdTipoDocumento { get; set; }
+        public string strDocumento { get; set; }
+        public string LoginCreacion { get; set; }
         public System.DateTime FechaCreacion { get; set; }
-    
-        public virtual Usuario Usuario1 { get; set; }
+        public byte RegAnulado { get; set; }
     }
 }

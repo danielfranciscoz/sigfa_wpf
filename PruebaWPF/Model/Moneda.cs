@@ -24,21 +24,21 @@ namespace PruebaWPF.Model
             this.NoCuentasBankArea = new HashSet<NoCuentasBankArea>();
             this.DenominacionMoneda = new HashSet<DenominacionMoneda>();
             this.ArancelPrecio = new HashSet<ArancelPrecio>();
+            this.VoucherBanco = new HashSet<VoucherBanco>();
+            this.MovimientoIngreso = new HashSet<MovimientoIngreso>();
             this.ReciboDiferencias = new HashSet<ReciboDiferencias>();
             this.ReciboPago = new HashSet<ReciboPago>();
             this.VariacionCambiaria = new HashSet<VariacionCambiaria>();
-            this.MovimientoIngreso = new HashSet<MovimientoIngreso>();
-            this.VoucherBanco = new HashSet<VoucherBanco>();
         }
     
         public int IdMoneda { get; set; }
         public string Moneda1 { get; set; }
         public string Simbolo { get; set; }
+        public string CodigoISO { get; set; }
         public bool WebService { get; set; }
         public string UsuarioCreacion { get; set; }
         public System.DateTime FechaCreacion { get; set; }
         public bool regAnulado { get; set; }
-        public string CodigoISO { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<ArqueoEfectivo> ArqueoEfectivo { get; set; }
@@ -54,16 +54,16 @@ namespace PruebaWPF.Model
         public virtual ICollection<DenominacionMoneda> DenominacionMoneda { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<ArancelPrecio> ArancelPrecio { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<VoucherBanco> VoucherBanco { get; set; }
         public virtual Usuario Usuario { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<MovimientoIngreso> MovimientoIngreso { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<ReciboDiferencias> ReciboDiferencias { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<ReciboPago> ReciboPago { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<VariacionCambiaria> VariacionCambiaria { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<MovimientoIngreso> MovimientoIngreso { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<VoucherBanco> VoucherBanco { get; set; }
     }
 }

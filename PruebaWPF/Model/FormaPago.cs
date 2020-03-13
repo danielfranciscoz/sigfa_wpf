@@ -19,8 +19,8 @@ namespace PruebaWPF.Model
         {
             this.ArqueoNoEfectivo = new HashSet<ArqueoNoEfectivo>();
             this.DiferenciasArqueo = new HashSet<DiferenciasArqueo>();
-            this.ReciboPago = new HashSet<ReciboPago>();
             this.MovimientoIngreso = new HashSet<MovimientoIngreso>();
+            this.ReciboPago = new HashSet<ReciboPago>();
         }
     
         public int IdFormaPago { get; set; }
@@ -35,10 +35,10 @@ namespace PruebaWPF.Model
         public virtual ICollection<ArqueoNoEfectivo> ArqueoNoEfectivo { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<DiferenciasArqueo> DiferenciasArqueo { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<MovimientoIngreso> MovimientoIngreso { get; set; }
         public virtual Usuario Usuario { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<ReciboPago> ReciboPago { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<MovimientoIngreso> MovimientoIngreso { get; set; }
     }
 }

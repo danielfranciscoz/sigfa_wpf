@@ -30,12 +30,13 @@ namespace PruebaWPF.Model
         public string Identificador { get; set; }
         public string TextoIdentificador { get; set; }
         public string UsuarioRemitente { get; set; }
+        public string EmailNotificacion { get; set; }
         public string Sistema { get; set; }
         public System.DateTime FechaEnvio { get; set; }
         public string CodRecibo { get; set; }
         public bool regAnulado { get; set; }
-        public string EmailNotificacion { get; set; }
     
+        public virtual Usuario Usuario { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<DetOrdenPagoArancel> DetOrdenPagoArancel { get; set; }
         public virtual TipoDeposito TipoDeposito { get; set; }
@@ -43,6 +44,5 @@ namespace PruebaWPF.Model
         public virtual ICollection<Recibo1> Recibo1 { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<ReciboAnulado> ReciboAnulado { get; set; }
-        public virtual Usuario Usuario { get; set; }
     }
 }

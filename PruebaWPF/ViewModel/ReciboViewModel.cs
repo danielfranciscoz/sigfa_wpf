@@ -7,6 +7,7 @@ using PruebaWPF.Model;
 using PruebaWPF.Referencias;
 using System;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.Data.SqlClient;
 using System.Linq;
 using System.Xml.Linq;
@@ -387,8 +388,9 @@ namespace PruebaWPF.ViewModel
                 UsuarioCreacion = s.UsuarioCreacion,
                 regAnulado = s.regAnulado,
                 FormaPago = s.FormaPago,
-                Moneda = s.Moneda
-
+                Moneda = s.Moneda,
+                ConfirmacionPago = s.ConfirmacionPago,
+                isConfirmacion = s.isConfirmacion
             }).ToList();
         }
 
@@ -885,7 +887,7 @@ namespace PruebaWPF.ViewModel
             OrdenPago orden = db.OrdenPago.Find(ordenPago.IdOrdenPago);
             if (orden != null)
             {
-                if (!orden.regAnulado)
+                if (orden.regAnulado)
                 {
                     throw new Exception(clsReferencias.Error_OP_Anulada);
                 }
@@ -989,7 +991,7 @@ namespace PruebaWPF.ViewModel
                 throw new Exception(clsReferencias.Error_NoCaja);
             }
 
-            var apertura = db.DetAperturaCaja.Where(w => w.IdCaja == serieCajero.IdCaja).ToList().Where(w => w.AperturaCaja.FechaApertura.Date == System.DateTime.Now.Date && w.FechaCierre == null).ToList();
+            var apertura = db.DetAperturaCaja.Where(w => w.IdCaja == serieCajero.IdCaja && DbFunctions.TruncateTime(w.AperturaCaja.FechaApertura) == DbFunctions.TruncateTime(DateTime.Now) && w.FechaCierre == null).ToList();
             if (apertura.Count == 0)
             {
                 throw new Exception(clsReferencias.Error_Caja_NoAperturada);
@@ -1023,11 +1025,16 @@ namespace PruebaWPF.ViewModel
 
             InfoRecibo info = db.InfoRecibo.FirstOrDefault(w => w.IdRecinto == serieCajero.IdRecinto && w.regAnulado == false);
 
+            if (info == null)
+            {
+                throw new Exception("No se ha encontrado la configuración de encabezado y pie de recibo para el recinto al cual pertenece esta caja");
+            }
+
             if (Idrecibo == 0)
             {
                 try
                 {
-                    var id = db.Configuracion.Where(w => w.Llave == clsConfiguration.Llaves.Consecutivo_Recibo.ToString()).FirstOrDefault();
+                    var id = db.Configuracion.FirstOrDefault(w => w.Llave == clsConfiguration.Llaves.Consecutivo_Recibo.ToString());
                     if (id == null)
                     {
                         Idrecibo = 0;

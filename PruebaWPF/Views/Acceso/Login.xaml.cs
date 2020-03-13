@@ -8,6 +8,7 @@ using PruebaWPF.Views.Main;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
@@ -29,8 +30,15 @@ namespace PruebaWPF.Views.Acceso
         {
             InitializeComponent();
             txtUsuario.Text = clsConfiguration.Actual().userRemember;
-            //txtPassword.Password = "zamora2112u";
+            lblYear.Text = DateTime.Now.Year.ToString();
             CamposNormales();
+            Ensamblados();
+        }
+
+        private void Ensamblados()
+        {
+            clsSessionHelper.SystemName = ((AssemblyTitleAttribute)Attribute.GetCustomAttribute(Assembly.GetExecutingAssembly(), typeof(AssemblyTitleAttribute), false)).Title;
+            clsSessionHelper.SystemVersion= Assembly.GetExecutingAssembly().GetName().Version.ToString();
         }
 
         private void CamposNormales()
@@ -101,6 +109,7 @@ namespace PruebaWPF.Views.Acceso
                 {
                     //Credenciales correctas
                     VerificarRoles(txtUsuario.Text);
+                    //VerificarRoles("gdvelez");
                 }
                 else
                 {

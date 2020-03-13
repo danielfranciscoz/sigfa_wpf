@@ -9,6 +9,7 @@ using PruebaWPF.Views.Account;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
@@ -37,13 +38,19 @@ namespace PruebaWPF.Views.Main
 
             this.MaxWidth = SystemParameters.MaximizedPrimaryScreenWidth;
             this.MaxHeight = SystemParameters.MaximizedPrimaryScreenHeight;
-
+            Titulo();
             CargarMenu();
             IniciarFrame();
             principal = this;
             frmmain = this;
             this.DataContext = this;
 
+        }
+
+        private void Titulo()
+        {
+
+            this.Title = string.Format("{0} V.{1}", clsSessionHelper.SystemName, clsSessionHelper.SystemVersion);
         }
 
         public static double Alto()
@@ -167,7 +174,7 @@ namespace PruebaWPF.Views.Main
 
                 lblPerfil.Text = perfil;
                 //lblPeriodo.Text = clsSessionHelper.periodoEspecifico.FechaInicio.Month.ToString() + "/" + clsSessionHelper.periodoEspecifico.FechaInicio.Year.ToString() + " - " + clsSessionHelper.periodoEspecifico.Periodo;
-                mnUsuario.Header = clsSessionHelper.usuario.Login;
+                mnUsuario.Header = ObtenerBienvenida(clsSessionHelper.usuario.Nombre);
                 lblTipoCambio.Text = controller.ObtenerTipoCambio();
                 lblMac.Text = clsSessionHelper.MACMemory;
 
@@ -176,6 +183,11 @@ namespace PruebaWPF.Views.Main
             {
                 clsUtilidades.OpenMessage(new Operacion() { Mensaje = new clsException(ex).ErrorMessage(), OperationType = clsReferencias.TYPE_MESSAGE_Error });
             }
+        }
+
+        private object ObtenerBienvenida(string nombre)
+        {
+            return string.Format("¡Hola, {0}!", nombre.Split(' ')[0]) ;
         }
 
         private void Window_Closed(object sender, EventArgs e)

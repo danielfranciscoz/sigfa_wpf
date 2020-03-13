@@ -16,6 +16,7 @@
         Title="ArquearApertura" Height="700" Width="1200">
     <Window.Resources>
         <l:BoolToStringConverter x:Key="convertidor" />
+        <l:IsNullConverter x:Key="NullConverter" />
 
         <Style x:Key="comboItemStyle" TargetType="{x:Type ComboBoxItem}" BasedOn="{StaticResource MaterialDesignComboBox}">
             <Setter Property="Template">
@@ -238,7 +239,7 @@
                                             <TextBlock x:Name="lblRecuentoPagos" Foreground="{StaticResource DarkGray}">
                                                 <TextBlock.Inlines>
                                                     <Run Text="Se han confirmado"></Run>
-                                                    <Run x:Name="panelConfirmacionDocumentos">0</Run>
+                                                    <Run x:Name="panelConfirmacionPagos" Text="{Binding Mode=OneWay}"></Run>
                                                     <Run Text="de"></Run>
                                                     <Run  Text="{Binding Mode=OneWay}"></Run>
                                                     <Run Text="pagos"></Run>
@@ -253,7 +254,7 @@
                                                         <DataGridTemplateColumn.CellTemplate>
                                                             <DataTemplate>
                                                                 <StackPanel>
-                                                                    <Button x:Name="btnConfirmPay" Background="{StaticResource Delete_Button}" Height="20" Width="20" Style="{StaticResource MaterialDesignToolButton}" BorderBrush="Transparent">
+                                                                    <Button x:Name="btnConfirmPay" Click="BtnConfirmPay_Click" Background="{StaticResource Delete_Button}" Height="20" Width="20" Style="{StaticResource MaterialDesignToolButton}" BorderBrush="Transparent" IsEnabled="{Binding ConfirmacionPago.IdConfirmacion,Converter={StaticResource NullConverter},ConverterParameter='True;False'}">
                                                                         <materialDesign:PackIcon Kind="Check" HorizontalAlignment="Center"  VerticalAlignment="Center" Margin="0 0 0 0"></materialDesign:PackIcon>
                                                                     </Button>
                                                                 </StackPanel>

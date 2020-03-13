@@ -20,6 +20,8 @@ namespace PruebaWPF.Model
             this.Arqueo = new HashSet<Arqueo>();
             this.ArqueoDocumento = new HashSet<ArqueoDocumento>();
             this.ArqueoNoEfectivo = new HashSet<ArqueoNoEfectivo>();
+            this.ConfirmacionPago = new HashSet<ConfirmacionPago>();
+            this.Errors = new HashSet<Errors>();
             this.NoCuentasBankArea = new HashSet<NoCuentasBankArea>();
             this.TipoTransaccionBank = new HashSet<TipoTransaccionBank>();
             this.UserBank = new HashSet<UserBank>();
@@ -28,6 +30,7 @@ namespace PruebaWPF.Model
             this.DenominacionMoneda = new HashSet<DenominacionMoneda>();
             this.Moneda = new HashSet<Moneda>();
             this.DetalleMovimientoIngreso = new HashSet<DetalleMovimientoIngreso>();
+            this.MovimientoIngreso = new HashSet<MovimientoIngreso>();
             this.Actividad = new HashSet<Actividad>();
             this.AutorizarRestricciones = new HashSet<AutorizarRestricciones>();
             this.BalanzaComprobacion = new HashSet<BalanzaComprobacion>();
@@ -65,6 +68,7 @@ namespace PruebaWPF.Model
             this.ArancelPrecio = new HashSet<ArancelPrecio>();
             this.ArancelTipoDeposito = new HashSet<ArancelTipoDeposito>();
             this.AreaPagoDelegado = new HashSet<AreaPagoDelegado>();
+            this.VoucherBanco = new HashSet<VoucherBanco>();
             this.Caja = new HashSet<Caja>();
             this.Configuracion = new HashSet<Configuracion>();
             this.DetAperturaCaja = new HashSet<DetAperturaCaja>();
@@ -73,6 +77,7 @@ namespace PruebaWPF.Model
             this.Exoneracion1 = new HashSet<Exoneracion>();
             this.FormaPago = new HashSet<FormaPago>();
             this.InfoRecibo = new HashSet<InfoRecibo>();
+            this.OrdenPago = new HashSet<OrdenPago>();
             this.Permiso = new HashSet<Permiso>();
             this.Recibo1 = new HashSet<Recibo1>();
             this.ReciboAnulado = new HashSet<ReciboAnulado>();
@@ -86,11 +91,6 @@ namespace PruebaWPF.Model
             this.UsuarioPerfil = new HashSet<UsuarioPerfil>();
             this.UsuarioPrograma = new HashSet<UsuarioPrograma>();
             this.VariacionCambiaria = new HashSet<VariacionCambiaria>();
-            this.MovimientoIngreso = new HashSet<MovimientoIngreso>();
-            this.OrdenPago = new HashSet<OrdenPago>();
-            this.Errors = new HashSet<Errors>();
-            this.VoucherBanco = new HashSet<VoucherBanco>();
-            this.ConfirmacionPago = new HashSet<ConfirmacionPago>();
         }
     
         public string Login { get; set; }
@@ -122,6 +122,10 @@ namespace PruebaWPF.Model
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<ArqueoNoEfectivo> ArqueoNoEfectivo { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<ConfirmacionPago> ConfirmacionPago { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Errors> Errors { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<NoCuentasBankArea> NoCuentasBankArea { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<TipoTransaccionBank> TipoTransaccionBank { get; set; }
@@ -137,6 +141,8 @@ namespace PruebaWPF.Model
         public virtual ICollection<Moneda> Moneda { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<DetalleMovimientoIngreso> DetalleMovimientoIngreso { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<MovimientoIngreso> MovimientoIngreso { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Actividad> Actividad { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
@@ -212,6 +218,8 @@ namespace PruebaWPF.Model
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<AreaPagoDelegado> AreaPagoDelegado { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<VoucherBanco> VoucherBanco { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Caja> Caja { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Configuracion> Configuracion { get; set; }
@@ -227,6 +235,8 @@ namespace PruebaWPF.Model
         public virtual ICollection<FormaPago> FormaPago { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<InfoRecibo> InfoRecibo { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<OrdenPago> OrdenPago { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Permiso> Permiso { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
@@ -253,15 +263,5 @@ namespace PruebaWPF.Model
         public virtual ICollection<UsuarioPrograma> UsuarioPrograma { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<VariacionCambiaria> VariacionCambiaria { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<MovimientoIngreso> MovimientoIngreso { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<OrdenPago> OrdenPago { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Errors> Errors { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<VoucherBanco> VoucherBanco { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<ConfirmacionPago> ConfirmacionPago { get; set; }
     }
 }

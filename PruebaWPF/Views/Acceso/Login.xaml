@@ -45,7 +45,7 @@
                 
             </Grid>
 
-                <ProgressBar Grid.Row="1" x:Name="progressbar" Visibility="Hidden" IsIndeterminate="True"></ProgressBar>
+            <ProgressBar Grid.Row="1" x:Name="progressbar" Visibility="Hidden" IsIndeterminate="True"></ProgressBar>
             <!--Body-->
             <Grid Grid.Row="2">
                 
@@ -134,7 +134,13 @@
                     <Run Text="UNI - DTIC."/>
 
                 </TextBlock>-->
-                    <TextBlock TextAlignment="Center" Padding="10 10 10 10" Text="Copyright © 2019. Todos Los Derechos Reservados UNI"></TextBlock>
+                    <TextBlock TextAlignment="Center" Padding="10 10 10 10">
+                        <TextBlock.Inlines>
+                            <Run>Copyright ©</Run>
+                            <Run x:Name="lblYear"></Run>
+                            <Run>. Todos Los Derechos Reservados UNI</Run>
+                        </TextBlock.Inlines>
+                    </TextBlock>
                 </materialDesign:ColorZone>
             </Grid>
 

@@ -78,8 +78,8 @@
                             </DataGridTemplateColumn.CellTemplate>
                         </DataGridTemplateColumn>
                         <DataGridTextColumn CanUserReorder="False" CanUserResize="False" IsReadOnly="True" Header="No. Arqueo" Width="auto" Binding="{Binding IdArqueoDetApertura}"></DataGridTextColumn>
-                        <DataGridTextColumn CanUserReorder="False" CanUserResize="False" IsReadOnly="True" Header="Iniciado" Width="auto" Binding="{Binding FechaInicioArqueo,StringFormat={}{0:dd/MM/yyyy HH:mmmm:ss tt}}"></DataGridTextColumn>
-                        <DataGridTextColumn CanUserReorder="False" CanUserResize="False" IsReadOnly="True" Header="Finalizado" Width="auto" Binding="{Binding FechaFinArqueo,StringFormat={}{0:dd/MM/yyyy HH:mmmm:ss tt}}"></DataGridTextColumn>
+                        <DataGridTextColumn CanUserReorder="False" CanUserResize="False" IsReadOnly="True" Header="Iniciado" Width="auto" Binding="{Binding FechaInicioArqueo,StringFormat={}{0:dd/MM/yyyy hh:mmmm:ss tt}}"></DataGridTextColumn>
+                        <DataGridTextColumn CanUserReorder="False" CanUserResize="False" IsReadOnly="True" Header="Finalizado" Width="auto" Binding="{Binding FechaFinArqueo,StringFormat={}{0:dd/MM/yyyy hh:mmmm:ss tt}}"></DataGridTextColumn>
                         <DataGridTextColumn CanUserReorder="False" CanUserResize="False" IsReadOnly="True" Header="Arqueado por" Width="auto" Binding="{Binding UsuarioArqueador}"></DataGridTextColumn>
                         <DataGridTextColumn CanUserReorder="False" CanUserResize="False" IsReadOnly="True" Header="Cajero Presente" Width="auto" Binding="{Binding CajeroEntrega}"></DataGridTextColumn>
                         <DataGridTextColumn CanUserReorder="False" CanUserResize="False" IsReadOnly="True" Header="Estado" Width="auto" Binding="{Binding EstadoArqueo}"></DataGridTextColumn>

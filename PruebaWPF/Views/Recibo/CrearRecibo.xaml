@@ -246,7 +246,7 @@
                                                             <Run Text="Arancel:"></Run>
                                                         </TextBlock.Inlines>
                                                     </TextBlock>
-                                                    <ComboBox x:Name="cboArancel" DisplayMemberPath="ArancelArea.Arancel.Nombre" SelectedValuePath="IdArancelPrecio" Grid.Row="0" Grid.Column="1"  IsTextSearchEnabled="True" IsEditable="True" IsTextSearchCaseSensitive="False" Width="260" materialDesign:HintAssist.Hint="Seleccione" VerticalAlignment="Center" HorizontalAlignment="Left" SelectionChanged="cboArancel_SelectionChanged">
+                                                    <ComboBox x:Name="cboArancel" DisplayMemberPath="ArancelArea.Arancel.Nombre" SelectedValuePath="IdArancelPrecio" Grid.Row="0" Grid.Column="1"  IsTextSearchEnabled="True" IsEditable="False" IsTextSearchCaseSensitive="False" Width="260" materialDesign:HintAssist.Hint="Seleccione" VerticalAlignment="Center" HorizontalAlignment="Left" SelectionChanged="cboArancel_SelectionChanged">
 
                                                     </ComboBox>
 
@@ -634,7 +634,7 @@
                                                     <DataGridTextColumn CanUserReorder="False" CanUserResize="True" IsReadOnly="True" Header="Moneda" Width="auto" Binding="{Binding Moneda.Simbolo}"></DataGridTextColumn>
                                                     <DataGridTextColumn CanUserReorder="False" CanUserResize="True" IsReadOnly="True" Header="Monto" Width="auto" Binding="{Binding Monto}"></DataGridTextColumn>
                                                     <DataGridTextColumn CanUserReorder="False" CanUserResize="True" IsReadOnly="True" Header="Tipo de Cambio" Binding="{Binding TipoCambio}"></DataGridTextColumn>
-                                                    <DataGridTextColumn CanUserReorder="False" CanUserResize="True" IsReadOnly="True" Header="" Binding="{Binding InfoAdicional}"></DataGridTextColumn>
+                                                    <DataGridTextColumn CanUserReorder="False" CanUserResize="True" IsReadOnly="True" Header="" Binding="{Binding ObjInfoAdicional[1]}"></DataGridTextColumn>
                                                 </DataGrid.Columns>
                                             </DataGrid>
                                             <ListBox x:Name="lstTipoCambio">

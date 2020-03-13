@@ -6,7 +6,6 @@ using PruebaWPF.Referencias;
 using PruebaWPF.ViewModel;
 using System;
 using System.Collections.Generic;
-using System.Reflection;
 using System.Windows;
 
 namespace PruebaWPF.Views.Shared
@@ -241,13 +240,10 @@ namespace PruebaWPF.Views.Shared
 
         private void ParametrosComunes(ReportViewer informe, string reportURL)
         {
-            string systemName = ((AssemblyTitleAttribute)Attribute.GetCustomAttribute(Assembly.GetExecutingAssembly(), typeof(AssemblyTitleAttribute), false)).Title;
-            string systemVersion = Assembly.GetExecutingAssembly().GetName().Version.ToString();
-
 
             informe.LocalReport.ReportEmbeddedResource = reportURL;
             informe.LocalReport.SetParameters(new ReportParameter("UserParameter", clsSessionHelper.usuario.Login));
-            informe.LocalReport.SetParameters(new ReportParameter("SystemNameParameter", string.Format("{0} \nV.{1}", systemName, systemVersion)));
+            informe.LocalReport.SetParameters(new ReportParameter("SystemNameParameter", string.Format("{0} \nV.{1}", clsSessionHelper.SystemName, clsSessionHelper.SystemVersion)));
         }
 
 

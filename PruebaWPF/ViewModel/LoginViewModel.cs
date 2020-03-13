@@ -65,11 +65,13 @@ namespace PruebaWPF.ViewModel
         {
             if (Usuario.Contains("@")) // Verificando la autenticación con Office365
             {
+                clsSessionHelper.isMailLogin = true;
                 var credencialesOffice = new wsOffice365.authSoapClient();
                 return credencialesOffice.Validate(Usuario, Password);
             }
             else //Verificando la autenticación con LDAP
             {
+                clsSessionHelper.isMailLogin = false;
                 var credencialesLdap = new wsLDAP.LDAPSoapClient();
                 return credencialesLdap.EsUsuarioValido(Usuario, Password);
             }
@@ -87,18 +89,18 @@ namespace PruebaWPF.ViewModel
         {
             if (db_Context == null)
             {
-                    return db.Usuario.Find(Usuario).UsuarioPerfil.Any(w => w.IdPerfil == clsReferencias.PerfilCajero);
+                return db.Usuario.Find(Usuario).UsuarioPerfil.Any(w => w.IdPerfil == clsReferencias.PerfilCajero);
             }
             else
             {
                 if (validarOnlyCajero)
                 {
-                    return db_Context.Usuario.Find(Usuario).UsuarioPerfil.Where(w=> !w.RegAnulado && !w.Perfil.isWeb ).All(w => w.IdPerfil == clsReferencias.PerfilCajero);
+                    return db_Context.Usuario.Find(Usuario).UsuarioPerfil.Where(w => !w.RegAnulado && !w.Perfil.isWeb).All(w => w.IdPerfil == clsReferencias.PerfilCajero);
 
                 }
                 else
                 {
-                return db_Context.Usuario.Find(Usuario).UsuarioPerfil.Any(w => w.IdPerfil == clsReferencias.PerfilCajero);
+                    return db_Context.Usuario.Find(Usuario).UsuarioPerfil.Any(w => w.IdPerfil == clsReferencias.PerfilCajero);
 
                 }
             }

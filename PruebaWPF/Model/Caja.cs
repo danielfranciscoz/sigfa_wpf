@@ -25,10 +25,10 @@ namespace PruebaWPF.Model
         public string MAC { get; set; }
         public string IdSerie { get; set; }
         public int IdRecinto { get; set; }
+        public string ComPort { get; set; }
         public string UsuarioCreacion { get; set; }
         public System.DateTime FechaCreacion { get; set; }
         public bool regAnulado { get; set; }
-        public string ComPort { get; set; }
     
         public virtual Usuario Usuario { get; set; }
         public virtual SerieRecibo SerieRecibo { get; set; }

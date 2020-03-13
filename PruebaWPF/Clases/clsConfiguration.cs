@@ -1,9 +1,4 @@
 ﻿using PruebaWPF.Helper;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 
 namespace PruebaWPF.Clases
@@ -62,7 +57,8 @@ namespace PruebaWPF.Clases
             Variacion_Positiva,
             Variacion_Negativa,
             Email_Finanzas,
-            POS_Banpro
+            POS_Banpro,
+            dias_OP
         };
 
         public void Save()
@@ -75,7 +71,14 @@ namespace PruebaWPF.Clases
 
             if (rememberMe)
             {
-                settings.UserRemember = clsSessionHelper.usuario.Login;
+                if (clsSessionHelper.isMailLogin)
+                {
+                    settings.UserRemember = clsSessionHelper.usuario.LoginEmail;
+                }
+                else
+                {
+                    settings.UserRemember = clsSessionHelper.usuario.Login;
+                }
             }
             else
             {

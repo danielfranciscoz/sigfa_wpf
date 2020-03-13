@@ -1,8 +1,10 @@
 ﻿using PruebaWPF.Clases;
+using PruebaWPF.Helper;
 using PruebaWPF.Interface;
 using PruebaWPF.Model;
 using System;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.Linq;
 
 namespace PruebaWPF.ViewModel
@@ -52,8 +54,14 @@ namespace PruebaWPF.ViewModel
         }
         private IQueryable<OrdenPagoSon> FindAllOrders(bool allRecintos)
         {
+
+            if (clsSessionHelper.vigenciaOP == 0)
+            {
+                clsSessionHelper.vigenciaOP = int.Parse(new SharedViewModel().Configuracion(clsConfiguration.Llaves.dias_OP.ToString()).Valor);
+            }
+
             //Recuerda igualar las columnas de este select en el FindBytEXT
-            var consulta = db.OrdenPago.Where(w => string.IsNullOrEmpty(w.CodRecibo) && w.regAnulado == false).OrderByDescending(o => o.IdOrdenPago).Take(clsConfiguration.Actual().TopRow)
+            var consulta = db.OrdenPago.Where(w => string.IsNullOrEmpty(w.CodRecibo) && w.regAnulado == false && DbFunctions.DiffDays(w.FechaEnvio, DateTime.Now) <= clsSessionHelper.vigenciaOP).OrderByDescending(o => o.IdOrdenPago).Take(clsConfiguration.Actual().TopRow)
                     .Join(
                     db.vw_Areas,
                     r => r.IdArea,
@@ -188,6 +196,7 @@ namespace PruebaWPF.ViewModel
 
 
         public int CantidadPagos { get; set; }
+        public int Vence => clsSessionHelper.vigenciaOP - ((TimeSpan)(DateTime.Now-FechaEnvio)).Days;
         public string Area { get; set; }
         public string Recinto { get; set; }
 

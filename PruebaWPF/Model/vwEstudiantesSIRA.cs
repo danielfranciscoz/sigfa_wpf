@@ -18,8 +18,8 @@ namespace PruebaWPF.Model
         public string Estudiante { get; set; }
         public string IdCarrera { get; set; }
         public string Carrera { get; set; }
+        public Nullable<int> IdRecinto { get; set; }
         public string Sede { get; set; }
         public bool RegAnulado { get; set; }
-        public Nullable<int> IdRecinto { get; set; }
     }
 }

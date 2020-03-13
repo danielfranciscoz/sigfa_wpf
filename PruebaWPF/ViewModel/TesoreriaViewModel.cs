@@ -76,7 +76,7 @@ namespace PruebaWPF.ViewModel
 
             pos.Timeout = timeout;
 
-            pos.ComPort = GetIfCaja().ComPort;
+            pos.ComPort = GetIfCaja()?.ComPort;
 
             return pos;
         }
