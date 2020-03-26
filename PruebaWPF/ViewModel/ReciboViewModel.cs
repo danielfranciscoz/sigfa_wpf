@@ -463,6 +463,44 @@ namespace PruebaWPF.ViewModel
             return new TesoreriaViewModel().GetConfiguracionPOS();
         }
 
+        /// <summary>
+        /// Este método valida que no se agregue un numero de autorizacion que ya exista en la base de datos
+        /// </summary>
+        /// <param name="tarjeta"></param>
+        /// <returns>False en caso que no exista, Exception en caso que ya exista</returns>
+        public bool ValidarNumAutorizacion(ReciboPagoTarjeta tarjeta,List<ReciboPagoSon> pagos) {
+
+            bool existeAutorizado = false;
+            //TODO ESTO NO LOS HAS TERMINADO PAPA
+
+            if (pagos.Count > 0)
+            {
+                pagos.ForEach(
+                    item =>
+                    {
+                        if (item.ObjInfoAdicional[0].GetType() == typeof (ReciboPagoTarjeta))
+                        {
+                            var objeto= (ReciboPagoTarjeta)item.ObjInfoAdicional[0];
+
+                        }
+                    }
+                    
+                    );
+            }
+            else
+            {
+                existeAutorizado = db.ReciboPagoTarjeta.Any(a => a.Autorizacion == tarjeta.Autorizacion);
+            }
+
+
+            if (existeAutorizado)
+            {
+                throw new Exception("El número de autorización que intenta ingresar ya se encuentra entre las formas de pago existe en la base de datos");
+            }
+
+            return existeAutorizado;
+        }
+
         public VoucherBanco GenerarVoucher(ReciboPagoSon reciboPago, int IdDetApertura, POSBanpro pos)
         {
             VoucherBanco voucher = new VoucherBanco();

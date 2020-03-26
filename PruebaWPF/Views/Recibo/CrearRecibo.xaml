@@ -397,7 +397,7 @@
                                                     <Run Text="Forma de Pago:"></Run>
                                                 </TextBlock.Inlines>
                                             </TextBlock>
-                                            <ComboBox x:Name="cboFormaPago" DisplayMemberPath="FormaPago1" SelectedValuePath="IdFormaPago"  Grid.Row="0" Grid.Column="1" Width="230" materialDesign:HintAssist.Hint="Seleccione" VerticalAlignment="Center" HorizontalAlignment="Left" SelectionChanged="cboFormaPago_SelectionChanged">
+                                            <ComboBox x:Name="cboFormaPago" TabIndex="0" DisplayMemberPath="FormaPago1" SelectedValuePath="IdFormaPago"  Grid.Row="0" Grid.Column="1" Width="230" materialDesign:HintAssist.Hint="Seleccione" VerticalAlignment="Center" HorizontalAlignment="Left" SelectionChanged="cboFormaPago_SelectionChanged">
 
                                             </ComboBox>
 
@@ -407,7 +407,7 @@
                                                     <Run Text="Moneda:"></Run>
                                                 </TextBlock.Inlines>
                                             </TextBlock>
-                                            <TextBox x:Name="txtMontoPago" Grid.Row="0" Grid.Column="7"  VerticalAlignment="Center"  TextAlignment="Right"></TextBox>
+                                            <TextBox x:Name="txtMontoPago" TabIndex="2" Grid.Row="0" Grid.Column="7"  VerticalAlignment="Center"  TextAlignment="Right"></TextBox>
 
                                             <TextBlock Grid.Row="0" Grid.Column="6"  VerticalAlignment="Center">
                                                 <TextBlock.Inlines>
@@ -415,7 +415,7 @@
                                                     <Run Text="Monto:"></Run>
                                                 </TextBlock.Inlines>
                                             </TextBlock>
-                                            <ComboBox x:Name="cboMonedaPago" SelectedValuePath="IdMoneda" DisplayMemberPath="Simbolo" Grid.Row="0" Grid.Column="4" materialDesign:HintAssist.Hint="Seleccione">
+                                            <ComboBox x:Name="cboMonedaPago" TabIndex="1" SelectedValuePath="IdMoneda" DisplayMemberPath="Simbolo" Grid.Row="0" Grid.Column="4" materialDesign:HintAssist.Hint="Seleccione">
 
                                             </ComboBox>
 
@@ -485,7 +485,7 @@
                                                     <Run Text="Banco:"></Run>
                                                 </TextBlock.Inlines>
                                             </TextBlock>
-                                            <ComboBox x:Name="cboBanco" DisplayMemberPath="Nombre" SelectedValuePath="IdBanco"  Grid.Row="0" Grid.Column="1" Width="230" materialDesign:HintAssist.Hint="Seleccione" VerticalAlignment="Center" HorizontalAlignment="Left">
+                                            <ComboBox x:Name="cboBanco" TabIndex="4" DisplayMemberPath="Nombre" SelectedValuePath="IdBanco"  Grid.Row="0" Grid.Column="1" Width="230" materialDesign:HintAssist.Hint="Seleccione" VerticalAlignment="Center" HorizontalAlignment="Left">
 
                                             </ComboBox>
 
@@ -495,7 +495,7 @@
                                                     <Run Text="Cuenta:"></Run>
                                                 </TextBlock.Inlines>
                                             </TextBlock>
-                                            <TextBox x:Name="txtCuenta" Grid.Row="0" Grid.Column="4"  VerticalAlignment="Center"  TextAlignment="Right"></TextBox>
+                                            <TextBox x:Name="txtCuenta" TabIndex="5" Grid.Row="0" Grid.Column="4"  VerticalAlignment="Center"  TextAlignment="Right"></TextBox>
 
                                             <TextBlock Grid.Row="0" Grid.Column="6"  VerticalAlignment="Center">
                                                 <TextBlock.Inlines>
@@ -503,7 +503,7 @@
                                                     <Run Text="No.Cheque:"></Run>
                                                 </TextBlock.Inlines>
                                             </TextBlock>
-                                            <TextBox x:Name="txtNumeroCK" Grid.Row="0" Grid.Column="7"  VerticalAlignment="Center"  TextAlignment="Right"></TextBox>
+                                            <TextBox x:Name="txtNumeroCK" TabIndex="6" Grid.Row="0" Grid.Column="7"  VerticalAlignment="Center"  TextAlignment="Right"></TextBox>
 
 
                                         </Grid>
@@ -532,7 +532,7 @@
                                                     <Run Text="Tarjeta:"></Run>
                                                 </TextBlock.Inlines>
                                             </TextBlock>
-                                            <ComboBox x:Name="cboTarjeta" DisplayMemberPath="Nombre" SelectedValuePath="IdCiaTarjetaCredito"  Grid.Row="0" Grid.Column="1" IsTextSearchEnabled="True" IsEditable="True" IsTextSearchCaseSensitive="False" Width="230" materialDesign:HintAssist.Hint="Seleccione" VerticalAlignment="Center" HorizontalAlignment="Left">
+                                            <ComboBox x:Name="cboTarjeta" TabIndex="4" DisplayMemberPath="Nombre" SelectedValuePath="IdCiaTarjetaCredito"  Grid.Row="0" Grid.Column="1" IsTextSearchEnabled="True" IsEditable="True" IsTextSearchCaseSensitive="False" Width="230" materialDesign:HintAssist.Hint="Seleccione" VerticalAlignment="Center" HorizontalAlignment="Left">
 
                                             </ComboBox>
 
@@ -542,7 +542,7 @@
                                                     <Run Text="Autorizado:"></Run>
                                                 </TextBlock.Inlines>
                                             </TextBlock>
-                                            <TextBox x:Name="txtAutorizacion" Grid.Row="0" Grid.Column="4"  VerticalAlignment="Center"  TextAlignment="Right"></TextBox>
+                                            <TextBox x:Name="txtAutorizacion" TabIndex="5" Grid.Row="0" Grid.Column="4"  VerticalAlignment="Center"  TextAlignment="Right"></TextBox>
 
                                             <TextBlock Grid.Row="0" Grid.Column="6"  VerticalAlignment="Center">
                                                 <TextBlock.Inlines>
@@ -550,7 +550,7 @@
                                                     <Run Text="Tarjeta:"></Run>
                                                 </TextBlock.Inlines>
                                             </TextBlock>
-                                            <TextBox x:Name="txtTarjeta" materialDesign:HintAssist.Hint="últimos 4 dígitos" Grid.Row="0" Grid.Column="7"  VerticalAlignment="Center"  TextAlignment="Right" MaxLength="4"></TextBox>
+                                            <TextBox x:Name="txtTarjeta" TabIndex="6" materialDesign:HintAssist.Hint="últimos 4 dígitos" Grid.Row="0" Grid.Column="7"  VerticalAlignment="Center"  TextAlignment="Right" MaxLength="4"></TextBox>
 
                                         </Grid>
 

@@ -740,6 +740,7 @@ namespace PruebaWPF.Views.Recibo
                     o[1] = string.Format("{0}, Cuenta {1}, Cheque No.{2}", rc.Banco.Nombre, rc.Cuenta, rc.NumeroCK);
                     break;
                 case 3: //Tarjeta
+
                     ReciboPagoTarjeta rt = new ReciboPagoTarjeta()
                     {
                         CiaTarjetaCredito = (CiaTarjetaCredito)cboTarjeta.SelectedItem,
@@ -748,6 +749,11 @@ namespace PruebaWPF.Views.Recibo
                         Autorizacion = int.Parse(txtAutorizacion.Text.ToString()),
                         IdVoucherBanco = voucher?.IdVoucherBanco ?? null
                     };
+
+                    if (isTarjeta && !IsPOSActive) //valido el numero de autorizacion del pago con tarjeta solo cuando el pos no se encuentra activo
+                    {
+                        controller.ValidarNumAutorizacion(rt,formaPago.ToList());
+                    }
 
                     o[0] = rt;
                     o[1] = string.Format("{0}, Tarjeta ****{1} Autorización {2}", rt.CiaTarjetaCredito.Nombre, rt.Tarjeta, rt.Autorizacion);
@@ -1208,6 +1214,11 @@ namespace PruebaWPF.Views.Recibo
             orden.IdArea = "";
             orden.Area = "";
             ActualizarCampo(new TextBox[] { txtArea });
+        }
+
+        private void TabControl_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+
         }
     }
 
