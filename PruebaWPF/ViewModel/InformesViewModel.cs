@@ -87,7 +87,7 @@ namespace PruebaWPF.ViewModel
                         w.Recibo1.IdOrdenPago != null ? w.Recibo1.OrdenPago.IdArea == IdArea : w.Recibo1.ReciboDatos.IdArea == IdArea) ||
                         IdArea == null
                 ) &&
-             !w.Recibo1.regAnulado
+             !w.Recibo1.regAnulado && w.IdRectificacion == null
             );
 
             var recintosMoney = pago

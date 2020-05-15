@@ -25,7 +25,7 @@ namespace PruebaWPF.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("1200")]
+        [global::System.Configuration.DefaultSettingValueAttribute("1000")]
         public int TopRow {
             get {
                 return ((int)(this["TopRow"]));
@@ -70,7 +70,7 @@ namespace PruebaWPF.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        [global::System.Configuration.DefaultSettingValueAttribute("True")]
         public bool rememberSession {
             get {
                 return ((bool)(this["rememberSession"]));

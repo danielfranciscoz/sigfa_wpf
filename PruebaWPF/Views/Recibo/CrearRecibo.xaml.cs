@@ -143,7 +143,7 @@ namespace PruebaWPF.Views.Recibo
             clsValidateInput.Validate(txtAutorizacion, clsValidateInput.OnlyNumber);
             clsValidateInput.Validate(txtTarjeta, clsValidateInput.OnlyNumber);
 
-            validate.AsignarBorderNormal(new Control[] { txtArea, cboTipoDeposito, txtIdentificador, txtPorCuenta, txtRecibimos, cboFuenteFinanciamiento, cboTipoArancel, cboArancel, txtMonto, cboFormaPago, txtMontoPago, cboMonedaPago, txtEmisor, txtBono, cboBanco, txtCuenta, txtNumeroCK, cboTarjeta, txtAutorizacion, txtTarjeta, cboTipo, txtTransaccion,txtConcepto });
+            validate.AsignarBorderNormal(new Control[] { txtArea, cboTipoDeposito, txtIdentificador, txtPorCuenta, txtRecibimos, cboFuenteFinanciamiento, cboTipoArancel, cboArancel, txtMonto, cboFormaPago, txtMontoPago, cboMonedaPago, txtEmisor, txtBono, cboBanco, txtCuenta, txtNumeroCK, cboTarjeta, txtAutorizacion, txtTarjeta, cboTipo, txtTransaccion, txtConcepto });
 
         }
 
@@ -268,20 +268,30 @@ namespace PruebaWPF.Views.Recibo
 
         private void CargarBancos()
         {
-            cboBanco.ItemsSource = controller.ObtenerBancos();
+            if (cboBanco.ItemsSource == null)
+            {
+                cboBanco.ItemsSource = controller.ObtenerBancos();
+            }
         }
 
         private void CargarTarjetas()
         {
-            cboTarjeta.ItemsSource = controller.ObtenerTarjetas();
+            if (cboTarjeta.ItemsSource == null)
+            {
+                cboTarjeta.ItemsSource = controller.ObtenerTarjetas();
+            }
         }
 
         private void CargarFormasPago()
         {
-            cboFormaPago.ItemsSource = controller.ObtenerFormasPago();
+            if (cboFormaPago.ItemsSource == null || cboMonedaPago.ItemsSource == null)
+            {
+                cboFormaPago.ItemsSource = controller.ObtenerFormasPago();
 
-            //Esto se hace para que todo carguwe sin la parametrizacion, esta linea debe ser borrada al momento que se vuelva a activar la parametrizacion contable
-            cboMonedaPago.ItemsSource = controller.ObtenerMonedas(null);
+                //Esto se hace para que todo cargue sin la parametrizacion, esta linea debe ser borrada al momento que se vuelva a activar la parametrizacion contable
+                cboMonedaPago.ItemsSource = controller.ObtenerMonedas(null);
+                
+            }
         }
 
         private void CargarMonedas()
@@ -591,8 +601,7 @@ namespace PruebaWPF.Views.Recibo
 
             if (!hayError)
             {
-                Object[] o = ObtenerObjetoAdicional(fp.IdFormaPago);
-                reciboPagoSon.ObjInfoAdicional = o;
+                ObtenerObjetoAdicional(fp.IdFormaPago, reciboPagoSon);
 
                 formaPago.Add(reciboPagoSon);
 
@@ -615,11 +624,11 @@ namespace PruebaWPF.Views.Recibo
 
         private async void EliminarFormaPago(ReciboPagoSon pagoSon)
         {
-            if (pagoSon.ObjInfoAdicional[0] != null)
+            if (pagoSon.ObjInfoAdicional != null)
             {
-                if (pagoSon.ObjInfoAdicional[0].GetType() == typeof(ReciboPagoTarjeta) && IsPOSActive)
+                if (pagoSon.ObjInfoAdicional.GetType() == typeof(ReciboPagoTarjeta) && IsPOSActive)
                 {
-                    ReciboPagoTarjeta tarjeta = (ReciboPagoTarjeta)pagoSon.ObjInfoAdicional[0];
+                    ReciboPagoTarjeta tarjeta = (ReciboPagoTarjeta)pagoSon.ObjInfoAdicional;
                     if (tarjeta.IdVoucherBanco != null)
                     {
                         if (clsUtilidades.OpenDeleteQuestionMessage("Al eliminar esta forma de pago, también será anulado el voucher generado desde el POS, ¿realmente desea continuar?"))
@@ -722,9 +731,9 @@ namespace PruebaWPF.Views.Recibo
             }
         }
 
-        private object[] ObtenerObjetoAdicional(int formapago)
+        private void ObtenerObjetoAdicional(int formapago, ReciboPagoSon rps)
         {
-            Object[] o = new Object[2];
+            //Object[] o = new Object[2];
             switch (formapago)
             {
                 case 2: //Cheque
@@ -736,8 +745,9 @@ namespace PruebaWPF.Views.Recibo
                         Cuenta = txtCuenta.Text
                     };
 
-                    o[0] = rc;
-                    o[1] = string.Format("{0}, Cuenta {1}, Cheque No.{2}", rc.Banco.Nombre, rc.Cuenta, rc.NumeroCK);
+                    //o[0] = rc;
+                    //o[1] = string.Format("{0}, Cuenta {1}, Cheque No.{2}", rc.Banco.Nombre, rc.Cuenta, rc.NumeroCK);
+                    rps.ReciboPagoCheque = rc;
                     break;
                 case 3: //Tarjeta
 
@@ -752,11 +762,12 @@ namespace PruebaWPF.Views.Recibo
 
                     if (isTarjeta && !IsPOSActive) //valido el numero de autorizacion del pago con tarjeta solo cuando el pos no se encuentra activo
                     {
-                        controller.ValidarNumAutorizacion(rt,formaPago.ToList());
+                        controller.ValidarNumAutorizacion(rt, formaPago.ToList());
                     }
 
-                    o[0] = rt;
-                    o[1] = string.Format("{0}, Tarjeta ****{1} Autorización {2}", rt.CiaTarjetaCredito.Nombre, rt.Tarjeta, rt.Autorizacion);
+                    //o[0] = rt;
+                    //o[1] = string.Format("{0}, Tarjeta ****{1} Autorización {2}", rt.CiaTarjetaCredito.Nombre, rt.Tarjeta, rt.Autorizacion);
+                    rps.ReciboPagoTarjeta = rt;
                     break;
                 case 4: //Bono
                     ReciboPagoBono rb = new ReciboPagoBono()
@@ -765,8 +776,9 @@ namespace PruebaWPF.Views.Recibo
                         Numero = txtBono.Text
                     };
 
-                    o[0] = rb;
-                    o[1] = string.Format("Emitipo por {0}, Bono No.{1}", rb.Emisor, rb.Numero);
+                    //o[0] = rb;
+                    //o[1] = string.Format("Emitipo por {0}, Bono No.{1}", rb.Emisor, rb.Numero);
+                    rps.ReciboPagoBono = rb;
                     break;
                 case 5: //Deposito
                     ReciboPagoDeposito rd = new ReciboPagoDeposito()
@@ -776,17 +788,18 @@ namespace PruebaWPF.Views.Recibo
                         Observacion = txtObservación.Text
                     };
 
-                    o[0] = rd;
-                    o[1] = string.Format("{0}, Transacción No.{1}, Obs. {2}", rd.Tipo ? "Transferencia" : "Minuta", rd.Transaccion, rd.Observacion);
+                    //o[0] = rd;
+                    //o[1] = string.Format("{0}, Transacción No.{1}, Obs. {2}", rd.Tipo ? "Transferencia" : "Minuta", rd.Transaccion, rd.Observacion);
+                    rps.ReciboPagoDeposito = rd;
                     break;
-                default:
-                    o[0] = null;
-                    o[1] = "";
+                default://Efectivo
+                    //o[0] = null;
+                    //o[1] = "";
                     break;
-                    //Efectivo
+
             }
 
-            return o;
+            //return o;
         }
 
         private Control[] CamposAValidar(int formapago, bool iscleaning = false)
@@ -1093,6 +1106,20 @@ namespace PruebaWPF.Views.Recibo
         {
             orden.Identificador = infoExterna.IdInterno; //Le asigno el id interno de las tablas, porque el que tiene asignado previamente es el id visible a los usuarios
             recibo.Recibimos = txtRecibimos.Text;
+
+
+            //consolido los pagos de la misma forma de pago 
+            //        List<ReciboPagoSon> consolidadoPagos = formaPago
+            //                                                .GroupBy(g => new { g.IdFormaPago, g.IdMoneda, g.StringInfoAdicional , g.ObjInfoAdicional})
+            //                                                .Select(s => new ReciboPagoSon() {
+            //                                                    IdFormaPago = s.Key.IdFormaPago,
+            //                                                    IdMoneda = s.Key.IdMoneda,
+            //                                                    Monto = s.Sum(su=>su.Monto),
+            ////////////////////////                                                    ObjInfoAdicional = s.Key.ObjInfoAdicional
+            //                                                }).ToList();
+
+            var asda = formaPago.GroupBy(g => new { g.IdFormaPago, g.IdMoneda, }).ToList();
+
             recibo = controller.GenerarRecibo(tipoArancel, recibo, orden, items.ToList(), formaPago.ToList(), diferencia, IdMatricula, IdPreMatricula);
             rptRecibo boucher = new rptRecibo(recibo, true);
             boucher.VerRecibo();
@@ -1159,11 +1186,13 @@ namespace PruebaWPF.Views.Recibo
 
         private void OcultarVerAdicionales(Panel visible, Panel[] ocultos)
         {
-            visible.Visibility = Visibility.Visible;
-            for (int i = 0; i < ocultos.Length; i++)
-            {
-                ocultos[i].Visibility = Visibility.Collapsed;
-            }
+            //visible.Visibility = Visibility.Visible;
+            //for (int i = 0; i < ocultos.Length; i++)
+            //{
+            //    ocultos[i].Visibility = Visibility.Collapsed;
+            //}
+
+            clsUtilidades.OcultarVerAdicionales(visible, ocultos);
         }
 
         private void btnClose_Click(object sender, RoutedEventArgs e)

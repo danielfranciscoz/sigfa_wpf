@@ -17,7 +17,7 @@ namespace PruebaWPF.Model
         public string strDocumento { get; set; }
         public int ROC { get; set; }
         public string Serie { get; set; }
-        public string Fecha { get; set; }
+        public System.DateTime Fecha { get; set; }
         public string Recinto { get; set; }
         public string Symbol { get; set; }
         public Nullable<decimal> TC { get; set; }
@@ -27,10 +27,11 @@ namespace PruebaWPF.Model
         public string Recibimos { get; set; }
         public Nullable<decimal> MN_Monto { get; set; }
         public Nullable<decimal> ME_Monto { get; set; }
-        public int IdFormaPago { get; set; }
-        public string FormaPago { get; set; }
-        public Nullable<decimal> MN_LMonto { get; set; }
-        public Nullable<decimal> ME_LMonto { get; set; }
+        public Nullable<decimal> Efectivo { get; set; }
+        public Nullable<decimal> Cheque { get; set; }
+        public Nullable<decimal> Tarjeta_Crédito { get; set; }
+        public Nullable<decimal> Pagaré { get; set; }
+        public Nullable<decimal> Bono { get; set; }
         public string Cajero { get; set; }
     }
 }

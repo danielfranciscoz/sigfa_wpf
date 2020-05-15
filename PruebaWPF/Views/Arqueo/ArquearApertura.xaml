@@ -107,7 +107,7 @@
                                                 <RowDefinition/>
                                                 <RowDefinition/>
                                             </Grid.RowDefinitions>
-                                            <TextBlock Grid.Column="0" Grid.Row="0" Text="No.Apertura:"/>
+                                            <TextBlock Grid.Column="0" Grid.Row="0" Text="No. Apertura:"/>
                                             <TextBlock Grid.Column="1" Grid.Row="0" Text="{Binding IdDetAperturaCaja}"/>
                                             <TextBlock Grid.Column="0" Grid.Row="1" Text="Fecha de Apertura:"/>
                                             <TextBlock Grid.Column="1" Grid.Row="1" Text="{Binding AperturaCaja.FechaApertura,StringFormat={}{0:dd/MM/yyyy HH:mmmm:ss tt}}"/>
@@ -137,7 +137,7 @@
                         <!--Recibos Impresos-->
                         <TabItem>
                             <TabItem.Header>
-                                <model:StepTitleHeader FirstLevelTitle="Recibos Impresos" x:Name="paso2"/>
+                                <model:StepTitleHeader FirstLevelTitle="Recibos y Formas de Pago" x:Name="paso2"/>
                             </TabItem.Header>
                             <Grid Height="480" >
                                 <Grid.RowDefinitions>
@@ -181,7 +181,7 @@
 
                                             </DockPanel>
                                         </DockPanel>
-                                        <DockPanel Grid.Row="1">
+                                        <DockPanel Grid.Row="1" >
                                             <StackPanel  DockPanel.Dock="Top" Height="auto" HorizontalAlignment="Left">
                                                 <TextBlock x:Name="lblRecuento" Margin="10" TextWrapping="Wrap" FontWeight="SemiBold" FontSize="25">
                                                     <TextBlock.Inlines>
@@ -224,7 +224,7 @@
                                         </Separator.LayoutTransform>
                                     </Separator>
 
-                                    <DockPanel Grid.Column="2">
+                                    <DockPanel Grid.Column="2" >
                                         <DockPanel DockPanel.Dock="Top">
                                             <TextBlock  HorizontalAlignment="Center" FontSize="15" FontWeight="SemiBold" Padding="0 5 0 5" Foreground="{StaticResource DarkGray}">
                                                 <TextBlock.Inlines>
@@ -238,19 +238,33 @@
                                         <StackPanel DockPanel.Dock="Bottom" >
                                             <TextBlock x:Name="lblRecuentoPagos" Foreground="{StaticResource DarkGray}">
                                                 <TextBlock.Inlines>
-                                                    <Run Text="Se han confirmado"></Run>
+                                                    <!--<Run Text="Se han confirmado"></Run>
                                                     <Run x:Name="panelConfirmacionPagos" Text="{Binding Mode=OneWay}"></Run>
                                                     <Run Text="de"></Run>
                                                     <Run  Text="{Binding Mode=OneWay}"></Run>
-                                                    <Run Text="pagos"></Run>
+                                                    <Run Text="pagos"></Run>-->
+                                                    <Run  Text="Los pagos que corresponden a rectificación se presentan en color"></Run>
+                                                    <Run Foreground="{StaticResource WarningMsj}" Text="Naranja" FontWeight="SemiBold"></Run>
+                                                    
                                                 </TextBlock.Inlines>
                                             </TextBlock>
                                         </StackPanel>
                                         <DockPanel x:Name="panelFormasPagoRecibo" >
 
                                             <DataGrid   HorizontalScrollBarVisibility="Auto" CanUserDeleteRows="False" CanUserAddRows="False" VerticalScrollBarVisibility="Auto" Name="tblFormasPago" AutoGenerateColumns="False" SelectionUnit="FullRow" SelectionMode="Single" >
+                                                <DataGrid.RowStyle>
+
+                                                    <Style TargetType="{x:Type DataGridRow}" BasedOn="{StaticResource MaterialDesignDataGridRow}">
+                                                        <Style.Triggers>
+                                                            <DataTrigger Binding="{Binding isRectificacion}" Value="True">
+                                                                <Setter Property="Foreground" Value="{StaticResource WarningMsj}"/>
+                                                                <Setter Property="FontWeight" Value="SemiBold"/>
+                                                            </DataTrigger>
+                                                        </Style.Triggers>
+                                                    </Style>
+                                                </DataGrid.RowStyle>
                                                 <DataGrid.Columns>
-                                                    <DataGridTemplateColumn CanUserResize="False" Width="50" Header="">
+                                                    <!--<DataGridTemplateColumn CanUserResize="False" Width="50" Header="">
                                                         <DataGridTemplateColumn.CellTemplate>
                                                             <DataTemplate>
                                                                 <StackPanel>
@@ -260,23 +274,24 @@
                                                                 </StackPanel>
                                                             </DataTemplate>
                                                         </DataGridTemplateColumn.CellTemplate>
-                                                    </DataGridTemplateColumn>
+                                                    </DataGridTemplateColumn>-->
                                                  
-                                                    <DataGridTextColumn CanUserReorder="False" CanUserResize="True" IsReadOnly="True" Header="Forma de pago" Binding="{Binding FormaPago.FormaPago1}"></DataGridTextColumn>
-                                                    <DataGridTextColumn CanUserReorder="False" CanUserResize="True" IsReadOnly="True" Header="Moneda" Width="auto" Binding="{Binding Moneda.Simbolo}"></DataGridTextColumn>
-                                                    <DataGridTextColumn CanUserReorder="False" CanUserResize="True" IsReadOnly="True" Header="Monto" Width="auto" Binding="{Binding Monto, StringFormat={}{0:n2}}"></DataGridTextColumn>
-                                                    <DataGridTextColumn CanUserReorder="False" CanUserResize="True" IsReadOnly="True" Header="" Width="auto" Binding="{Binding ObjInfoAdicional[1]}"></DataGridTextColumn>
                                                     <DataGridTemplateColumn CanUserResize="False" Width="50" Header="">
                                                         <DataGridTemplateColumn.CellTemplate>
                                                             <DataTemplate>
                                                                 <StackPanel>
-                                                                    <Button x:Name="btnEditPay" Background="{StaticResource Delete_Button}" Height="20" Width="20" Style="{StaticResource MaterialDesignToolButton}" BorderBrush="Transparent">
+                                                                    <Button x:Name="btnEditPay" Background="{StaticResource Delete_Button}" Height="20" Width="20" Style="{StaticResource MaterialDesignToolButton}" BorderBrush="Transparent" Click="BtnEditPay_Click">
                                                                         <materialDesign:PackIcon Kind="Pencil" HorizontalAlignment="Center"  VerticalAlignment="Center" Margin="0 0 0 0"></materialDesign:PackIcon>
                                                                     </Button>
                                                                 </StackPanel>
                                                             </DataTemplate>
                                                         </DataGridTemplateColumn.CellTemplate>
                                                     </DataGridTemplateColumn>
+
+                                                    <DataGridTextColumn CanUserReorder="False" CanUserResize="True" IsReadOnly="True" Header="Forma de pago" Binding="{Binding FormaPago.FormaPago1}"></DataGridTextColumn>
+                                                    <DataGridTextColumn CanUserReorder="False" CanUserResize="True" IsReadOnly="True" Header="Moneda" Width="auto" Binding="{Binding Moneda.Simbolo}"></DataGridTextColumn>
+                                                    <DataGridTextColumn CanUserReorder="False" CanUserResize="True" IsReadOnly="True" Header="Monto" Width="auto" Binding="{Binding Monto, StringFormat={}{0:n2}}"></DataGridTextColumn>
+                                                    <DataGridTextColumn CanUserReorder="False" CanUserResize="True" IsReadOnly="True" Header="" Width="auto" Binding="{Binding StringInfoAdicional}"></DataGridTextColumn>
                                             </DataGrid.Columns>
                                             </DataGrid>
                                         </DockPanel>
@@ -389,7 +404,7 @@
                         </TabItem>
 
                         <!--Documentos de efectivo-->
-                        <TabItem>
+                        <!--<TabItem>
                             <TabItem.Header>
                                 <model:StepTitleHeader FirstLevelTitle="Documentos de Efectivo" />
                             </TabItem.Header>
@@ -510,7 +525,7 @@
                                                                 <DataTemplate>
                                                                     <StackPanel>
                                                                         <Button x:Name="btnOkDocument" Background="{StaticResource Delete_Button}" Height="20" Width="20" Style="{StaticResource MaterialDesignToolButton}" BorderBrush="Transparent" Click="BtnOkDocument_Click">
-                                                                            <!--<Button x:Name="btnOkDocument" Background="{StaticResource Delete_Button}" Height="20" Width="20" Style="{StaticResource MaterialDesignToolButton}" BorderBrush="Transparent" Click="BtnDeletePay_Click">-->
+                                                                            --><!--<Button x:Name="btnOkDocument" Background="{StaticResource Delete_Button}" Height="20" Width="20" Style="{StaticResource MaterialDesignToolButton}" BorderBrush="Transparent" Click="BtnDeletePay_Click">--><!--
                                                                             <materialDesign:PackIcon Kind="CheckBold" HorizontalAlignment="Center"  VerticalAlignment="Center" Margin="0 0 0 0"></materialDesign:PackIcon>
                                                                         </Button>
                                                                     </StackPanel>
@@ -522,7 +537,6 @@
                                                         <DataGridTextColumn CanUserReorder="False" CanUserResize="False" IsReadOnly="True" Header="No.Doc" Width="auto" Binding="{Binding NoDocumento}"></DataGridTextColumn>
                                                         <DataGridTextColumn CanUserReorder="False" CanUserResize="False" IsReadOnly="True" Header="Moneda" Width="auto" Binding="{Binding Moneda.Moneda1}"></DataGridTextColumn>
                                                         <DataGridTextColumn CanUserReorder="False" CanUserResize="False" IsReadOnly="True" Header="Monto" Width="auto" Binding="{Binding Monto, StringFormat={}{0:n2}}"></DataGridTextColumn>
-                                                        <!--<DataGridTextColumn CanUserReorder="False" CanUserResize="False" IsReadOnly="True" Header="Comentario" Width="auto" Binding="{Binding ComentarioSistema}"></DataGridTextColumn>-->
                                                         <DataGridTextColumn CanUserReorder="False" CanUserResize="False" IsReadOnly="False" Header="Comentario" Width="auto" Binding="{Binding Observacion}"></DataGridTextColumn>
                                                     </DataGrid.Columns>
                                                 </DataGrid>
@@ -583,7 +597,7 @@
                                 </StackPanel>
 
                             </Grid>
-                        </TabItem>
+                        </TabItem>-->
 
                         <!--Finalizando-->
                         <TabItem>
@@ -592,9 +606,8 @@
                             </TabItem.Header>
                             <Grid Height="480" >
                                 <Grid.RowDefinitions>
+                                    <RowDefinition Height="180"/>
                                     <RowDefinition Height="*"/>
-                                    <RowDefinition Height="*"/>
-                                    <RowDefinition Height="80"/>
                                     <RowDefinition Height="auto"/>
                                 </Grid.RowDefinitions>
                                 <StackPanel Grid.Row="0">
@@ -619,14 +632,14 @@
                                                 <ColumnDefinition Width="10"/>
                                                 <ColumnDefinition Width="*"/>
                                             </Grid.ColumnDefinitions>
-                                            <Grid Grid.Column="0">
+                                            <Grid Grid.Column="2">
                                                 <Grid>
                                                     <Grid.RowDefinitions>
                                                         <RowDefinition Height="auto"/>
                                                         <RowDefinition Height="*"/>
                                                     </Grid.RowDefinitions>
                                                     <StackPanel Grid.Row="0" Orientation="Vertical">
-                                                        <TextBlock VerticalAlignment="Center" Foreground="Gray" FontWeight="Bold">Efectivo recibido</TextBlock>
+                                                        <TextBlock VerticalAlignment="Center" Foreground="Gray" FontWeight="Bold">Efectivo según sistema</TextBlock>
                                                         <Separator/>
                                                     </StackPanel>
 
@@ -649,14 +662,14 @@
                                                 <Rectangle VerticalAlignment="Stretch" Height="220" Width="1" Stroke="Gray" />
                                             </StackPanel>
 
-                                            <Grid Grid.Column="2">
+                                            <Grid Grid.Column="0">
                                                 <Grid>
                                                     <Grid.RowDefinitions>
                                                         <RowDefinition Height="auto"/>
                                                         <RowDefinition Height="*"/>
                                                     </Grid.RowDefinitions>
                                                     <StackPanel Grid.Row="0" Orientation="Vertical">
-                                                        <TextBlock VerticalAlignment="Center" Foreground="Gray" FontWeight="Bold">Efectivo en arqueo</TextBlock>
+                                                        <TextBlock VerticalAlignment="Center" Foreground="Gray" FontWeight="Bold">Efectivo encontrado en arqueo</TextBlock>
                                                         <Separator/>
                                                     </StackPanel>
 
@@ -711,39 +724,25 @@
                                 <StackPanel Grid.Row="1">
                                     <StackPanel Orientation="Horizontal">
                                         <materialDesign:PackIcon Kind="ChequeBook" HorizontalAlignment="Center"  VerticalAlignment="Center" Margin="10 0 10 0"></materialDesign:PackIcon>
-                                        <TextBlock VerticalAlignment="Center" FontWeight="Bold">Resumen de inconsistencias en documentos de efectivo</TextBlock>
+                                        <TextBlock VerticalAlignment="Center" FontWeight="Bold">Resumen de pagos con documentos de efectivo</TextBlock>
                                     </StackPanel>
                                     <Separator></Separator>
-                                    <Grid >
-                                        <Grid>
-                                            <Grid.ColumnDefinitions>
-                                                <ColumnDefinition Width="*"/>
-                                                <ColumnDefinition Width="10"/>
-                                                <ColumnDefinition Width="*"/>
-                                            </Grid.ColumnDefinitions>
-                                            <Grid Grid.Column="0">
-                                                <Grid>
-                                                    <Grid.RowDefinitions>
-                                                        <RowDefinition Height="auto"/>
-                                                        <RowDefinition Height="*"/>
-                                                    </Grid.RowDefinitions>
-                                                    <StackPanel Grid.Row="0" Orientation="Vertical">
-                                                        <TextBlock VerticalAlignment="Center" Foreground="Gray" FontWeight="Bold">Documentos no enlazados</TextBlock>
-                                                        <Separator/>
-                                                    </StackPanel>
+                                    <Grid  Height="240">
+                                                    <Grid.ColumnDefinitions>
+                                                        <ColumnDefinition />
+                                                        <ColumnDefinition />
+                                                    </Grid.ColumnDefinitions>
 
-                                                    <DockPanel Grid.Row="1" VerticalAlignment="Top" Height="200">
+                                                    <DockPanel Grid.Column="0" VerticalAlignment="Top" >
                                                         <!--<ListBox  x:Name="lstDocumentoMatch" Height="100">
                                                         
                                                         </ListBox>-->
-                                                        <DockPanel VerticalAlignment="Top" Margin="0 0 0 0" Height="140">
-                                                            <DataGrid Name="tblDocumentosMatch"  CanUserDeleteRows="False" CanUserAddRows="False" AutoGenerateColumns="False" SelectionUnit="FullRow" SelectionMode="Single" >
+                                                        <DockPanel VerticalAlignment="Top" Margin="0 0 0 0" >
+                                                            <DataGrid Name="tblConsolidadoDocumentos"  CanUserDeleteRows="False" CanUserAddRows="False" AutoGenerateColumns="False" SelectionUnit="FullRow" SelectionMode="Single" >
                                                                 <DataGrid.Columns>
-                                                                    <DataGridTextColumn CanUserReorder="False" CanUserResize="True" IsReadOnly="True"  Header="Origen" Width="auto"  Binding="{Binding Origen}"></DataGridTextColumn>
                                                                     <DataGridTextColumn CanUserReorder="False" CanUserResize="True" IsReadOnly="True"  Header="Documento" Width="auto"  Binding="{Binding FormaPago.FormaPago1}"></DataGridTextColumn>
-                                                                    <DataGridTextColumn CanUserReorder="False" CanUserResize="True" IsReadOnly="True" Header="No.Doc" Width="auto" Binding="{Binding NoDocumento, StringFormat={}{0:n2}}"></DataGridTextColumn>
                                                                     <DataGridTextColumn CanUserReorder="False" CanUserResize="True" IsReadOnly="True" Header="Moneda" Width="auto" Binding="{Binding Moneda.Simbolo}"></DataGridTextColumn>
-                                                                    <DataGridTextColumn CanUserReorder="False" CanUserResize="True" IsReadOnly="True" Header="Total" Width="auto" Binding="{Binding MontoFisico}"></DataGridTextColumn>
+                                                                    <DataGridTextColumn CanUserReorder="False" CanUserResize="True" IsReadOnly="True" Header="Total" Width="auto" Binding="{Binding Monto}"></DataGridTextColumn>
                                                                 </DataGrid.Columns>
                                                             </DataGrid>
 
@@ -752,47 +751,17 @@
                                                         <!--<ListBox x:Name="lstEfectivoRecibidoEquivalente">
                                                         </ListBox>-->
                                                     </DockPanel>
-                                                </Grid>
-                                            </Grid>
 
-                                            <StackPanel Grid.Column="1" Orientation="Horizontal" HorizontalAlignment="Center">
-                                                <Rectangle VerticalAlignment="Stretch" Height="220" Width="1" Stroke="Gray" />
-                                            </StackPanel>
-
-                                            <Grid Grid.Column="2">
-                                                <Grid>
-                                                    <Grid.RowDefinitions>
-                                                        <RowDefinition Height="auto"/>
-                                                        <RowDefinition Height="*"/>
-                                                    </Grid.RowDefinitions>
-                                                    <StackPanel Grid.Row="0" Orientation="Vertical">
-                                                        <TextBlock VerticalAlignment="Center" Foreground="Gray" FontWeight="Bold">Faltante/Sobrante</TextBlock>
-                                                        <!--<Separator/>-->
-                                                    </StackPanel>
-
-                                                    <StackPanel Grid.Row="1" VerticalAlignment="Top">
-                                                        <ListBox FontWeight="Bold" x:Name="lstDocumentoArqueo">
-                                                            <ListBox.Resources>
-                                                                <SolidColorBrush x:Key="{x:Static SystemColors.HighlightBrushKey}" Color="Transparent"/>
-                                                                <SolidColorBrush x:Key="{x:Static SystemColors.HighlightTextBrushKey}" Color="Black" />
-                                                                <SolidColorBrush x:Key="{x:Static SystemColors.ControlBrushKey}" Color="Transparent" />
-                                                            </ListBox.Resources>
-                                                        </ListBox>
-                                                        <Separator/>
-                                                        <ListBox x:Name="lstPendienteDocumento">
-                                                        </ListBox>
-                                                    </StackPanel>
-                                                </Grid>
-                                            </Grid>
-                                        </Grid>
+                                        <StackPanel Grid.Column="1" Orientation="Vertical" VerticalAlignment="top" Margin="5 0 5 0">
+                                            <TextBox FontSize="14" x:Name="txtObservaciones" Language="es-419" SpellCheck.IsEnabled="True" materialDesign:HintAssist.Hint="Observaciones" materialDesign:HintAssist.IsFloating="True" materialDesign:HintAssist.FloatingScale="1" AcceptsReturn="True" MaxLines="11"></TextBox>
+                                            <TextBlock Foreground="{StaticResource DarkGray}">Las rectificaciones serán incluidas automáticamente en el informe de arqueo</TextBlock>
+                                        </StackPanel>
                                     </Grid>
+                                 
                                 </StackPanel>
 
-                                <StackPanel Grid.Row="2"  VerticalAlignment="Bottom" >
-                                    <TextBox FontSize="14" x:Name="txtObservaciones" Language="es-419" SpellCheck.IsEnabled="True" materialDesign:HintAssist.Hint="Observaciones" materialDesign:HintAssist.IsFloating="True" materialDesign:HintAssist.FloatingScale="1" AcceptsReturn="True" MaxLines="3"></TextBox>
-                                </StackPanel>
 
-                                <StackPanel Grid.Row="3" Height="auto">
+                                <StackPanel Grid.Row="2" Height="auto">
                                     <Grid>
                                         <Grid.ColumnDefinitions>
                                             <ColumnDefinition Width="auto"/>

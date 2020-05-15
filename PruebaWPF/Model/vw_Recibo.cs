@@ -67,5 +67,6 @@ namespace PruebaWPF.Model
         public string NombreCuenta { get; set; }
         public string Descripcion { get; set; }
         public Nullable<short> IdConcepto { get; set; }
+        public string RUC { get; set; }
     }
 }

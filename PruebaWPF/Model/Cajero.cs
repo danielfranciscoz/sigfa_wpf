@@ -20,7 +20,5 @@ namespace PruebaWPF.Model
         public string Serie { get; set; }
         public string LoginCreacion { get; set; }
         public bool RegAnulado { get; set; }
-    
-        public virtual SerieRecibo SerieRecibo { get; set; }
     }
 }

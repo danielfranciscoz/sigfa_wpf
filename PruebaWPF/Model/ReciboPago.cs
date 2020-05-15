@@ -19,7 +19,8 @@ namespace PruebaWPF.Model
         {
             this.ArqueoDocumento = new HashSet<ArqueoDocumento>();
             this.ArqueoNoEfectivo = new HashSet<ArqueoNoEfectivo>();
-            this.ConfirmacionPago1 = new HashSet<ConfirmacionPago>();
+            this.RectificacionPago = new HashSet<RectificacionPago>();
+            this.ReciboPago1 = new HashSet<ReciboPago>();
         }
     
         public int IdReciboPago { get; set; }
@@ -28,7 +29,7 @@ namespace PruebaWPF.Model
         public int IdFormaPago { get; set; }
         public decimal Monto { get; set; }
         public int IdMoneda { get; set; }
-        public bool isConfirmacion { get; set; }
+        public Nullable<int> IdRectificacion { get; set; }
         public System.DateTime FechaCreacion { get; set; }
         public string UsuarioCreacion { get; set; }
         public bool regAnulado { get; set; }
@@ -37,13 +38,16 @@ namespace PruebaWPF.Model
         public virtual ICollection<ArqueoDocumento> ArqueoDocumento { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<ArqueoNoEfectivo> ArqueoNoEfectivo { get; set; }
-        public virtual ConfirmacionPago ConfirmacionPago { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<ConfirmacionPago> ConfirmacionPago1 { get; set; }
+        public virtual ICollection<RectificacionPago> RectificacionPago { get; set; }
+        public virtual RectificacionPago RectificacionPago1 { get; set; }
         public virtual Moneda Moneda { get; set; }
         public virtual Usuario Usuario { get; set; }
         public virtual FormaPago FormaPago { get; set; }
         public virtual Recibo1 Recibo1 { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<ReciboPago> ReciboPago1 { get; set; }
+        public virtual ReciboPago ReciboPago2 { get; set; }
         public virtual ReciboPagoBono ReciboPagoBono { get; set; }
         public virtual ReciboPagoCheque ReciboPagoCheque { get; set; }
         public virtual ReciboPagoDeposito ReciboPagoDeposito { get; set; }

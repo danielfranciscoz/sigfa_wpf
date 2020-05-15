@@ -3,7 +3,7 @@
   <Profiles />
   <Settings>
     <Setting Name="TopRow" Type="System.Int32" Scope="User">
-      <Value Profile="(Default)">1200</Value>
+      <Value Profile="(Default)">1000</Value>
     </Setting>
     <Setting Name="IdMonedaWS" Type="System.String" Scope="Application">
       <Value Profile="(Default)">2</Value>
@@ -15,7 +15,7 @@
       <Value Profile="(Default)">False</Value>
     </Setting>
     <Setting Name="rememberSession" Type="System.Boolean" Scope="User">
-      <Value Profile="(Default)">False</Value>
+      <Value Profile="(Default)">True</Value>
     </Setting>
     <Setting Name="UserRemember" Type="System.String" Scope="User">
       <Value Profile="(Default)" />

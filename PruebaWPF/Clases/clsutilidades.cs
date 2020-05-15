@@ -195,5 +195,24 @@ namespace PruebaWPF.Clases
             //}
             return SerialPort.GetPortNames();
         }
+
+
+        public static void OcultarVerAdicionales(Panel visible, Panel[] ocultos)
+        {
+            visible.Visibility = Visibility.Visible;
+            for (int i = 0; i < ocultos.Length; i++)
+            {
+                ocultos[i].Visibility = Visibility.Collapsed;
+            }
+        }
+
+        public static void HabilitaDesabilitaTodo(bool Enable, Control[] controls)
+        {
+            for (int i = 0; i < controls.Length; i++)
+            {
+                controls[i].IsEnabled = Enable;
+            }
+        }
+
     }
 }

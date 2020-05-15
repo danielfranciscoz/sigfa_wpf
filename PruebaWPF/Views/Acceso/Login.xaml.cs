@@ -7,6 +7,7 @@ using PruebaWPF.ViewModel;
 using PruebaWPF.Views.Main;
 using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
@@ -33,6 +34,9 @@ namespace PruebaWPF.Views.Acceso
             lblYear.Text = DateTime.Now.Year.ToString();
             CamposNormales();
             Ensamblados();
+            //var a = Properties.Settings.Default;
+            //string ConectionEF = ConfigurationManager.ConnectionStrings["SIFOPEntities"].ConnectionString;
+
         }
 
         private void Ensamblados()

@@ -222,7 +222,7 @@ namespace PruebaWPF.Views.Recibo
         {
             ReciboSon selected = (ReciboSon)tblRecibo.SelectedItem;
             tblReciboDet.ItemsSource = controller().DetallesRecibo(selected);
-            tblReciboPay.ItemsSource = controller().ReciboFormaPago(selected);
+            tblReciboPay.ItemsSource = controller().ReciboFormaPago(selected,false);
 
             if (!selected.regAnulado)
             {

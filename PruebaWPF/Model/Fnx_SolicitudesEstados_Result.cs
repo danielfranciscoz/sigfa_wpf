@@ -15,6 +15,7 @@ namespace PruebaWPF.Model
     {
         public int Secuencia { get; set; }
         public Nullable<byte> IdEstado { get; set; }
+        public string strEstado { get; set; }
         public Nullable<int> Cheque { get; set; }
         public Nullable<int> IdComprobantePago { get; set; }
         public Nullable<int> IdSolicitudCheque { get; set; }
@@ -36,5 +37,7 @@ namespace PruebaWPF.Model
         public string Cuenta { get; set; }
         public string LoginCreacion { get; set; }
         public string NombreUsuario { get; set; }
+        public string LoginImpresion { get; set; }
+        public string NombreImpresion { get; set; }
     }
 }

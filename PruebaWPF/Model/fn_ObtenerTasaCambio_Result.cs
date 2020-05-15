@@ -14,6 +14,7 @@ namespace PruebaWPF.Model
     public partial class fn_ObtenerTasaCambio_Result
     {
         public Nullable<System.DateTime> Fecha { get; set; }
+        public string Moneda { get; set; }
         public Nullable<decimal> Valor { get; set; }
     }
 }

@@ -24,5 +24,6 @@ namespace PruebaWPF.Model
         public string Estado { get; set; }
         public string Concepto { get; set; }
         public string Nombre { get; set; }
+        public string Total { get; set; }
     }
 }

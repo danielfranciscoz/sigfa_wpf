@@ -162,18 +162,122 @@ namespace PruebaWPF.ViewModel
             return db.ArqueoRecibo.Where(w => w.IdArqueo == arqueo.IdArqueoDetApertura).Select(s => s.Recibo1).OrderBy(o => o.Serie).ThenBy(t => t.IdRecibo).ToList();
         }
 
-        public void ConfirmarPago(ReciboPago pago)
+        public List<FormaPago> ObtenerFormasPago()
         {
-            ConfirmacionPago confirmacion = new ConfirmacionPago()
-            {
-                IdReciboPago = pago.IdReciboPago,
-                IdConfirmacion = pago.IdReciboPago,
-                UsuarioCreacion = clsSessionHelper.usuario.Login,
-                FechaCreacion = DateTime.Now
-            };
-            db.ConfirmacionPago.Add(confirmacion);
+            return new ReciboViewModel().ObtenerFormasPago();
+        }
 
-            db.SaveChanges();
+        public List<Banco> ObtenerBancos()
+        {
+            return new ReciboViewModel().ObtenerBancos();
+        }
+
+        public List<CiaTarjetaCredito> ObtenerTarjetas()
+        {
+            return new ReciboViewModel().ObtenerTarjetas();
+        }
+
+        public void RectificarPago(ReciboPagoSon pago, ReciboPagoSon original, string observacion)
+        {
+            using (var transaccion = db.Database.BeginTransaction())
+            {
+                try
+                {
+                    int idRectificacion = 0;
+                    ReciboPago rectificacion = new ReciboPago()
+                    {
+                        IdReciboPago = idRectificacion,
+                        IdRecibo = original.IdRecibo,
+                        Serie = original.Serie,
+                        IdFormaPago = pago.IdFormaPago,
+                        Monto = original.Monto,
+                        IdMoneda = original.IdMoneda,
+                        FechaCreacion = System.DateTime.Now,
+                        UsuarioCreacion = clsSessionHelper.usuario.Login,
+
+                    };
+
+                    db.ReciboPago.Add(rectificacion);
+                    //db.SaveChanges();
+
+                    if (pago.ReciboPagoCheque != null)
+                    {
+                        ReciboPagoCheque rc = new ReciboPagoCheque()
+                        {
+                            IdReciboPago = pago.IdReciboPago,
+                            IdBanco = pago.ReciboPagoCheque.IdBanco,
+                            Cuenta = pago.ReciboPagoCheque.Cuenta,
+                            NumeroCK = pago.ReciboPagoCheque.NumeroCK
+                        };
+
+                        db.ReciboPagoCheque.Add(rc);
+                    }
+                    else if (pago.ReciboPagoTarjeta != null)
+                    {
+                        ReciboPagoTarjeta rt = new ReciboPagoTarjeta()
+                        {
+                            IdReciboPago = pago.IdReciboPago,
+                            IdTarjeta = pago.ReciboPagoTarjeta.IdTarjeta,
+                            Tarjeta = pago.ReciboPagoTarjeta.Tarjeta,
+                            Autorizacion = pago.ReciboPagoTarjeta.Autorizacion
+                        };
+
+                        db.ReciboPagoTarjeta.Add(rt);
+                    }
+                    else if (pago.ReciboPagoBono != null)
+                    {
+                        ReciboPagoBono rb = new ReciboPagoBono()
+                        {
+                            IdReciboPago = pago.IdReciboPago,
+                            Numero = pago.ReciboPagoBono.Numero,
+                            Emisor = pago.ReciboPagoBono.Emisor
+                        };
+
+                        db.ReciboPagoBono.Add(rb);
+                    }
+                    else if (pago.ReciboPagoDeposito != null)
+                    {
+                        ReciboPagoDeposito rd = new ReciboPagoDeposito()
+                        {
+                            IdReciboPago = pago.IdReciboPago,
+                            Tipo = pago.ReciboPagoDeposito.Tipo,
+                            Transaccion = pago.ReciboPagoDeposito.Transaccion,
+                            Observacion = pago.ReciboPagoDeposito.Observacion
+                        };
+
+                        db.ReciboPagoDeposito.Add(rd);
+                    }
+
+
+
+                    RectificacionPago rp = new RectificacionPago()
+                    {
+                        IdReciboPago = original.IdReciboPago,
+                        IdRectificacionPago = rectificacion.IdReciboPago,
+                        Observacion = observacion,
+                        UsuarioCreacion = clsSessionHelper.usuario.Login,
+                        FechaCreacion = DateTime.Now
+                    };
+
+                    db.RectificacionPago.Add(rp);
+
+                    ReciboPago reciboPago = db.ReciboPago.Find(original.IdReciboPago);
+
+                    reciboPago.IdRectificacion = rectificacion.IdReciboPago;
+
+                    db.Entry(reciboPago).State = System.Data.Entity.EntityState.Modified;
+
+                    db.SaveChanges();
+                    transaccion.Commit();
+                }
+                catch (Exception ex)
+                {
+
+                    transaccion.Rollback();
+                    throw ex;
+                }
+            }
+
         }
         #endregion
 
@@ -276,21 +380,21 @@ namespace PruebaWPF.ViewModel
 
         public List<DocumentosEfectivo> FindDocumentosEfectivo(DetAperturaCaja apertura)
         {
-            List<ReciboPago> pagos = db.ReciboPago.Where(w => w.Recibo1.IdDetAperturaCaja == apertura.IdDetAperturaCaja).ToList();
+            List<DocumentosEfectivo> pagos = db.ReciboPago
+                                        .Where(w => w.Recibo1.IdDetAperturaCaja == apertura.IdDetAperturaCaja && w.FormaPago.isDoc && w.IdRectificacion == null && !w.regAnulado && !w.Recibo1.regAnulado)
+                                        .Select(s=>new DocumentosEfectivo() {
+                                            IdRecibo = s.IdRecibo,
+                                            Serie = s.Serie,
+                                            Moneda = s.Moneda,
+                                            FormaPago = s.FormaPago,
+                                            Monto = s.Monto,
+                                            NoDocumento = s.ReciboPagoTarjeta != null ? s.ReciboPagoTarjeta.Autorizacion.ToString() : s.ReciboPagoCheque != null ? s.ReciboPagoCheque.NumeroCK.ToString() : s.ReciboPagoDeposito != null ? s.ReciboPagoDeposito.Transaccion : s.ReciboPagoBono != null? s.ReciboPagoBono.Emisor:""
+                                        })
+                                        .ToList()
+                                        
+                                        ;
 
-            List<DocumentosEfectivo> bonos = pagos.Where(w => w.ReciboPagoBono != null)
-                .Select(s => new DocumentosEfectivo { IdRecibo = s.IdRecibo, Serie = s.Serie, IdReciboPago = s.IdReciboPago, FormaPago = s.FormaPago, Moneda = s.Moneda, Monto = s.Monto, NoDocumento = s.ReciboPagoBono.Numero, Informacion = "No.Bono" }).ToList();
-
-            List<DocumentosEfectivo> cheque = pagos.Where(w => w.ReciboPagoCheque != null)
-                .Select(s => new DocumentosEfectivo { IdRecibo = s.IdRecibo, Serie = s.Serie, IdReciboPago = s.IdReciboPago, FormaPago = s.FormaPago, Moneda = s.Moneda, Monto = s.Monto, NoDocumento = s.ReciboPagoCheque.NumeroCK.ToString(), Informacion = "No.Cheque" }).ToList();
-
-            List<DocumentosEfectivo> deposito = pagos.Where(w => w.ReciboPagoDeposito != null)
-                .Select(s => new DocumentosEfectivo { IdRecibo = s.IdRecibo, Serie = s.Serie, IdReciboPago = s.IdReciboPago, FormaPago = s.FormaPago, Moneda = s.Moneda, Monto = s.Monto, NoDocumento = s.ReciboPagoDeposito.Transaccion, Informacion = "No.Transacción" }).ToList();
-
-            List<DocumentosEfectivo> tarjeta = pagos.Where(w => w.ReciboPagoTarjeta != null)
-                .Select(s => new DocumentosEfectivo { IdRecibo = s.IdRecibo, Serie = s.Serie, IdReciboPago = s.IdReciboPago, FormaPago = s.FormaPago, Moneda = s.Moneda, Monto = s.Monto, NoDocumento = s.ReciboPagoTarjeta.Autorizacion.ToString(), Informacion = "No.Autorización" }).ToList();
-
-            return bonos.Union(cheque).Union(deposito).Union(tarjeta).OrderBy(o => o.Recibo).ToList();
+            return pagos;
         }
 
         public List<ArqueoNoEfectivoSon> FindDocumentosArqueados(int IdArqueoDetApertura)
@@ -316,7 +420,11 @@ namespace PruebaWPF.ViewModel
 
         public List<FormaPago> FindFormasPagoDocumentos(int IdArqueoDetApertura)
         {
-            return db.ReciboPago.Where(w => w.Recibo1.IdDetAperturaCaja == IdArqueoDetApertura && w.regAnulado == false && w.FormaPago.isDoc && w.FormaPago.Identificador != null).Select(s => s.FormaPago).Distinct().ToList();
+            return db.ReciboPago
+                        .Where(w => w.Recibo1.IdDetAperturaCaja == IdArqueoDetApertura && w.regAnulado == false && w.FormaPago.isDoc && w.FormaPago.Identificador != null)
+                        .Select(s => s.FormaPago)
+                        .Distinct()
+                        .ToList();
         }
 
         public int? FindReciboPago(ArqueoNoEfectivoSon noefectivo)
@@ -332,7 +440,25 @@ namespace PruebaWPF.ViewModel
 
         public int FindTotalDocumentos(int IdArqueoDetApertura)
         {
-            return db.ReciboPago.Count(c => c.Recibo1.IdDetAperturaCaja == IdArqueoDetApertura && c.FormaPago.isDoc && c.regAnulado == false);
+            return db.ReciboPago.Count(c => c.Recibo1.IdDetAperturaCaja == IdArqueoDetApertura && c.FormaPago.isDoc && !c.regAnulado && !c.Recibo1.regAnulado);
+        }
+
+        public List<ReciboPagoSon> FindConsolidadoDocumentos(int IdDetApertura)
+        {
+            List<ReciboPagoSon> consulta = db.ReciboPago
+                                .Where(w => w.Recibo1.IdDetAperturaCaja == IdDetApertura && w.FormaPago.isDoc && w.IdRectificacion == null && !w.regAnulado && !w.Recibo1.regAnulado)
+                                .GroupBy(g => new { g.FormaPago.FormaPago1, g.Moneda.Simbolo })
+                                .ToList()
+                                .Select(s => new ReciboPagoSon()
+                                {
+                                    FormaPago = new FormaPago() { FormaPago1 = s.Key.FormaPago1 },
+                                    Moneda = new Moneda() { Simbolo = s.Key.Simbolo },
+                                    Monto = s.Sum(ss => ss.Monto)
+                                })
+                                .OrderBy(o => o.FormaPago.FormaPago1).ThenBy(t => t.Moneda.Moneda1).ThenByDescending(t => t.Monto)
+                                .ToList();
+
+            return consulta;
         }
 
         /// <summary>
@@ -346,7 +472,7 @@ namespace PruebaWPF.ViewModel
         {
             List<ReciboPago> pagos = db.ReciboPago.Where(c => c.Recibo1.IdDetAperturaCaja == IdArqueoDetApertura && c.regAnulado == false).ToList();
             int totalPagos = pagos.Count();
-            int confirmados = pagos.Count(c => c.ConfirmacionPago != null);
+            int confirmados = 0;//pagos.Count(c => c.ConfirmacionPago != null);
             return new int[] { totalPagos, confirmados };
         }
 
@@ -424,9 +550,44 @@ namespace PruebaWPF.ViewModel
         {
             List<fn_TotalesArqueo_Result>[] total = new List<fn_TotalesArqueo_Result>[2];
             total[0] = db.fn_TotalesArqueo(apertura.IdDetAperturaCaja, false).ToList();
-            total[1] = db.fn_TotalesArqueo(apertura.IdDetAperturaCaja, true).ToList();
+            //     total[1] = db.fn_TotalesArqueo(apertura.IdDetAperturaCaja, true).ToList();
 
             return total;
+        }
+
+        public List<Rectificaciones> FindRectificaciones(int apertura)
+        {
+            var consulta = db.ReciboPago
+                .OrderBy(f => f.RectificacionPago.FirstOrDefault().FechaCreacion)
+                .Where(w => w.IdRectificacion != null && w.Recibo1.IdDetAperturaCaja == apertura)
+                .ToList()
+                .Select(s => new Rectificaciones(
+                        new ReciboPagoSon()
+                        {
+                            IdRecibo = s.IdRecibo,
+                            Serie = s.Serie,
+                            Moneda = s.Moneda,
+                            Monto = s.Monto,
+                            FormaPago = s.ReciboPago2.FormaPago,
+                            RectificacionPago = s.RectificacionPago,
+                            ReciboPagoBono = s.ReciboPago2.ReciboPagoBono,
+                            ReciboPagoTarjeta = s.ReciboPago2.ReciboPagoTarjeta,
+                            ReciboPagoCheque = s.ReciboPago2.ReciboPagoCheque,
+                            ReciboPagoDeposito = s.ReciboPago2.ReciboPagoDeposito
+                        },
+                        new ReciboPagoSon()
+                        {
+                            FormaPago = s.FormaPago,
+                            ReciboPagoBono = s.ReciboPagoBono,
+                            ReciboPagoTarjeta = s.ReciboPagoTarjeta,
+                            ReciboPagoCheque = s.ReciboPagoCheque,
+                            ReciboPagoDeposito = s.ReciboPagoDeposito
+                        })
+           
+                )
+                .ToList();
+
+            return consulta;
         }
 
         public List<ArqueoNoEfectivoSon> FindDocumentosNoEnlazados(int IdDetAperturaCaja)
@@ -541,6 +702,17 @@ namespace PruebaWPF.ViewModel
         {
             return new ReciboViewModel().FindTipoCambio(ConvertToReciboSon(agregado), null);
         }
+
+        /// <summary>
+        /// Encuentra el tipo de cambio para la apertura especificada
+        /// </summary>
+        /// <param name="apertura"></param>
+        /// <returns></returns>
+        public List<VariacionCambiariaSon> FindTipoCambios(AperturaCaja apertura)
+        {
+            return new ReciboViewModel().ObtenerTasaCambio(apertura.FechaApertura);
+        }
+
         public List<VariacionCambiariaSon> FindTipoCambios(DateTime fecha)
         {
             return new ReciboViewModel().FindTipoCambio(fecha);
@@ -583,6 +755,33 @@ namespace PruebaWPF.ViewModel
 
     }
 
+
+    public class Rectificaciones
+    {
+        private readonly ReciboPagoSon rectificacion;
+        private readonly ReciboPagoSon original;
+        public Rectificaciones(ReciboPagoSon rectificacion, ReciboPagoSon original)
+        {
+            this.rectificacion = rectificacion;
+            this.original = original;
+        }
+
+        public string Recibo => string.Format("{0}-{1}", rectificacion.IdRecibo, rectificacion.Serie);
+
+        public string FormaPagoOriginal => original.FormaPago.FormaPago1;
+        public string DetalleOriginal => original.StringInfoAdicional;
+        public string Moneda => rectificacion.Moneda.Simbolo;
+        public decimal Monto => rectificacion.Monto;
+        public string FormaPagoRectificacion => rectificacion.FormaPago.FormaPago1;
+        public string DetalleRectificacion => rectificacion.StringInfoAdicional;
+        public string Observacion => rectificacion.RectificacionPago.FirstOrDefault().Observacion;
+        public string UsuarioCreacion => rectificacion.RectificacionPago.FirstOrDefault().UsuarioCreacion;
+        public DateTime FechaCreacion => rectificacion.RectificacionPago.FirstOrDefault().FechaCreacion;
+
+
+    }
+
+
     public class ArqueoNoEfectivoSon : ArqueoNoEfectivo
     {
 
@@ -593,40 +792,42 @@ namespace PruebaWPF.ViewModel
         public string SimboloMoneda => Moneda.Simbolo;
     }
 
-    public class DocumentosEfectivo : ReciboPago, INotifyPropertyChanged
+    public class DocumentosEfectivo : ReciboPago //, INotifyPropertyChanged
     {
-        public int IdArqueoNoEfectivo { get; set; }
+        //public int IdArqueoNoEfectivo { get; set; }
         public string Recibo => string.Format("{0}-{1}", IdRecibo, Serie);
         public string NoDocumento { get; set; }
-        public string Informacion { get; set; }
-        private string observacion { get; set; }
-        private bool isOkDocument { get; set; }
+        //public string Informacion { get; set; }
+        //private string observacion { get; set; }
+        //private bool isOkDocument { get; set; }
+        public string Documento => FormaPago.FormaPago1;
+        public string SimboloMoneda => Moneda.Simbolo;
 
         public event PropertyChangedEventHandler PropertyChanged;
 
-        private void NotifyPropertyChanged([CallerMemberName] String propertyName = "")
-        {
-            if (PropertyChanged != null)
-            {
-                PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
-            }
-        }
+        //private void NotifyPropertyChanged([CallerMemberName] String propertyName = "")
+        //{
+        //    if (PropertyChanged != null)
+        //    {
+        //        PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+        //    }
+        //}
 
-        public string Observacion
-        {
-            get
-            {
-                return observacion;
-            }
-            set
-            {
-                if (value != observacion)
-                {
-                    observacion = value;
-                    NotifyPropertyChanged();
-                }
-            }
-        }
+        //public string Observacion
+        //{
+        //    get
+        //    {
+        //        return observacion;
+        //    }
+        //    set
+        //    {
+        //        if (value != observacion)
+        //        {
+        //            observacion = value;
+        //            NotifyPropertyChanged();
+        //        }
+        //    }
+        //}
 
     }
 

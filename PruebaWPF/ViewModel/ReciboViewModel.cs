@@ -79,7 +79,7 @@ namespace PruebaWPF.ViewModel
                 //    .Where(w => busqueda.All(a => w.IdRecibo == GetIfNumber(a) || w.Serie.Contains(a))
                 //    && r.Any(a => w.InfoRecibo.IdRecinto == a.IdRecinto)
                 //    );
-                return FindAll().Where(w => busqueda.All(a => w.IdRecibo.ToString().Contains(a) || w.Serie.ToUpper().Contains(a.ToUpper()))).ToList();
+                return FindAll().Where(w => busqueda.All(a => w.IdRecibo.ToString().Contains(a) || w.Serie.ToUpper().Contains(a.ToUpper()) || w.Identificador.Contains(a))).ToList();
             }
             else
             {
@@ -169,6 +169,11 @@ namespace PruebaWPF.ViewModel
 
 
             return ReciboCompleto;
+        }
+
+        public List<Rectificaciones> FindRectificaciones(int idArqueoDetApertura)
+        {
+            return new ArqueoViewModel().FindRectificaciones(idArqueoDetApertura);
         }
 
         public List<Asiento> FindAsientoRecibo(ReciboSon recibo)
@@ -373,79 +378,73 @@ namespace PruebaWPF.ViewModel
             return detalles;
         }
 
-        public List<ReciboPagoSon> ReciboFormaPago(ReciboSon recibo)
+        public List<ReciboPagoSon> ReciboFormaPago(ReciboSon recibo, bool incluirRectificacion = true)
         {
-            return db.ReciboPago.Where(w => w.IdRecibo == recibo.IdRecibo && w.Serie == recibo.Serie).ToList().Select(s => new ReciboPagoSon()
+
+            var consulta = db.ReciboPago
+                        .Where(w => w.IdRecibo == recibo.IdRecibo && w.Serie == recibo.Serie)
+
+                        .Select(s => new ReciboPagoSon()
+                        {
+                            ReciboPagoBono = s.ReciboPagoBono,
+                            ReciboPagoCheque = s.ReciboPagoCheque,
+                            ReciboPagoDeposito = s.ReciboPagoDeposito,
+                            ReciboPagoTarjeta = s.ReciboPagoTarjeta,
+                            IdReciboPago = s.IdReciboPago,
+                            IdRecibo = s.IdRecibo,
+                            Serie = s.Serie,
+                            IdFormaPago = s.IdFormaPago,
+                            Monto = s.Monto,
+                            IdMoneda = s.IdMoneda,
+                            FechaCreacion = s.FechaCreacion,
+                            UsuarioCreacion = s.UsuarioCreacion,
+                            regAnulado = s.regAnulado,
+                            FormaPago = s.FormaPago,
+                            Moneda = s.Moneda,
+                            IdRectificacion = s.IdRectificacion,
+                            RectificacionPago1 = s.RectificacionPago1,
+                            //     ConfirmacionPago = s.ConfirmacionPago,
+                            //      isConfirmacion = s.isConfirmacion
+                        });
+
+            if (incluirRectificacion)
             {
-                ObjInfoAdicional = GetDataAdicional(s),
-                IdReciboPago = s.IdReciboPago,
-                IdRecibo = s.IdRecibo,
-                Serie = s.Serie,
-                IdFormaPago = s.IdFormaPago,
-                Monto = s.Monto,
-                IdMoneda = s.IdMoneda,
-                FechaCreacion = s.FechaCreacion,
-                UsuarioCreacion = s.UsuarioCreacion,
-                regAnulado = s.regAnulado,
-                FormaPago = s.FormaPago,
-                Moneda = s.Moneda,
-                ConfirmacionPago = s.ConfirmacionPago,
-                isConfirmacion = s.isConfirmacion
-            }).ToList();
+                consulta = consulta.Where(w => w.IdRectificacion == null);
+            }
+            else
+            {
+                consulta = consulta.Where(w => w.RectificacionPago1 == null);
+            }
+
+            return consulta.ToList();
         }
 
-        public Object[] GetDataAdicional(ReciboPago r)
+        public List<ReciboPagoSon> ReciboFormaPagoConsolidado(ReciboSon recibo)
         {
-            Object[] data = new object[2];
-            data[0] = null;
-            data[1] = "";
-
-
-
-            if (r.ReciboPagoCheque?.GetType().BaseType == typeof(ReciboPagoCheque))
-            {
-                ReciboPagoCheque rc = r.ReciboPagoCheque;
-
-                if (rc != null)
+            return db.ReciboPago.Where(w => w.IdRecibo == recibo.IdRecibo && w.Serie == recibo.Serie).ToList()
+                .GroupBy(g => new { g.IdFormaPago, g.IdMoneda, g.FormaPago.FormaPago1, g.Moneda.Moneda1, g.Moneda.Simbolo })
+                .Select(s => new ReciboPagoSon()
                 {
-                    data[0] = rc;
-                    data[1] = string.Format("{0}, Cuenta {1}, Cheque No.{2}", rc.Banco.Nombre, rc.Cuenta, rc.NumeroCK);
-                }
-            }
-            else if (r.ReciboPagoTarjeta?.GetType().BaseType == typeof(ReciboPagoTarjeta))
-            {
-                ReciboPagoTarjeta rt = r.ReciboPagoTarjeta;
-
-                if (rt != null)
-                {
-                    data[0] = rt;
-                    data[1] = string.Format("{0}, Tarjeta ****{1} Autorización {2}", rt.CiaTarjetaCredito.Nombre, rt.Tarjeta, rt.Autorizacion);
-                }
-            }
-            else if (r.ReciboPagoDeposito?.GetType().BaseType == typeof(ReciboPagoDeposito))
-            {
-                ReciboPagoDeposito rd = r.ReciboPagoDeposito;
-
-                if (rd != null)
-                {
-                    data[0] = rd;
-                    data[1] = string.Format("{0}, Transacción No.{1}, Obs. {2}", rd.Tipo ? "Transferencia" : "Minuta", rd.Transaccion, rd.Observacion);
-                }
-            }
-            else if (r.ReciboPagoBono?.GetType().BaseType == typeof(ReciboPagoBono))
-            {
-                ReciboPagoBono rb = r.ReciboPagoBono;
-
-                if (rb != null)
-                {
-                    data[0] = rb;
-                    data[1] = string.Format("Emitipo por {0}, Bono No.{1}", rb.Emisor, rb.Numero);
-                }
-            }
-
-            return data;
-
+                    //ReciboPagoBono = s.ReciboPagoBono,
+                    //ReciboPagoCheque = s.ReciboPagoCheque,
+                    //ReciboPagoDeposito = s.ReciboPagoDeposito,
+                    //ReciboPagoTarjeta = s.ReciboPagoTarjeta,
+                    //IdReciboPago = s.IdReciboPago,
+                    //IdRecibo = s.IdRecibo,
+                    //Serie = s.Serie,
+                    //IdFormaPago = s.IdFormaPago,
+                    Monto = s.Sum(sum => sum.Monto),
+                    //IdMoneda = s.IdMoneda,
+                    //FechaCreacion = s.FechaCreacion,
+                    //UsuarioCreacion = s.UsuarioCreacion,
+                    //regAnulado = s.regAnulado,
+                    FormaPago = new FormaPago() { FormaPago1 = s.Key.FormaPago1 },
+                    Moneda = new Moneda() { Moneda1 = s.Key.Moneda1, Simbolo = s.Key.Simbolo },
+                    //ConfirmacionPago = s.ConfirmacionPago,
+                    //isConfirmacion = s.isConfirmacion
+                }).ToList();
         }
+
 
 
         public void Guardar(ReciboSon Obj)
@@ -468,34 +467,42 @@ namespace PruebaWPF.ViewModel
         /// </summary>
         /// <param name="tarjeta"></param>
         /// <returns>False en caso que no exista, Exception en caso que ya exista</returns>
-        public bool ValidarNumAutorizacion(ReciboPagoTarjeta tarjeta,List<ReciboPagoSon> pagos) {
+        public bool ValidarNumAutorizacion(ReciboPagoTarjeta tarjeta, List<ReciboPagoSon> pagos)
+        {
 
             bool existeAutorizado = false;
-            //TODO ESTO NO LOS HAS TERMINADO PAPA
+            string razon = "";
 
-            if (pagos.Count > 0)
+
+
+            if (pagos.Count > 1)
             {
-                pagos.ForEach(
-                    item =>
-                    {
-                        if (item.ObjInfoAdicional[0].GetType() == typeof (ReciboPagoTarjeta))
-                        {
-                            var objeto= (ReciboPagoTarjeta)item.ObjInfoAdicional[0];
 
-                        }
-                    }
-                    
-                    );
+                existeAutorizado = pagos.Where(w => w.ObjInfoAdicional?.GetType() == typeof(ReciboPagoTarjeta)).Select(s => ((ReciboPagoTarjeta)s.ObjInfoAdicional)).Any(a => a.Autorizacion == tarjeta.Autorizacion && a.IdTarjeta == tarjeta.IdTarjeta);
+
+                if (existeAutorizado)
+                {
+                    razon = "los pagos con tarjeta actualmente ingresados.";
+
+                }
+                else
+                {
+                    existeAutorizado = db.ReciboPagoTarjeta.Any(a => a.Autorizacion == tarjeta.Autorizacion);
+                    razon = "los pagos con tarjeta almacenados";
+                }
             }
-            else
+
+            if (!existeAutorizado) //Si la autorizacion no se encuentra en memoria, la mando a buscar a la base de datos
             {
+
                 existeAutorizado = db.ReciboPagoTarjeta.Any(a => a.Autorizacion == tarjeta.Autorizacion);
+                razon = "pagos con tarjeta almacenados.";
             }
 
 
             if (existeAutorizado)
             {
-                throw new Exception("El número de autorización que intenta ingresar ya se encuentra entre las formas de pago existe en la base de datos");
+                throw new Exception(string.Format("El número de autorización que intenta ingresar ya existe, especificamente entre {0}", razon));
             }
 
             return existeAutorizado;
@@ -663,19 +670,23 @@ namespace PruebaWPF.ViewModel
                             datos.Identificador = ordenPago.Identificador;
                             datos.TextoIdentificador = ordenPago.TextoIdentificador;
                             roc.IdOrdenPago = null;
+                            
 
-                            detalles = new List<ReciboDet>(detalleRecibo.Select(s => new ReciboDet()
+                            detalles = new List<ReciboDet>(detalleRecibo.Select((s,i) => new ReciboDet()
                             {
-                                IdRecibo = roc.IdRecibo,
-                                Serie = roc.Serie,
+                                IdReciboDet=i+1,
+                                IdRecibo = recibo.IdRecibo,
+                                Serie = recibo.Serie,
                                 IdPrecioArancel = s.ArancelPrecio.IdArancelPrecio,
                                 Concepto = s.Concepto,
                                 Monto = s.Total,
                                 Exoneracion = s.Exoneracion,
                                 UsuarioCreacion = clsSessionHelper.usuario.Login,
                                 FechaCreacion = System.DateTime.Now,
-                                ArancelPrecio = s.ArancelPrecio
+                                //ArancelPrecio = s.ArancelPrecio
                             })).ToList();
+
+                            roc.ReciboDet = null;
 
                             //LineasIngreso = new List<Asiento>(detalles.Select(s => new Asiento()
                             //{
@@ -826,37 +837,36 @@ namespace PruebaWPF.ViewModel
 
                             db.ReciboPago.Add(pago);
 
-                            switch (item.IdFormaPago)
+                            if (item.ObjInfoAdicional?.GetType() == typeof(ReciboPagoCheque))
                             {
-                                case 2: //Cheque
-                                    ReciboPagoCheque rc = (ReciboPagoCheque)item.ObjInfoAdicional[0];
-                                    rc.IdReciboPago = pago.IdReciboPago;
+                                ReciboPagoCheque rc = (ReciboPagoCheque)item.ObjInfoAdicional;
+                                rc.IdReciboPago = pago.IdReciboPago;
 
-                                    db.ReciboPagoCheque.Add(rc);
-                                    break;
-                                case 3: //Tarjeta
-                                    ReciboPagoTarjeta rt = (ReciboPagoTarjeta)item.ObjInfoAdicional[0];
-                                    rt.IdReciboPago = pago.IdReciboPago;
-
-                                    db.ReciboPagoTarjeta.Add(rt);
-                                    break;
-                                case 4: //Bono
-                                    ReciboPagoBono rb = (ReciboPagoBono)item.ObjInfoAdicional[0];
-                                    rb.IdReciboPago = pago.IdReciboPago;
-
-                                    db.ReciboPagoBono.Add(rb);
-                                    break;
-                                case 5: //Deposito
-                                    ReciboPagoDeposito rd = (ReciboPagoDeposito)item.ObjInfoAdicional[0];
-                                    rd.IdReciboPago = pago.IdReciboPago;
-
-                                    db.ReciboPagoDeposito.Add(rd);
-                                    break;
-                                default:
-
-                                    break;
-                                    //Efectivo
+                                db.ReciboPagoCheque.Add(rc);
                             }
+                            else if (item.ObjInfoAdicional?.GetType() == typeof(ReciboPagoTarjeta))
+                            {
+                                ReciboPagoTarjeta rt = (ReciboPagoTarjeta)item.ObjInfoAdicional;
+                                rt.IdReciboPago = pago.IdReciboPago;
+
+                                db.ReciboPagoTarjeta.Add(rt);
+                            }
+                            else if (item.ObjInfoAdicional?.GetType() == typeof(ReciboPagoBono))
+                            {
+                                ReciboPagoBono rb = (ReciboPagoBono)item.ObjInfoAdicional;
+                                rb.IdReciboPago = pago.IdReciboPago;
+
+                                db.ReciboPagoBono.Add(rb);
+                            }
+                            else if (item.ObjInfoAdicional?.GetType() == typeof(ReciboPagoDeposito))
+                            {
+                                ReciboPagoDeposito rd = (ReciboPagoDeposito)item.ObjInfoAdicional;
+                                rd.IdReciboPago = pago.IdReciboPago;
+
+                                db.ReciboPagoDeposito.Add(rd);
+                            }
+
+
 
                             ////Creando el asiento contable para el movimiento del recibo, previamente ya tengo en memoria el registro de ingreso y la variacion cambiaria, esto viene a realizar la partida doble
                             //MovimientoIngreso movimiento = db.MovimientoIngreso.FirstOrDefault(f => f.IdFormaPago == item.IdFormaPago && f.IdMoneda == item.IdMoneda && f.IdRecinto == roc.InfoRecibo.IdRecinto);
@@ -1163,6 +1173,26 @@ namespace PruebaWPF.ViewModel
             return tc;
         }
 
+        /// <summary>
+        /// Obtiene todos los tipos de cambios correspondientes a la fecha especificada
+        /// </summary>
+        /// <param name="fecha"></param>
+        /// <returns></returns>
+        public List<VariacionCambiariaSon> ObtenerTasaCambio(DateTime? fecha)
+        {
+            var tc = db.fn_ObtenerTasaCambio(fecha, null)
+                .ToList()
+                .Select(a => new VariacionCambiariaSon()
+                {
+                    Moneda = new Moneda() { Simbolo = a.Moneda },
+                    Valor = Decimal.Parse(a.Valor.ToString()),
+                    Fecha = DateTime.Parse(a.Fecha.ToString())
+                }).ToList();
+
+
+            return tc ?? new List<VariacionCambiariaSon>();
+        }
+
         public VariacionCambiaria ObtenerTasaCambioDia(int moneda)
         {
             return ObtenerTasaCambio(moneda, null);
@@ -1201,8 +1231,12 @@ namespace PruebaWPF.ViewModel
         public int IdTipoDeposito { get; set; }
         public string Identificador { get; set; }
         public string TextoIdentificador { get; set; }
+        //  public string IdentificacionAgenteExterno { get; set; }
         public TipoDeposito TipoDeposito { get; set; }
 
+        //  public string IdentificadorFinal => IdentificacionAgenteExterno == null ? Identificador : IdentificacionAgenteExterno;
+
+        //IdentificacionAgenteExterno = isAgenteExterno(ReciboDatoTable != null ? ReciboDatoTable.IdTipoDeposito : OrdenTable != null ? OrdenTable.IdTipoDeposito : OrdenAnuladaTable.IdTipoDeposito) ? db.AgenteExternoCat.FirstOrDefault(f=>f.IdAgenteExterno.ToString()==(ReciboDatoTable != null ? ReciboDatoTable.Identificador : OrdenTable != null ? OrdenTable.Identificador : OrdenAnuladaTable.Identificador)).Identificacion: "",
 
     }
 
@@ -1229,7 +1263,7 @@ namespace PruebaWPF.ViewModel
 
     }
 
-    public class ReciboPagoSon : ReciboPago
+    public class ReciboPagoSon : ReciboPago, ICloneable
     {
 
         public ReciboPagoSon()
@@ -1237,13 +1271,112 @@ namespace PruebaWPF.ViewModel
 
         }
 
+        public bool isRectificacion => (RectificacionPago1 != null);
+
         public decimal TipoCambio => new ReciboViewModel().ObtenerTasaCambioDia(IdMoneda).Valor;
 
         //Estos campos son creados para el reporte
         public string FormaPagoRecibo => FormaPago.FormaPago1;
         public string SimboloMoneda => Moneda.Simbolo;
 
-        public Object[] ObjInfoAdicional { get; set; } //Posicion 0 = Objeto, Posicion 1 Texto
+        public Object ObjInfoAdicional => GetDataAdicional();
+        public string StringInfoAdicional => GetDataAdicionalString();
+
+        private Object GetDataAdicional()
+        {
+            Object info = null;
+            if (ReciboPagoCheque != null)
+            {
+                ReciboPagoCheque rc = ReciboPagoCheque;
+
+                if (rc != null)
+                {
+                    info = rc;
+                    //info = string.Format("{0}, Cuenta {1}, Cheque No.{2}", rc.Banco.Nombre, rc.Cuenta, rc.NumeroCK);
+                }
+            }
+            else if (ReciboPagoTarjeta != null)
+            {
+                ReciboPagoTarjeta rt = ReciboPagoTarjeta;
+
+                if (rt != null)
+                {
+                    info = rt;
+                    //info = string.Format("{0}, Tarjeta ****{1} Autorización {2}", rt.CiaTarjetaCredito.Nombre, rt.Tarjeta, rt.Autorizacion);
+                }
+            }
+            else if (ReciboPagoDeposito != null)
+            {
+                ReciboPagoDeposito rd = ReciboPagoDeposito;
+
+                if (rd != null)
+                {
+                    info = rd;
+                    //info = string.Format("{0}, Transacción No.{1}, Obs. {2}", rd.Tipo ? "Transferencia" : "Minuta", rd.Transaccion, rd.Observacion);
+                }
+            }
+            else if (ReciboPagoBono != null)
+            {
+                ReciboPagoBono rb = ReciboPagoBono;
+
+                if (rb != null)
+                {
+                    info = rb;
+                    //info = string.Format("Emitipo por {0}, Bono No.{1}", rb.Emisor, rb.Numero);
+                }
+            }
+
+            return info;
+
+        }
+
+        private String GetDataAdicionalString()
+        {
+            String info = "";
+            if (ReciboPagoCheque != null)
+            {
+                ReciboPagoCheque rc = (ReciboPagoCheque)ObjInfoAdicional;
+
+                if (rc != null)
+                {
+                    info = string.Format("{0}, Cuenta {1}, Cheque No.{2}", rc.Banco.Nombre, rc.Cuenta, rc.NumeroCK);
+                }
+            }
+            else if (ReciboPagoTarjeta != null)
+            {
+                ReciboPagoTarjeta rt = (ReciboPagoTarjeta)ObjInfoAdicional;
+
+                if (rt != null)
+                {
+                    info = string.Format("{0}, Tarjeta ****{1} Autorización {2}", rt.CiaTarjetaCredito.Nombre, rt.Tarjeta, rt.Autorizacion);
+                }
+            }
+            else if (ReciboPagoDeposito != null)
+            {
+                ReciboPagoDeposito rd = (ReciboPagoDeposito)ObjInfoAdicional;
+
+                if (rd != null)
+                {
+                    info = string.Format("{0}, Transacción No.{1}, Obs. {2}", rd.Tipo ? "Transferencia" : "Minuta", rd.Transaccion, rd.Observacion);
+                }
+            }
+            else if (ReciboPagoBono != null)
+            {
+                ReciboPagoBono rb = (ReciboPagoBono)ObjInfoAdicional;
+
+                if (rb != null)
+                {
+                    info = string.Format("Emitipo por {0}, Bono No.{1}", rb.Emisor, rb.Numero);
+                }
+            }
+
+            return info;
+        }
+
+        public object Clone()
+        {
+            return MemberwiseClone();
+        }
 
     }
 

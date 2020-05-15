@@ -13,10 +13,10 @@
     <ProjectTypeGuids>{60dc8134-eba5-43b8-bcc9-bb4bc16c2548};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
     <WarningLevel>4</WarningLevel>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
-    <IsWebBootstrapper>true</IsWebBootstrapper>
-    <PublishUrl>C:\Users\danie\OneDrive\Escritorio\sigfa\</PublishUrl>
+    <IsWebBootstrapper>false</IsWebBootstrapper>
+    <PublishUrl>C:\Users\Daniel Zamora\Desktop\Publicaciones\</PublishUrl>
     <Install>true</Install>
-    <InstallFrom>Web</InstallFrom>
+    <InstallFrom>Disk</InstallFrom>
     <UpdateEnabled>true</UpdateEnabled>
     <UpdateMode>Foreground</UpdateMode>
     <UpdateInterval>7</UpdateInterval>
@@ -24,11 +24,9 @@
     <UpdatePeriodically>false</UpdatePeriodically>
     <UpdateRequired>false</UpdateRequired>
     <MapFileExtensions>true</MapFileExtensions>
-    <InstallUrl>http://si.uni.edu.ni/tesoreria/</InstallUrl>
     <UpdateUrl>http://si.uni.edu.ni/tesoreria/</UpdateUrl>
-    <CreateWebPageOnPublish>true</CreateWebPageOnPublish>
     <WebPage>publish.htm</WebPage>
-    <ApplicationRevision>20</ApplicationRevision>
+    <ApplicationRevision>24</ApplicationRevision>
     <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
     <UseApplicationTrust>false</UseApplicationTrust>
     <PublishWizardCompleted>true</PublishWizardCompleted>
@@ -266,10 +264,16 @@
     <Compile Include="Model\CarreraTipo.cs">
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
+    <Compile Include="Model\ChangePassword.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
     <Compile Include="Model\CiaTarjetaCredito.cs">
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
     <Compile Include="Model\clsBarCode.cs" />
+    <Compile Include="Model\COG.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
     <Compile Include="Model\ColumnasFiltro.cs" />
     <Compile Include="Model\ComprobanteCierre.cs">
       <DependentUpon>Model1.tt</DependentUpon>
@@ -299,9 +303,6 @@
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
     <Compile Include="Model\Configuracion.cs">
-      <DependentUpon>Model1.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Model\ConfirmacionPago.cs">
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
     <Compile Include="Model\CuentaAuxiliar.cs">
@@ -397,6 +398,9 @@
     <Compile Include="Model\Exoneracion.cs">
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
+    <Compile Include="Model\ExoneracionTotalArea.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
     <Compile Include="Model\Facultad.cs">
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
@@ -424,6 +428,12 @@
     <Compile Include="Model\fnx_ComparaDocumentos_Result.cs">
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
+    <Compile Include="Model\fnx_ConciliaDocumentos_Cruzados_Result.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Model\fnx_ConciliaDocumentos_PorCuenta_Result.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
     <Compile Include="Model\Fnx_CR_Distribucion_Result.cs">
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
@@ -440,6 +450,9 @@
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
     <Compile Include="Model\Fnx_Distribucion_Area_Fuente_Result.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Model\Fnx_EgresoFuente_1_Result.cs">
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
     <Compile Include="Model\Fnx_EgresoFuente_Result.cs">
@@ -469,7 +482,28 @@
     <Compile Include="Model\fnx_GeneraDetalleArea_Result.cs">
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
+    <Compile Include="Model\fnx_GeneraDocumentosConciliados1_Result.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Model\fnx_GeneraDocumentosConciliados_Result.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Model\fnx_GeneraDocumentosContables_Result.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Model\fnx_GeneraDocumentosContables_VF_Result.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Model\fnx_GeneraSolicitudesCheques_Result.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
     <Compile Include="Model\fnx_GeneraSolicitud_Documentos_Result.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Model\fnx_Genera_Integración_Contable_Presupuestaria1_Result.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Model\fnx_Genera_Integración_Contable_Presupuestaria_Result.cs">
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
     <Compile Include="Model\fnx_Genera_LibroMayorAcumulado_Result.cs">
@@ -481,10 +515,31 @@
     <Compile Include="Model\Fnx_LineasDistribucion_Result.cs">
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
+    <Compile Include="Model\fnx_ObtenerCodigoComprobantePago_Result.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Model\fnx_ObtenerComprobantesPagos_Result.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Model\Fnx_Obtener_Cheques_Periodo_Fuente_Result.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Model\Fnx_Obtener_ComprobanteDiario_Periodo_Fuente_Result.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
     <Compile Include="Model\fnx_Obtener_DetalleIngreso_Result.cs">
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
     <Compile Include="Model\Fnx_Obtener_Distribucion_Periodo_Fuente_Result.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Model\Fnx_Obtener_EstadoCuentaContrato_Result.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Model\Fnx_Obtener_EstadoCuenta_X_CC_Agrupada_Result.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Model\Fnx_Obtener_EstadoCuenta_X_CC_Naturalez_Result.cs">
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
     <Compile Include="Model\Fnx_Obtener_EstadoCuenta_X_CC_Result.cs">
@@ -772,13 +827,22 @@
     <Compile Include="Model\QueryAreasFinanzas.cs">
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
+    <Compile Include="Model\Query_ContratosLicitacion_SISCOM.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
     <Compile Include="Model\Query_Documentos_Bodega.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Model\Query_EstadoCuenta_Contratos.cs">
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
     <Compile Include="Model\Query_GenerarCD.cs">
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
     <Compile Include="Model\Query_SolcitucCk_SIPPSI.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Model\Query_SolcitucCk_SIPPSI_Params.cs">
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
     <Compile Include="Model\Recibo.cs">
@@ -844,6 +908,9 @@
     <Compile Include="Model\RecintoEquivalencia.cs">
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
+    <Compile Include="Model\RectificacionPago.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
     <Compile Include="Model\Rendicion.cs">
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
@@ -862,6 +929,9 @@
     <Compile Include="Model\SolicitudRegresada.cs">
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
+    <Compile Include="Model\sproc_Obtener_LibroMayorAcumulado_Result.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
     <Compile Include="Model\spro_CtaBanco_Result.cs">
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
@@ -869,6 +939,12 @@
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
     <Compile Include="Model\sp_EgresoActividad_Result.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Model\sp_EgresoFuente_Result.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Model\sp_EgresoFuente_V2_Result.cs">
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
     <Compile Include="Model\sp_helpdiagramdefinition_Result.cs">
@@ -931,10 +1007,43 @@
     <Compile Include="Model\TmpConciliacionBancoDetalle.cs">
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
+    <Compile Include="Model\TmpConciliarCuenta_Periodo.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Model\TmpConciliarRenglones.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Model\TmpConciliarRenglones1.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Model\TmpConciliarRenglones_b.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Model\TmpConciliarRenglones_b1.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Model\TmpContratoMovimientos.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Model\TmpContratoMovimientos1.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Model\TmpContrato_EstadoCuenta.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Model\TmpContrato_EstadoCuenta1.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
     <Compile Include="Model\TmpCuentaAuxiliar.cs">
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
     <Compile Include="Model\TmpCuentaContable.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Model\TmpCuentaContable1.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Model\TmpCuentaContableEstructura.cs">
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
     <Compile Include="Model\TmpCuentaContable_b.cs">
@@ -949,10 +1058,19 @@
     <Compile Include="Model\TmpDistribucion_DD.cs">
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
+    <Compile Include="Model\TmpDocumentos.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
     <Compile Include="Model\TmpEstadoCuenta.cs">
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
+    <Compile Include="Model\TmpEstadosFinancieros.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
     <Compile Include="Model\TmpEstructuraCuenta.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Model\TmpEstructuraProgramatica.cs">
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
     <Compile Include="Model\TmpFuenteFinanciamiento.cs">
@@ -970,10 +1088,19 @@
     <Compile Include="Model\TmpMontoEgresoFuente.cs">
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
+    <Compile Include="Model\TmpPagoMatriculaPendiente.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
     <Compile Include="Model\TmpPerfilContenido.cs">
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
     <Compile Include="Model\TmpPerfilUsuario.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Model\TmpProveedorContrato.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Model\TmpProveedorContrato1.cs">
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
     <Compile Include="Model\TmpReciboBillete.cs">
@@ -1000,6 +1127,9 @@
     <Compile Include="Model\TmpSolicitudesArchivo.cs">
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
+    <Compile Include="Model\TmpSolicitudesChequesSIPPSI.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
     <Compile Include="Model\TmpSolicitudEstado.cs">
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
@@ -1019,6 +1149,9 @@
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
     <Compile Include="Model\TmpVariacionCambiaria.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Model\Tmp_ConciliarCuenta_Periodo.cs">
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
     <Compile Include="Model\tmp_SaldoCuentas.cs">
@@ -1130,6 +1263,9 @@
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
     <Compile Include="Model\vw_FuentesSIPPSI.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Model\vw_GeneraSolicitudes.cs">
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
     <Compile Include="Model\vw_MatriculaPagada.cs">
@@ -1295,6 +1431,9 @@
     </Compile>
     <Compile Include="Views\Arqueo\Arqueo.xaml.cs">
       <DependentUpon>Arqueo.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Arqueo\EditarPago.xaml.cs">
+      <DependentUpon>EditarPago.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\Informe\Informes.xaml.cs">
       <DependentUpon>Informes.xaml</DependentUpon>
@@ -1463,6 +1602,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\Arqueo\Arqueo.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\Arqueo\EditarPago.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -1644,7 +1787,9 @@
     <None Include="Properties\DataSources\PruebaWPF.ViewModel.DetAperturaCajaSon.datasource" />
     <None Include="Properties\DataSources\PruebaWPF.ViewModel.DetOrdenPagoSon.datasource" />
     <None Include="Properties\DataSources\PruebaWPF.ViewModel.DetReciboSon.datasource" />
+    <None Include="Properties\DataSources\PruebaWPF.ViewModel.DocumentosEfectivo.datasource" />
     <None Include="Properties\DataSources\PruebaWPF.ViewModel.ReciboPagoSon.datasource" />
+    <None Include="Properties\DataSources\PruebaWPF.ViewModel.Rectificaciones.datasource" />
     <None Include="Properties\DataSources\PruebaWPF.ViewModel.VariacionCambiariaSon.datasource" />
     <None Include="Properties\DataSources\System.Xml.Linq.XElement.datasource" />
     <None Include="Properties\Settings.settings">
@@ -1654,7 +1799,9 @@
     <None Include="SIFA_TemporaryKey.pfx" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="App.config" />
+    <EmbeddedResource Include="App.config">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
     <WCFMetadata Include="Connected Services\" />

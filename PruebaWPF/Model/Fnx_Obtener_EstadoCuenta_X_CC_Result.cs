@@ -14,6 +14,7 @@ namespace PruebaWPF.Model
     public partial class Fnx_Obtener_EstadoCuenta_X_CC_Result
     {
         public int Secuencia { get; set; }
+        public Nullable<bool> Naturaleza { get; set; }
         public Nullable<int> Codigo { get; set; }
         public string Cuenta { get; set; }
         public string Descripcion { get; set; }
@@ -28,5 +29,6 @@ namespace PruebaWPF.Model
         public Nullable<decimal> Debe { get; set; }
         public Nullable<decimal> Haber { get; set; }
         public Nullable<decimal> Saldo { get; set; }
+        public Nullable<decimal> Monto { get; set; }
     }
 }

@@ -27,9 +27,9 @@ namespace PruebaWPF.Views.Arqueo
         private DetAperturaCaja apertura;
         private Model.Arqueo arqueo;
         private BindingList<ArqueoEfectivoSon> efectivo;
-        private List<FormaPago> formasPagoDocumentos;
-        private ObservableCollection<ArqueoNoEfectivoSon> documentos;
-        private BindingList<DocumentosEfectivo> documentosNew;
+        //private List<FormaPago> formasPagoDocumentos;
+        //private ObservableCollection<ArqueoNoEfectivoSon> documentos;
+        //private BindingList<DocumentosEfectivo> documentosNew;
         private System.Windows.Forms.BindingSource ArqueoEfectivoBindingSource = new System.Windows.Forms.BindingSource();
         private System.Windows.Forms.BindingSource DocumentosEfectivoBindingSource = new System.Windows.Forms.BindingSource();
         private List<Moneda> monedas;
@@ -38,7 +38,8 @@ namespace PruebaWPF.Views.Arqueo
         private DateTime? fecha = null;
         private clsValidateInput validate = new clsValidateInput();
         private List<fn_TotalesArqueo_Result> diferenciasTotales;
-        private int conteoDocEfectivo = 0;
+        //private int conteoDocEfectivo = 0;
+        public static bool cambios = false;
 
         public ArquearApertura()
         {
@@ -60,19 +61,19 @@ namespace PruebaWPF.Views.Arqueo
             operacion = new Operacion();
             tabmaterial = tabParent.Controller.ActiveStepViewModel.Controller;
             diferenciasTotales = new List<fn_TotalesArqueo_Result>();
-            CamposNormales();
+            //CamposNormales();
         }
 
-        private void CamposNormales()
-        {
-            clsValidateInput.Validate(txtMonto, clsValidateInput.DecimalNumber);
-            validate.AsignarBorderNormal(new Control[] { cboRecibo, cboDocumento, txtNoDocumento, cboMoneda, txtMonto });
-        }
+        //private void CamposNormales()
+        //{
+        //    clsValidateInput.Validate(txtMonto, clsValidateInput.DecimalNumber);
+        //    validate.AsignarBorderNormal(new Control[] { cboRecibo, cboDocumento, txtNoDocumento, cboMoneda, txtMonto });
+        //}
 
-        private bool ValidarCampos()
-        {
-            return clsValidateInput.ValidateALL(new Control[] { cboRecibo, cboDocumento, txtNoDocumento, cboMoneda, txtMonto });
-        }
+        //private bool ValidarCampos()
+        //{
+        //    return clsValidateInput.ValidateALL(new Control[] { cboRecibo, cboDocumento, txtNoDocumento, cboMoneda, txtMonto });
+        //}
         private bool ValidarNumericos(Dictionary<TextBox, int> campos)
         {
 
@@ -114,9 +115,9 @@ namespace PruebaWPF.Views.Arqueo
                 datosIniciales.DataContext = apertura;
                 lblRecuento.DataContext = apertura;
 
-                int[] data = controller.FindTotalPagos(apertura.IdDetAperturaCaja);
-                lblRecuentoPagos.DataContext = data[0];
-                panelConfirmacionPagos.DataContext = data[1];
+                //int[] data = controller.FindTotalPagos(apertura.IdDetAperturaCaja);
+                //lblRecuentoPagos.DataContext = data[0];
+                //panelConfirmacionPagos.DataContext = data[1];
 
             }
             catch (Exception ex)
@@ -153,6 +154,8 @@ namespace PruebaWPF.Views.Arqueo
                 }
 
                 txtcodrecibo.Text = "";
+
+                lstRecibos.SelectedItem = agregado;
             }
             catch (Exception ex)
             {
@@ -168,7 +171,7 @@ namespace PruebaWPF.Views.Arqueo
             if (fecha == null)
             {
                 fecha = agregado.Fecha;
-                var tc = controller.FindTipoCambios(agregado).Select(s => string.Format(" {0} -> C$ {1}", s.SimboloMoneda, s.Valor)); ;
+                var tc = controller.FindTipoCambios(apertura.AperturaCaja).Select(s => string.Format(" {0} -> C$ {1}", s.SimboloMoneda, s.Valor)); ;
 
 
                 txtTC.Text = string.Format("Fecha de Apertura= {0}, TC={1}", fecha.Value.ToString("dd/MM/yyyy"), string.Join(",", tc).ToString());
@@ -271,20 +274,23 @@ namespace PruebaWPF.Views.Arqueo
                 controller.GuardarEfectivo(efectivo.ToList(), arqueo);
                 efectivo = null;
                 CargarEfectivoContabilizado();
-
-                CargarRecibosArqueados();
-                if (documentos == null) //Lo que esta dentro de este if solo me interesa que se cargue una vez porque no cambiará
+                if (monedas == null)
                 {
-                    CargarInfoIdentificador();
-                    CargarDocumentosPago();
                     CargarMonedas();
-                    CargarDocumentosArqueados();
                 }
+                TotalSaldoArqueo();
+                //CargarRecibosArqueados();
+                //if (documentos == null) //Lo que esta dentro de este if solo me interesa que se cargue una vez porque no cambiará
+                //{
+                //    CargarInfoIdentificador();
+                //    CargarDocumentosPago();
+                //    CargarDocumentosArqueados();
+                //}
 
-                if (documentosNew == null)
-                {
-                    CargarDocumentosEfectivo();
-                }
+                //if (documentosNew == null)
+                //{
+                //    CargarDocumentosEfectivo();
+                //}
                 tabmaterial.Continue();
                 panelErrorEfectivo.Visibility = Visibility.Hidden;
             }
@@ -295,42 +301,46 @@ namespace PruebaWPF.Views.Arqueo
             }
         }
 
-        private void CargarDocumentosPago()
-        {
+        //private void CargarDocumentosPago()
+        //{
 
-            cboDocumento.ItemsSource = formasPagoDocumentos;
-        }
+        //    cboDocumento.ItemsSource = formasPagoDocumentos;
+        //}
 
-        private void CargarInfoIdentificador()
+        private void SaldosDocumentosEfectivo()
         {
-            formasPagoDocumentos = controller.FindFormasPagoDocumentos(apertura.IdDetAperturaCaja);
-            string informacion = null;
-            foreach (FormaPago f in formasPagoDocumentos)
-            {
-                if (!string.IsNullOrEmpty(f.Identificador))
-                {
-                    if (informacion == null)
-                    {
-                        informacion = string.Format("{0}: {1},", f.FormaPago1, f.Identificador);
-                    }
-                    else
-                    {
-                        informacion = informacion + string.Format(" {0}: {1},", f.FormaPago1, f.Identificador);
-                    }
-                }
-            }
-            if (informacion != null)
-            {
-                if (informacion.Length > 0)
-                {
-                    txtInfoIdentificador.Text = informacion.Substring(0, informacion.Length - 1);
-                }
-                else
-                {
-                    txtInfoIdentificador.Text = "No hay información disponible";
-                }
-            }
+            tblConsolidadoDocumentos.ItemsSource = controller.FindConsolidadoDocumentos(apertura.IdDetAperturaCaja);
         }
+        //private void CargarInfoIdentificador()
+        //{
+        //    formasPagoDocumentos = controller.FindFormasPagoDocumentos(apertura.IdDetAperturaCaja);
+        //    string informacion = null;
+        //    foreach (FormaPago f in formasPagoDocumentos)
+        //    {
+        //        if (!string.IsNullOrEmpty(f.Identificador))
+        //        {
+        //            if (informacion == null)
+        //            {
+        //                informacion = string.Format("{0}: {1},", f.FormaPago1, f.Identificador);
+        //            }
+        //            else
+        //            {
+        //                informacion = informacion + string.Format(" {0}: {1},", f.FormaPago1, f.Identificador);
+        //            }
+        //        }
+        //    }
+        //    if (informacion != null)
+        //    {
+        //        if (informacion.Length > 0)
+        //        {
+        //            txtInfoIdentificador.Text = informacion.Substring(0, informacion.Length - 1);
+        //        }
+        //        else
+        //        {
+        //            txtInfoIdentificador.Text = "No hay información disponible";
+        //        }
+        //    }
+        //}
 
         private void CargarEfectivoContabilizado()
         {
@@ -345,53 +355,49 @@ namespace PruebaWPF.Views.Arqueo
             }
         }
 
-        private void CargarRecibosArqueados()
-        {
-            cboRecibo.ItemsSource = recibos.Select(s => new ArqueoNoEfectivoSon { IdRecibo = s.IdRecibo, Serie = s.Serie }).Distinct();
-            panelConteoDocumentos.Text = "" + controller.FindTotalDocumentos(apertura.IdDetAperturaCaja);
-        }
+        //private void CargarRecibosArqueados()
+        //{
+        //    cboRecibo.ItemsSource = recibos.Select(s => new ArqueoNoEfectivoSon { IdRecibo = s.IdRecibo, Serie = s.Serie }).Distinct();
+        //    panelConteoDocumentos.Text = "" + controller.FindTotalDocumentos(apertura.IdDetAperturaCaja);
+        //}
 
         private void CargarMonedas()
         {
             monedas = controller.FindMonedas();
-            cboMoneda.ItemsSource = monedas;
+            //cboMoneda.ItemsSource = monedas;
         }
 
-        private void CargarDocumentosArqueados()
-        {
-            documentos = new ObservableCollection<ArqueoNoEfectivoSon>(controller.FindDocumentosArqueados(apertura.IdDetAperturaCaja));
-            documentos.CollectionChanged += new System.Collections.Specialized.NotifyCollectionChangedEventHandler(Documentos_CollectionChanged);
-            tblDocumentosEfectivo.ItemsSource = documentos;
-            if (documentos != null)
-            {
-                CalcularTotalesDocumento();
-            }
-        }
+        //private void CargarDocumentosArqueados()
+        //{
+        //    documentos = new ObservableCollection<ArqueoNoEfectivoSon>(controller.FindDocumentosArqueados(apertura.IdDetAperturaCaja));
+        //    documentos.CollectionChanged += new System.Collections.Specialized.NotifyCollectionChangedEventHandler(Documentos_CollectionChanged);
+        //    tblDocumentosEfectivo.ItemsSource = documentos;
+        //    if (documentos != null)
+        //    {
+        //        CalcularTotalesDocumento();
+        //    }
+        //}
 
-        private void CargarDocumentosEfectivo()
-        {
-            if (documentosNew == null)
-            {
-                documentosNew = new BindingList<DocumentosEfectivo>(controller.FindDocumentosEfectivo(apertura));
-                DocumentosEfectivoBindingSource.DataSource = documentosNew;
+        //private void CargarDocumentosEfectivo()
+        //{
+        //    if (documentosNew == null)
+        //    {
+        //        documentosNew = new BindingList<DocumentosEfectivo>(controller.FindDocumentosEfectivo(apertura));
+        //        DocumentosEfectivoBindingSource.DataSource = documentosNew;
 
-                tblDocumentosEfectivo.ItemsSource = DocumentosEfectivoBindingSource;
-                documentosNew.ListChanged += new ListChangedEventHandler(Doc_CollectionChanged);
+        //        tblDocumentosEfectivo.ItemsSource = DocumentosEfectivoBindingSource;
+        //        documentosNew.ListChanged += new ListChangedEventHandler(Doc_CollectionChanged);
 
-                CalcularDocumentosNoConfirmados();
-            }
-        }
+        //        CalcularDocumentosNoConfirmados();
+        //    }
+        //}
 
-        private void CalcularDocumentosNoConfirmados()
-        {
-            conteoDocEfectivo = documentosNew.Count(w => w.NoDocumento != null && w.NoDocumento != "");
-            panelConteoDocumentos.Text = "" + conteoDocEfectivo;
-        }
+        //private void CalcularDocumentosNoConfirmados()
+        //{
+        //    conteoDocEfectivo = documentosNew.Count(w => w.NoDocumento != null && w.NoDocumento != "");
+        //    panelConteoDocumentos.Text = "" + conteoDocEfectivo;
+        //}
 
-        private void Documentos_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
-        {
-
-        }
 
         private void Ef_CollectionChanged(object sender, ListChangedEventArgs e)
         {
@@ -400,20 +406,20 @@ namespace PruebaWPF.Views.Arqueo
             tblEfectivo.Items.Refresh();
         }
 
-        private void Doc_CollectionChanged(object sender, ListChangedEventArgs e)
-        {
+        //private void Doc_CollectionChanged(object sender, ListChangedEventArgs e)
+        //{
 
-            tblEfectivo.CommitEdit();
-            CalcularTotalesDocumento();
-            tblEfectivo.Items.Refresh();
-        }
+        //    tblEfectivo.CommitEdit();
+        //    CalcularTotalesDocumento();
+        //    tblEfectivo.Items.Refresh();
+        //}
 
-        private void CalcularTotalesDocumento()
-        {
-            var total = documentos.GroupBy(g => new { g.FormaPago.FormaPago1, g.Moneda.Moneda1, g.Moneda.Simbolo }).Select(s1 => new { s1.Key.FormaPago1, TotalMoneda = s1.Key.Moneda1, TotalSimbolo = s1.Key.Simbolo, TotalEfectivo = s1.Sum(s => s.MontoFisico) }).OrderBy(o => o.FormaPago1).ThenBy(o => o.TotalSimbolo);
+        //private void CalcularTotalesDocumento()
+        //{
+        //    var total = documentos.GroupBy(g => new { g.FormaPago.FormaPago1, g.Moneda.Moneda1, g.Moneda.Simbolo }).Select(s1 => new { s1.Key.FormaPago1, TotalMoneda = s1.Key.Moneda1, TotalSimbolo = s1.Key.Simbolo, TotalEfectivo = s1.Sum(s => s.MontoFisico) }).OrderBy(o => o.FormaPago1).ThenBy(o => o.TotalSimbolo);
 
-            lstDocumentos.ItemsSource = total;
-        }
+        //    lstDocumentos.ItemsSource = total;
+        //}
 
         private void CalcularTotales()
         {
@@ -422,23 +428,23 @@ namespace PruebaWPF.Views.Arqueo
             lstTotales.ItemsSource = total;
         }
 
-        private void btnConteoNoEfectivo_Click(object sender, RoutedEventArgs e)
-        {
-            try
-            {
-                controller.GuardarNoEfectivo(documentos.ToList(), arqueo);
-                documentos = null;
-                CargarDocumentosArqueados();
-                TotalSaldoArqueo();
-                tabmaterial.Continue();
-                panelErrorDocumentos.Visibility = Visibility.Hidden;
-            }
-            catch (Exception ex)
-            {
-                lblErrorDocumentos.Text = new clsException(ex).ErrorMessage();
-                panelErrorDocumentos.Visibility = Visibility.Visible;
-            }
-        }
+        //private void btnConteoNoEfectivo_Click(object sender, RoutedEventArgs e)
+        //{
+        //    try
+        //    {
+        //        controller.GuardarNoEfectivo(documentos.ToList(), arqueo);
+        //        documentos = null;
+        //        CargarDocumentosArqueados();
+        //        TotalSaldoArqueo();
+        //        tabmaterial.Continue();
+        //        panelErrorDocumentos.Visibility = Visibility.Hidden;
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        lblErrorDocumentos.Text = new clsException(ex).ErrorMessage();
+        //        panelErrorDocumentos.Visibility = Visibility.Visible;
+        //    }
+        //}
 
         private void CargarResumenTotales()
         {
@@ -451,84 +457,84 @@ namespace PruebaWPF.Views.Arqueo
         //    CalcularTotalesDocumento();
         //}
 
-        private void btnAdd_Click(object sender, RoutedEventArgs e)
-        {
-            ValidaAgregaDocumento();
-        }
+        //private void btnAdd_Click(object sender, RoutedEventArgs e)
+        //{
+        //    ValidaAgregaDocumento();
+        //}
 
-        private void ValidaAgregaDocumento()
-        {
-            if (ValidarCampos())
-            {
-                Dictionary<TextBox, int> c = new Dictionary<TextBox, int>();
-                c.Add(txtMonto, clsValidateInput.DecimalNumber);
+        //private void ValidaAgregaDocumento()
+        //{
+        //    if (ValidarCampos())
+        //    {
+        //        Dictionary<TextBox, int> c = new Dictionary<TextBox, int>();
+        //        c.Add(txtMonto, clsValidateInput.DecimalNumber);
 
-                if (ValidarNumericos(c))
-                {
-                    AgregarDocumento();
-                }
-            }
-        }
+        //        if (ValidarNumericos(c))
+        //        {
+        //            AgregarDocumento();
+        //        }
+        //    }
+        //}
 
-        private bool ValidarRepetido(ArqueoNoEfectivoSon noefectivo)
-        {
-            return documentos.Any(a => a.Recibo == noefectivo.Recibo && a.IdFormaPago == noefectivo.IdFormaPago && a.NoDocumento == noefectivo.NoDocumento && a.MonedaFisica == noefectivo.MonedaFisica);
-        }
+        //private bool ValidarRepetido(ArqueoNoEfectivoSon noefectivo)
+        //{
+        //    return documentos.Any(a => a.Recibo == noefectivo.Recibo && a.IdFormaPago == noefectivo.IdFormaPago && a.NoDocumento == noefectivo.NoDocumento && a.MonedaFisica == noefectivo.MonedaFisica);
+        //}
 
-        private void AgregarDocumento()
-        {
-            ArqueoNoEfectivoSon noefectivo = new ArqueoNoEfectivoSon();
-            var recibo = (ArqueoNoEfectivoSon)cboRecibo.SelectedItem;
+        //private void AgregarDocumento()
+        //{
+        //    ArqueoNoEfectivoSon noefectivo = new ArqueoNoEfectivoSon();
+        //    var recibo = (ArqueoNoEfectivoSon)cboRecibo.SelectedItem;
 
-            noefectivo.IdRecibo = recibo.IdRecibo;
-            noefectivo.Serie = recibo.Serie;
+        //    noefectivo.IdRecibo = recibo.IdRecibo;
+        //    noefectivo.Serie = recibo.Serie;
 
-            FormaPago formapago = (FormaPago)cboDocumento.SelectedItem;
-            noefectivo.IdFormaPago = formapago.IdFormaPago;
-            noefectivo.FormaPago = formapago;
+        //    FormaPago formapago = (FormaPago)cboDocumento.SelectedItem;
+        //    noefectivo.IdFormaPago = formapago.IdFormaPago;
+        //    noefectivo.FormaPago = formapago;
 
-            noefectivo.NoDocumento = txtNoDocumento.Text;
+        //    noefectivo.NoDocumento = txtNoDocumento.Text;
 
-            Moneda moneda = (Moneda)cboMoneda.SelectedItem;
-            noefectivo.MonedaFisica = moneda.IdMoneda;
-            noefectivo.Moneda = moneda;
+        //    Moneda moneda = (Moneda)cboMoneda.SelectedItem;
+        //    noefectivo.MonedaFisica = moneda.IdMoneda;
+        //    noefectivo.Moneda = moneda;
 
-            noefectivo.MontoFisico = decimal.Parse(txtMonto.Text);
+        //    noefectivo.MontoFisico = decimal.Parse(txtMonto.Text);
 
-            if (!ValidarRepetido(noefectivo))
-            {
-                noefectivo.IdReciboPago = controller.FindReciboPago(noefectivo);
+        //    if (!ValidarRepetido(noefectivo))
+        //    {
+        //        noefectivo.IdReciboPago = controller.FindReciboPago(noefectivo);
 
-                documentos.Add(noefectivo);
+        //        documentos.Add(noefectivo);
 
-                CalcularTotalesDocumento();
-                LimpiarCamposDocumento();
-                cboRecibo.Focus();
-            }
-            else
-            {
-                lblErrorDocumentos.Text = "El documento ya ha sido agregado";
-                panelErrorDocumentos.Visibility = Visibility.Visible;
-            }
-        }
+        //        CalcularTotalesDocumento();
+        //        LimpiarCamposDocumento();
+        //        cboRecibo.Focus();
+        //    }
+        //    else
+        //    {
+        //        lblErrorDocumentos.Text = "El documento ya ha sido agregado";
+        //        panelErrorDocumentos.Visibility = Visibility.Visible;
+        //    }
+        //}
 
-        private void LimpiarCamposDocumento()
-        {
-            clsValidateInput.CleanALL(new Control[] { cboRecibo, cboDocumento, txtNoDocumento, cboMoneda, txtMonto });
+        //private void LimpiarCamposDocumento()
+        //{
+        //    clsValidateInput.CleanALL(new Control[] { cboRecibo, cboDocumento, txtNoDocumento, cboMoneda, txtMonto });
 
-            if (panelErrorDocumentos.Visibility == Visibility.Visible)
-            {
-                panelErrorDocumentos.Visibility = Visibility.Hidden;
-            }
-        }
+        //    if (panelErrorDocumentos.Visibility == Visibility.Visible)
+        //    {
+        //        panelErrorDocumentos.Visibility = Visibility.Hidden;
+        //    }
+        //}
 
-        private void TxtMonto_KeyDown(object sender, KeyEventArgs e)
-        {
-            if (e.Key == Key.Return)
-            {
-                ValidaAgregaDocumento();
-            }
-        }
+        //private void TxtMonto_KeyDown(object sender, KeyEventArgs e)
+        //{
+        //    if (e.Key == Key.Return)
+        //    {
+        //        ValidaAgregaDocumento();
+        //    }
+        //}
 
         private void TotalSaldoArqueo()
         {
@@ -542,26 +548,27 @@ namespace PruebaWPF.Views.Arqueo
             lstDiferenciasEquivalente.Items.Clear();
             SaldosEfectivo(saldos[0]);
 
-            lstPendienteDocumento.Items.Clear();
+            //lstPendienteDocumento.Items.Clear();
             //lstDocumentoMatch.Items.Clear();
-            DocumentosNoEnlazados(saldos[1]);
-            diferenciasTotales = diferenciasTotales.Union(saldos[1]).ToList();
+            //DocumentosNoEnlazados(saldos[1]);
+            //diferenciasTotales = diferenciasTotales.Union(saldos[1]).ToList();
 
+            SaldosDocumentosEfectivo();
         }
 
         private void DocumentosNoEnlazados(List<fn_TotalesArqueo_Result> list)
         {
 
-            List<ArqueoNoEfectivoSon> documentosMatch = documentos.Where(w => w.IdReciboPago == null).Union(controller.FindDocumentosNoEnlazados(apertura.IdAperturaCaja)).ToList();
-            tblDocumentosMatch.ItemsSource = documentosMatch;
+            //List<ArqueoNoEfectivoSon> documentosMatch = documentos.Where(w => w.IdReciboPago == null).Union(controller.FindDocumentosNoEnlazados(apertura.IdAperturaCaja)).ToList();
+            //tblDocumentosMatch.ItemsSource = documentosMatch;
 
-            foreach (var item in list)
-            {
-                if (item.Diferencia != 0)
-                {
-                    lstPendienteDocumento.Items.Add(string.Format("{0}, {1} {2} {3}", item.Diferencia > 0 ? "Sobrante" : "Faltante", item.FormaPago == null ? item.FormaPagoArqueo : item.FormaPago, item.MonedaDiferencia, item.Diferencia));
-                }
-            }
+            //foreach (var item in list)
+            //{
+            //    if (item.Diferencia != 0)
+            //    {
+            //        lstPendienteDocumento.Items.Add(string.Format("{0}, {1} {2} {3}", item.Diferencia > 0 ? "Sobrante" : "Faltante", item.FormaPago == null ? item.FormaPagoArqueo : item.FormaPago, item.MonedaDiferencia, item.Diferencia));
+            //    }
+            //}
         }
 
         private void SaldosEfectivo(List<fn_TotalesArqueo_Result> list)
@@ -727,21 +734,28 @@ namespace PruebaWPF.Views.Arqueo
         {
             rptInforme cierre = new rptInforme(arqueo);
             cierre.ShowDialog();
+
         }
 
-        private void BtnOkDocument_Click(object sender, RoutedEventArgs e)
-        {
-            CalcularTotalesDocumento();
-        }
+        //private void BtnOkDocument_Click(object sender, RoutedEventArgs e)
+        //{
+        //    CalcularTotalesDocumento();
+        //}
 
         private void LstRecibos_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             if (lstRecibos.SelectedItem != null)
             {
-                Recibo1 selected = (Recibo1)lstRecibos.SelectedItem;
-
-                tblFormasPago.ItemsSource = new ReciboViewModel().ReciboFormaPago(new ReciboSon() { IdRecibo = selected.IdRecibo, Serie = selected.Serie });
+                CargarPagos();
             }
+        }
+
+        private void CargarPagos()
+        {
+            Recibo1 selected = (Recibo1)lstRecibos.SelectedItem;
+
+            tblFormasPago.ItemsSource = new ReciboViewModel().ReciboFormaPago(new ReciboSon() { IdRecibo = selected.IdRecibo, Serie = selected.Serie });
+            tblFormasPago.IsEnabled = !selected.regAnulado;
         }
 
         private void BtnConfirmPay_Click(object sender, RoutedEventArgs e)
@@ -749,12 +763,26 @@ namespace PruebaWPF.Views.Arqueo
             try
             {
                 ReciboPago pago = ((ReciboPago)tblFormasPago.CurrentItem);
-                controller.ConfirmarPago(pago);
+                //     controller.ConfirmarPago(pago);
             }
             catch (Exception ex)
             {
                 clsUtilidades.OpenMessage(new Operacion() { Mensaje = new clsException(ex).ErrorMessage(), OperationType = clsReferencias.TYPE_MESSAGE_Error });
 
+            }
+        }
+
+        private void BtnEditPay_Click(object sender, RoutedEventArgs e)
+        {
+            ReciboPagoSon selected = (ReciboPagoSon)tblFormasPago.CurrentItem;
+            EditarPago editarPago = new EditarPago((ReciboPagoSon)selected.Clone());
+            editarPago.ShowDialog();
+
+            if (cambios)
+            {
+                cambios = false;
+
+                CargarPagos();
             }
         }
     }

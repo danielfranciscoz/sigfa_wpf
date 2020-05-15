@@ -14,8 +14,8 @@ namespace PruebaWPF.Model
     
     public partial class UsuarioPerfil
     {
-        public string Login { get; set; }
         public byte IdPerfil { get; set; }
+        public string Login { get; set; }
         public byte IdRecinto { get; set; }
         public string LoginCreacion { get; set; }
         public bool RegAnulado { get; set; }

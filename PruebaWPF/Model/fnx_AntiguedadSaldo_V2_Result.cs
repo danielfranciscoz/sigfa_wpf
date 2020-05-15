@@ -32,5 +32,6 @@ namespace PruebaWPF.Model
         public string strPeriodo { get; set; }
         public Nullable<short> dif_periodos { get; set; }
         public Nullable<byte> agrupa { get; set; }
+        public Nullable<bool> revertido { get; set; }
     }
 }

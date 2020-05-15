@@ -12,16 +12,12 @@ namespace PruebaWPF.Model
     using System;
     using System.Collections.Generic;
     
-    public partial class ConfirmacionPago
+    public partial class TmpProveedorContrato1
     {
-        public int IdReciboPago { get; set; }
-        public Nullable<int> IdConfirmacion { get; set; }
-        public string Observacion { get; set; }
-        public string UsuarioCreacion { get; set; }
-        public System.DateTime FechaCreacion { get; set; }
-    
-        public virtual ReciboPago ReciboPago { get; set; }
-        public virtual ReciboPago ReciboPago1 { get; set; }
-        public virtual Usuario Usuario { get; set; }
+        public bool Seleccionar { get; set; }
+        public string RUC { get; set; }
+        public string NombreContrato { get; set; }
+        public string Proveedor { get; set; }
+        public string LoginCreacion { get; set; }
     }
 }

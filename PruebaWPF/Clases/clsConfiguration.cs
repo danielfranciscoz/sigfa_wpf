@@ -39,7 +39,7 @@ namespace PruebaWPF.Clases
                 Sleep = 3,
                 AutoLoad = false,
                 TopRow = 1000,
-                rememberMe = false,
+                rememberMe = true,
                 userRemember = ""
             };
         }

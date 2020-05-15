@@ -634,7 +634,7 @@
                                                     <DataGridTextColumn CanUserReorder="False" CanUserResize="True" IsReadOnly="True" Header="Moneda" Width="auto" Binding="{Binding Moneda.Simbolo}"></DataGridTextColumn>
                                                     <DataGridTextColumn CanUserReorder="False" CanUserResize="True" IsReadOnly="True" Header="Monto" Width="auto" Binding="{Binding Monto}"></DataGridTextColumn>
                                                     <DataGridTextColumn CanUserReorder="False" CanUserResize="True" IsReadOnly="True" Header="Tipo de Cambio" Binding="{Binding TipoCambio}"></DataGridTextColumn>
-                                                    <DataGridTextColumn CanUserReorder="False" CanUserResize="True" IsReadOnly="True" Header="" Binding="{Binding ObjInfoAdicional[1]}"></DataGridTextColumn>
+                                                    <DataGridTextColumn CanUserReorder="False" CanUserResize="True" IsReadOnly="True" Header="" Binding="{Binding StringInfoAdicional}"></DataGridTextColumn>
                                                 </DataGrid.Columns>
                                             </DataGrid>
                                             <ListBox x:Name="lstTipoCambio">

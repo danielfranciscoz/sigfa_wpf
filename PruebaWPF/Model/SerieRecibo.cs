@@ -17,7 +17,6 @@ namespace PruebaWPF.Model
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public SerieRecibo()
         {
-            this.Cajero = new HashSet<Cajero>();
             this.Caja = new HashSet<Caja>();
             this.Recibo1 = new HashSet<Recibo1>();
         }
@@ -27,8 +26,6 @@ namespace PruebaWPF.Model
         public System.DateTime FechaCreacion { get; set; }
         public bool regAnulado { get; set; }
     
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Cajero> Cajero { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Caja> Caja { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]

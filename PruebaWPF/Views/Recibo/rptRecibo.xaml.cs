@@ -81,7 +81,8 @@ namespace PruebaWPF.Views.Recibo
             detrecibo.Add(new DetReciboSon() { Concepto = "", Monto = 0, ArancelPrecio = new ArancelPrecio() { ArancelArea = new ArancelArea() { Arancel = new Arancel() { Nombre = "Arancel pagado" } }, Moneda = new Moneda() } });
 
             List<ReciboPagoSon> formaPago = new List<ReciboPagoSon>();
-            formaPago.Add(new ReciboPagoSon() { Monto = 0, ObjInfoAdicional = new object [2]{"","" }, Moneda = new Moneda(), FormaPago = new FormaPago() { FormaPago1 = "Forma de pago 1" } });
+            //formaPago.Add(new ReciboPagoSon() { Monto = 0, ObjInfoAdicional = new object [2]{"","" }, Moneda = new Moneda(), FormaPago = new FormaPago() { FormaPago1 = "Forma de pago 1" } });
+            formaPago.Add(new ReciboPagoSon() { Monto = 0, Moneda = new Moneda(), FormaPago = new FormaPago() { FormaPago1 = "Forma de pago 1" } });
 
             List<VariacionCambiariaSon> variacionCambiarias = new List<VariacionCambiariaSon>();
             variacionCambiarias.Add(new VariacionCambiariaSon() { Valor = 0, Moneda = new Moneda() });
@@ -137,7 +138,7 @@ namespace PruebaWPF.Views.Recibo
             //  new SearchTipoDepositoViewModel().ObtenerTipoDeposito(string.IsNullOrEmpty(recibo.IdTipoDeposito.Value.ToString()) ? 0 : recibo.IdTipoDeposito.Value, recibo.Identificador, true, "", 1,null);
 
             List<DetReciboSon> detrecibo = modeloRecibo.DetallesRecibo(recibo);
-            List<ReciboPagoSon> formaPago = modeloRecibo.ReciboFormaPago(recibo);
+            List<ReciboPagoSon> formaPago = modeloRecibo.ReciboFormaPagoConsolidado(recibo);
 
             List<VariacionCambiariaSon> variacionCambiarias = modeloRecibo.FindTipoCambio(recibo, detrecibo);
 
