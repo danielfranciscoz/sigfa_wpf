@@ -24,6 +24,6 @@ namespace PruebaWPF.Model
         public bool regAnulado { get; set; }
     
         public virtual CuentaContable CuentaContable { get; set; }
-        public virtual Recibo1 Recibo1 { get; set; }
+        public virtual Recibo Recibo { get; set; }
     }
 }

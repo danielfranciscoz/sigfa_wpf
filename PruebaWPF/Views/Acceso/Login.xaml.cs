@@ -29,13 +29,12 @@ namespace PruebaWPF.Views.Acceso
 
         public MainWindow()
         {
+            //string VersionCSharp = (typeof(string).Assembly.ImageRuntimeVersion);
             InitializeComponent();
             txtUsuario.Text = clsConfiguration.Actual().userRemember;
             lblYear.Text = DateTime.Now.Year.ToString();
             CamposNormales();
             Ensamblados();
-            //var a = Properties.Settings.Default;
-            //string ConectionEF = ConfigurationManager.ConnectionStrings["SIFOPEntities"].ConnectionString;
 
         }
 
@@ -186,17 +185,17 @@ namespace PruebaWPF.Views.Acceso
 
         private void CargarProgramas()
         {
-            var programa = controller.ObtenerProgramas(clsSessionHelper.usuario.Login);
-            cboPrograma.ItemsSource = programa;
+            //var programa = controller.ObtenerProgramas(clsSessionHelper.usuario.Login);
+            //cboPrograma.ItemsSource = programa;
         }
 
-        private void CargarPeriodosEspecificos()
-        {
-            var periodoEsp = controller.ObtenerPeriodosEspecificos().Select(a => new { a.IdPeriodoEspecifico, Contenido = "Periodo: " + a.FechaInicio.Month.ToString() + "/" + a.FechaInicio.Year.ToString() + " - " + a.Periodo, a.Estado });
-            cboPeriodo.ItemsSource = periodoEsp;
-            cboPeriodo.DisplayMemberPath = "Contenido";
-            cboPeriodo.SelectedValuePath = "IdPeriodoEspecifico";
-        }
+        //private void CargarPeriodosEspecificos()
+        //{
+        //    var periodoEsp = controller.ObtenerPeriodosEspecificos().Select(a => new { a.IdPeriodoEspecifico, Contenido = "Periodo: " + a.FechaInicio.Month.ToString() + "/" + a.FechaInicio.Year.ToString() + " - " + a.Periodo, a.Estado });
+        //    cboPeriodo.ItemsSource = periodoEsp;
+        //    cboPeriodo.DisplayMemberPath = "Contenido";
+        //    cboPeriodo.SelectedValuePath = "IdPeriodoEspecifico";
+        //}
 
         private bool verficarProgramaPeriodo()
         {

@@ -20,6 +20,6 @@ namespace PruebaWPF.Model
         public decimal Monto { get; set; }
     
         public virtual Moneda Moneda { get; set; }
-        public virtual Recibo1 Recibo1 { get; set; }
+        public virtual Recibo Recibo { get; set; }
     }
 }

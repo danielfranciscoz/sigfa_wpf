@@ -4,306 +4,66 @@
   <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
-      <Diagram DiagramId="34f6dbb6c294416793e0fa3b8e96cd02" Name="Diagram1">
-        <EntityTypeShape EntityType="SIFOPModel.Arqueo" Width="1.5" PointX="3" PointY="172.5" IsExpanded="true" />
-        <EntityTypeShape EntityType="SIFOPModel.ArqueoDocumento" Width="1.5" PointX="10.5" PointY="196.125" IsExpanded="true" />
-        <EntityTypeShape EntityType="SIFOPModel.ArqueoEfectivo" Width="1.5" PointX="16.25" PointY="179.125" IsExpanded="true" />
-        <EntityTypeShape EntityType="SIFOPModel.ArqueoNoEfectivo" Width="1.5" PointX="5.25" PointY="220.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="SIFOPModel.ArqueoRecibo" Width="1.5" PointX="14.25" PointY="167" IsExpanded="true" />
-        <EntityTypeShape EntityType="SIFOPModel.DiferenciasArqueo" Width="1.5" PointX="11.25" PointY="218.625" IsExpanded="true" />
-        <EntityTypeShape EntityType="SIFOPModel.RectificacionPago" Width="1.5" PointX="6" PointY="175" IsExpanded="true" />
-        <EntityTypeShape EntityType="SIFOPModel.Errors" Width="1.5" PointX="3" PointY="158.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="SIFOPModel.AnulacionPago" Width="1.5" PointX="7.5" PointY="200.125" IsExpanded="true" />
-        <EntityTypeShape EntityType="SIFOPModel.DetallePago" Width="1.5" PointX="7.5" PointY="191.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="SIFOPModel.NoCuentasBankArea" Width="1.5" PointX="5.25" PointY="183.125" IsExpanded="true" />
-        <EntityTypeShape EntityType="SIFOPModel.Pago" Width="1.5" PointX="5.25" PointY="199.375" IsExpanded="true" />
-        <EntityTypeShape EntityType="SIFOPModel.PagoSede" Width="1.5" PointX="5.75" PointY="0.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="SIFOPModel.TipoTransaccionBank" Width="1.5" PointX="3" PointY="166.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="SIFOPModel.TransaccionesServicio" Width="1.5" PointX="8.25" PointY="183.25" IsExpanded="true" />
-        <EntityTypeShape EntityType="SIFOPModel.UserBank" Width="1.5" PointX="5.25" PointY="187.375" IsExpanded="true" />
-        <EntityTypeShape EntityType="SIFOPModel.AgenteExternoCat" Width="1.5" PointX="8.25" PointY="174.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="SIFOPModel.AreaEquivalencia" Width="1.5" PointX="0.75" PointY="5.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="SIFOPModel.IdentificacionAgenteExterno" Width="1.5" PointX="3" PointY="176.875" IsExpanded="true" />
-        <EntityTypeShape EntityType="SIFOPModel.DenominacionMoneda" Width="1.5" PointX="5.25" PointY="178.375" IsExpanded="true" />
-        <EntityTypeShape EntityType="SIFOPModel.Moneda" Width="1.5" PointX="3" PointY="183.5" IsExpanded="true" />
-        <EntityTypeShape EntityType="SIFOPModel.Asiento" Width="1.5" PointX="7.5" PointY="204" IsExpanded="true" />
-        <EntityTypeShape EntityType="SIFOPModel.DetalleMovimientoIngreso" Width="1.5" PointX="10.5" PointY="187.375" IsExpanded="true" />
-        <EntityTypeShape EntityType="SIFOPModel.MovimientoIngreso" Width="1.5" PointX="8.25" PointY="218.5" IsExpanded="true" />
-        <EntityTypeShape EntityType="SIFOPModel.Actividad" Width="1.5" PointX="8" PointY="169.125" IsExpanded="true" />
-        <EntityTypeShape EntityType="SIFOPModel.AgenteExterno" Width="1.5" PointX="2.75" PointY="5.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="SIFOPModel.AutorizarRestricciones" Width="1.5" PointX="24.75" PointY="183.875" IsExpanded="true" />
-        <EntityTypeShape EntityType="SIFOPModel.BalanzaComprobacion" Width="1.5" PointX="11" PointY="173.125" IsExpanded="true" />
-        <EntityTypeShape EntityType="SIFOPModel.Banco" Width="1.5" PointX="3" PointY="199.5" IsExpanded="true" />
-        <EntityTypeShape EntityType="SIFOPModel.Banco_DisponibilidadFondo" Width="1.5" PointX="5.75" PointY="3.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="SIFOPModel.Banco_PeriodoEspecifico" Width="1.5" PointX="7.75" PointY="0.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="SIFOPModel.Banco_TechosPresupuestarios" Width="1.5" PointX="7.75" PointY="4.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="SIFOPModel.Beneficiario" Width="1.5" PointX="15.75" PointY="220" IsExpanded="true" />
-        <EntityTypeShape EntityType="SIFOPModel.Cajero" Width="1.5" PointX="4.75" PointY="8.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="SIFOPModel.Carrera" Width="1.5" PointX="5.25" PointY="191.5" IsExpanded="true" />
-        <EntityTypeShape EntityType="SIFOPModel.CarreraTipo" Width="1.5" PointX="3" PointY="207.5" IsExpanded="true" />
-        <EntityTypeShape EntityType="SIFOPModel.ChangePassword" Width="1.5" PointX="6.75" PointY="8.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="SIFOPModel.CiaTarjetaCredito" Width="1.5" PointX="3" PointY="210.375" IsExpanded="true" />
-        <EntityTypeShape EntityType="SIFOPModel.COG" Width="1.5" PointX="8.75" PointY="8.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="SIFOPModel.ComprobanteCierre" Width="1.5" PointX="9.75" PointY="0.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="SIFOPModel.ComprobanteDiario" Width="1.5" PointX="15.75" PointY="207.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="SIFOPModel.ComprobantePago" Width="1.5" PointX="17.75" PointY="201.875" IsExpanded="true" />
-        <EntityTypeShape EntityType="SIFOPModel.Concepto" Width="1.5" PointX="11.25" PointY="160" IsExpanded="true" />
-        <EntityTypeShape EntityType="SIFOPModel.ConceptoCuenta" Width="1.5" PointX="9.75" PointY="4.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="SIFOPModel.ConceptoDetalle" Width="1.5" PointX="12.5" PointY="204.125" IsExpanded="true" />
-        <EntityTypeShape EntityType="SIFOPModel.ConceptoFacultad" Width="1.5" PointX="13.5" PointY="146" IsExpanded="true" />
-        <EntityTypeShape EntityType="SIFOPModel.ConciliacionBanco" Width="1.5" PointX="13.5" PointY="207.5" IsExpanded="true" />
-        <EntityTypeShape EntityType="SIFOPModel.ConciliacionBancoDetalle" Width="1.5" PointX="15.75" PointY="214.5" IsExpanded="true" />
-        <EntityTypeShape EntityType="SIFOPModel.CuentaAuxiliar" Width="1.5" PointX="11" PointY="168.5" IsExpanded="true" />
-        <EntityTypeShape EntityType="SIFOPModel.CuentaBanco" Width="1.5" PointX="7.5" PointY="214.625" IsExpanded="true" />
-        <EntityTypeShape EntityType="SIFOPModel.CuentaCategoria" Width="1.5" PointX="0.75" PointY="10.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="SIFOPModel.CuentaContable" Width="1.5" PointX="5.25" PointY="204.125" IsExpanded="true" />
-        <EntityTypeShape EntityType="SIFOPModel.Denominacion" Width="1.5" PointX="10.75" PointY="8.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="SIFOPModel.Departamento" Width="1.5" PointX="11" PointY="184" IsExpanded="true" />
-        <EntityTypeShape EntityType="SIFOPModel.Distribucion_D" Width="1.5" PointX="11.75" PointY="0.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="SIFOPModel.Distribucion_DD" Width="1.5" PointX="2.75" PointY="11.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="SIFOPModel.Docentes" Width="1.5" PointX="13.5" PointY="236.625" IsExpanded="true" />
-        <EntityTypeShape EntityType="SIFOPModel.DocumentoEnlace" Width="1.5" PointX="23.75" PointY="200" IsExpanded="true" />
-        <EntityTypeShape EntityType="SIFOPModel.dtproperties" Width="1.5" PointX="8.75" PointY="11.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="SIFOPModel.EjecucionPresupuestaria" Width="1.5" PointX="20.75" PointY="195.5" IsExpanded="true" />
-        <EntityTypeShape EntityType="SIFOPModel.Empleado" Width="1.5" PointX="13.5" PointY="213.375" IsExpanded="true" />
-        <EntityTypeShape EntityType="SIFOPModel.EPComprobanteDiario" Width="1.5" PointX="18.75" PointY="207.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="SIFOPModel.EPComprobantePago" Width="1.5" PointX="14" PointY="159.5" IsExpanded="true" />
-        <EntityTypeShape EntityType="SIFOPModel.EPLineaComprobanteDiario" Width="1.5" PointX="13.25" PointY="188.5" IsExpanded="true" />
-        <EntityTypeShape EntityType="SIFOPModel.EPLineaComprobantePago" Width="1.5" PointX="16.25" PointY="185.5" IsExpanded="true" />
-        <EntityTypeShape EntityType="SIFOPModel.ErrorLog" Width="1.5" PointX="10.75" PointY="11.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="SIFOPModel.EstructuraCuenta" Width="1.5" PointX="10.25" PointY="191.5" IsExpanded="true" />
-        <EntityTypeShape EntityType="SIFOPModel.EstudianteCarrera" Width="1.5" PointX="16.5" PointY="171.25" IsExpanded="true" />
-        <EntityTypeShape EntityType="SIFOPModel.Estudiantes" Width="1.5" PointX="14.25" PointY="156.5" IsExpanded="true" />
-        <EntityTypeShape EntityType="SIFOPModel.Facultad" Width="1.5" PointX="8.25" PointY="208.375" IsExpanded="true" />
-        <EntityTypeShape EntityType="SIFOPModel.FuenteFinanciamiento" Width="1.5" PointX="11.25" PointY="155" IsExpanded="true" />
-        <EntityTypeShape EntityType="SIFOPModel.LineaComprobanteDiario" Width="1.5" PointX="16.25" PointY="191.5" IsExpanded="true" />
-        <EntityTypeShape EntityType="SIFOPModel.LineaComprobantePago" Width="1.5" PointX="19.25" PointY="182.5" IsExpanded="true" />
-        <EntityTypeShape EntityType="SIFOPModel.Menu" Width="1.5" PointX="6.75" PointY="148" IsExpanded="true" />
-        <EntityTypeShape EntityType="SIFOPModel.Municipio" Width="1.5" PointX="16.25" PointY="175.25" IsExpanded="true" />
-        <EntityTypeShape EntityType="SIFOPModel.Paises" Width="1.5" PointX="8.75" PointY="152.25" IsExpanded="true" />
-        <EntityTypeShape EntityType="SIFOPModel.ParametroIngresosNC" Width="1.5" PointX="11.75" PointY="5.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="SIFOPModel.ParametroLicitacion" Width="1.5" PointX="4.75" PointY="12.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="SIFOPModel.ParametroRendicion" Width="1.5" PointX="12.75" PointY="8.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="SIFOPModel.Perfil" Width="1.5" PointX="6.75" PointY="161.125" IsExpanded="true" />
-        <EntityTypeShape EntityType="SIFOPModel.PerfilContenido" Width="1.5" PointX="9" PointY="159.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="SIFOPModel.PeriodoEspecifico" Width="1.5" PointX="10.25" PointY="202.625" IsExpanded="true" />
-        <EntityTypeShape EntityType="SIFOPModel.PeriodoEspecificoEP" Width="1.5" PointX="12.75" PointY="11.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="SIFOPModel.PeriodoGeneral" Width="1.5" PointX="3" PointY="240.625" IsExpanded="true" />
-        <EntityTypeShape EntityType="SIFOPModel.Personas" Width="1.5" PointX="11.25" PointY="232.375" IsExpanded="true" />
-        <EntityTypeShape EntityType="SIFOPModel.PrestamoDocumento" Width="1.5" PointX="0.75" PointY="1" IsExpanded="true" />
-        <EntityTypeShape EntityType="SIFOPModel.PrestamoEstado" Width="1.5" PointX="3" PointY="1.5" IsExpanded="true" />
-        <EntityTypeShape EntityType="SIFOPModel.Presupuesto" Width="1.5" PointX="20.75" PointY="202.125" IsExpanded="true" />
-        <EntityTypeShape EntityType="SIFOPModel.Programa" Width="1.5" PointX="10.5" PointY="208" IsExpanded="true" />
-        <EntityTypeShape EntityType="SIFOPModel.Proveedor" Width="1.5" PointX="26.75" PointY="195.25" IsExpanded="true" />
-        <EntityTypeShape EntityType="SIFOPModel.Proyecto" Width="1.5" PointX="20.75" PointY="189.875" IsExpanded="true" />
-        <EntityTypeShape EntityType="SIFOPModel.Recibo" Width="1.5" PointX="13.5" PointY="178.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="SIFOPModel.ReciboBillete" Width="1.5" PointX="18.75" PointY="176.5" IsExpanded="true" />
-        <EntityTypeShape EntityType="SIFOPModel.ReciboBono" Width="1.5" PointX="18.75" PointY="172.375" IsExpanded="true" />
-        <EntityTypeShape EntityType="SIFOPModel.ReciboCheque" Width="1.5" PointX="21.75" PointY="183.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="SIFOPModel.ReciboDetalle" Width="1.5" PointX="23.75" PointY="194.125" IsExpanded="true" />
-        <EntityTypeShape EntityType="SIFOPModel.ReciboFlujoEfectivo" Width="1.5" PointX="21.75" PointY="176.5" IsExpanded="true" />
-        <EntityTypeShape EntityType="SIFOPModel.ReciboPagare" Width="1.5" PointX="21.75" PointY="171.125" IsExpanded="true" />
-        <EntityTypeShape EntityType="SIFOPModel.ReciboTarjeta" Width="1.5" PointX="23.75" PointY="188.875" IsExpanded="true" />
-        <EntityTypeShape EntityType="SIFOPModel.Recinto" Width="1.5" PointX="3" PointY="244.125" IsExpanded="true" />
-        <EntityTypeShape EntityType="SIFOPModel.Rendicion" Width="1.5" PointX="13.75" PointY="0.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="SIFOPModel.SolicitudCheque" Width="1.5" PointX="18.5" PointY="188.5" IsExpanded="true" />
-        <EntityTypeShape EntityType="SIFOPModel.SolicitudEstado" Width="1.5" PointX="20.75" PointY="213.625" IsExpanded="true" />
-        <EntityTypeShape EntityType="SIFOPModel.SolicitudRegresada" Width="1.5" PointX="20.75" PointY="217.25" IsExpanded="true" />
-        <EntityTypeShape EntityType="SIFOPModel.sysdiagrams" Width="1.5" PointX="0.75" PointY="14.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="SIFOPModel.tblAuditoria" Width="1.5" PointX="14.75" PointY="6.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="SIFOPModel.TipoComprobante" Width="1.5" PointX="16.5" PointY="229.125" IsExpanded="true" />
-        <EntityTypeShape EntityType="SIFOPModel.TipoCuenta" Width="1.5" PointX="3" PointY="248.25" IsExpanded="true" />
-        <EntityTypeShape EntityType="SIFOPModel.tmp_SaldoCuentas" Width="1.5" PointX="14.75" PointY="12.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="SIFOPModel.TmpAnticiposGastos" Width="1.5" PointX="6.75" PointY="15.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="SIFOPModel.TmpAreaIngresos" Width="1.5" PointX="15.75" PointY="0.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="SIFOPModel.TmpComprobanteRendir" Width="1.5" PointX="8.75" PointY="15.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="SIFOPModel.TmpConceptoCuenta" Width="1.5" PointX="10.75" PointY="15.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="SIFOPModel.TmpConceptoCuenta_b" Width="1.5" PointX="2.75" PointY="16.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="SIFOPModel.TmpConceptoDetalle" Width="1.5" PointX="16.75" PointY="3.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="SIFOPModel.TmpConceptoFacultad" Width="1.5" PointX="16.75" PointY="7.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="SIFOPModel.TmpConciliacionBancoDetalle" Width="1.5" PointX="16.75" PointY="10.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="SIFOPModel.TmpContrato_EstadoCuenta" Width="1.5" PointX="16.75" PointY="16.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="SIFOPModel.TmpCuentaAuxiliar" Width="1.5" PointX="17.75" PointY="0.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="SIFOPModel.TmpCuentaContable" Width="1.5" PointX="12.75" PointY="17.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="SIFOPModel.TmpCuentaContable_b" Width="1.5" PointX="18.75" PointY="3.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="SIFOPModel.TmpDistribucion_DD" Width="1.5" PointX="18.75" PointY="7.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="SIFOPModel.TmpDocumentos" Width="1.5" PointX="18.75" PointY="11.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="SIFOPModel.TmpEstadoCuenta" Width="1.5" PointX="18.75" PointY="14.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="SIFOPModel.TmpEstructuraCuenta" Width="1.5" PointX="18.75" PointY="18.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="SIFOPModel.TmpEstructuraProgramatica" Width="1.5" PointX="19.75" PointY="0.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="SIFOPModel.TmpFuenteFinanciamiento" Width="1.5" PointX="20.75" PointY="3.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="SIFOPModel.TmpInformeFinanciero" Width="1.5" PointX="20.75" PointY="6.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="SIFOPModel.TmpLineaComprobante" Width="1.5" PointX="20.75" PointY="12.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="SIFOPModel.TmpMontoEgresoFuente" Width="1.5" PointX="20.75" PointY="18.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="SIFOPModel.TmpPerfilContenido" Width="1.5" PointX="0.75" PointY="21.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="SIFOPModel.TmpPerfilUsuario" Width="1.5" PointX="21.75" PointY="0.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="SIFOPModel.TmpProveedorContrato" Width="1.5" PointX="2.75" PointY="21.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="SIFOPModel.TmpReciboBillete" Width="1.5" PointX="8.75" PointY="21.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="SIFOPModel.TmpReciboBono" Width="1.5" PointX="10.75" PointY="21.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="SIFOPModel.TmpReciboCheque" Width="1.5" PointX="12.75" PointY="21.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="SIFOPModel.TmpReciboDetalle" Width="1.5" PointX="22.75" PointY="3.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="SIFOPModel.TmpReciboFlujoEfectivo" Width="1.5" PointX="22.75" PointY="7.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="SIFOPModel.TmpReciboPagare" Width="1.5" PointX="22.75" PointY="11.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="SIFOPModel.TmpReciboTarjeta" Width="1.5" PointX="22.75" PointY="16.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="SIFOPModel.TmpSolicitudesChequesSIPPSI" Width="1.5" PointX="22.75" PointY="21.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="SIFOPModel.TmpSolicitudEstado" Width="1.5" PointX="23.75" PointY="0.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="SIFOPModel.TmpSolicitudTesoreria" Width="1.5" PointX="4.75" PointY="23.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="SIFOPModel.TmpTransferencia_DD" Width="1.5" PointX="14.75" PointY="23.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="SIFOPModel.TmpUsuarioPermiso" Width="1.5" PointX="16.75" PointY="23.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="SIFOPModel.TmpUsuarioPrograma" Width="1.5" PointX="18.75" PointY="23.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="SIFOPModel.TmpVariacionCambiaria" Width="1.5" PointX="24.75" PointY="3.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="SIFOPModel.Transferencia" Width="1.5" PointX="24.75" PointY="6.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="SIFOPModel.Transferencia_Area_D" Width="1.5" PointX="24.75" PointY="12.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="SIFOPModel.Transferencia_Area_DD" Width="1.5" PointX="24.75" PointY="17.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="SIFOPModel.Usuario" Width="1.5" PointX="0.75" PointY="166.5" IsExpanded="true" />
-        <EntityTypeShape EntityType="SIFOPModel.UsuarioArea" Width="1.5" PointX="24.75" PointY="21.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="SIFOPModel.UsuarioAutorizar" Width="1.5" PointX="3" PointY="251.125" IsExpanded="true" />
-        <EntityTypeShape EntityType="SIFOPModel.UsuarioPerfil" Width="1.5" PointX="6" PointY="165" IsExpanded="true" />
-        <EntityTypeShape EntityType="SIFOPModel.UsuarioPrograma" Width="1.5" PointX="15.75" PointY="197.125" IsExpanded="true" />
-        <EntityTypeShape EntityType="SIFOPModel.VariacionCambiaria" Width="1.5" PointX="8.25" PointY="179.125" IsExpanded="true" />
-        <EntityTypeShape EntityType="SIFOPModel.Arancel" Width="1.5" PointX="15.5" PointY="202.875" IsExpanded="true" />
-        <EntityTypeShape EntityType="SIFOPModel.ArancelArea" Width="1.5" PointX="24.75" PointY="180" IsExpanded="true" />
-        <EntityTypeShape EntityType="SIFOPModel.ArancelPrecio" Width="1.5" PointX="11.25" PointY="178.625" IsExpanded="true" />
-        <EntityTypeShape EntityType="SIFOPModel.ArancelTipoDeposito" Width="1.5" PointX="17.75" PointY="225.375" IsExpanded="true" />
-        <EntityTypeShape EntityType="SIFOPModel.AreaPagoDelegado" Width="1.5" PointX="27" PointY="175" IsExpanded="true" />
-        <EntityTypeShape EntityType="SIFOPModel.DetOrdenPagoArancel" Width="1.5" PointX="13.5" PointY="195.875" IsExpanded="true" />
-        <EntityTypeShape EntityType="SIFOPModel.Exoneracion" Width="1.5" PointX="13.5" PointY="224.625" IsExpanded="true" />
-        <EntityTypeShape EntityType="SIFOPModel.ExoneracionTotalArea" Width="1.5" PointX="3" PointY="257.25" IsExpanded="true" />
-        <EntityTypeShape EntityType="SIFOPModel.OrdenPago" Width="1.5" PointX="5.25" PointY="226.375" IsExpanded="true" />
-        <EntityTypeShape EntityType="SIFOPModel.TipoArancel" Width="1.5" PointX="8.25" PointY="230.25" IsExpanded="true" />
-        <EntityTypeShape EntityType="SIFOPModel.UsuarioArancel" Width="1.5" PointX="30" PointY="175.875" IsExpanded="true" />
-        <EntityTypeShape EntityType="SIFOPModel.AperturaCaja" Width="1.5" PointX="3" PointY="268.875" IsExpanded="true" />
-        <EntityTypeShape EntityType="SIFOPModel.Caja" Width="1.5" PointX="14" PointY="174.5" IsExpanded="true" />
-        <EntityTypeShape EntityType="SIFOPModel.DetAperturaCaja" Width="1.5" PointX="5.25" PointY="216.25" IsExpanded="true" />
-        <EntityTypeShape EntityType="SIFOPModel.FormaPago" Width="1.5" PointX="3" PointY="276" IsExpanded="true" />
-        <EntityTypeShape EntityType="SIFOPModel.InfoRecibo" Width="1.5" PointX="3" PointY="280.125" IsExpanded="true" />
-        <EntityTypeShape EntityType="SIFOPModel.Recibo1" Width="1.5" PointX="13.5" PointY="229.625" IsExpanded="true" />
-        <EntityTypeShape EntityType="SIFOPModel.ReciboAnulado" Width="1.5" PointX="24.75" PointY="208.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="SIFOPModel.ReciboDatos" Width="1.5" PointX="15.75" PointY="256.875" IsExpanded="true" />
-        <EntityTypeShape EntityType="SIFOPModel.ReciboDet" Width="1.5" PointX="21.75" PointY="207.125" IsExpanded="true" />
-        <EntityTypeShape EntityType="SIFOPModel.ReciboDiferencias" Width="1.5" PointX="8.25" PointY="187.875" IsExpanded="true" />
-        <EntityTypeShape EntityType="SIFOPModel.ReciboPago" Width="1.5" PointX="8.25" PointY="223.125" IsExpanded="true" />
-        <EntityTypeShape EntityType="SIFOPModel.ReciboPagoBono" Width="1.5" PointX="10.5" PointY="223.625" IsExpanded="true" />
-        <EntityTypeShape EntityType="SIFOPModel.ReciboPagoCheque" Width="1.5" PointX="10.5" PointY="213" IsExpanded="true" />
-        <EntityTypeShape EntityType="SIFOPModel.ReciboPagoDeposito" Width="1.5" PointX="10.5" PointY="229.125" IsExpanded="true" />
-        <EntityTypeShape EntityType="SIFOPModel.ReciboPagoTarjeta" Width="1.5" PointX="12.5" PointY="200.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="SIFOPModel.ReciboSIRA" Width="1.5" PointX="15.75" PointY="238.5" IsExpanded="true" />
-        <EntityTypeShape EntityType="SIFOPModel.SerieRecibo" Width="1.5" PointX="11.75" PointY="149.125" IsExpanded="true" />
-        <EntityTypeShape EntityType="SIFOPModel.TipoDeposito" Width="1.5" PointX="3" PointY="283.625" IsExpanded="true" />
-        <EntityTypeShape EntityType="SIFOPModel.VoucherBanco" Width="1.5" PointX="5.25" PointY="169.375" IsExpanded="true" />
-        <EntityTypeShape EntityType="SIFOPModel.TipoDocumento" Width="1.5" PointX="25.75" PointY="0.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="SIFOPModel.TmpContrato_EstadoCuenta1" Width="1.5" PointX="6.75" PointY="25.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="SIFOPModel.TmpCuentaContable1" Width="1.5" PointX="8.75" PointY="25.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="SIFOPModel.TmpCuentaContableEstructura" Width="1.5" PointX="24.75" PointY="25.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="SIFOPModel.TmpDisponibilidad" Width="1.5" PointX="0.75" PointY="26.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="SIFOPModel.TmpDisponibilidad_b" Width="1.5" PointX="26.75" PointY="3.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="SIFOPModel.TmpEstadosFinancieros" Width="1.5" PointX="26.75" PointY="10.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="SIFOPModel.TmpFuenteFinanciamiento1" Width="1.5" PointX="10.75" PointY="26.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="SIFOPModel.TmpPagoMatriculaPendiente" Width="1.5" PointX="26.75" PointY="14.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="SIFOPModel.TmpProveedorContrato1" Width="1.5" PointX="18.75" PointY="26.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="SIFOPModel.TmpTipoDocumento" Width="1.5" PointX="26.75" PointY="19.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="SIFOPModel.AccesoDirectoPerfil" Width="1.5" PointX="9" PointY="165" IsExpanded="true" />
-        <EntityTypeShape EntityType="SIFOPModel.AccesoDirectoUsuario" Width="1.5" PointX="12" PointY="165" IsExpanded="true" />
-        <EntityTypeShape EntityType="SIFOPModel.Configuracion" Width="1.5" PointX="3" PointY="293.875" IsExpanded="true" />
-        <EntityTypeShape EntityType="SIFOPModel.Pantalla" Width="1.5" PointX="6.75" PointY="155.875" IsExpanded="true" />
-        <EntityTypeShape EntityType="SIFOPModel.Permiso" Width="1.5" PointX="14" PointY="170.625" IsExpanded="true" />
-        <EntityTypeShape EntityType="SIFOPModel.PermisoName" Width="1.5" PointX="11.75" PointY="152.25" IsExpanded="true" />
-        <EntityTypeShape EntityType="SIFOPModel.RecintoEquivalencia" Width="1.5" PointX="26.75" PointY="22.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="SIFOPModel.FormulaConversion" Width="1.5" PointX="26.75" PointY="25.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="SIFOPModel.Parametro" Width="1.5" PointX="27.75" PointY="0.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="SIFOPModel.ParametroContraloria" Width="1.5" PointX="2.75" PointY="27.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="SIFOPModel.ParametroSistema" Width="1.5" PointX="12.75" PointY="27.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="SIFOPModel.Tmp_ConciliarCuenta_Periodo" Width="1.5" PointX="28.75" PointY="3.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="SIFOPModel.TmpComprobantePrint" Width="1.5" PointX="28.75" PointY="9.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="SIFOPModel.TmpConciliarRenglones" Width="1.5" PointX="28.75" PointY="14.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="SIFOPModel.TmpConciliarRenglones_b" Width="1.5" PointX="14.75" PointY="28.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="SIFOPModel.TmpContratoMovimientos" Width="1.5" PointX="20.75" PointY="28.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="SIFOPModel.TmpSolicitudesArchivo" Width="1.5" PointX="28.75" PointY="21.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="SIFOPModel.TmpConciliarCuenta_Periodo" Width="1.5" PointX="28.75" PointY="26.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="SIFOPModel.TmpConciliarRenglones1" Width="1.5" PointX="8.75" PointY="29.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="SIFOPModel.TmpConciliarRenglones_b1" Width="1.5" PointX="16.75" PointY="29.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="SIFOPModel.TmpContratoMovimientos1" Width="1.5" PointX="22.75" PointY="29.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="SIFOPModel.vw_Aranceles" Width="1.5" PointX="24.75" PointY="29.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="SIFOPModel.vw_AreaEquivalencia" Width="1.5" PointX="30.75" PointY="0.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="SIFOPModel.vw_Areas" Width="1.5" PointX="2.75" PointY="30.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="SIFOPModel.vw_FuentesSIPPSI" Width="1.5" PointX="30.75" PointY="4.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="SIFOPModel.vw_Prematricula" Width="1.5" PointX="30.75" PointY="7.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="SIFOPModel.vw_ProveedoresSISCOM" Width="1.5" PointX="30.75" PointY="12.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="SIFOPModel.vw_RecintosRH" Width="1.5" PointX="30.75" PointY="16.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="SIFOPModel.vwCarrerasSIRA" Width="1.5" PointX="30.75" PointY="19.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="SIFOPModel.vwEmpleadosRH" Width="1.5" PointX="30.75" PointY="22.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="SIFOPModel.vwEstudiantesSIRA" Width="1.5" PointX="30.75" PointY="26.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="SIFOPModel.vwSedesSIRA" Width="1.5" PointX="30.75" PointY="30.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="SIFOPModel.ASD" Width="1.5" PointX="32.75" PointY="0.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="SIFOPModel.Qry_AsientosProceso" Width="1.5" PointX="4.75" PointY="32.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="SIFOPModel.Qry_ComprobantesaRendir" Width="1.5" PointX="32.75" PointY="5.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="SIFOPModel.Qry_CursosPropedecticos2013" Width="1.5" PointX="32.75" PointY="10.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="SIFOPModel.Qry_Empleados_RRHH" Width="1.5" PointX="10.75" PointY="32.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="SIFOPModel.Qry_EstadoCuentaCD" Width="1.5" PointX="32.75" PointY="14.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="SIFOPModel.Qry_EstadoCuentaCP" Width="1.5" PointX="32.75" PointY="20.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="SIFOPModel.Qry_FuenteFinanciamiento" Width="1.5" PointX="32.75" PointY="25.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="SIFOPModel.Qry_Pagos_Matricula" Width="1.5" PointX="26.75" PointY="32.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="SIFOPModel.Qry_Personas" Width="1.5" PointX="32.75" PointY="28.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="SIFOPModel.Qry_PrestamoDocumentos" Width="1.5" PointX="28.75" PointY="32.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="SIFOPModel.Qry_ProductoCategoria" Width="1.5" PointX="30.75" PointY="32.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="SIFOPModel.Qry_RecibosPiensa" Width="1.5" PointX="32.75" PointY="31.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="SIFOPModel.Qry_RendicionesPendientes" Width="1.5" PointX="34.75" PointY="0.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="SIFOPModel.Qry_Roc" Width="1.5" PointX="0.75" PointY="34.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="SIFOPModel.Qry_SolicitudCompraDetalle" Width="1.5" PointX="34.75" PointY="7.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="SIFOPModel.Qry_SolicitudCompras_SISCOM" Width="1.5" PointX="34.75" PointY="13.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="SIFOPModel.Qry_TechosPresupuestarios" Width="1.5" PointX="18.75" PointY="34.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="SIFOPModel.Qry_Transferencia" Width="1.5" PointX="34.75" PointY="19.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="SIFOPModel.QryFuenteFinanciamiento" Width="1.5" PointX="34.75" PointY="26.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="SIFOPModel.Query_ContratosLicitacion_SISCOM" Width="1.5" PointX="34.75" PointY="29.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="SIFOPModel.Query_Documentos_Bodega" Width="1.5" PointX="34.75" PointY="34.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="SIFOPModel.Query_EstadoCuenta_Contratos" Width="1.5" PointX="20.75" PointY="35.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="SIFOPModel.Query_GenerarCD" Width="1.5" PointX="22.75" PointY="35.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="SIFOPModel.Query_SolcitucCk_SIPPSI" Width="1.5" PointX="24.75" PointY="35.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="SIFOPModel.Query_SolcitucCk_SIPPSI_Params" Width="1.5" PointX="36.75" PointY="0.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="SIFOPModel.QueryAreasFinanzas" Width="1.5" PointX="2.75" PointY="36.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="SIFOPModel.V_EstructuraProgramatica" Width="1.5" PointX="4.75" PointY="36.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="SIFOPModel.vw_AgenteExterno" Width="1.5" PointX="6.75" PointY="36.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="SIFOPModel.vw_Beneficiario" Width="1.5" PointX="36.75" PointY="7.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="SIFOPModel.vw_ComprobantePago" Width="1.5" PointX="8.75" PointY="36.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="SIFOPModel.vw_ConsultarRecibos" Width="1.5" PointX="10.75" PointY="36.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="SIFOPModel.vw_Departamento" Width="1.5" PointX="36.75" PointY="12.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="SIFOPModel.vw_Empleado" Width="1.5" PointX="12.75" PointY="36.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="SIFOPModel.vw_Empleado_EdoCuenta" Width="1.5" PointX="36.75" PointY="15.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="SIFOPModel.vw_EstadoCuenta" Width="1.5" PointX="36.75" PointY="20.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="SIFOPModel.vw_Estructura" Width="1.5" PointX="36.75" PointY="24.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="SIFOPModel.vw_Estructura_Jerarquia" Width="1.5" PointX="26.75" PointY="36.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="SIFOPModel.vw_EstructuraCuenta" Width="1.5" PointX="36.75" PointY="27.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="SIFOPModel.vw_Estudiante" Width="1.5" PointX="28.75" PointY="36.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="SIFOPModel.vw_EstudianteActivo" Width="1.5" PointX="30.75" PointY="36.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="SIFOPModel.vw_Facultad" Width="1.5" PointX="36.75" PointY="34.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="SIFOPModel.vw_MatriculaPagada" Width="1.5" PointX="14.75" PointY="37.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="SIFOPModel.vw_Municipio" Width="1.5" PointX="32.75" PointY="37.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="SIFOPModel.vw_ObtenerPeriodosEspecificos" Width="1.5" PointX="34.75" PointY="37.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="SIFOPModel.vw_Paises" Width="1.5" PointX="36.75" PointY="37.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="SIFOPModel.vw_Persona" Width="1.5" PointX="38.75" PointY="0.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="SIFOPModel.vw_PremaMatricula" Width="1.5" PointX="38.75" PointY="3.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="SIFOPModel.vw_Prematricula1" Width="1.5" PointX="38.75" PointY="6.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="SIFOPModel.vw_Proveedor" Width="1.5" PointX="38.75" PointY="10.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="SIFOPModel.vw_Proveedor_EdoCuenta" Width="1.5" PointX="38.75" PointY="16.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="SIFOPModel.vw_Recibo" Width="1.5" PointX="38.75" PointY="21.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="SIFOPModel.vw_Recibo_FormasPago" Width="1.5" PointX="38.75" PointY="34.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="SIFOPModel.vw_ReciboBono" Width="1.5" PointX="0.75" PointY="39.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="SIFOPModel.vw_ReciboCheque" Width="1.5" PointX="2.75" PointY="39.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="SIFOPModel.vw_ReciboFlujoEfectivo" Width="1.5" PointX="16.75" PointY="39.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="SIFOPModel.vw_ReciboPagare" Width="1.5" PointX="26.75" PointY="39.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="SIFOPModel.vw_ReciboReporte" Width="1.5" PointX="28.75" PointY="39.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="SIFOPModel.vw_ReciboTarjeta" Width="1.5" PointX="40.75" PointY="0.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="SIFOPModel.vw_Recinto" Width="1.5" PointX="40.75" PointY="3.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="SIFOPModel.vw_RendicionCuenta" Width="1.5" PointX="40.75" PointY="7.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="SIFOPModel.vw_SolicitudCheque" Width="1.5" PointX="40.75" PointY="14.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="SIFOPModel.vw_Transacciones" Width="1.5" PointX="18.75" PointY="40.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="SIFOPModel.Vws_CatalogoContable" Width="1.5" PointX="20.75" PointY="40.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="SIFOPModel.w_LibroMayorAcumulado" Width="1.5" PointX="40.75" PointY="23.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="SIFOPModel.w_LibroMayorAcumulado_VA" Width="1.5" PointX="30.75" PointY="40.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="SIFOPModel.w_LibroMayorAcumulado_VEP" Width="1.5" PointX="32.75" PointY="40.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="SIFOPModel.w_LibroMayorAcumulado_Vlast" Width="1.5" PointX="40.75" PointY="34.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="SIFOPModel.v_reciboPagos" Width="1.5" PointX="34.75" PointY="40.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="SIFOPModel.vw_GeneraSolicitudes" Width="1.5" PointX="4.75" PointY="41.75" IsExpanded="true" />
+      <Diagram DiagramId="aff6fb8c8dd34d93980221a89ca60c01" Name="Diagram1" ZoomLevel="31">
+        <EntityTypeShape EntityType="SIFOPModel.Arqueo" Width="1.5" PointX="3" PointY="78.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="SIFOPModel.ArqueoDocumento" Width="1.5" PointX="10.5" PointY="88.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="SIFOPModel.ArqueoEfectivo" Width="1.5" PointX="8.25" PointY="98.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="SIFOPModel.ArqueoNoEfectivo" Width="1.5" PointX="10.5" PointY="105.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="SIFOPModel.ArqueoRecibo" Width="1.5" PointX="8.25" PointY="82.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="SIFOPModel.DiferenciasArqueo" Width="1.5" PointX="11.25" PointY="102.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="SIFOPModel.RectificacionPago" Width="1.5" PointX="6" PointY="78.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="SIFOPModel.Errors" Width="1.5" PointX="3" PointY="59.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="SIFOPModel.AgenteExternoCat" Width="1.5" PointX="5.25" PointY="87.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="SIFOPModel.IdentificacionAgenteExterno" Width="1.5" PointX="3" PointY="101.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="SIFOPModel.DenominacionMoneda" Width="1.5" PointX="5.25" PointY="91.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="SIFOPModel.Moneda" Width="1.5" PointX="3" PointY="108.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="SIFOPModel.Asiento" Width="1.5" PointX="7.5" PointY="70.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="SIFOPModel.DetalleMovimientoIngreso" Width="1.5" PointX="10.5" PointY="83.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="SIFOPModel.MovimientoIngreso" Width="1.5" PointX="5.25" PointY="105.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="SIFOPModel.Banco" Width="1.5" PointX="3" PointY="118.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="SIFOPModel.CiaTarjetaCredito" Width="1.5" PointX="3" PointY="121.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="SIFOPModel.CuentaContable" Width="1.5" PointX="5.25" PointY="72.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="SIFOPModel.FuenteFinanciamiento" Width="1.5" PointX="14.25" PointY="98.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="SIFOPModel.Perfil" Width="1.5" PointX="0.75" PointY="88.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="SIFOPModel.Usuario" Width="1.5" PointX="0.75" PointY="73.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="SIFOPModel.UsuarioPerfil" Width="1.5" PointX="8" PointY="74.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="SIFOPModel.VariacionCambiaria" Width="1.5" PointX="5.25" PointY="95.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="SIFOPModel.Arancel" Width="1.5" PointX="10.5" PointY="92.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="SIFOPModel.ArancelArea" Width="1.5" PointX="12.75" PointY="83.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="SIFOPModel.ArancelPrecio" Width="1.5" PointX="8.25" PointY="88.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="SIFOPModel.ArancelTipoDeposito" Width="1.5" PointX="15.75" PointY="114.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="SIFOPModel.AreaPagoDelegado" Width="1.5" PointX="15" PointY="78.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="SIFOPModel.DetOrdenPagoArancel" Width="1.5" PointX="13.5" PointY="93.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="SIFOPModel.Exoneracion" Width="1.5" PointX="13.5" PointY="106.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="SIFOPModel.ExoneracionTotalArea" Width="1.5" PointX="3" PointY="133.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="SIFOPModel.OrdenPago" Width="1.5" PointX="5.25" PointY="112.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="SIFOPModel.TipoArancel" Width="1.5" PointX="8.25" PointY="114.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="SIFOPModel.UsuarioArancel" Width="1.5" PointX="18" PointY="79.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="SIFOPModel.AperturaCaja" Width="1.5" PointX="3" PointY="136.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="SIFOPModel.Caja" Width="1.5" PointX="6" PointY="82.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="SIFOPModel.DetAperturaCaja" Width="1.5" PointX="8.25" PointY="102.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="SIFOPModel.FormaPago" Width="1.5" PointX="3" PointY="139.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="SIFOPModel.InfoRecibo" Width="1.5" PointX="3" PointY="143.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="SIFOPModel.Recibo" Width="1.5" PointX="16.5" PointY="106.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="SIFOPModel.ReciboAnulado" Width="1.5" PointX="18.75" PointY="95.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="SIFOPModel.ReciboDatos" Width="1.5" PointX="18.75" PointY="127.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="SIFOPModel.ReciboDet" Width="1.5" PointX="18.75" PointY="91" IsExpanded="true" />
+        <EntityTypeShape EntityType="SIFOPModel.ReciboDiferencias" Width="1.5" PointX="5.25" PointY="109.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="SIFOPModel.ReciboPago" Width="1.5" PointX="8.25" PointY="107.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="SIFOPModel.ReciboPagoBono" Width="1.5" PointX="10.5" PointY="111.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="SIFOPModel.ReciboPagoCheque" Width="1.5" PointX="13.5" PointY="113" IsExpanded="true" />
+        <EntityTypeShape EntityType="SIFOPModel.ReciboPagoDeposito" Width="1.5" PointX="10.5" PointY="114.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="SIFOPModel.ReciboPagoTarjeta" Width="1.5" PointX="13.5" PointY="103.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="SIFOPModel.ReciboSIRA" Width="1.5" PointX="18.75" PointY="112.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="SIFOPModel.SerieRecibo" Width="1.5" PointX="3.75" PointY="69" IsExpanded="true" />
+        <EntityTypeShape EntityType="SIFOPModel.TipoDeposito" Width="1.5" PointX="3" PointY="147.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="SIFOPModel.VoucherBanco" Width="1.5" PointX="8.25" PointY="92.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="SIFOPModel.AccesoDirectoPerfil" Width="1.5" PointX="3" PointY="74.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="SIFOPModel.AccesoDirectoUsuario" Width="1.5" PointX="3" PointY="82.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="SIFOPModel.Configuracion" Width="1.5" PointX="3" PointY="151" IsExpanded="true" />
+        <EntityTypeShape EntityType="SIFOPModel.Pantalla" Width="1.5" PointX="0.75" PointY="67.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="SIFOPModel.Permiso" Width="1.5" PointX="9" PointY="78.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="SIFOPModel.PermisoName" Width="1.5" PointX="6.75" PointY="67.125" IsExpanded="true" />
         <AssociationConnector Association="SIFOPModel.FK_Arqueo_DetAperturaCaja" ManuallyRouted="false" />
         <AssociationConnector Association="SIFOPModel.FK_Arqueo_Usuario" ManuallyRouted="false" />
         <AssociationConnector Association="SIFOPModel.FK_ArqueoDocumento_Arqueo" ManuallyRouted="false" />
@@ -325,19 +85,6 @@
         <AssociationConnector Association="SIFOPModel.FK_ConfirmacionPago_ReciboPago1" ManuallyRouted="false" />
         <AssociationConnector Association="SIFOPModel.FK_ConfirmacionPago_Usuario" ManuallyRouted="false" />
         <AssociationConnector Association="SIFOPModel.FK_Errors_Usuario" ManuallyRouted="false" />
-        <AssociationConnector Association="SIFOPModel.FK_AnulacionPago_Pago" ManuallyRouted="false" />
-        <AssociationConnector Association="SIFOPModel.FK_DetallePago_Moneda" ManuallyRouted="false" />
-        <AssociationConnector Association="SIFOPModel.FK_DetalleReciboOrdenPago_DetOrdenPagoArancel" ManuallyRouted="false" />
-        <AssociationConnector Association="SIFOPModel.FK_DetalleReciboOrdenPago_ReciboOrdenPago" ManuallyRouted="false" />
-        <AssociationConnector Association="SIFOPModel.FK_NoCuentasBankArea_Banco" ManuallyRouted="false" />
-        <AssociationConnector Association="SIFOPModel.FK_NoCuentasBankArea_Moneda" ManuallyRouted="false" />
-        <AssociationConnector Association="SIFOPModel.FK_NoCuentasBankArea_Usuario" ManuallyRouted="false" />
-        <AssociationConnector Association="SIFOPModel.FK_ReciboOrdenPago_Banco" ManuallyRouted="false" />
-        <AssociationConnector Association="SIFOPModel.FK_TipoTransaccionBank_Usuario" ManuallyRouted="false" />
-        <AssociationConnector Association="SIFOPModel.FK_TransaccionesServicio_TipoTransaccionBank" ManuallyRouted="false" />
-        <AssociationConnector Association="SIFOPModel.FK_TransaccionesServicio_Banco" ManuallyRouted="false" />
-        <AssociationConnector Association="SIFOPModel.FK_UserBank_Banco" ManuallyRouted="false" />
-        <AssociationConnector Association="SIFOPModel.FK_UserBank_Usuario" ManuallyRouted="false" />
         <AssociationConnector Association="SIFOPModel.FK_AgenteExterno_IdentificacionAgenteExterno" ManuallyRouted="false" />
         <AssociationConnector Association="SIFOPModel.FK_AgenteExterno_Usuario" ManuallyRouted="false" />
         <AssociationConnector Association="SIFOPModel.FK_IdentificacionAgenteExterno_Usuario" ManuallyRouted="false" />
@@ -357,136 +104,17 @@
         <AssociationConnector Association="SIFOPModel.FK_DetalleMovimientoIngreso_Usuario" ManuallyRouted="false" />
         <AssociationConnector Association="SIFOPModel.FK_MovimientoIngreso_FormaPago" ManuallyRouted="false" />
         <AssociationConnector Association="SIFOPModel.FK_MovimientoIngreso_Usuario" ManuallyRouted="false" />
-        <AssociationConnector Association="SIFOPModel.FK_Actividad_Proyecto" ManuallyRouted="false" />
-        <AssociationConnector Association="SIFOPModel.FK_Actividad_Usuario" ManuallyRouted="false" />
-        <AssociationConnector Association="SIFOPModel.FK_EPLineaComprobanteDiario_Actividad" ManuallyRouted="false" />
-        <AssociationConnector Association="SIFOPModel.FK_EPLineaComprobantePago_Actividad" ManuallyRouted="false" />
-        <AssociationConnector Association="SIFOPModel.FK_EstructuraCuentaContable_Actividad" ManuallyRouted="false" />
-        <AssociationConnector Association="SIFOPModel.FK_LineaComprobanteDiario_Actividad" ManuallyRouted="false" />
-        <AssociationConnector Association="SIFOPModel.FK_LineaComprobantePago_Actividad" ManuallyRouted="false" />
-        <AssociationConnector Association="SIFOPModel.FK_Recibo_Actividad" ManuallyRouted="false" />
-        <AssociationConnector Association="SIFOPModel.FK_SolicitudCheque_Actividad" ManuallyRouted="false" />
-        <AssociationConnector Association="SIFOPModel.FK_AutorizarRestricciones_ComprobantePago" ManuallyRouted="false" />
-        <AssociationConnector Association="SIFOPModel.FK_AutorizarRestricciones_SolicitudCheque" ManuallyRouted="false" />
-        <AssociationConnector Association="SIFOPModel.FK_AutorizarRestricciones_Usuario" ManuallyRouted="false" />
-        <AssociationConnector Association="SIFOPModel.FK_BalanzaComprobacion_CuentaContable" ManuallyRouted="false" />
-        <AssociationConnector Association="SIFOPModel.FK_BalanzaComprobacion_PeriodoEspecifico" ManuallyRouted="false" />
-        <AssociationConnector Association="SIFOPModel.FK_BalanzaComprobacion_Programa" ManuallyRouted="false" />
-        <AssociationConnector Association="SIFOPModel.FK_BalanzaComprobacion_Usuario" ManuallyRouted="false" />
         <AssociationConnector Association="SIFOPModel.FK_Banco_Usuario" ManuallyRouted="false" />
-        <AssociationConnector Association="SIFOPModel.FK_ReciboCheque_Banco" ManuallyRouted="false" />
         <AssociationConnector Association="SIFOPModel.FK_ReciboPagoCheque_Banco" ManuallyRouted="false" />
-        <AssociationConnector Association="SIFOPModel.FK_Beneficiario_Empleado" ManuallyRouted="false" />
-        <AssociationConnector Association="SIFOPModel.FK_Beneficiario_Personas" ManuallyRouted="false" />
-        <AssociationConnector Association="SIFOPModel.FK_Beneficiario_Proveedor" ManuallyRouted="false" />
-        <AssociationConnector Association="SIFOPModel.FK_SolicitudCheque_Beneficiario" ManuallyRouted="false" />
-        <AssociationConnector Association="SIFOPModel.FK_Carrera_CarreraTipo" ManuallyRouted="false" />
-        <AssociationConnector Association="SIFOPModel.FK_Carrera_Facultad" ManuallyRouted="false" />
-        <AssociationConnector Association="SIFOPModel.FK_Carrera_Usuario" ManuallyRouted="false" />
-        <AssociationConnector Association="SIFOPModel.FK_EstudianteCarrera_Carrera" ManuallyRouted="false" />
-        <AssociationConnector Association="SIFOPModel.FK_CarreraTipo_Usuario" ManuallyRouted="false" />
         <AssociationConnector Association="SIFOPModel.FK_CiaTarjetaCredito_Usuario" ManuallyRouted="false" />
-        <AssociationConnector Association="SIFOPModel.FK_ReciboTarjetaCredito_CiaTarjetaCredito" ManuallyRouted="false" />
         <AssociationConnector Association="SIFOPModel.FK_RecPagoTarjeta_CiaTarjetaCredito" ManuallyRouted="false" />
-        <AssociationConnector Association="SIFOPModel.DocumentoEnlace_IdCD" ManuallyRouted="false" />
-        <AssociationConnector Association="SIFOPModel.FK_ComprobanteDiario_Periodo" ManuallyRouted="false" />
-        <AssociationConnector Association="SIFOPModel.FK_ComprobanteDiario_Programa" ManuallyRouted="false" />
-        <AssociationConnector Association="SIFOPModel.FK_ComprobanteDiario_TipoComprobante" ManuallyRouted="false" />
-        <AssociationConnector Association="SIFOPModel.FK_LineaComprobanteDiario_ComprobanteDiario" ManuallyRouted="false" />
-        <AssociationConnector Association="SIFOPModel.DocumentoEnlace_IdCP" ManuallyRouted="false" />
-        <AssociationConnector Association="SIFOPModel.FK_ComprobantePago_Periodo" ManuallyRouted="false" />
-        <AssociationConnector Association="SIFOPModel.FK_ComprobantePago_Programa" ManuallyRouted="false" />
-        <AssociationConnector Association="SIFOPModel.FK_LineaComprobantePago_ComprobantePago" ManuallyRouted="false" />
-        <AssociationConnector Association="SIFOPModel.FK_ConceptoDetalle_Concepto" ManuallyRouted="false" />
-        <AssociationConnector Association="SIFOPModel.FK_ConceptoFacultad_Concepto" ManuallyRouted="false" />
-        <AssociationConnector Association="SIFOPModel.FK_Recibo_Concepto" ManuallyRouted="false" />
-        <AssociationConnector Association="SIFOPModel.FK_ConceptoDetalle_CuentaContable" ManuallyRouted="false" />
-        <AssociationConnector Association="SIFOPModel.FK_ConciliacionBanco_CuentaContable" ManuallyRouted="false" />
-        <AssociationConnector Association="SIFOPModel.FK_ConciliacionBanco_PeriodoEspecifico" ManuallyRouted="false" />
-        <AssociationConnector Association="SIFOPModel.FK_ConciliacionBancoDetalle_ConciliacionBanco" ManuallyRouted="false" />
-        <AssociationConnector Association="SIFOPModel.FK_CuentaAuxiliar_CuentaContable" ManuallyRouted="false" />
-        <AssociationConnector Association="SIFOPModel.FK_CuentaComplementaria_Usuario" ManuallyRouted="false" />
-        <AssociationConnector Association="SIFOPModel.FK_EPLineaComprobanteDiario_CuentaAuxiliar" ManuallyRouted="false" />
-        <AssociationConnector Association="SIFOPModel.FK_EPLineaComprobantePago_CuentaAuxiliar" ManuallyRouted="false" />
-        <AssociationConnector Association="SIFOPModel.FK_LineaComprobanteDiario_CuentaAuxiliar" ManuallyRouted="false" />
-        <AssociationConnector Association="SIFOPModel.FK_LineaComprobantePago_CuentaAuxiliar" ManuallyRouted="false" />
-        <AssociationConnector Association="SIFOPModel.FK_CuentaBanco_CuentaContable" ManuallyRouted="false" />
         <AssociationConnector Association="SIFOPModel.FK_Arancel_CuentaContable" ManuallyRouted="false" />
-        <AssociationConnector Association="SIFOPModel.FK_CuentaContable_TipoCuenta" ManuallyRouted="false" />
         <AssociationConnector Association="SIFOPModel.FK_CuentaContable_Usuario" ManuallyRouted="false" />
         <AssociationConnector Association="SIFOPModel.FK_CuentaContable_Usuario1" ManuallyRouted="false" />
-        <AssociationConnector Association="SIFOPModel.FK_EJECUCIONPRESUPUESTARIA_CuentaContable" ManuallyRouted="false" />
-        <AssociationConnector Association="SIFOPModel.FK_Empleado_CuentaContable" ManuallyRouted="false" />
-        <AssociationConnector Association="SIFOPModel.FK_EPLineaComprobanteDiario_CuentaContable" ManuallyRouted="false" />
-        <AssociationConnector Association="SIFOPModel.FK_EPLineaComprobantePago_CuentaContable" ManuallyRouted="false" />
-        <AssociationConnector Association="SIFOPModel.FK_EstructuraCuentaContable_CuentaContable" ManuallyRouted="false" />
-        <AssociationConnector Association="SIFOPModel.FK_LineaComprobanteDiario_CuentaContable" ManuallyRouted="false" />
-        <AssociationConnector Association="SIFOPModel.FK_LineaComprobantePago_CuentaContable" ManuallyRouted="false" />
-        <AssociationConnector Association="SIFOPModel.FK_Proveedor_CuentaContable" ManuallyRouted="false" />
-        <AssociationConnector Association="SIFOPModel.FK_ReciboDetalle_CuentaContable" ManuallyRouted="false" />
-        <AssociationConnector Association="SIFOPModel.FK_SolicitudCheque_CuentaContable" ManuallyRouted="false" />
-        <AssociationConnector Association="SIFOPModel.FK_Departamento_Paises" ManuallyRouted="false" />
-        <AssociationConnector Association="SIFOPModel.FK_Departamento_Usuario" ManuallyRouted="false" />
-        <AssociationConnector Association="SIFOPModel.FK_Municipio_Departamento" ManuallyRouted="false" />
-        <AssociationConnector Association="SIFOPModel.FK_Docentes_Personas" ManuallyRouted="false" />
-        <AssociationConnector Association="SIFOPModel.DocumentoEnlace_IdSolicitudCK" ManuallyRouted="false" />
-        <AssociationConnector Association="SIFOPModel.FK_EJECUCIONPRESUPUESTARIA_PeriodoEspecifico" ManuallyRouted="false" />
-        <AssociationConnector Association="SIFOPModel.FK_EJECUCIONPRESUPUESTARIA_Programa" ManuallyRouted="false" />
-        <AssociationConnector Association="SIFOPModel.FK_EJECUCIONPRESUPUESTARIA_Usuario" ManuallyRouted="false" />
-        <AssociationConnector Association="SIFOPModel.FK_Empleado_Personas" ManuallyRouted="false" />
-        <AssociationConnector Association="SIFOPModel.FK_Proveedor_Empleado" ManuallyRouted="false" />
-        <AssociationConnector Association="SIFOPModel.FK_EPComprobanteDiario_Periodo" ManuallyRouted="false" />
-        <AssociationConnector Association="SIFOPModel.FK_EPComprobanteDiario_Programa" ManuallyRouted="false" />
-        <AssociationConnector Association="SIFOPModel.FK_EPComprobanteDiario_TipoComprobante" ManuallyRouted="false" />
-        <AssociationConnector Association="SIFOPModel.FK_EPLineaComprobanteDiario_EPComprobanteDiario" ManuallyRouted="false" />
-        <AssociationConnector Association="SIFOPModel.FK_EPLineaComprobantePago_EPComprobantePago" ManuallyRouted="false" />
-        <AssociationConnector Association="SIFOPModel.FK_EstructuraCuentaContable_Usuario" ManuallyRouted="false" />
-        <AssociationConnector Association="SIFOPModel.FK_EstudianteCarrera_Estudiantes" ManuallyRouted="false" />
-        <AssociationConnector Association="SIFOPModel.FK_EstudianteCarrera_Usuario" ManuallyRouted="false" />
-        <AssociationConnector Association="SIFOPModel.FK_Estudiantes_Personas" ManuallyRouted="false" />
-        <AssociationConnector Association="SIFOPModel.FK_Facultad_Recinto" ManuallyRouted="false" />
-        <AssociationConnector Association="SIFOPModel.FK_Facultad_Usuario" ManuallyRouted="false" />
-        <AssociationConnector Association="SIFOPModel.FK_Programa_Facultad" ManuallyRouted="false" />
         <AssociationConnector Association="SIFOPModel.FK_Recibo_FuenteFinanciamiento" ManuallyRouted="false" />
-        <AssociationConnector Association="SIFOPModel.FK_Recibo_FuenteFinanciamiento1" ManuallyRouted="false" />
-        <AssociationConnector Association="SIFOPModel.FK_SolicitudCheque_FuenteFinanciamiento" ManuallyRouted="false" />
-        <AssociationConnector Association="SIFOPModel.FK_PerfilContenido_Menu" ManuallyRouted="false" />
-        <AssociationConnector Association="SIFOPModel.FK_Municipio_Usuario" ManuallyRouted="false" />
         <AssociationConnector Association="SIFOPModel.FK_AccesoDirectoPerfil_Perfil" ManuallyRouted="false" />
-        <AssociationConnector Association="SIFOPModel.FK_DetallePerfil_Perfil" ManuallyRouted="false" />
         <AssociationConnector Association="SIFOPModel.FK_Permiso_Permiso" ManuallyRouted="false" />
         <AssociationConnector Association="SIFOPModel.FK_UsuarioPerfil_Perfil" ManuallyRouted="false" />
-        <AssociationConnector Association="SIFOPModel.FK_Periodo_PeriodoContable" ManuallyRouted="false" />
-        <AssociationConnector Association="SIFOPModel.FK_Periodo_Usuario" ManuallyRouted="false" />
-        <AssociationConnector Association="SIFOPModel.FK_Presupuesto_PeriodoEspecifico" ManuallyRouted="false" />
-        <AssociationConnector Association="SIFOPModel.FK_Recibo_PeriodoEspecifico" ManuallyRouted="false" />
-        <AssociationConnector Association="SIFOPModel.FK_SolicitudCheque_PeriodoEspecifico" ManuallyRouted="false" />
-        <AssociationConnector Association="SIFOPModel.FK_PeriodoContable_Usuario" ManuallyRouted="false" />
-        <AssociationConnector Association="SIFOPModel.FK_Proveedor_Personas" ManuallyRouted="false" />
-        <AssociationConnector Association="SIFOPModel.FK_PrestamoEstado_PrestamoDocumento" ManuallyRouted="false" />
-        <AssociationConnector Association="SIFOPModel.FK_Presupuesto_Programa" ManuallyRouted="false" />
-        <AssociationConnector Association="SIFOPModel.FK_Proyecto_Programa" ManuallyRouted="false" />
-        <AssociationConnector Association="SIFOPModel.FK_UsuarioPrograma_Programa" ManuallyRouted="false" />
-        <AssociationConnector Association="SIFOPModel.FK_Proveedor_Usuario" ManuallyRouted="false" />
-        <AssociationConnector Association="SIFOPModel.FK_Proyecto_Usuario" ManuallyRouted="false" />
-        <AssociationConnector Association="SIFOPModel.FK_ReciboBillete_Recibo" ManuallyRouted="false" />
-        <AssociationConnector Association="SIFOPModel.FK_ReciboBono_Recibo" ManuallyRouted="false" />
-        <AssociationConnector Association="SIFOPModel.FK_ReciboCheque_Recibo" ManuallyRouted="false" />
-        <AssociationConnector Association="SIFOPModel.FK_ReciboDetalle_Recibo" ManuallyRouted="false" />
-        <AssociationConnector Association="SIFOPModel.FK_ReciboFlujoEfectivo_Recibo" ManuallyRouted="false" />
-        <AssociationConnector Association="SIFOPModel.FK_ReciboPagare_Recibo" ManuallyRouted="false" />
-        <AssociationConnector Association="SIFOPModel.FK_ReciboTarjeta_Recibo" ManuallyRouted="false" />
-        <AssociationConnector Association="SIFOPModel.FK_ReciboBillete_Usuario" ManuallyRouted="false" />
-        <AssociationConnector Association="SIFOPModel.FK_ReciboBono_Usuario" ManuallyRouted="false" />
-        <AssociationConnector Association="SIFOPModel.FK_ReciboCheque_Usuario" ManuallyRouted="false" />
-        <AssociationConnector Association="SIFOPModel.FK_ReciboRecEnt_Usuario" ManuallyRouted="false" />
-        <AssociationConnector Association="SIFOPModel.FK_ReciboPagare_Usuario" ManuallyRouted="false" />
-        <AssociationConnector Association="SIFOPModel.FK_ReciboTarjetaCredito_Usuario" ManuallyRouted="false" />
-        <AssociationConnector Association="SIFOPModel.FK_Recinto_Usuario" ManuallyRouted="false" />
-        <AssociationConnector Association="SIFOPModel.FK_SolicitudCheque_Usuario" ManuallyRouted="false" />
-        <AssociationConnector Association="SIFOPModel.FK_SolicitudEstado_SolicitudCheque" ManuallyRouted="false" />
-        <AssociationConnector Association="SIFOPModel.FK_SolicitudRegresada_SolicitudCheque" ManuallyRouted="false" />
-        <AssociationConnector Association="SIFOPModel.FK_TipoCuenta_Usuario" ManuallyRouted="false" />
         <AssociationConnector Association="SIFOPModel.FK_AccesoDirectoPerfil_AccesoDirectoPerfil" ManuallyRouted="false" />
         <AssociationConnector Association="SIFOPModel.FK_AccesoDirectoUsuario_Usuario" ManuallyRouted="false" />
         <AssociationConnector Association="SIFOPModel.FK_AperturaCaja_Usuario" ManuallyRouted="false" />
@@ -513,11 +141,9 @@
         <AssociationConnector Association="SIFOPModel.FK_ReciboPago_Usuario" ManuallyRouted="false" />
         <AssociationConnector Association="SIFOPModel.FK_TipoArancel_Usuario" ManuallyRouted="false" />
         <AssociationConnector Association="SIFOPModel.FK_TipoDeposito_Usuario" ManuallyRouted="false" />
-        <AssociationConnector Association="SIFOPModel.FK_Usuario_UsuarioAutorizar" ManuallyRouted="false" />
         <AssociationConnector Association="SIFOPModel.FK_UsuarioArancel_Usuario" ManuallyRouted="false" />
         <AssociationConnector Association="SIFOPModel.FK_UsuarioArancel_Usuario1" ManuallyRouted="false" />
         <AssociationConnector Association="SIFOPModel.FK_UsuarioPerfil_Usuario" ManuallyRouted="false" />
-        <AssociationConnector Association="SIFOPModel.FK_UsuarioPrograma_Usuario" ManuallyRouted="false" />
         <AssociationConnector Association="SIFOPModel.FK_VariacionCambiaria_Usuario" ManuallyRouted="false" />
         <AssociationConnector Association="SIFOPModel.FK_Arancel_TipoArancel" ManuallyRouted="false" />
         <AssociationConnector Association="SIFOPModel.FK_ArancelArea_Arancel" ManuallyRouted="false" />
@@ -562,6 +188,135 @@
         <AssociationConnector Association="SIFOPModel.FK_AccesoDirectoUsuario_Pantalla" ManuallyRouted="false" />
         <AssociationConnector Association="SIFOPModel.FK_Permiso_Pantalla" ManuallyRouted="false" />
         <AssociationConnector Association="SIFOPModel.FK_Permiso_PermisoName" ManuallyRouted="false" />
+        <EntityTypeShape EntityType="SIFOPModel.TipoCuenta" Width="1.5" PointX="3" PointY="63.25" />
+        <AssociationConnector Association="SIFOPModel.FK_CuentaContable_TipoCuenta" />
+        <AssociationConnector Association="SIFOPModel.FK_TipoCuenta_Usuario" />
+        </Diagram>
+      <Diagram DiagramId="44da687063094205980781e5a20206ec" Name="Diagram2" ZoomLevel="100" >
+        <EntityTypeShape EntityType="SIFOPModel.AreaEquivalencia" Width="1.5" PointX="0.75" PointY="1.375" />
+        <EntityTypeShape EntityType="SIFOPModel.RecintoEquivalencia" Width="1.5" PointX="2.75" PointY="0.75" />
+        <EntityTypeShape EntityType="SIFOPModel.FormulaConversion" Width="1.5" PointX="0.75" PointY="3.75" />
+        <EntityTypeShape EntityType="SIFOPModel.Parametro" Width="1.5" PointX="2.75" PointY="3.75" />
+        <EntityTypeShape EntityType="SIFOPModel.vw_Aranceles" Width="1.5" PointX="4.75" PointY="0.75" />
+        <EntityTypeShape EntityType="SIFOPModel.vw_AreaEquivalencia" Width="1.5" PointX="4.75" PointY="4.75" />
+        <EntityTypeShape EntityType="SIFOPModel.vw_Areas" Width="1.5" PointX="6.75" PointY="0.75" />
+        <EntityTypeShape EntityType="SIFOPModel.vw_FuentesSIPPSI" Width="1.5" PointX="0.75" PointY="6.75" />
+        <EntityTypeShape EntityType="SIFOPModel.vw_Prematricula" Width="1.5" PointX="6.75" PointY="4.75" />
+        <EntityTypeShape EntityType="SIFOPModel.vw_ProveedoresSISCOM" Width="1.5" PointX="8.75" PointY="0.75" />
+        <EntityTypeShape EntityType="SIFOPModel.vw_RecintosRH" Width="1.5" PointX="2.75" PointY="8.75" />
+        <EntityTypeShape EntityType="SIFOPModel.vwCarrerasSIRA" Width="1.5" PointX="8.75" PointY="4.75" />
+        <EntityTypeShape EntityType="SIFOPModel.vwEmpleadosRH" Width="1.5" PointX="8.75" PointY="7.75" />
+        <EntityTypeShape EntityType="SIFOPModel.vwEstudiantesSIRA" Width="1.5" PointX="4.75" PointY="9.75" />
+        <EntityTypeShape EntityType="SIFOPModel.vwSedesSIRA" Width="1.5" PointX="10.75" PointY="0.75" />
+        <EntityTypeShape EntityType="SIFOPModel.Programa" Width="1.5" PointX="11" PointY="8.375" />
+        <EntityTypeShape EntityType="SIFOPModel.vw_ObtenerPeriodosEspecificos" Width="1.5" PointX="13" PointY="6.875" />
+        <EntityTypeShape EntityType="SIFOPModel.AccesoDirectoPerfil" Width="1.5" PointX="13.625" PointY="0.75" />
+        <EntityTypeShape EntityType="SIFOPModel.AccesoDirectoUsuario" Width="1.5" PointX="14.125" PointY="4.375" />
+        <EntityTypeShape EntityType="SIFOPModel.AgenteExternoCat" Width="1.5" PointX="15.125" PointY="7.625" />
+        <EntityTypeShape EntityType="SIFOPModel.AperturaCaja" Width="1.5" PointX="13.875" PointY="11.125" />
+        <EntityTypeShape EntityType="SIFOPModel.Arancel" Width="1.5" PointX="14" PointY="14.75" />
+        <EntityTypeShape EntityType="SIFOPModel.Arqueo" Width="1.5" PointX="0.75" PointY="11.75" />
+        <EntityTypeShape EntityType="SIFOPModel.ArqueoDocumento" Width="1.5" PointX="3" PointY="13" />
+        <AssociationConnector Association="SIFOPModel.FK_ArqueoDocumento_Arqueo" />
+        <EntityTypeShape EntityType="SIFOPModel.ArqueoNoEfectivo" Width="1.5" PointX="7.375" PointY="11.75" />
+        <EntityTypeShape EntityType="SIFOPModel.Asiento" Width="1.5" PointX="9.375" PointY="11.75" />
+        <EntityTypeShape EntityType="SIFOPModel.Banco" Width="1.5" PointX="9.375" PointY="15.75" />
+        <EntityTypeShape EntityType="SIFOPModel.Moneda" Width="1.5" PointX="0.75" PointY="12" />
+        <AssociationConnector Association="SIFOPModel.FK_ArqueoNoEfectivo_Moneda" />
+        <EntityTypeShape EntityType="SIFOPModel.Pantalla" Width="1.5" PointX="10.875" PointY="2.375" />
+        <AssociationConnector Association="SIFOPModel.FK_AccesoDirectoPerfil_Pantalla" />
+        <AssociationConnector Association="SIFOPModel.FK_AccesoDirectoUsuario_Pantalla" />
+        </Diagram>
+      <Diagram DiagramId="20bc5cdc0de34f16beb204002c9a49cd" Name="Diagram3" >
+        <EntityTypeShape EntityType="SIFOPModel.ArancelTipoDeposito" Width="1.5" PointX="3" PointY="1.375" />
+        <EntityTypeShape EntityType="SIFOPModel.AreaPagoDelegado" Width="1.5" PointX="10.75" PointY="0.75" />
+        <EntityTypeShape EntityType="SIFOPModel.ArqueoEfectivo" Width="1.5" PointX="10.75" PointY="8.75" />
+        <EntityTypeShape EntityType="SIFOPModel.ArqueoRecibo" Width="1.5" PointX="12.75" PointY="0.75" />
+        <EntityTypeShape EntityType="SIFOPModel.CuentaContable" Width="1.5" PointX="8" PointY="9.125" />
+        <EntityTypeShape EntityType="SIFOPModel.DetalleMovimientoIngreso" Width="1.5" PointX="10.25" PointY="4.5" />
+        <AssociationConnector Association="SIFOPModel.FK_DetalleMovimientoIngreso_CuentaContable" />
+        <EntityTypeShape EntityType="SIFOPModel.DiferenciasArqueo" Width="1.5" PointX="8" PointY="1.25" />
+        <EntityTypeShape EntityType="SIFOPModel.Exoneracion" Width="1.5" PointX="3" PointY="4.625" />
+        <EntityTypeShape EntityType="SIFOPModel.ExoneracionTotalArea" Width="1.5" PointX="12.75" PointY="4.75" />
+        <EntityTypeShape EntityType="SIFOPModel.FormaPago" Width="1.5" PointX="5.75" PointY="2.75" />
+        <AssociationConnector Association="SIFOPModel.FK_DiferenciasArqueo_FormaPago" />
+        <EntityTypeShape EntityType="SIFOPModel.FuenteFinanciamiento" Width="1.5" PointX="12.75" PointY="7.75" />
+        <EntityTypeShape EntityType="SIFOPModel.IdentificacionAgenteExterno" Width="1.5" PointX="10.75" PointY="12.75" />
+        <EntityTypeShape EntityType="SIFOPModel.MovimientoIngreso" Width="1.5" PointX="8" PointY="4.5" />
+        <AssociationConnector Association="SIFOPModel.FK_DetalleMovimientoIngreso_MovimientoIngreso" />
+        <AssociationConnector Association="SIFOPModel.FK_MovimientoIngreso_FormaPago" />
+        <EntityTypeShape EntityType="SIFOPModel.PermisoName" Width="1.5" PointX="12.75" PointY="11.75" />
+        <EntityTypeShape EntityType="SIFOPModel.TipoArancel" Width="1.5" PointX="3" PointY="9.375" />
+        <EntityTypeShape EntityType="SIFOPModel.TipoCuenta" Width="1.5" PointX="5.75" PointY="10.875" />
+        <AssociationConnector Association="SIFOPModel.FK_CuentaContable_TipoCuenta" />
+        <EntityTypeShape EntityType="SIFOPModel.TipoDeposito" Width="1.5" PointX="0.75" PointY="5.125" />
+        <AssociationConnector Association="SIFOPModel.FK_ArancelTipoDeposito_TipoDeposito" />
+        <AssociationConnector Association="SIFOPModel.FK_Exoneracion_TipoDeposito" />
+        <AssociationConnector Association="SIFOPModel.FK_TipoArancel_TipoDeposito" />
+      </Diagram>
+      <Diagram DiagramId="7083144e4b0b49db92eea039b9560d90" Name="Diagram4" ZoomLevel="41" >
+        <EntityTypeShape EntityType="SIFOPModel.ReciboDiferencias" Width="1.5" PointX="5.75" PointY="21.625" />
+        <EntityTypeShape EntityType="SIFOPModel.ReciboPago" Width="1.5" PointX="11.125" PointY="13.125" />
+        <AssociationConnector Association="SIFOPModel.FK_ReciboPago_ReciboPago" />
+        <EntityTypeShape EntityType="SIFOPModel.ReciboPagoBono" Width="1.5" PointX="2.875" PointY="9.875" />
+        <AssociationConnector Association="SIFOPModel.FK_ReciboPagoBono_ReciboPago" />
+        <EntityTypeShape EntityType="SIFOPModel.ReciboPagoCheque" Width="1.5" PointX="2.875" PointY="12.375" />
+        <AssociationConnector Association="SIFOPModel.FK_ReciboPagoCheque_ReciboPago" />
+        <EntityTypeShape EntityType="SIFOPModel.ReciboPagoDeposito" Width="1.5" PointX="5.25" PointY="11.75" />
+        <AssociationConnector Association="SIFOPModel.FK_ReciboPagoDeposito_ReciboPago" />
+        <EntityTypeShape EntityType="SIFOPModel.ReciboPagoTarjeta" Width="1.5" PointX="5.25" PointY="18.5" />
+        <AssociationConnector Association="SIFOPModel.FK_RecPagoTarjeta_ReciboPago" />
+        <EntityTypeShape EntityType="SIFOPModel.RectificacionPago" Width="1.5" PointX="5.25" PointY="14.625" />
+        <AssociationConnector Association="SIFOPModel.FK_ConfirmacionPago_ReciboPago" />
+        <AssociationConnector Association="SIFOPModel.FK_ConfirmacionPago_ReciboPago1" />
+        <EntityTypeShape EntityType="SIFOPModel.SerieRecibo" Width="1.5" PointX="7.75" PointY="21.625" />
+        <EntityTypeShape EntityType="SIFOPModel.Usuario" Width="1.5" PointX="0.75" PointY="9.875" />
+        <AssociationConnector Association="SIFOPModel.FK_ConfirmacionPago_Usuario" />
+        <AssociationConnector Association="SIFOPModel.FK_ReciboPago_Usuario" />
+        <EntityTypeShape EntityType="SIFOPModel.UsuarioArancel" Width="1.5" PointX="3" PointY="17.125" />
+        <AssociationConnector Association="SIFOPModel.FK_UsuarioArancel_Usuario" />
+        <AssociationConnector Association="SIFOPModel.FK_UsuarioArancel_Usuario1" />
+        <EntityTypeShape EntityType="SIFOPModel.UsuarioPerfil" Width="1.5" PointX="3" PointY="20.625" />
+        <AssociationConnector Association="SIFOPModel.FK_UsuarioPerfil_Usuario" />
+        <EntityTypeShape EntityType="SIFOPModel.VariacionCambiaria" Width="1.5" PointX="11.125" PointY="19.5" />
+        <AssociationConnector Association="SIFOPModel.FK_VariacionCambiaria_Usuario" />
+        <EntityTypeShape EntityType="SIFOPModel.VoucherBanco" Width="1.5" PointX="8.5" PointY="11.125" />
+        <AssociationConnector Association="SIFOPModel.FK_BoucherBanco_Usuario" />
+        <AssociationConnector Association="SIFOPModel.FK_ReciboPagoTarjeta_VoucherBanco" />
+      </Diagram>
+      <Diagram DiagramId="7ef3769a27b54b06abca9df850717dbe" Name="Diagram5" >
+        <EntityTypeShape EntityType="SIFOPModel.ArancelArea" Width="1.5" PointX="1.5" PointY="0.75" />
+        <EntityTypeShape EntityType="SIFOPModel.ArancelPrecio" Width="1.5" PointX="0.75" PointY="5.5" />
+        <AssociationConnector Association="SIFOPModel.FK_ArancelPrecio_ArancelArea" />
+        <EntityTypeShape EntityType="SIFOPModel.Caja" Width="1.5" PointX="1.5" PointY="15.875" />
+        <EntityTypeShape EntityType="SIFOPModel.CiaTarjetaCredito" Width="1.5" PointX="10.75" PointY="2.375" />
+        <EntityTypeShape EntityType="SIFOPModel.Configuracion" Width="1.5" PointX="10.75" PointY="6.375" />
+        <EntityTypeShape EntityType="SIFOPModel.DenominacionMoneda" Width="1.5" PointX="12.75" PointY="2.375" />
+        <EntityTypeShape EntityType="SIFOPModel.DetAperturaCaja" Width="1.5" PointX="3.75" PointY="16" />
+        <AssociationConnector Association="SIFOPModel.FK_DetAperturaCaja_Caja" />
+        <EntityTypeShape EntityType="SIFOPModel.DetOrdenPagoArancel" Width="1.5" PointX="3" PointY="10.5" />
+        <AssociationConnector Association="SIFOPModel.FK_DetOrdenPagoArancel_ArancelPrecio" />
+        <EntityTypeShape EntityType="SIFOPModel.Errors" Width="1.5" PointX="13.75" PointY="6.375" />
+        <EntityTypeShape EntityType="SIFOPModel.InfoRecibo" Width="1.5" PointX="3.75" PointY="6" />
+        <EntityTypeShape EntityType="SIFOPModel.OrdenPago" Width="1.5" PointX="0.75" PointY="10.125" />
+        <AssociationConnector Association="SIFOPModel.FK_DetOrdenPagoArancel_OrdenPago" />
+        <EntityTypeShape EntityType="SIFOPModel.Perfil" Width="1.5" PointX="5.75" PointY="2.875" />
+        <EntityTypeShape EntityType="SIFOPModel.Permiso" Width="1.5" PointX="8" PointY="2.625" />
+        <AssociationConnector Association="SIFOPModel.FK_Permiso_Permiso" />
+        <EntityTypeShape EntityType="SIFOPModel.Recibo" Width="1.5" PointX="6" PointY="9.25" />
+        <AssociationConnector Association="SIFOPModel.FK_Recibo_OrdenPago" />
+        <AssociationConnector Association="SIFOPModel.FK_Recibo_DetAperturaCaja" />
+        <AssociationConnector Association="SIFOPModel.FK_Recibo_InfoRecibo" />
+        <EntityTypeShape EntityType="SIFOPModel.ReciboAnulado" Width="1.5" PointX="8.25" PointY="9" />
+        <AssociationConnector Association="SIFOPModel.FK_ReciboAnulado_OrdenPago" />
+        <AssociationConnector Association="SIFOPModel.FK_ReciboAnulado_Recibo" />
+        <EntityTypeShape EntityType="SIFOPModel.ReciboDatos" Width="1.5" PointX="8.25" PointY="13.125" />
+        <AssociationConnector Association="SIFOPModel.FK_ReciboDatos_Recibo" />
+        <EntityTypeShape EntityType="SIFOPModel.ReciboDet" Width="1.5" PointX="11.25" PointY="10.375" />
+        <AssociationConnector Association="SIFOPModel.FK_ReciboDet_ArancelPrecio" />
+        <AssociationConnector Association="SIFOPModel.FK_ReciboDet_Recibo" />
+        <EntityTypeShape EntityType="SIFOPModel.ReciboSIRA" Width="1.5" PointX="8.25" PointY="21.125" />
+        <AssociationConnector Association="SIFOPModel.FK_ReciboSIRA_Recibo" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

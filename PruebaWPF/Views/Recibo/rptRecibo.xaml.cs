@@ -114,25 +114,28 @@ namespace PruebaWPF.Views.Recibo
             fn_ConsultarInfoExterna_Result info = new fn_ConsultarInfoExterna_Result();
 
             info.Nombre = recibo.TextoIdentificador;
-            if (modeloRecibo.isAgenteExterno(recibo.IdTipoDeposito))
-            {
-                AgenteExternoCat agente = new AgenteExternoViewModel().FindById(int.Parse(recibo.Identificador));
-                if (agente != null)
-                {
-                    info.Id = agente.Identificacion;
-                    info.IdentificatorType = agente.IdentificacionAgenteExterno.Identificacion;
-                }
-                else
-                {
-                    info.Id = "XXX-XXX";
-                    info.IdentificatorType = "XXXXXX";
-                }
-            }
-            else
-            {
+            //if (modeloRecibo.isAgenteExterno(recibo.IdTipoDeposito))
+            //{
+            //    AgenteExternoCat agente = new AgenteExternoViewModel().FindById(int.Parse(recibo.Identificador));
+            //    if (agente != null)
+            //    {
+            //        info.Id = agente.Identificacion;
+            //        info.IdentificatorType = agente.IdentificacionAgenteExterno.Identificacion;
+            //    }
+            //    else
+            //    {
+            //        info.Id = "XXX-XXX";
+            //        info.IdentificatorType = "XXXXXX";
+            //    }
+            //}
+            //else
+            //{
+            //    info.Id = recibo.Identificador;
+            //    info.IdentificatorType = recibo.TipoDeposito.TextHint;
+
+            //}
                 info.Id = recibo.Identificador;
                 info.IdentificatorType = recibo.TipoDeposito.TextHint;
-            }
 
             cuenta.Add(info);
             //  new SearchTipoDepositoViewModel().ObtenerTipoDeposito(string.IsNullOrEmpty(recibo.IdTipoDeposito.Value.ToString()) ? 0 : recibo.IdTipoDeposito.Value, recibo.Identificador, true, "", 1,null);

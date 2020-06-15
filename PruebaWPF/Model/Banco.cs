@@ -17,11 +17,6 @@ namespace PruebaWPF.Model
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public Banco()
         {
-            this.NoCuentasBankArea = new HashSet<NoCuentasBankArea>();
-            this.Pago = new HashSet<Pago>();
-            this.TransaccionesServicio = new HashSet<TransaccionesServicio>();
-            this.UserBank = new HashSet<UserBank>();
-            this.ReciboCheque = new HashSet<ReciboCheque>();
             this.ReciboPagoCheque = new HashSet<ReciboPagoCheque>();
         }
     
@@ -31,17 +26,7 @@ namespace PruebaWPF.Model
         public string LoginCreacion { get; set; }
         public bool RegAnulado { get; set; }
     
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<NoCuentasBankArea> NoCuentasBankArea { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Pago> Pago { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<TransaccionesServicio> TransaccionesServicio { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<UserBank> UserBank { get; set; }
         public virtual Usuario Usuario { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<ReciboCheque> ReciboCheque { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<ReciboPagoCheque> ReciboPagoCheque { get; set; }
     }

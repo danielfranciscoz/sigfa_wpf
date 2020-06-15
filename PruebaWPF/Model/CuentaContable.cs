@@ -19,21 +19,7 @@ namespace PruebaWPF.Model
         {
             this.Asiento = new HashSet<Asiento>();
             this.DetalleMovimientoIngreso = new HashSet<DetalleMovimientoIngreso>();
-            this.BalanzaComprobacion = new HashSet<BalanzaComprobacion>();
-            this.ConceptoDetalle = new HashSet<ConceptoDetalle>();
-            this.ConciliacionBanco = new HashSet<ConciliacionBanco>();
-            this.CuentaAuxiliar = new HashSet<CuentaAuxiliar>();
             this.Arancel = new HashSet<Arancel>();
-            this.EjecucionPresupuestaria = new HashSet<EjecucionPresupuestaria>();
-            this.Empleado = new HashSet<Empleado>();
-            this.EPLineaComprobanteDiario = new HashSet<EPLineaComprobanteDiario>();
-            this.EPLineaComprobantePago = new HashSet<EPLineaComprobantePago>();
-            this.EstructuraCuenta = new HashSet<EstructuraCuenta>();
-            this.LineaComprobanteDiario = new HashSet<LineaComprobanteDiario>();
-            this.LineaComprobantePago = new HashSet<LineaComprobantePago>();
-            this.Proveedor = new HashSet<Proveedor>();
-            this.ReciboDetalle = new HashSet<ReciboDetalle>();
-            this.SolicitudCheque = new HashSet<SolicitudCheque>();
         }
     
         public short IdCuentaContable { get; set; }
@@ -61,38 +47,9 @@ namespace PruebaWPF.Model
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<DetalleMovimientoIngreso> DetalleMovimientoIngreso { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<BalanzaComprobacion> BalanzaComprobacion { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<ConceptoDetalle> ConceptoDetalle { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<ConciliacionBanco> ConciliacionBanco { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<CuentaAuxiliar> CuentaAuxiliar { get; set; }
-        public virtual CuentaBanco CuentaBanco { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Arancel> Arancel { get; set; }
-        public virtual TipoCuenta TipoCuenta { get; set; }
         public virtual Usuario Usuario { get; set; }
         public virtual Usuario Usuario1 { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<EjecucionPresupuestaria> EjecucionPresupuestaria { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Empleado> Empleado { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<EPLineaComprobanteDiario> EPLineaComprobanteDiario { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<EPLineaComprobantePago> EPLineaComprobantePago { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<EstructuraCuenta> EstructuraCuenta { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<LineaComprobanteDiario> LineaComprobanteDiario { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<LineaComprobantePago> LineaComprobantePago { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Proveedor> Proveedor { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<ReciboDetalle> ReciboDetalle { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<SolicitudCheque> SolicitudCheque { get; set; }
+        public virtual TipoCuenta TipoCuenta { get; set; }
     }
 }

@@ -17,7 +17,6 @@ namespace PruebaWPF.Model
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public ArancelPrecio()
         {
-            this.DetallePago = new HashSet<DetallePago>();
             this.DetOrdenPagoArancel = new HashSet<DetOrdenPagoArancel>();
             this.Exoneracion = new HashSet<Exoneracion>();
             this.ReciboDet = new HashSet<ReciboDet>();
@@ -31,8 +30,6 @@ namespace PruebaWPF.Model
         public string UsuarioCreacion { get; set; }
         public bool regAnulado { get; set; }
     
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<DetallePago> DetallePago { get; set; }
         public virtual Moneda Moneda { get; set; }
         public virtual Usuario Usuario { get; set; }
         public virtual ArancelArea ArancelArea { get; set; }

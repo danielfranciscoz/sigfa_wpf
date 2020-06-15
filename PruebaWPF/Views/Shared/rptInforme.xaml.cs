@@ -88,8 +88,8 @@ namespace PruebaWPF.Views.Shared
             List<Rectificaciones> rectificaciones = controller.FindRectificaciones(arqueo.IdArqueoDetApertura);
             List<DiferenciasArqueo> diferenciasArqueo = controller.DiferenciasArqueo(arqueo.IdArqueoDetApertura);
 
-            List<Recibo1> recibos = new List<Recibo1>();
-            List<Recibo1> recibosAnulados = new List<Recibo1>();
+            List<Model.Recibo> recibos = new List<Model.Recibo>();
+            List<Model.Recibo> recibosAnulados = new List<Model.Recibo>();
 
 
             foreach (var item in controller.FindRecibosContabilizados(arqueo))

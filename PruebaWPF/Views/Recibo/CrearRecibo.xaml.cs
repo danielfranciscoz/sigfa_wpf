@@ -1104,7 +1104,7 @@ namespace PruebaWPF.Views.Recibo
 
         private void GenerarRecibo(List<MonedaMonto> diferencia)
         {
-            orden.Identificador = infoExterna.IdInterno; //Le asigno el id interno de las tablas, porque el que tiene asignado previamente es el id visible a los usuarios
+            //orden.Identificador = infoExterna.Id; 
             recibo.Recibimos = txtRecibimos.Text;
 
 

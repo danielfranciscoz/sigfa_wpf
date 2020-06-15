@@ -101,9 +101,9 @@ namespace PruebaWPF.ViewModel
         #endregion
 
         #region Paso 2, contabilizando recibos y confirmando pagos
-        public Recibo1 ContabilizarRecibo(string codigo, DetAperturaCaja apertura)
+        public Recibo ContabilizarRecibo(string codigo, DetAperturaCaja apertura)
         {
-            Recibo1 r;
+            Recibo r;
             if (codigo.Contains("-")) //valido el formato, que contenga el guión
             {
                 String[] valores = codigo.Split('-');
@@ -112,7 +112,7 @@ namespace PruebaWPF.ViewModel
 
                 if (int.TryParse(valores[0], out recibo)) //valido que la primera parte de la cadena corresponda al numero del recibo
                 {
-                    r = db.Recibo1.Find(recibo, valores[1]);
+                    r = db.Recibo.Find(recibo, valores[1]);
 
                     if (r != null) //valido que el recibo exista en la base de datos
                     {
@@ -157,9 +157,9 @@ namespace PruebaWPF.ViewModel
             return r;
         }
 
-        public List<Recibo1> FindRecibosContabilizados(Arqueo arqueo)
+        public List<Recibo> FindRecibosContabilizados(Arqueo arqueo)
         {
-            return db.ArqueoRecibo.Where(w => w.IdArqueo == arqueo.IdArqueoDetApertura).Select(s => s.Recibo1).OrderBy(o => o.Serie).ThenBy(t => t.IdRecibo).ToList();
+            return db.ArqueoRecibo.Where(w => w.IdArqueo == arqueo.IdArqueoDetApertura).Select(s => s.Recibo).OrderBy(o => o.Serie).ThenBy(t => t.IdRecibo).ToList();
         }
 
         public List<FormaPago> ObtenerFormasPago()
@@ -381,7 +381,7 @@ namespace PruebaWPF.ViewModel
         public List<DocumentosEfectivo> FindDocumentosEfectivo(DetAperturaCaja apertura)
         {
             List<DocumentosEfectivo> pagos = db.ReciboPago
-                                        .Where(w => w.Recibo1.IdDetAperturaCaja == apertura.IdDetAperturaCaja && w.FormaPago.isDoc && w.IdRectificacion == null && !w.regAnulado && !w.Recibo1.regAnulado)
+                                        .Where(w => w.Recibo.IdDetAperturaCaja == apertura.IdDetAperturaCaja && w.FormaPago.isDoc && w.IdRectificacion == null && !w.regAnulado && !w.Recibo.regAnulado)
                                         .Select(s=>new DocumentosEfectivo() {
                                             IdRecibo = s.IdRecibo,
                                             Serie = s.Serie,
@@ -421,7 +421,7 @@ namespace PruebaWPF.ViewModel
         public List<FormaPago> FindFormasPagoDocumentos(int IdArqueoDetApertura)
         {
             return db.ReciboPago
-                        .Where(w => w.Recibo1.IdDetAperturaCaja == IdArqueoDetApertura && w.regAnulado == false && w.FormaPago.isDoc && w.FormaPago.Identificador != null)
+                        .Where(w => w.Recibo.IdDetAperturaCaja == IdArqueoDetApertura && w.regAnulado == false && w.FormaPago.isDoc && w.FormaPago.Identificador != null)
                         .Select(s => s.FormaPago)
                         .Distinct()
                         .ToList();
@@ -440,13 +440,13 @@ namespace PruebaWPF.ViewModel
 
         public int FindTotalDocumentos(int IdArqueoDetApertura)
         {
-            return db.ReciboPago.Count(c => c.Recibo1.IdDetAperturaCaja == IdArqueoDetApertura && c.FormaPago.isDoc && !c.regAnulado && !c.Recibo1.regAnulado);
+            return db.ReciboPago.Count(c => c.Recibo.IdDetAperturaCaja == IdArqueoDetApertura && c.FormaPago.isDoc && !c.regAnulado && !c.Recibo.regAnulado);
         }
 
         public List<ReciboPagoSon> FindConsolidadoDocumentos(int IdDetApertura)
         {
             List<ReciboPagoSon> consulta = db.ReciboPago
-                                .Where(w => w.Recibo1.IdDetAperturaCaja == IdDetApertura && w.FormaPago.isDoc && w.IdRectificacion == null && !w.regAnulado && !w.Recibo1.regAnulado)
+                                .Where(w => w.Recibo.IdDetAperturaCaja == IdDetApertura && w.FormaPago.isDoc && w.IdRectificacion == null && !w.regAnulado && !w.Recibo.regAnulado)
                                 .GroupBy(g => new { g.FormaPago.FormaPago1, g.Moneda.Simbolo })
                                 .ToList()
                                 .Select(s => new ReciboPagoSon()
@@ -470,7 +470,7 @@ namespace PruebaWPF.ViewModel
         /// <returns></returns>
         public int[] FindTotalPagos(int IdArqueoDetApertura)
         {
-            List<ReciboPago> pagos = db.ReciboPago.Where(c => c.Recibo1.IdDetAperturaCaja == IdArqueoDetApertura && c.regAnulado == false).ToList();
+            List<ReciboPago> pagos = db.ReciboPago.Where(c => c.Recibo.IdDetAperturaCaja == IdArqueoDetApertura && c.regAnulado == false).ToList();
             int totalPagos = pagos.Count();
             int confirmados = 0;//pagos.Count(c => c.ConfirmacionPago != null);
             return new int[] { totalPagos, confirmados };
@@ -543,7 +543,7 @@ namespace PruebaWPF.ViewModel
 
         public List<String> CajeroEntrega(DetAperturaCaja apertura)
         {
-            return db.Recibo1.Where(w => w.IdDetAperturaCaja == apertura.IdDetAperturaCaja).Select(s => s.UsuarioCreacion).Distinct().ToList();
+            return db.Recibo.Where(w => w.IdDetAperturaCaja == apertura.IdDetAperturaCaja).Select(s => s.UsuarioCreacion).Distinct().ToList();
         }
 
         public List<fn_TotalesArqueo_Result>[] SaldoTotalArqueo(DetAperturaCaja apertura)
@@ -559,7 +559,7 @@ namespace PruebaWPF.ViewModel
         {
             var consulta = db.ReciboPago
                 .OrderBy(f => f.RectificacionPago.FirstOrDefault().FechaCreacion)
-                .Where(w => w.IdRectificacion != null && w.Recibo1.IdDetAperturaCaja == apertura)
+                .Where(w => w.IdRectificacion != null && w.Recibo.IdDetAperturaCaja == apertura)
                 .ToList()
                 .Select(s => new Rectificaciones(
                         new ReciboPagoSon()
@@ -593,7 +593,7 @@ namespace PruebaWPF.ViewModel
         public List<ArqueoNoEfectivoSon> FindDocumentosNoEnlazados(int IdDetAperturaCaja)
         {
             List<ArqueoNoEfectivo> arqueo = db.ArqueoNoEfectivo.Where(w => w.IdArqueo == IdDetAperturaCaja && w.IdReciboPago != null).ToList();
-            var apagos = db.ReciboPago.Where(w => w.Recibo1.IdDetAperturaCaja == IdDetAperturaCaja && w.FormaPago.isDoc).ToList().Where(w => !arqueo.Exists(a => a.IdReciboPago == w.IdReciboPago)).ToList();
+            var apagos = db.ReciboPago.Where(w => w.Recibo.IdDetAperturaCaja == IdDetAperturaCaja && w.FormaPago.isDoc).ToList().Where(w => !arqueo.Exists(a => a.IdReciboPago == w.IdReciboPago)).ToList();
 
             List<ArqueoNoEfectivoSon> pagos = apagos
                 .Select(s => new ArqueoNoEfectivoSon()
@@ -669,7 +669,7 @@ namespace PruebaWPF.ViewModel
         }
         #endregion
 
-        public ReciboSon ConvertToReciboSon(Recibo1 recibo)
+        public ReciboSon ConvertToReciboSon(Recibo recibo)
         {
             if (recibo != null)
             {
@@ -685,7 +685,7 @@ namespace PruebaWPF.ViewModel
         public List<VariacionCambiariaSon> FindTipoCambios(int IdArqueo)
         {
 
-            Recibo1 recibo = db.ArqueoRecibo.FirstOrDefault(f => f.IdArqueo == IdArqueo)?.Recibo1;
+            Recibo recibo = db.ArqueoRecibo.FirstOrDefault(f => f.IdArqueo == IdArqueo)?.Recibo;
 
             if (recibo != null)
             {
@@ -698,7 +698,7 @@ namespace PruebaWPF.ViewModel
 
         }
 
-        public List<VariacionCambiariaSon> FindTipoCambios(Recibo1 agregado)
+        public List<VariacionCambiariaSon> FindTipoCambios(Recibo agregado)
         {
             return new ReciboViewModel().FindTipoCambio(ConvertToReciboSon(agregado), null);
         }

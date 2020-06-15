@@ -29,6 +29,6 @@ namespace PruebaWPF.Model
         public virtual Usuario Usuario { get; set; }
         public virtual ArancelPrecio ArancelPrecio { get; set; }
         public virtual Exoneracion Exoneracion { get; set; }
-        public virtual Recibo1 Recibo1 { get; set; }
+        public virtual Recibo Recibo { get; set; }
     }
 }

@@ -33,7 +33,7 @@ namespace PruebaWPF.Views.Arqueo
         private System.Windows.Forms.BindingSource ArqueoEfectivoBindingSource = new System.Windows.Forms.BindingSource();
         private System.Windows.Forms.BindingSource DocumentosEfectivoBindingSource = new System.Windows.Forms.BindingSource();
         private List<Moneda> monedas;
-        private ObservableCollection<Recibo1> recibos;
+        private ObservableCollection<Model.Recibo> recibos;
         private MaterialDesignExtensions.Controllers.StepperController tabmaterial;
         private DateTime? fecha = null;
         private clsValidateInput validate = new clsValidateInput();
@@ -143,7 +143,7 @@ namespace PruebaWPF.Views.Arqueo
             string codigo = txtcodrecibo.Text;
             try
             {
-                Recibo1 agregado = controller.ContabilizarRecibo(codigo, apertura);
+                Model.Recibo agregado = controller.ContabilizarRecibo(codigo, apertura);
                 recibos.Insert(0, agregado);
 
                 AsignarFecha(agregado);
@@ -165,7 +165,7 @@ namespace PruebaWPF.Views.Arqueo
 
         }
 
-        private void AsignarFecha(Recibo1 agregado)
+        private void AsignarFecha(Model.Recibo agregado)
         {
             //fecha para el tipo de cambio
             if (fecha == null)
@@ -218,7 +218,7 @@ namespace PruebaWPF.Views.Arqueo
         {
             if (recibos == null)
             {
-                recibos = new ObservableCollection<Recibo1>(controller.FindRecibosContabilizados(arqueo));
+                recibos = new ObservableCollection<Model.Recibo>(controller.FindRecibosContabilizados(arqueo));
                 recibos.CollectionChanged += new System.Collections.Specialized.NotifyCollectionChangedEventHandler(Recibos_CollectionChanged);
                 lstRecibos.ItemsSource = recibos;
                 VerificarConteoFinalizado();
@@ -259,7 +259,7 @@ namespace PruebaWPF.Views.Arqueo
         private void VerificarConteoFinalizado()
         {
 
-            if (recibos.Count == apertura.Recibo1.Count)
+            if (recibos.Count == apertura.Recibo.Count)
             {
                 txtcodrecibo.IsEnabled = false;
                 btnConteoRecibos.IsEnabled = true;
@@ -752,7 +752,7 @@ namespace PruebaWPF.Views.Arqueo
 
         private void CargarPagos()
         {
-            Recibo1 selected = (Recibo1)lstRecibos.SelectedItem;
+            Model.Recibo selected = (Model.Recibo)lstRecibos.SelectedItem;
 
             tblFormasPago.ItemsSource = new ReciboViewModel().ReciboFormaPago(new ReciboSon() { IdRecibo = selected.IdRecibo, Serie = selected.Serie });
             tblFormasPago.IsEnabled = !selected.regAnulado;

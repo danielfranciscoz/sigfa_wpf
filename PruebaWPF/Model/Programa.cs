@@ -14,42 +14,11 @@ namespace PruebaWPF.Model
     
     public partial class Programa
     {
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-        public Programa()
-        {
-            this.BalanzaComprobacion = new HashSet<BalanzaComprobacion>();
-            this.ComprobanteDiario = new HashSet<ComprobanteDiario>();
-            this.ComprobantePago = new HashSet<ComprobantePago>();
-            this.EjecucionPresupuestaria = new HashSet<EjecucionPresupuestaria>();
-            this.EPComprobanteDiario = new HashSet<EPComprobanteDiario>();
-            this.Presupuesto = new HashSet<Presupuesto>();
-            this.Proyecto = new HashSet<Proyecto>();
-            this.UsuarioPrograma = new HashSet<UsuarioPrograma>();
-        }
-    
         public byte IdPrograma { get; set; }
         public byte IdRecinto { get; set; }
         public string IdFacultad { get; set; }
         public string Descripcion { get; set; }
         public string LoginCreacion { get; set; }
         public byte RegAnulado { get; set; }
-    
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<BalanzaComprobacion> BalanzaComprobacion { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<ComprobanteDiario> ComprobanteDiario { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<ComprobantePago> ComprobantePago { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<EjecucionPresupuestaria> EjecucionPresupuestaria { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<EPComprobanteDiario> EPComprobanteDiario { get; set; }
-        public virtual Facultad Facultad { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Presupuesto> Presupuesto { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Proyecto> Proyecto { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<UsuarioPrograma> UsuarioPrograma { get; set; }
     }
 }

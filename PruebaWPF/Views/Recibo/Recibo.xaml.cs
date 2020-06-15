@@ -91,8 +91,8 @@ namespace PruebaWPF.Views.Recibo
 
         private void txtFindText(object sender, KeyEventArgs e)
         {
-            LoadTable(txtFind.Text);
-            LimpiarTablas();
+            //LoadTable(txtFind.Text);
+            //LimpiarTablas();
         }
 
         private void LimpiarTablas()
@@ -103,10 +103,13 @@ namespace PruebaWPF.Views.Recibo
 
         private async void LoadTable(string text)
         {
+            bool focusTxtFind = txtFind.IsFocused;
+
             try
             {
                 //if (isOpening)
                 //{
+                txtFind.IsEnabled = false;
 
                 if (clsConfiguration.Actual().AutoLoad)
                 {
@@ -127,6 +130,15 @@ namespace PruebaWPF.Views.Recibo
             catch (Exception ex)
             {
                 clsUtilidades.OpenMessage(new Operacion() { Mensaje = new clsException(ex).ErrorMessage(), OperationType = clsReferencias.TYPE_MESSAGE_Error });
+            }
+            finally
+            {
+                txtFind.IsEnabled = true;
+
+                if (focusTxtFind)
+                {
+                    txtFind.Focus();
+                }
             }
         }
 
@@ -222,7 +234,7 @@ namespace PruebaWPF.Views.Recibo
         {
             ReciboSon selected = (ReciboSon)tblRecibo.SelectedItem;
             tblReciboDet.ItemsSource = controller().DetallesRecibo(selected);
-            tblReciboPay.ItemsSource = controller().ReciboFormaPago(selected,false);
+            tblReciboPay.ItemsSource = controller().ReciboFormaPago(selected, false);
 
             if (!selected.regAnulado)
             {
@@ -296,6 +308,15 @@ namespace PruebaWPF.Views.Recibo
         {
             AsientoRecibo asiento = new AsientoRecibo((ReciboSon)tblRecibo.CurrentItem);
             asiento.ShowDialog();
+        }
+
+        private void TxtFind_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.Key == Key.Enter)
+            {
+                LoadTable(txtFind.Text);
+                LimpiarTablas();
+            }
         }
     }
 }

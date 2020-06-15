@@ -1,0 +1,581 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1" MembersFormat="NameAndType">
+  <Class Name="PruebaWPF.Model.AccesoDirectoPerfil">
+    <Position X="3" Y="2.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>KgAAAAAAIAAAAAAQAQAAAAAAAAAAAAAAAAAEgAAAAAA=</HashCode>
+      <FileName>Model\AccesoDirectoPerfil.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="PruebaWPF.Model.AccesoDirectoUsuario">
+    <Position X="4.75" Y="2.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AABAAAQAIIAAAAAQAAAAAAAAAAAAAAAAAAAEgAAAAAA=</HashCode>
+      <FileName>Model\AccesoDirectoUsuario.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="PruebaWPF.Model.AgenteExternoCat">
+    <Position X="6.5" Y="2.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AgAAkAAAIAAACAAAAAAAiAAAAAABAAAAAAAEAAAAQAA=</HashCode>
+      <FileName>Model\AgenteExternoCat.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="PruebaWPF.Model.AperturaCaja">
+    <Position X="8.25" Y="2.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>EgAgAAAAAAAAAAAAAAAAAAAAECAAAAAAAAAEAAQAAAA=</HashCode>
+      <FileName>Model\AperturaCaja.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="PruebaWPF.Model.Arancel">
+    <Position X="10" Y="2.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AgBIIIAAIAAAAAAAAAAAgCABAAQBAAAAAAAEQAAABAA=</HashCode>
+      <FileName>Model\Arancel.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="PruebaWPF.Model.ArancelArea">
+    <Position X="11.75" Y="2.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AgBAAQAAZAAAAAIgAAABAAAAAAABAAAAAAAEAAAAAAA=</HashCode>
+      <FileName>Model\ArancelArea.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="PruebaWPF.Model.ArancelPrecio">
+    <Position X="13.5" Y="2.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AiAAAIAAoAAAAAAAAAAJACgQAAABAAAAEAAEAAAAAAA=</HashCode>
+      <FileName>Model\ArancelPrecio.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="PruebaWPF.Model.ArancelTipoDeposito">
+    <Position X="15.25" Y="2.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AgBAQAAAYAAAAAAAAAAABAAAAEAAAAAAAAAEAAAAAAA=</HashCode>
+      <FileName>Model\ArancelTipoDeposito.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="PruebaWPF.Model.AreaEquivalencia">
+    <Position X="17" Y="2.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AgAAAAAAJAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABAAA=</HashCode>
+      <FileName>Model\AreaEquivalencia.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="PruebaWPF.Model.AreaPagoDelegado">
+    <Position X="18.75" Y="2.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AgAAAIAAIAAAAAAAAAAhAAAAAAABAAAAAAAEAAAAAAA=</HashCode>
+      <FileName>Model\AreaPagoDelegado.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="PruebaWPF.Model.Arqueo">
+    <Position X="20.5" Y="2.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>EAEAAAAAAAABkEBAACAAAFAEEAAABAAABAAEAAAQgAA=</HashCode>
+      <FileName>Model\Arqueo.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="PruebaWPF.Model.ArqueoDocumento">
+    <Position X="22.25" Y="2.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AgAgAAAAIAAAAAAQAAgAACAAAAAABAAAAAAFAAAAAAI=</HashCode>
+      <FileName>Model\ArqueoDocumento.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="PruebaWPF.Model.ArqueoEfectivo">
+    <Position X="24" Y="2.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AiAgAAEAIAAAAAAAAAAIAAAAAAAABAAAAAAAACABAAA=</HashCode>
+      <FileName>Model\ArqueoEfectivo.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="PruebaWPF.Model.ArqueoNoEfectivo">
+    <Position X="17" Y="4.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AiAAIAAAIIAAAAAQAAgAAAAUCAAABQAAABAFAAAAAAE=</HashCode>
+      <FileName>Model\ArqueoNoEfectivo.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="PruebaWPF.Model.ArqueoRecibo">
+    <Position X="18.75" Y="5.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAgAAAAIAAAAAAAAAAAAAAQAAAABQAAAAAAACAAAAE=</HashCode>
+      <FileName>Model\ArqueoRecibo.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="PruebaWPF.Model.Asiento">
+    <Position X="3" Y="5.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAIAAAARAAAQAAAAAAAAAAYAAABAQAAAAAAUQAAACE=</HashCode>
+      <FileName>Model\Asiento.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="PruebaWPF.Model.Banco">
+    <Position X="15.25" Y="5.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AQAAAIAgAAAAAAAAAAQAgAAAAAgAAAAAAAAEAAAAAAA=</HashCode>
+      <FileName>Model\Banco.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="PruebaWPF.Model.Caja">
+    <Position X="8.25" Y="8.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AgAgEBAAIAAAAAAAIAAAiAAAEAABACAAAAAEAAAAAAA=</HashCode>
+      <FileName>Model\Caja.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="PruebaWPF.Model.CiaTarjetaCredito">
+    <Position X="4.75" Y="7.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AQAAAIAAAAAAIAAAAAAAhAAAAAgAAAAAAAAEAAAAAAA=</HashCode>
+      <FileName>Model\CiaTarjetaCredito.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="PruebaWPF.Model.Configuracion">
+    <Position X="4.75" Y="5.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAgAAAAAAABgAAEAAAAAAAAAAAEAACAAAA=</HashCode>
+      <FileName>Model\Configuracion.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="PruebaWPF.Model.CuentaContable">
+    <Position X="6.5" Y="5.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AQAIBJAAQAIAIAAAAgAAEAABIAIAAACDAAKERAAAAE8=</HashCode>
+      <FileName>Model\CuentaContable.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="PruebaWPF.Model.DenominacionMoneda">
+    <Position X="8.25" Y="5.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AiAAAAAAIAAACAAAAAAAAAQAAAAAAAAAAAAEAAABAAA=</HashCode>
+      <FileName>Model\DenominacionMoneda.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="PruebaWPF.Model.DetalleMovimientoIngreso">
+    <Position X="10" Y="7" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AwAIAAAAYBAAQAEAAAAAAAAAAAABAAEAAAAEUAAAAAI=</HashCode>
+      <FileName>Model\DetalleMovimientoIngreso.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="PruebaWPF.Model.DetAperturaCaja">
+    <Position X="11.75" Y="6.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAgGAQCAAAAAEAAIACAAAAAAAIAAQAAAAAEAAAAoAA=</HashCode>
+      <FileName>Model\DetAperturaCaja.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="PruebaWPF.Model.DetOrdenPagoArancel">
+    <Position X="13.5" Y="6.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>ggAACAAAoAAAgAIQABAgAAAAAAEBgAAAAAAEAAAAAAA=</HashCode>
+      <FileName>Model\DetOrdenPagoArancel.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="PruebaWPF.Model.DiferenciasArqueo">
+    <Position X="15.25" Y="8.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>ACAgAAAAEIAAAAAAAAgYCAAIAAAADAAAAAAAAAAIAAA=</HashCode>
+      <FileName>Model\DiferenciasArqueo.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="PruebaWPF.Model.Errors">
+    <Position X="18.75" Y="8" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAQAAAAAIgCAAiAAAAABAAAABAIAAAAAIAAEIAAAAAA=</HashCode>
+      <FileName>Model\Errors.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="PruebaWPF.Model.Exoneracion">
+    <Position X="22.25" Y="8" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AgAACAAAIAAAAAIAAAgABCgAAEIBgAAAEAAEAAAAAAA=</HashCode>
+      <FileName>Model\Exoneracion.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="PruebaWPF.Model.ExoneracionTotalArea">
+    <Position X="20.5" Y="7.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AwAAAAAAJAAAAAAAAAAAAAAAAAAAAABAAAAEAAAAAAA=</HashCode>
+      <FileName>Model\ExoneracionTotalArea.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="PruebaWPF.Model.fn_ConsultarInfoExterna_Result">
+    <Position X="22.25" Y="5.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AACCAAEAAAAgAAAAAAAAgAAAABAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Model\fn_ConsultarInfoExterna_Result.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="PruebaWPF.Model.fn_ObtenerMenu_Result">
+    <Position X="24" Y="5.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAQAAAAAAAAACAAAACAAAAAAAEQEJQ=</HashCode>
+      <FileName>Model\fn_ObtenerMenu_Result.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="PruebaWPF.Model.fn_ObtenerTasaCambio_Result">
+    <Position X="4.75" Y="10.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>ACAAAAAAAAAAAAEAAAAAAAAEAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Model\fn_ObtenerTasaCambio_Result.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="PruebaWPF.Model.fn_TotalesArqueo_Result">
+    <Position X="20.5" Y="10" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>ASAAAAQAAIEAAAIAAAgIAABoQBAABBAAAAAAAAQAQAA=</HashCode>
+      <FileName>Model\fn_TotalesArqueo_Result.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="PruebaWPF.Model.FormaPago">
+    <Position X="17" Y="9.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AgAAAAAAMIAAAAEAAAAAAAAAAAABggAAQAAFAAAQAAA=</HashCode>
+      <FileName>Model\FormaPago.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="PruebaWPF.Model.FormulaConversion">
+    <Position X="10" Y="10.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>ABAAAAAAAAAAAAAAAAAAAAAAAAAABABAEAAAAAAAAAA=</HashCode>
+      <FileName>Model\FormulaConversion.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="PruebaWPF.Model.FuenteFinanciamiento">
+    <Position X="24" Y="8.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AQAAAIAAIQAAECAAAAAAgAAAAAgAAQAAAAAAAAAAIAA=</HashCode>
+      <FileName>Model\FuenteFinanciamiento.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="PruebaWPF.Model.IdentificacionAgenteExterno">
+    <Position X="3" Y="9" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AgAAgAAAIAAAAAAAEAAACAAQAAABAAAAAQAEAAAAAAA=</HashCode>
+      <FileName>Model\IdentificacionAgenteExterno.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="PruebaWPF.Model.InfoRecibo">
+    <Position X="3" Y="12.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AgAgAAAAIAAAAAAAAAACABAAAAABAQAAAAAEAIAAAAA=</HashCode>
+      <FileName>Model\InfoRecibo.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="PruebaWPF.Model.LoginInfo_Result">
+    <Position X="18.75" Y="11.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAABAQAAAAAAAAQgAAAAAAAAAAAAAAQAwAAAAA=</HashCode>
+      <FileName>Model\LoginInfo_Result.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="PruebaWPF.Model.Moneda">
+    <Position X="8.25" Y="12.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AkAAAAAAIAAAEAMAIAAIAAQAAAABAgAACACFAAAQQBA=</HashCode>
+      <FileName>Model\Moneda.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="PruebaWPF.Model.MovimientoIngreso">
+    <Position X="10" Y="14.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AiAgAAAAIIAAIgAAAAgIAAAAAAAAAAAAAAAEAAAAAAI=</HashCode>
+      <FileName>Model\MovimientoIngreso.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="PruebaWPF.Model.OrdenPago">
+    <Position X="11.75" Y="12.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>gAAgIAgABAAIAAAAIAABBCAAAEABgQQBAAAEQAAAAAA=</HashCode>
+      <FileName>Model\OrdenPago.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="PruebaWPF.Model.Pantalla">
+    <Position X="13.5" Y="14" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AgAAAAAAIEAAAAAYADAAAAABACABAACQgAAAAAEQAJQ=</HashCode>
+      <FileName>Model\Pantalla.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="PruebaWPF.Model.Parametro">
+    <Position X="4.75" Y="14.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAgAAAAAAAAAAAAAAAAABAAAABAACAAAAAAAAAAA=</HashCode>
+      <FileName>Model\Parametro.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="PruebaWPF.Model.Perfil">
+    <Position X="17" Y="13.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>IQAAAIAAAEAAAAAAACAAAAABAAAAAAAQAAAABAAAAgA=</HashCode>
+      <FileName>Model\Perfil.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="PruebaWPF.Model.Permiso">
+    <Position X="3" Y="15.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>IgAgAAAAIAAAAAAQAQABAAAAAAAAAAAAAQAEgBAAAAA=</HashCode>
+      <FileName>Model\Permiso.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="PruebaWPF.Model.PermisoName">
+    <Position X="6.5" Y="15.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAIAAAAAAAAAABgAABAAAAAAAQAAAAAAAAAAA=</HashCode>
+      <FileName>Model\PermisoName.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="PruebaWPF.Model.Programa">
+    <Position X="11.75" Y="17.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AQAgAIAAAAAAAAAAAAAAAAABAAAAIAAAAAAAAQAAAAA=</HashCode>
+      <FileName>Model\Programa.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="PruebaWPF.Model.Recibo">
+    <Position X="20.5" Y="14.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>igAAgIABAAAIEAEQYCCACAgQEAABAgAACAAFBKAAAAE=</HashCode>
+      <FileName>Model\Recibo.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="PruebaWPF.Model.ReciboAnulado">
+    <Position X="15.25" Y="17.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>gAAAAAAAAAAAAAAQQCAAAAAQAAAAAQAAAAAEAQAAAAE=</HashCode>
+      <FileName>Model\ReciboAnulado.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="PruebaWPF.Model.ReciboDatos">
+    <Position X="18.75" Y="17.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAgABAAAAAAAAAAABAAQAEAAgQAAAAAAAAAAAAE=</HashCode>
+      <FileName>Model\ReciboDatos.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="PruebaWPF.Model.ReciboDet">
+    <Position X="17" Y="16.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AgAACAAAoAAAgAIAAAAgAAAYAAABgSAAAAAEAAAAAAE=</HashCode>
+      <FileName>Model\ReciboDet.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="PruebaWPF.Model.ReciboDiferencias">
+    <Position X="18.75" Y="15.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>ACAAAAAAAAAAAAAAAAAIAAAYAAAAAQAAAAAAAAAAAAE=</HashCode>
+      <FileName>Model\ReciboDiferencias.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="PruebaWPF.Model.ReciboPago">
+    <Position X="22.25" Y="14" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AiQQAAAAIIAAIABYAAwoAASYAAABAwAAQAAFEAAABAE=</HashCode>
+      <FileName>Model\ReciboPago.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="PruebaWPF.Model.ReciboPagoBono">
+    <Position X="4.75" Y="16.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAQAABAAAAAAAAAAAAAAAABAAABAAA=</HashCode>
+      <FileName>Model\ReciboPagoBono.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="PruebaWPF.Model.ReciboPagoCheque">
+    <Position X="8.25" Y="17.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAgAAAAAAAQAAAAABAAAAhAAAAAAAABAAAAAAA=</HashCode>
+      <FileName>Model\ReciboPagoCheque.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="PruebaWPF.Model.ReciboPagoDeposito">
+    <Position X="3" Y="18.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAABAAAQAAAAAAAAAAAAAAAAAAABAAAAAAY=</HashCode>
+      <FileName>Model\ReciboPagoDeposito.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="PruebaWPF.Model.ReciboPagoTarjeta">
+    <Position X="4.75" Y="18.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAACAAAAAACAAARIAAAAAAAEAAAAAAAAAABAAAAIAA=</HashCode>
+      <FileName>Model\ReciboPagoTarjeta.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="PruebaWPF.Model.ReciboSIRA">
+    <Position X="6.5" Y="18" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAIAAAAAAAAAAAAAAQAAAAAQABAAAAAAAAAAE=</HashCode>
+      <FileName>Model\ReciboSIRA.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="PruebaWPF.Model.RecintoEquivalencia">
+    <Position X="10" Y="18" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAgAAAAIAAAAAAAAAAAAAAAAgAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Model\RecintoEquivalencia.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="PruebaWPF.Model.RectificacionPago">
+    <Position X="3" Y="20.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AgAAAAAAIAAAEAAYAAAAAAAAAAAAAAAAAAAFAAAAAAI=</HashCode>
+      <FileName>Model\RectificacionPago.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="PruebaWPF.Model.SerieRecibo">
+    <Position X="18.75" Y="20.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AgAACAAAIAAAAAAAAAAAAAAAAAABASAAAAAAAAAAAAA=</HashCode>
+      <FileName>Model\SerieRecibo.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="PruebaWPF.Model.TipoArancel">
+    <Position X="6.5" Y="20" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AgAAAAAAYAAAAAAAAAAABCAAAAQBAAAAAAAEAAAAgAA=</HashCode>
+      <FileName>Model\TipoArancel.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="PruebaWPF.Model.TipoCuenta">
+    <Position X="24" Y="18" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AQAAAIAAAAAAAEAAAAAAAAAAAAAAAAABAAAEQAAAAAA=</HashCode>
+      <FileName>Model\TipoCuenta.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="PruebaWPF.Model.TipoDeposito">
+    <Position X="24" Y="14.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AgAAIAAAoAAAAAAQAAAAgCAAAEAAAAAAAACEACAAAAA=</HashCode>
+      <FileName>Model\TipoDeposito.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="PruebaWPF.Model.Usuario">
+    <Position X="24" Y="20.75" Width="1.5" />
+    <Compartments>
+      <Compartment Name="Properties" Collapsed="true" />
+    </Compartments>
+    <TypeIdentifier>
+      <HashCode>ASAwqYAC4UQIIQNxKCgApKgREQgBAxCwgQyRRgAAQAQ=</HashCode>
+      <FileName>Model\Usuario.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="PruebaWPF.Model.UsuarioArancel">
+    <Position X="15.25" Y="20.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AgQAAIAAIAAAAAAAAAABAAAAAAIBAAAAABAEAAAAAAA=</HashCode>
+      <FileName>Model\UsuarioArancel.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="PruebaWPF.Model.UsuarioPerfil">
+    <Position X="24" Y="11.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>IQAgAIAAAAAAAAAAAQAAAAAAAAAAAAAAAAAUAAAAAAA=</HashCode>
+      <FileName>Model\UsuarioPerfil.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="PruebaWPF.Model.VariacionCambiaria">
+    <Position X="8.25" Y="19.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>ASAAAIAAIAAAAAEAAAAIAAAEAAACAAAAAAAEAAAAAAA=</HashCode>
+      <FileName>Model\VariacionCambiaria.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="PruebaWPF.Model.VoucherBanco">
+    <Position X="10" Y="19.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AiAACAAAIAACIAAAIAAYAAAIEAAAAAwBAAgEAAAAAAA=</HashCode>
+      <FileName>Model\VoucherBanco.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="PruebaWPF.Model.vw_Aranceles">
+    <Position X="11.75" Y="19.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>ACBAAAAARAQAAAAAAAAIAAAQAAAAAAAAEAAAAQAAAAQ=</HashCode>
+      <FileName>Model\vw_Aranceles.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="PruebaWPF.Model.vw_AreaEquivalencia">
+    <Position X="13.5" Y="19" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>BgACAAAAIAAAAAEAAgAAAAABAAAAAAAAAAAAAAAIgAA=</HashCode>
+      <FileName>Model\vw_AreaEquivalencia.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="PruebaWPF.Model.vw_Areas">
+    <Position X="17" Y="20.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAABCEACAAAAAACAAAEAACAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Model\vw_Areas.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="PruebaWPF.Model.vw_FuentesSIPPSI">
+    <Position X="4.75" Y="12.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAEAAAAAAAgAAAAAgAAAAAAAAAAAABAAA=</HashCode>
+      <FileName>Model\vw_FuentesSIPPSI.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="PruebaWPF.Model.vw_ObtenerPeriodosEspecificos">
+    <Position X="11.75" Y="10.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAQAAAAAAAAAAAAAAAAAAAAgAAAAAAAAgAAAAgAAg=</HashCode>
+      <FileName>Model\vw_ObtenerPeriodosEspecificos.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="PruebaWPF.Model.vw_Prematricula">
+    <Position X="13.5" Y="10.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAACgAAAAACACAAgAAAIAAAACAAQAIAAQAAEAg=</HashCode>
+      <FileName>Model\vw_Prematricula.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="PruebaWPF.Model.vw_ProveedoresSISCOM">
+    <Position X="6.5" Y="12.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AIAAAAAAgAAAAAAgACAAAAAACACAAAAAQAAAAggAAAA=</HashCode>
+      <FileName>Model\vw_ProveedoresSISCOM.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="PruebaWPF.Model.vw_RecintosRH">
+    <Position X="10" Y="12.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAgAAAAAAAAAAAAAAAAAAAAAAgAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Model\vw_RecintosRH.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="PruebaWPF.Model.vwCarrerasSIRA">
+    <Position X="22.25" Y="12.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAQAAAAAACAAAAAAAAAAAAA=</HashCode>
+      <FileName>Model\vwCarrerasSIRA.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="PruebaWPF.Model.vwEmpleadosRH">
+    <Position X="15.25" Y="14.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>ACAAQABABAAAAAkEAEAAAAAAAAAAAAAAAAAAAQAAAAg=</HashCode>
+      <FileName>Model\vwEmpleadosRH.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="PruebaWPF.Model.vwEstudiantesSIRA">
+    <Position X="15.25" Y="12" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AQAgAAAACAAAAAgAACAAAAAAAAAAAAAAQAAAAAAAACA=</HashCode>
+      <FileName>Model\vwEstudiantesSIRA.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="PruebaWPF.Model.vwSedesSIRA">
+    <Position X="18.75" Y="14" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAACAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Model\vwSedesSIRA.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>

@@ -19,6 +19,6 @@ namespace PruebaWPF.Model
         public bool isMatricula { get; set; }
         public System.DateTime FechaCreacion { get; set; }
     
-        public virtual Recibo1 Recibo1 { get; set; }
+        public virtual Recibo Recibo { get; set; }
     }
 }

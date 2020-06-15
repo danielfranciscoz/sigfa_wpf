@@ -52,8 +52,11 @@ namespace PruebaWPF.Views.OrdenPago
 
         private async void LoadTable(bool allRecintos, string text)
         {
+
+            bool focusTxtFind = txtFind.IsFocused;
             try
             {
+                txtFind.IsEnabled = false;
                 //if (isOpening)
                 //{
                 //    isOpening = false;
@@ -77,6 +80,15 @@ namespace PruebaWPF.Views.OrdenPago
             catch (Exception ex)
             {
                 clsUtilidades.OpenMessage(new Operacion() { Mensaje = new clsException(ex).ErrorMessage(), OperationType = clsReferencias.TYPE_MESSAGE_Error });
+            }
+            finally
+            {
+                txtFind.IsEnabled = true;
+
+                if (focusTxtFind)
+                {
+                    txtFind.Focus();
+                }
             }
         }
 
@@ -111,7 +123,7 @@ namespace PruebaWPF.Views.OrdenPago
 
         private void txtFindText(object sender, KeyEventArgs e)
         {
-            LoadTable(chkAll.IsChecked.Value, txtFind.Text);
+            //LoadTable(chkAll.IsChecked.Value, txtFind.Text);
         }
 
         private void btn_Exportar(object sender, System.Windows.RoutedEventArgs e)
@@ -249,7 +261,7 @@ namespace PruebaWPF.Views.OrdenPago
 
         private void TxtFindOrder_KeyDown(object sender, KeyEventArgs e)
         {
-            if (e.Key == Key.Return)
+            if (e.Key == Key.Enter)
             {
                 LoadTable(chkAll.IsChecked.Value, txtFind.Text);
             }

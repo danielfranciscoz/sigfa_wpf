@@ -44,7 +44,7 @@ namespace PruebaWPF.Model
         public virtual Moneda Moneda { get; set; }
         public virtual Usuario Usuario { get; set; }
         public virtual FormaPago FormaPago { get; set; }
-        public virtual Recibo1 Recibo1 { get; set; }
+        public virtual Recibo Recibo { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<ReciboPago> ReciboPago1 { get; set; }
         public virtual ReciboPago ReciboPago2 { get; set; }

@@ -44,16 +44,16 @@ namespace PruebaWPF.ViewModel
         {
             bool usuarioCajero = new LoginViewModel().isCajero(clsSessionHelper.usuario.Login, db, validarOnlyCajero: true);
 
-            IQueryable<Recibo1> recibo;
+            IQueryable<Recibo> recibo;
 
             if (usuarioCajero)
             {
-                recibo = db.Recibo1.Take(clsConfiguration.Actual().TopRow).Where(w => r.Any(a => w.InfoRecibo.IdRecinto == a.IdRecinto) && w.UsuarioCreacion == clsSessionHelper.usuario.Login);
+                recibo = db.Recibo.Take(clsConfiguration.Actual().TopRow).Where(w => r.Any(a => w.InfoRecibo.IdRecinto == a.IdRecinto) && w.UsuarioCreacion == clsSessionHelper.usuario.Login);
 
             }
             else
             {
-                recibo = db.Recibo1.Take(clsConfiguration.Actual().TopRow).Where(w => r.Any(a => w.InfoRecibo.IdRecinto == a.IdRecinto));
+                recibo = db.Recibo.Take(clsConfiguration.Actual().TopRow).Where(w => r.Any(a => w.InfoRecibo.IdRecinto == a.IdRecinto));
 
             }
 
@@ -63,7 +63,7 @@ namespace PruebaWPF.ViewModel
 
         public List<ReciboSon> FindAllApertura(int IdDetApertura)
         {
-            IQueryable<Recibo1> recibo = db.Recibo1.Where(w => w.IdDetAperturaCaja == IdDetApertura);
+            IQueryable<Recibo> recibo = db.Recibo.Where(w => w.IdDetAperturaCaja == IdDetApertura);
 
             return UnirRecibos(recibo);
         }
@@ -73,13 +73,15 @@ namespace PruebaWPF.ViewModel
 
             if (!text.Equals(""))
             {
-                string[] busqueda = text.Trim().Split(' ');
+                string[] busqueda = text.ToUpper().Trim().Split(' ');
 
-                //IQueryable<Recibo1> recibo = db.Recibo1
+                //IQueryable<Recibo> recibo = db.Recibo
                 //    .Where(w => busqueda.All(a => w.IdRecibo == GetIfNumber(a) || w.Serie.Contains(a))
                 //    && r.Any(a => w.InfoRecibo.IdRecinto == a.IdRecinto)
                 //    );
-                return FindAll().Where(w => busqueda.All(a => w.IdRecibo.ToString().Contains(a) || w.Serie.ToUpper().Contains(a.ToUpper()) || w.Identificador.Contains(a))).ToList();
+                return FindAll().Where(w => busqueda.All(a => w.IdRecibo.ToString().Contains(a) || 
+                                            w.Serie.ToUpper().Contains(a.ToUpper()) || 
+                                            w.Identificador.ToUpper().Contains(a))).ToList();
             }
             else
             {
@@ -120,7 +122,7 @@ namespace PruebaWPF.ViewModel
             return cambios;
         }
 
-        private List<ReciboSon> UnirRecibos(IQueryable<Recibo1> recibo)
+        private List<ReciboSon> UnirRecibos(IQueryable<Recibo> recibo)
         {
 
             List<ReciboSon> ReciboCompleto = (from r in recibo
@@ -160,7 +162,8 @@ namespace PruebaWPF.ViewModel
                                                   UsuarioCreacion = r.UsuarioCreacion,
                                                   Recinto = RecintoTable.Siglas,
                                                   Area = AreaTable.descripcion.ToUpper(),
-                                                  ReciboAnulado = ReciboAnuladoTable
+                                                  ReciboAnulado = ReciboAnuladoTable,
+                                                  ReciboDatos = ReciboDatoTable
                                               }
 
 
@@ -275,7 +278,7 @@ namespace PruebaWPF.ViewModel
 
         public Exoneracion FindExoneracionArancel(string identificador, int idTipoDeposito, int idArancelPrecio)
         {
-            Exoneracion exoneracion = db.Exoneracion.FirstOrDefault(f => f.Identificador == identificador && f.IdTipoDeposito == idTipoDeposito && f.IdArancelPrecio == idArancelPrecio && f.regAnulado == false && f.Autorizadopor != null && !f.DetOrdenPagoArancel.Any(a => a.OrdenPago.regAnulado == false) && !f.ReciboDet.Any(a => a.Recibo1.regAnulado == false));
+            Exoneracion exoneracion = db.Exoneracion.FirstOrDefault(f => f.Identificador == identificador && f.IdTipoDeposito == idTipoDeposito && f.IdArancelPrecio == idArancelPrecio && f.regAnulado == false && f.Autorizadopor != null && !f.DetOrdenPagoArancel.Any(a => a.OrdenPago.regAnulado == false) && !f.ReciboDet.Any(a => a.Recibo.regAnulado == false));
             return exoneracion;
         }
         public List<TipoArancel> ObtenerTipoArancel()
@@ -328,7 +331,7 @@ namespace PruebaWPF.ViewModel
         public List<ReciboSon> FindRecibo(int Id, string Serie)
         {
 
-            List<ReciboSon> result = UnirRecibos(db.Recibo1.Where(w => w.IdRecibo == Id && w.Serie == Serie));
+            List<ReciboSon> result = UnirRecibos(db.Recibo.Where(w => w.IdRecibo == Id && w.Serie == Serie));
             return result;
         }
 
@@ -630,7 +633,7 @@ namespace PruebaWPF.ViewModel
             //TODA LA LOGICA DEL ASIENTO CONTABLE SE ENCUENTRA COMENTAREADA, PARA ACTIVAR LOS ASIENTOS SOLO DEBEMOS QUITAR LOS COMENTARIOS
             bool? isSIRAPagado = null;
             bool isMatricula = true; //true:Matricula; false:Prematricula
-            Recibo1 roc = new Recibo1();
+            Recibo roc = new Recibo();
             ReciboDatos datos = null; // no creo la instancia porque no se si será usado
             //List<Asiento> LineasIngreso; //Esta lista contiene todos los movimientos correspondientes al ingreso, luego será unida a la lista que contiene la contrapartida del ingreso y la variacion cambiaria
 
@@ -662,7 +665,7 @@ namespace PruebaWPF.ViewModel
                         {
                             //TODO Unable to determine the principal end of the 'SIFOPModel.FK_ReciboDatos_Recibo' relationship. Multiple added entities may have the same primary key.
                             datos = new ReciboDatos();
-                            datos.Recibo1 = roc;
+                            datos.Recibo = roc;
                             datos.IdRecibo = roc.IdRecibo;
                             datos.Serie = roc.Serie;
                             datos.IdArea = ordenPago.IdArea == "" ? "000" : ordenPago.IdArea;
@@ -731,7 +734,7 @@ namespace PruebaWPF.ViewModel
                                 }
                             }
 
-                            db.Recibo1.Add(roc);
+                            db.Recibo.Add(roc);
                             db.ReciboDatos.Add(datos);
 
                         }
@@ -753,7 +756,7 @@ namespace PruebaWPF.ViewModel
 
                             db.Entry(orden).State = System.Data.Entity.EntityState.Modified;
 
-                            db.Recibo1.Add(roc);
+                            db.Recibo.Add(roc);
 
                         }
 
@@ -769,7 +772,7 @@ namespace PruebaWPF.ViewModel
                                 IdRecibo = roc.IdRecibo,
                                 Serie = roc.Serie,
                                 IdMoneda = s.IdMoneda,
-                                Recibo1 = roc,
+                                Recibo = roc,
                                 Monto = Decimal.Parse(s.Valor.ToString())
                             }).Where(w => w.Monto != 0 && w.IdMoneda == idCordoba).FirstOrDefault();
 
@@ -958,7 +961,7 @@ namespace PruebaWPF.ViewModel
 
         private bool ValidarMismoCajero(int apertura)
         {
-            bool isSame = db.Recibo1.Where(w => w.IdDetAperturaCaja == apertura).All(a => a.UsuarioCreacion == clsSessionHelper.usuario.Login);
+            bool isSame = db.Recibo.Where(w => w.IdDetAperturaCaja == apertura).All(a => a.UsuarioCreacion == clsSessionHelper.usuario.Login);
 
             return isSame;
         }
@@ -969,7 +972,7 @@ namespace PruebaWPF.ViewModel
             {
                 try
                 {
-                    Recibo1 r = db.Recibo1.Find(reciboAnulado.IdRecibo, reciboAnulado.Serie);
+                    Recibo r = db.Recibo.Find(reciboAnulado.IdRecibo, reciboAnulado.Serie);
                     r.regAnulado = true;
                     if (r.IdOrdenPago != null)
                     {
@@ -1058,7 +1061,7 @@ namespace PruebaWPF.ViewModel
                 throw new Exception(clsReferencias.Error_No_MismoCajero);
 
             }
-            var r = db.Recibo1.Where(w => w.Serie.Equals(serieCajero.IdSerie.ToString()));
+            var r = db.Recibo.Where(w => w.Serie.Equals(serieCajero.IdSerie.ToString()));
             int Idrecibo;
 
             if (r.Any())
@@ -1223,7 +1226,7 @@ namespace PruebaWPF.ViewModel
         }
     }
 
-    public class ReciboSon : Recibo1
+    public class ReciboSon : Recibo
     {
         public string Recinto { get; set; }
         public string Area { get; set; }

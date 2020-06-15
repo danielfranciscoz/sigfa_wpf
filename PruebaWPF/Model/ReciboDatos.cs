@@ -20,8 +20,9 @@ namespace PruebaWPF.Model
         public int IdTipoDeposito { get; set; }
         public string Identificador { get; set; }
         public string TextoIdentificador { get; set; }
+        public string Obervacion { get; set; }
     
-        public virtual Recibo1 Recibo1 { get; set; }
+        public virtual Recibo Recibo { get; set; }
         public virtual TipoDeposito TipoDeposito { get; set; }
     }
 }

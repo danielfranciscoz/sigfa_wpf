@@ -18,7 +18,7 @@ namespace PruebaWPF.Model
         public OrdenPago()
         {
             this.DetOrdenPagoArancel = new HashSet<DetOrdenPagoArancel>();
-            this.Recibo1 = new HashSet<Recibo1>();
+            this.Recibo = new HashSet<Recibo>();
             this.ReciboAnulado = new HashSet<ReciboAnulado>();
         }
     
@@ -35,13 +35,14 @@ namespace PruebaWPF.Model
         public System.DateTime FechaEnvio { get; set; }
         public string CodRecibo { get; set; }
         public bool regAnulado { get; set; }
+        public string Obervacion { get; set; }
     
         public virtual Usuario Usuario { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<DetOrdenPagoArancel> DetOrdenPagoArancel { get; set; }
         public virtual TipoDeposito TipoDeposito { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Recibo1> Recibo1 { get; set; }
+        public virtual ICollection<Recibo> Recibo { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<ReciboAnulado> ReciboAnulado { get; set; }
     }

@@ -24,19 +24,20 @@ namespace PruebaWPF.ViewModel
 
         public List<UsuarioPerfil> ObtenerPerfilesUsuario(String Usuario)
         {
+         //   var t = new SIFOP_TESTEntities().UsuarioPerfil.ToList();
             return db.UsuarioPerfil.Where(w => (w.Login == Usuario || w.Usuario.LoginEmail == Usuario) && w.Perfil.isWeb == false && w.RegAnulado == false && w.Usuario.RegAnulado == false && w.Perfil.RegAnulado == false).ToList();
         }
 
 
-        public List<UsuarioPrograma> ObtenerProgramas(String Usuario)
-        {
-            return db.UsuarioPrograma.Where(a => a.RegAnulado == 0 && a.Login == Usuario).ToList();
-        }
+        //public List<UsuarioPrograma> ObtenerProgramas(String Usuario)
+        //{
+        //    return db.UsuarioPrograma.Where(a => a.RegAnulado == 0 && a.Login == Usuario).ToList();
+        //}
 
-        public List<vw_ObtenerPeriodosEspecificos> ObtenerPeriodosEspecificos()
-        {
-            return db.vw_ObtenerPeriodosEspecificos.ToList();
-        }
+        //public List<vw_ObtenerPeriodosEspecificos> ObtenerPeriodosEspecificos()
+        //{
+        //    return db.vw_ObtenerPeriodosEspecificos.ToList();
+        //}
 
         public void SeleccionarPeriodo(string IdPeriodo)
         {

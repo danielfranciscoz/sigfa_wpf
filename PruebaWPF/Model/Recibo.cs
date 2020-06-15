@@ -17,63 +17,44 @@ namespace PruebaWPF.Model
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public Recibo()
         {
-            this.ReciboBillete = new HashSet<ReciboBillete>();
-            this.ReciboBono = new HashSet<ReciboBono>();
-            this.ReciboCheque = new HashSet<ReciboCheque>();
-            this.ReciboDetalle = new HashSet<ReciboDetalle>();
-            this.ReciboFlujoEfectivo = new HashSet<ReciboFlujoEfectivo>();
-            this.ReciboPagare = new HashSet<ReciboPagare>();
-            this.ReciboTarjeta = new HashSet<ReciboTarjeta>();
+            this.ArqueoNoEfectivo = new HashSet<ArqueoNoEfectivo>();
+            this.ArqueoRecibo = new HashSet<ArqueoRecibo>();
+            this.Asiento = new HashSet<Asiento>();
+            this.ReciboDet = new HashSet<ReciboDet>();
+            this.ReciboPago = new HashSet<ReciboPago>();
         }
     
         public int IdRecibo { get; set; }
-        public string SerieRecibo { get; set; }
-        public byte IdPrograma { get; set; }
-        public byte IdRecinto { get; set; }
-        public byte IdPeriodoEspecifico { get; set; }
-        public int IdImpresion { get; set; }
-        public System.DateTime Fecha { get; set; }
-        public byte TipoMoneda { get; set; }
-        public decimal TasaCambio { get; set; }
-        public byte IdActividad { get; set; }
-        public Nullable<int> IdPrematricula { get; set; }
-        public string ALCodigo { get; set; }
-        public string EstudianteCarne { get; set; }
-        public Nullable<int> IdEmpleado { get; set; }
-        public Nullable<int> IdProveedor { get; set; }
-        public Nullable<int> IdAgenteExterno { get; set; }
-        public string Recibimos { get; set; }
-        public Nullable<short> IdCuentaContable { get; set; }
-        public string Concepto { get; set; }
-        public bool Efectivo { get; set; }
-        public bool Cheque { get; set; }
-        public bool TarjetaCredito { get; set; }
-        public bool Pagare { get; set; }
-        public bool Bono { get; set; }
-        public decimal Monto { get; set; }
+        public string Serie { get; set; }
+        public int IdDetAperturaCaja { get; set; }
         public byte IdFuenteFinanciamiento { get; set; }
-        public Nullable<short> IdConcepto { get; set; }
-        public string LoginCreacion { get; set; }
-        public System.DateTime FechaCreacion { get; set; }
-        public bool RegAnulado { get; set; }
+        public string Recibimos { get; set; }
+        public System.DateTime Fecha { get; set; }
+        public int IdInfoRecibo { get; set; }
+        public Nullable<int> IdOrdenPago { get; set; }
+        public bool isRecibimosPorCuenta { get; set; }
+        public string UsuarioCreacion { get; set; }
+        public bool regAnulado { get; set; }
     
-        public virtual Actividad Actividad { get; set; }
-        public virtual Concepto Concepto1 { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<ArqueoNoEfectivo> ArqueoNoEfectivo { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<ArqueoRecibo> ArqueoRecibo { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Asiento> Asiento { get; set; }
         public virtual FuenteFinanciamiento FuenteFinanciamiento { get; set; }
-        public virtual PeriodoEspecifico PeriodoEspecifico { get; set; }
+        public virtual Usuario Usuario { get; set; }
+        public virtual OrdenPago OrdenPago { get; set; }
+        public virtual DetAperturaCaja DetAperturaCaja { get; set; }
+        public virtual InfoRecibo InfoRecibo { get; set; }
+        public virtual SerieRecibo SerieRecibo { get; set; }
+        public virtual ReciboAnulado ReciboAnulado { get; set; }
+        public virtual ReciboDatos ReciboDatos { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<ReciboBillete> ReciboBillete { get; set; }
+        public virtual ICollection<ReciboDet> ReciboDet { get; set; }
+        public virtual ReciboDiferencias ReciboDiferencias { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<ReciboBono> ReciboBono { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<ReciboCheque> ReciboCheque { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<ReciboDetalle> ReciboDetalle { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<ReciboFlujoEfectivo> ReciboFlujoEfectivo { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<ReciboPagare> ReciboPagare { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<ReciboTarjeta> ReciboTarjeta { get; set; }
+        public virtual ICollection<ReciboPago> ReciboPago { get; set; }
+        public virtual ReciboSIRA ReciboSIRA { get; set; }
     }
 }

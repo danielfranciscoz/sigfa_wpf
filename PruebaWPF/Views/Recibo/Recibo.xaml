@@ -51,7 +51,7 @@
                         <Button Tag="{StaticResource Permiso_Exportar}" BorderBrush="Transparent" Background="{StaticResource Export_Button}" Margin="5" Click="btn_Exportar" Height="Auto" Content="{StaticResource Text_Export_Button}"></Button>
                     </StackPanel>
                     <StackPanel HorizontalAlignment="Right" Grid.Column="1" Orientation="Horizontal">
-                        <TextBox SpellCheck.IsEnabled="True" Language="es-419" Margin="0 0 20 0"  x:Name="txtFind" Width="250" materialDesign:HintAssist.Hint="Búsqueda (No.Recibo Serie, Identificación)" materialDesign:HintAssist.IsFloating="True" FontSize="13" KeyUp="txtFindText" ToolTip="La búsqueda se realiza de la siguiente manera [No.Recibo Serie] respetando el espacio entre campos, o bien, ingrese la identificación."/>
+                        <TextBox SpellCheck.IsEnabled="True" Language="es-419" Margin="0 0 20 0"  x:Name="txtFind" Width="250" materialDesign:HintAssist.Hint="Búsqueda (No.Recibo Serie, Identificación)" materialDesign:HintAssist.IsFloating="True" FontSize="13" KeyUp="txtFindText" KeyDown="TxtFind_KeyDown" ToolTip="La búsqueda se realiza de la siguiente manera [No.Recibo Serie] respetando el espacio entre campos, o bien, ingrese la identificación."/>
                     </StackPanel>
                 </Grid>
 
@@ -65,7 +65,7 @@
                         <RowDefinition Height="200"/>
                     </Grid.RowDefinitions>
                     <DockPanel  Grid.Row="0">
-                        <DockPanel Width="350" DockPanel.Dock="Right">
+                        <!--<DockPanel Width="350" DockPanel.Dock="Right">
                             <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" DockPanel.Dock="Top">
                             <TextBlock FontWeight="Bold" Margin="0 5 0 0" HorizontalAlignment="Center">Información del recibo</TextBlock>
                                 
@@ -98,7 +98,7 @@
                                     Recibido de:
                                 </TextBlock>
                             </Grid>
-                        </DockPanel>
+                        </DockPanel>-->
                     <DockPanel x:Name="panelGrid" >
                         <DataGrid Name="tblRecibo" CanUserDeleteRows="False" CanUserAddRows="False" AutoGenerateColumns="False" SelectionUnit="FullRow" SelectionMode="Single" SelectionChanged="tblRecibo_SelectionChanged">
                             <DataGrid.RowStyle>
@@ -129,11 +129,11 @@
                                 <DataGridTextColumn CanUserReorder="False" CanUserResize="False" IsReadOnly="True" Header="Caja" Width="auto" Binding="{Binding DetAperturaCaja.Caja.Nombre}"></DataGridTextColumn>
                                 <DataGridTextColumn CanUserReorder="False" CanUserResize="False" IsReadOnly="True" Header="Apertura" Width="auto" Binding="{Binding DetAperturaCaja.IdDetAperturaCaja}"></DataGridTextColumn>
                                 <DataGridTextColumn CanUserReorder="False" CanUserResize="False" IsReadOnly="True" Header="Recinto" Width="auto" Binding="{Binding Recinto}"></DataGridTextColumn>
+                                <DataGridTextColumn CanUserReorder="False" CanUserResize="False" IsReadOnly="True" Header="Tipo de Depósito" Width="auto" Binding="{Binding TipoDeposito.Nombre}"></DataGridTextColumn>
+                                <DataGridTextColumn CanUserReorder="False" CanUserResize="False" IsReadOnly="True" Header="Identificacion" Width="auto" Binding="{Binding Identificador}"></DataGridTextColumn>
+                                <DataGridTextColumn CanUserReorder="False" CanUserResize="False" IsReadOnly="True" Header="Por Cuenta" Width="auto" Binding="{Binding TextoIdentificador}"></DataGridTextColumn>
                                 <DataGridTextColumn CanUserReorder="False" CanUserResize="False" IsReadOnly="True" Header="Area" Width="auto" Binding="{Binding Area}"></DataGridTextColumn>
                                 <DataGridTextColumn CanUserReorder="False" CanUserResize="False" IsReadOnly="True" Header="Fuente" Width="auto" Binding="{Binding FuenteFinanciamiento.Nombre}"></DataGridTextColumn>
-                                <DataGridTextColumn CanUserReorder="False" CanUserResize="False" IsReadOnly="True" Header="Tipo de Depósito" Width="auto" Binding="{Binding TipoDeposito.Nombre}"></DataGridTextColumn>
-                                <DataGridTextColumn CanUserReorder="False" CanUserResize="False" IsReadOnly="True" Header="Por Cuenta" Width="auto" Binding="{Binding TextoIdentificador}"></DataGridTextColumn>
-                                <!--<DataGridTextColumn CanUserReorder="False" CanUserResize="False" IsReadOnly="True" Header="Identificación" Width="auto" Binding="{Binding Identificador}"></DataGridTextColumn>-->
                                 <DataGridTextColumn CanUserReorder="False" CanUserResize="False" IsReadOnly="True" Header="Orden de Pago" Width="auto" Binding="{Binding OrdenPago.NoOrdenPago}"></DataGridTextColumn>
                                 <DataGridTextColumn CanUserReorder="False" CanUserResize="False" IsReadOnly="True" Header="Creado por" Width="auto" Binding="{Binding UsuarioCreacion}"></DataGridTextColumn>
                                 <DataGridTextColumn CanUserReorder="False" CanUserResize="False" IsReadOnly="True" Header="Fecha de Creación" Width="auto" Binding="{Binding Fecha,StringFormat={}{0:dd/MM/yyyy hh:mm:ss tt}}"></DataGridTextColumn>

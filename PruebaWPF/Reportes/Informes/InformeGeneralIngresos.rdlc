@@ -105,9 +105,9 @@
           <DataField>porCuenta</DataField>
           <rd:TypeName>System.String</rd:TypeName>
         </Field>
-        <Field Name="Recibo1">
-          <DataField>Recibo1</DataField>
-          <rd:TypeName>PruebaWPF.Model.Recibo1</rd:TypeName>
+        <Field Name="Recibo">
+          <DataField>Recibo</DataField>
+          <rd:TypeName>PruebaWPF.Model.Recibo</rd:TypeName>
         </Field>
         <Field Name="ReciboPagoBono">
           <DataField>ReciboPagoBono</DataField>

@@ -250,7 +250,7 @@
         </Field>
         <Field Name="Recibo1">
           <DataField>Recibo1</DataField>
-          <rd:TypeName>PruebaWPF.Model.Recibo1</rd:TypeName>
+          <rd:TypeName>PruebaWPF.Model.Recibo</rd:TypeName>
         </Field>
         <Field Name="Serie">
           <DataField>Serie</DataField>
@@ -1016,7 +1016,7 @@
                                   </Style>
                                 </Paragraph>
                               </Paragraphs>
-                              <rd:DefaultName>IdRecibo1</rd:DefaultName>
+                              <rd:DefaultName>IdRecibo</rd:DefaultName>
                               <Style>
                                 <Border>
                                   <Color>LightGrey</Color>
@@ -2576,7 +2576,7 @@
                       <TablixCells>
                         <TablixCell>
                           <CellContents>
-                            <Textbox Name="Recibo1">
+                            <Textbox Name="Recibo">
                               <CanGrow>true</CanGrow>
                               <KeepTogether>true</KeepTogether>
                               <Paragraphs>

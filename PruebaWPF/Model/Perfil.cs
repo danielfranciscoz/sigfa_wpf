@@ -18,7 +18,6 @@ namespace PruebaWPF.Model
         public Perfil()
         {
             this.AccesoDirectoPerfil = new HashSet<AccesoDirectoPerfil>();
-            this.PerfilContenido = new HashSet<PerfilContenido>();
             this.Permiso = new HashSet<Permiso>();
             this.UsuarioPerfil = new HashSet<UsuarioPerfil>();
         }
@@ -32,8 +31,6 @@ namespace PruebaWPF.Model
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<AccesoDirectoPerfil> AccesoDirectoPerfil { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<PerfilContenido> PerfilContenido { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Permiso> Permiso { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]

@@ -175,6 +175,7 @@ namespace PruebaWPF.ViewModel
                 Valor = s.Valor,
                 LoginCreacion = s.LoginCreacion,
                 Usuario = s.Usuario,
+                FechaCreacion = DateTime.Now,
                 RegAnulado = s.RegAnulado
             }).Where(w => db.VariacionCambiaria.All(a => a.Fecha != w.Fecha || a.IdMoneda != w.Moneda.IdMoneda)).ToList());
             if (add.Count > 0)

@@ -295,7 +295,7 @@
       <rd:DataSetInfo>
         <rd:DataSetName>PruebaWPF.Model</rd:DataSetName>
         <rd:TableName>Recibo1</rd:TableName>
-        <rd:ObjectDataSourceType>PruebaWPF.Model.Recibo1, PruebaWPF, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null</rd:ObjectDataSourceType>
+        <rd:ObjectDataSourceType>PruebaWPF.Model.Recibo, PruebaWPF, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null</rd:ObjectDataSourceType>
       </rd:DataSetInfo>
     </DataSet>
     <DataSet Name="RecibosAnulados">
@@ -392,7 +392,7 @@
       <rd:DataSetInfo>
         <rd:DataSetName>PruebaWPF.Model</rd:DataSetName>
         <rd:TableName>Recibo1</rd:TableName>
-        <rd:ObjectDataSourceType>PruebaWPF.Model.Recibo1, PruebaWPF, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null</rd:ObjectDataSourceType>
+        <rd:ObjectDataSourceType>PruebaWPF.Model.Recibo, PruebaWPF, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null</rd:ObjectDataSourceType>
       </rd:DataSetInfo>
     </DataSet>
     <DataSet Name="EfectivoRecibido">
@@ -788,7 +788,7 @@
         </Field>
         <Field Name="Recibo1">
           <DataField>Recibo1</DataField>
-          <rd:TypeName>PruebaWPF.Model.Recibo1</rd:TypeName>
+          <rd:TypeName>PruebaWPF.Model.Recibo</rd:TypeName>
         </Field>
         <Field Name="ReciboPago2">
           <DataField>ReciboPago2</DataField>

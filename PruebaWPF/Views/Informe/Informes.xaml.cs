@@ -105,7 +105,7 @@ namespace PruebaWPF.Views.Informe
             DateTime? start = dtInicio.SelectedDate;
             DateTime? end = dtFin.SelectedDate;
 
-            Tuple<List<Recibo1>,
+            Tuple<List<Model.Recibo>,
                  List<ObjetoResumen>,
                  List<ObjetoResumen>,
                  List<ObjetoResumen>,
@@ -114,7 +114,7 @@ namespace PruebaWPF.Views.Informe
                  Tuple<List<ReciboPago>>
                  > datos = await FindAsync(start, end, IdRecinto, IdArea, IdCaja);
 
-            List<Recibo1> recibos = datos.Item1;
+            List<Model.Recibo> recibos = datos.Item1;
             List<ObjetoResumen> recintosCount = datos.Item2;
             List<ObjetoResumen> AreasCount = datos.Item3;
 
@@ -275,7 +275,7 @@ namespace PruebaWPF.Views.Informe
             LoadTitle();
         }
 
-        private Task<Tuple<List<Recibo1>, List<ObjetoResumen>, List<ObjetoResumen>, List<ObjetoResumen>, List<ObjetoResumen>, List<ObjetoResumen>, Tuple<List<ReciboPago>>>> FindAsync(DateTime? start, DateTime? end, int? IdRecinto = null, string IdArea = null, int? IdCaja = null)
+        private Task<Tuple<List<Model.Recibo>, List<ObjetoResumen>, List<ObjetoResumen>, List<ObjetoResumen>, List<ObjetoResumen>, List<ObjetoResumen>, Tuple<List<ReciboPago>>>> FindAsync(DateTime? start, DateTime? end, int? IdRecinto = null, string IdArea = null, int? IdCaja = null)
         {
             return Task.Run(() =>
             {

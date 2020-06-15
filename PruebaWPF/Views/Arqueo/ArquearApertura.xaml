@@ -116,7 +116,7 @@
                                             <TextBlock Grid.Column="0" Grid.Row="3" Text="Recibos Generados:"/>
                                             <TextBlock Grid.Column="1" Grid.Row="3" FontWeight="Bold">
                                                 <TextBlock.Inlines>
-                                                    <Run Text="{Binding Recibo1.Count,Mode=OneWay}"></Run>
+                                                    <Run Text="{Binding Recibo.Count,Mode=OneWay}"></Run>
                                                     <Run Text="-> "></Run>
                                                     <Run Text="{Binding Recibos,Mode=OneWay}"></Run>
                                                 </TextBlock.Inlines>
@@ -188,7 +188,7 @@
                                                         <Run Text="Recuento de recibos:"></Run>
                                                         <Run Text="{Binding ElementName=lstRecibos,Path=Items.Count,Mode=OneWay}"></Run>
                                                         <Run Text="de"></Run>
-                                                        <Run Text="{Binding Recibo1.Count,Mode=OneWay}"></Run>
+                                                        <Run Text="{Binding Recibo.Count,Mode=OneWay}"></Run>
                                                     </TextBlock.Inlines>
                                                 </TextBlock>
                                             </StackPanel>

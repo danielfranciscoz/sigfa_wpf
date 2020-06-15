@@ -12,9 +12,9 @@ namespace PruebaWPF.ViewModel
 
         public InformesViewModel() { }
 
-        public Tuple<List<Recibo1>, List<ObjetoResumen>, List<ObjetoResumen>, List<ObjetoResumen>, List<ObjetoResumen>, List<ObjetoResumen>, Tuple<List<ReciboPago>>> InformeIngresos(DateTime? startTime, DateTime? endTime, int? IdRecinto, string IdArea, int? IdCaja)
+        public Tuple<List<Recibo>, List<ObjetoResumen>, List<ObjetoResumen>, List<ObjetoResumen>, List<ObjetoResumen>, List<ObjetoResumen>, Tuple<List<ReciboPago>>> InformeIngresos(DateTime? startTime, DateTime? endTime, int? IdRecinto, string IdArea, int? IdCaja)
         {
-            var recibos = db.Recibo1
+            var recibos = db.Recibo
                 .Where(w =>
 
                 (
@@ -77,25 +77,25 @@ namespace PruebaWPF.ViewModel
             var pago = db.ReciboPago.Where(w =>
 
              (
-                (DbFunctions.TruncateTime(w.Recibo1.Fecha) >= startTime || startTime == null) && (DbFunctions.TruncateTime(w.Recibo1.Fecha) <= endTime || endTime == null)
+                (DbFunctions.TruncateTime(w.Recibo.Fecha) >= startTime || startTime == null) && (DbFunctions.TruncateTime(w.Recibo.Fecha) <= endTime || endTime == null)
              )
              &&
-                (w.Recibo1.InfoRecibo.IdRecinto == IdRecinto || IdRecinto == null) &&
-                (w.Recibo1.DetAperturaCaja.IdCaja == IdCaja || IdCaja == null) &&
+                (w.Recibo.InfoRecibo.IdRecinto == IdRecinto || IdRecinto == null) &&
+                (w.Recibo.DetAperturaCaja.IdCaja == IdCaja || IdCaja == null) &&
                 (
                     (
-                        w.Recibo1.IdOrdenPago != null ? w.Recibo1.OrdenPago.IdArea == IdArea : w.Recibo1.ReciboDatos.IdArea == IdArea) ||
+                        w.Recibo.IdOrdenPago != null ? w.Recibo.OrdenPago.IdArea == IdArea : w.Recibo.ReciboDatos.IdArea == IdArea) ||
                         IdArea == null
                 ) &&
-             !w.Recibo1.regAnulado && w.IdRectificacion == null
+             !w.Recibo.regAnulado && w.IdRectificacion == null
             );
 
             var recintosMoney = pago
                 .Select(s => new
                 {
-                    s.Recibo1.DetAperturaCaja.Caja.Nombre,
-                    s.Recibo1.DetAperturaCaja.Caja.IdCaja,
-                    s.Recibo1.InfoRecibo.IdRecinto,
+                    s.Recibo.DetAperturaCaja.Caja.Nombre,
+                    s.Recibo.DetAperturaCaja.Caja.IdCaja,
+                    s.Recibo.InfoRecibo.IdRecinto,
                     s.Moneda.IdMoneda,
                     s.Moneda.Moneda1,
                     s.Monto
@@ -129,13 +129,13 @@ namespace PruebaWPF.ViewModel
 
             var areasMoney =
                 (pago
-                .Where(w => !w.regAnulado && !w.Recibo1.regAnulado)
+                .Where(w => !w.regAnulado && !w.Recibo.regAnulado)
                 .Select(s => new
                 {
                     s.Moneda.Moneda1,
                     s.Monto,
-                    IdArea = s.Recibo1.ReciboDatos.IdArea ?? s.Recibo1.OrdenPago.IdArea,
-                    OPAnulada = s.Recibo1.OrdenPago != null ? s.Recibo1.OrdenPago.regAnulado : false
+                    IdArea = s.Recibo.ReciboDatos.IdArea ?? s.Recibo.OrdenPago.IdArea,
+                    OPAnulada = s.Recibo.OrdenPago != null ? s.Recibo.OrdenPago.regAnulado : false
                 })).Where(w => !w.OPAnulada)
                 .GroupBy(g => new { g.IdArea, g.Moneda1 })
                 .Select(s => new
@@ -171,7 +171,7 @@ namespace PruebaWPF.ViewModel
 
 
 
-            return new Tuple<List<Recibo1>, List<ObjetoResumen>, List<ObjetoResumen>, List<ObjetoResumen>, List<ObjetoResumen>, List<ObjetoResumen>, Tuple<List<ReciboPago>>>(recibos.OrderByDescending(o => o.Serie).ThenBy(o => o.IdRecibo).ToList(), recintosCount, areasCount, recintosMoney, areasMoney, FormaPagoMoney, new Tuple<List<ReciboPago>>(pago.ToList()));
+            return new Tuple<List<Recibo>, List<ObjetoResumen>, List<ObjetoResumen>, List<ObjetoResumen>, List<ObjetoResumen>, List<ObjetoResumen>, Tuple<List<ReciboPago>>>(recibos.OrderByDescending(o => o.Serie).ThenBy(o => o.IdRecibo).ToList(), recintosCount, areasCount, recintosMoney, areasMoney, FormaPagoMoney, new Tuple<List<ReciboPago>>(pago.ToList()));
         }
 
         private static Tuple<int, int> IntegerDivide(int dividend, int divisor)

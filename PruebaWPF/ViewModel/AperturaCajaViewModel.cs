@@ -53,7 +53,7 @@ namespace PruebaWPF.ViewModel
                     Caja = s.a.Caja,
                     IdAperturaCaja = s.a.IdAperturaCaja,
                     IdDetAperturaCaja = s.a.IdDetAperturaCaja,
-                    Recibo1 = s.a.Recibo1,
+                    Recibo = s.a.Recibo,
                     Recinto = s.recinto.Siglas,
                     Arqueo = s.a.Arqueo
                 })

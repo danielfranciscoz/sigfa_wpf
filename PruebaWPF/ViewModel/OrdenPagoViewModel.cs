@@ -121,14 +121,12 @@ namespace PruebaWPF.ViewModel
         {
             if (!text.Equals(""))
             {
-                string[] busqueda = text.Trim().Split(' ');
+                string[] busqueda = text.ToLower().Trim().Split(' ');
 
-                using (SIFOPEntities t = new SIFOPEntities())
-                {
-                    return FindAllOrders(allRecintos).Where(
-                       w => busqueda.All(a => w.TextoIdentificador.Contains(a)))
+                    return FindAllOrders(allRecintos).ToList().Where(
+                       w => busqueda.All(a => w.TextoIdentificador.ToLower().Contains(a)) || w.Identificador_Externo.ToLower().Contains(text))
                     .ToList();
-                }
+                
             }
             else
             {

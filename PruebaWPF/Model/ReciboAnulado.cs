@@ -23,6 +23,6 @@ namespace PruebaWPF.Model
     
         public virtual Usuario Usuario { get; set; }
         public virtual OrdenPago OrdenPago { get; set; }
-        public virtual Recibo1 Recibo1 { get; set; }
+        public virtual Recibo Recibo { get; set; }
     }
 }
