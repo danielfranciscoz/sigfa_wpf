@@ -555,17 +555,19 @@
                                         </Grid>
 
                                         <!--Deposito-->
-                                        <Grid x:Name="Deposito" Visibility="Collapsed">
+                                        <Grid x:Name="Deposito" Visibility="Collapsed" >
                                             <Grid.ColumnDefinitions>
-                                                <ColumnDefinition Width="110"/>
-                                                <ColumnDefinition Width="230"/>
+                                                <ColumnDefinition Width="auto"/>
+                                                <ColumnDefinition Width="auto"/>
+                                                <ColumnDefinition Width="10"/>                                                
+                                                <ColumnDefinition Width="auto"/>
+                                                <ColumnDefinition Width="auto"/>
                                                 <ColumnDefinition Width="10"/>
-                                                <ColumnDefinition Width="70"/>
-                                                <ColumnDefinition Width="120"/>
-                                                <ColumnDefinition Width="10"/>
-                                                <ColumnDefinition Width="70"/>
+                                                <ColumnDefinition Width="auto"/>
                                                 <ColumnDefinition Width="*"/>
-                                                <ColumnDefinition Width="70"/>
+                                                <ColumnDefinition Width="10"/>
+                                                <ColumnDefinition Width="auto"/>
+                                                <ColumnDefinition Width="*" />
                                             </Grid.ColumnDefinitions>
 
                                             <Grid.RowDefinitions>
@@ -578,22 +580,32 @@
                                                     <Run Text="Tipo:"></Run>
                                                 </TextBlock.Inlines>
                                             </TextBlock>
-                                            <ComboBox x:Name="cboTipo"  Grid.Row="0" Grid.Column="1" Width="230" materialDesign:HintAssist.Hint="Seleccione" VerticalAlignment="Center" HorizontalAlignment="Left">
+
+                                            <ComboBox x:Name="cboTipo" TabIndex="4" Margin="15 0 0 0" Grid.Row="0" Grid.Column="1" Width="120" materialDesign:HintAssist.Hint="Seleccione" VerticalAlignment="Center" HorizontalAlignment="Left">
                                                 <ComboBoxItem>Minuta</ComboBoxItem>
                                                 <ComboBoxItem>Transferencia</ComboBoxItem>
                                             </ComboBox>
 
-                                            <TextBlock ToolTip="{Binding ElementName=txtTransaccion,Path=ToolTip}" Grid.Row="0" Grid.Column="3"  VerticalAlignment="Center">
+                                            <TextBlock  Grid.Row="0" Grid.Column="3" VerticalAlignment="Center">
+                                                <TextBlock.Inlines>
+                                                    <Run Foreground="{StaticResource ErrorMsj}" Text="*"></Run>
+                                                    <Run Text="Banco:"></Run>
+                                                </TextBlock.Inlines>
+                                            </TextBlock>
+                                            <ComboBox x:Name="cboBancoDeposito" Margin="15 0 0 0" TabIndex="5" DisplayMemberPath="Nombre" SelectedValuePath="IdBanco"  Grid.Row="0" Grid.Column="4" Width="120" materialDesign:HintAssist.Hint="Seleccione" VerticalAlignment="Center" HorizontalAlignment="Left">
+
+                                            </ComboBox>
+                                            <TextBlock ToolTip="{Binding ElementName=txtTransaccion,Path=ToolTip}" Grid.Row="0" Grid.Column="6"  VerticalAlignment="Center">
                                                 <TextBlock.Inlines>
                                                     <Run Foreground="{StaticResource ErrorMsj}" Text="*"></Run>
                                                     <Run Text="No. TRX:"></Run>
                                                 </TextBlock.Inlines>
                                             </TextBlock>
-                                            <TextBox x:Name="txtTransaccion" ToolTip="Número de Transacción" Grid.Row="0" Grid.Column="4"  VerticalAlignment="Center"  TextAlignment="Right"></TextBox>
+                                            <TextBox x:Name="txtTransaccion" Margin="15 0 0 0" TabIndex="6" ToolTip="Número de Transacción" Grid.Row="0" Grid.Column="7"  VerticalAlignment="Center"  TextAlignment="Right"></TextBox>
 
-                                            <TextBlock Grid.Row="0" Grid.Column="6"  VerticalAlignment="Center" Text="Observación:">
+                                            <TextBlock Grid.Row="0" Grid.Column="9"  VerticalAlignment="Center" Text="Observación:">
                                             </TextBlock>
-                                            <TextBox x:Name="txtObservación"  Grid.Row="0" Grid.Column="7"  VerticalAlignment="Center" ></TextBox>
+                                            <TextBox x:Name="txtObservación" Margin="15 0 0 0" TabIndex="7" Grid.Row="0" Grid.Column="10"  VerticalAlignment="Center" ></TextBox>
 
 
                                         </Grid>

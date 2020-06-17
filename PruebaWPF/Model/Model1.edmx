@@ -482,7 +482,7 @@ advertencia 6002: La tabla o vista 'SIFOP.coin.Parametro' no tiene definida ning
           <Property Name="FechaEnvio" Type="datetime" Nullable="false" />
           <Property Name="CodRecibo" Type="varchar" MaxLength="25" />
           <Property Name="regAnulado" Type="bit" Nullable="false" />
-          <Property Name="Obervacion" Type="varchar" MaxLength="50" />
+          <Property Name="Observacion" Type="varchar" MaxLength="50" />
         </EntityType>
         <EntityType Name="TipoArancel">
           <Key>
@@ -670,6 +670,7 @@ advertencia 6002: La tabla o vista 'SIFOP.coin.Parametro' no tiene definida ning
           </Key>
           <Property Name="IdReciboPago" Type="int" Nullable="false" />
           <Property Name="Tipo" Type="bit" Nullable="false" />
+          <Property Name="IdBanco" Type="tinyint" />
           <Property Name="Transaccion" Type="varchar" MaxLength="20" Nullable="false" />
           <Property Name="Observacion" Type="varchar" MaxLength="120" />
         </EntityType>
@@ -2350,6 +2351,18 @@ advertencia 6002: La tabla o vista 'SIFOP.dbo.vw_ObtenerPeriodosEspecificos' no 
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_ReciboPagoDeposito_Banco">
+          <End Role="Banco" Type="Self.Banco" Multiplicity="0..1" />
+          <End Role="ReciboPagoDeposito" Type="Self.ReciboPagoDeposito" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Banco">
+              <PropertyRef Name="IdBanco" />
+            </Principal>
+            <Dependent Role="ReciboPagoDeposito">
+              <PropertyRef Name="IdBanco" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_ReciboPagoDeposito_ReciboPago">
           <End Role="ReciboPago" Type="Self.ReciboPago" Multiplicity="1" />
           <End Role="ReciboPagoDeposito" Type="Self.ReciboPagoDeposito" Multiplicity="0..1" />
@@ -3313,6 +3326,10 @@ advertencia 6002: La tabla o vista 'SIFOP.dbo.vw_ObtenerPeriodosEspecificos' no 
             <End Role="ReciboPago" EntitySet="ReciboPago" />
             <End Role="ReciboPagoCheque" EntitySet="ReciboPagoCheque" />
           </AssociationSet>
+          <AssociationSet Name="FK_ReciboPagoDeposito_Banco" Association="Self.FK_ReciboPagoDeposito_Banco">
+            <End Role="Banco" EntitySet="Banco" />
+            <End Role="ReciboPagoDeposito" EntitySet="ReciboPagoDeposito" />
+          </AssociationSet>
           <AssociationSet Name="FK_ReciboPagoDeposito_ReciboPago" Association="Self.FK_ReciboPagoDeposito_ReciboPago">
             <End Role="ReciboPago" EntitySet="ReciboPago" />
             <End Role="ReciboPagoDeposito" EntitySet="ReciboPagoDeposito" />
@@ -3690,6 +3707,7 @@ advertencia 6002: La tabla o vista 'SIFOP.dbo.vw_ObtenerPeriodosEspecificos' no 
           <Property Name="RegAnulado" Type="Boolean" Nullable="false" />
           <NavigationProperty Name="Usuario" Relationship="Self.FK_Banco_Usuario" FromRole="Banco" ToRole="Usuario" />
           <NavigationProperty Name="ReciboPagoCheque" Relationship="Self.FK_ReciboPagoCheque_Banco" FromRole="Banco" ToRole="ReciboPagoCheque" />
+          <NavigationProperty Name="ReciboPagoDeposito" Relationship="SIFOPModel.FK_ReciboPagoDeposito_Banco" FromRole="Banco" ToRole="ReciboPagoDeposito" />
         </EntityType>
         <EntityType Name="CiaTarjetaCredito">
           <Key>
@@ -3820,7 +3838,6 @@ advertencia 6002: La tabla o vista 'SIFOP.dbo.vw_ObtenerPeriodosEspecificos' no 
           <NavigationProperty Name="ExoneracionTotalArea" Relationship="Self.FK_ExoneracionTotalArea_Usuario" FromRole="Usuario" ToRole="ExoneracionTotalArea" />
           <NavigationProperty Name="FormaPago" Relationship="Self.FK_FormaPago_FormaPago" FromRole="Usuario" ToRole="FormaPago" />
           <NavigationProperty Name="InfoRecibo" Relationship="Self.FK_InfoRecibo_Usuario" FromRole="Usuario" ToRole="InfoRecibo" />
-          <NavigationProperty Name="OrdenPago" Relationship="Self.FK_OrdenPago_OrdenPago" FromRole="Usuario" ToRole="OrdenPago" />
           <NavigationProperty Name="Permiso" Relationship="Self.FK_Permiso_Usuario" FromRole="Usuario" ToRole="Permiso" />
           <NavigationProperty Name="Recibo" Relationship="Self.FK_Recibo_Usuario" FromRole="Usuario" ToRole="Recibo" />
           <NavigationProperty Name="ReciboAnulado" Relationship="Self.FK_ReciboAnulado_Usuario" FromRole="Usuario" ToRole="ReciboAnulado" />
@@ -3833,6 +3850,7 @@ advertencia 6002: La tabla o vista 'SIFOP.dbo.vw_ObtenerPeriodosEspecificos' no 
           <NavigationProperty Name="UsuarioPerfil" Relationship="Self.FK_UsuarioPerfil_Usuario" FromRole="Usuario" ToRole="UsuarioPerfil" />
           <NavigationProperty Name="VariacionCambiaria" Relationship="Self.FK_VariacionCambiaria_Usuario" FromRole="Usuario" ToRole="VariacionCambiaria" />
           <NavigationProperty Name="TipoCuenta" Relationship="SIFOPModel.FK_TipoCuenta_Usuario" FromRole="Usuario" ToRole="TipoCuenta" />
+          <NavigationProperty Name="OrdenPago" Relationship="SIFOPModel.FK_OrdenPago_OrdenPago" FromRole="Usuario" ToRole="OrdenPago" />
         </EntityType>
         <EntityType Name="UsuarioPerfil">
           <Key>
@@ -3958,7 +3976,7 @@ advertencia 6002: La tabla o vista 'SIFOP.dbo.vw_ObtenerPeriodosEspecificos' no 
           <NavigationProperty Name="Usuario" Relationship="Self.FK_DetOrdenPagoArancel_Usuario" FromRole="DetOrdenPagoArancel" ToRole="Usuario" />
           <NavigationProperty Name="ArancelPrecio" Relationship="Self.FK_DetOrdenPagoArancel_ArancelPrecio" FromRole="DetOrdenPagoArancel" ToRole="ArancelPrecio" />
           <NavigationProperty Name="Exoneracion" Relationship="Self.FK_DetOrdenPagoArancel_Exoneracion" FromRole="DetOrdenPagoArancel" ToRole="Exoneracion" />
-          <NavigationProperty Name="OrdenPago" Relationship="Self.FK_DetOrdenPagoArancel_OrdenPago" FromRole="DetOrdenPagoArancel" ToRole="OrdenPago" />
+          <NavigationProperty Name="OrdenPago" Relationship="SIFOPModel.FK_DetOrdenPagoArancel_OrdenPago" FromRole="DetOrdenPagoArancel" ToRole="OrdenPago" />
         </EntityType>
         <EntityType Name="Exoneracion">
           <Key>
@@ -3990,30 +4008,6 @@ advertencia 6002: La tabla o vista 'SIFOP.dbo.vw_ObtenerPeriodosEspecificos' no 
           <Property Name="RegAnulado" Type="Boolean" Nullable="false" />
           <Property Name="UsuarioCreacion" Type="String" MaxLength="20" FixedLength="false" Unicode="true" Nullable="false" />
           <NavigationProperty Name="Usuario" Relationship="Self.FK_ExoneracionTotalArea_Usuario" FromRole="ExoneracionTotalArea" ToRole="Usuario" />
-        </EntityType>
-        <EntityType Name="OrdenPago">
-          <Key>
-            <PropertyRef Name="IdOrdenPago" />
-          </Key>
-          <Property Name="IdOrdenPago" Type="Int32" Nullable="false" />
-          <Property Name="NoOrdenPago" Type="String" MaxLength="10" FixedLength="false" Unicode="false" Nullable="false" />
-          <Property Name="IdArea" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
-          <Property Name="IdRecinto" Type="Int32" Nullable="false" />
-          <Property Name="IdTipoDeposito" Type="Int32" Nullable="false" />
-          <Property Name="Identificador" Type="String" MaxLength="20" FixedLength="false" Unicode="false" Nullable="false" />
-          <Property Name="TextoIdentificador" Type="String" MaxLength="80" FixedLength="false" Unicode="false" Nullable="false" />
-          <Property Name="UsuarioRemitente" Type="String" MaxLength="20" FixedLength="false" Unicode="true" Nullable="false" />
-          <Property Name="EmailNotificacion" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Name="Sistema" Type="String" MaxLength="20" FixedLength="false" Unicode="false" Nullable="false" />
-          <Property Name="FechaEnvio" Type="DateTime" Nullable="false" Precision="3" />
-          <Property Name="CodRecibo" Type="String" MaxLength="25" FixedLength="false" Unicode="false" />
-          <Property Name="regAnulado" Type="Boolean" Nullable="false" />
-          <NavigationProperty Name="Usuario" Relationship="Self.FK_OrdenPago_OrdenPago" FromRole="OrdenPago" ToRole="Usuario" />
-          <NavigationProperty Name="DetOrdenPagoArancel" Relationship="Self.FK_DetOrdenPagoArancel_OrdenPago" FromRole="OrdenPago" ToRole="DetOrdenPagoArancel" />
-          <NavigationProperty Name="TipoDeposito" Relationship="Self.FK_OrdenPago_TipoDeposito" FromRole="OrdenPago" ToRole="TipoDeposito" />
-          <NavigationProperty Name="Recibo" Relationship="Self.FK_Recibo_OrdenPago" FromRole="OrdenPago" ToRole="Recibo" />
-          <NavigationProperty Name="ReciboAnulado" Relationship="Self.FK_ReciboAnulado_OrdenPago" FromRole="OrdenPago" ToRole="ReciboAnulado" />
-          <Property Name="Obervacion" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
         </EntityType>
         <EntityType Name="TipoArancel">
           <Key>
@@ -4140,7 +4134,6 @@ advertencia 6002: La tabla o vista 'SIFOP.dbo.vw_ObtenerPeriodosEspecificos' no 
           <NavigationProperty Name="Asiento" Relationship="Self.FK_Asiento_Recibo" FromRole="Recibo" ToRole="Asiento" />
           <NavigationProperty Name="FuenteFinanciamiento" Relationship="Self.FK_Recibo_FuenteFinanciamiento" FromRole="Recibo" ToRole="FuenteFinanciamiento" />
           <NavigationProperty Name="Usuario" Relationship="Self.FK_Recibo_Usuario" FromRole="Recibo" ToRole="Usuario" />
-          <NavigationProperty Name="OrdenPago" Relationship="Self.FK_Recibo_OrdenPago" FromRole="Recibo" ToRole="OrdenPago" />
           <NavigationProperty Name="DetAperturaCaja" Relationship="Self.FK_Recibo_DetAperturaCaja" FromRole="Recibo" ToRole="DetAperturaCaja" />
           <NavigationProperty Name="InfoRecibo" Relationship="Self.FK_Recibo_InfoRecibo" FromRole="Recibo" ToRole="InfoRecibo" />
           <NavigationProperty Name="SerieRecibo" Relationship="Self.FK_Recibo_SerieRecibo" FromRole="Recibo" ToRole="SerieRecibo" />
@@ -4150,6 +4143,7 @@ advertencia 6002: La tabla o vista 'SIFOP.dbo.vw_ObtenerPeriodosEspecificos' no 
           <NavigationProperty Name="ReciboDiferencias" Relationship="Self.FK_ReciboDiferencias_Recibo" FromRole="Recibo" ToRole="ReciboDiferencias" />
           <NavigationProperty Name="ReciboPago" Relationship="Self.FK_ReciboPago_Recibo" FromRole="Recibo" ToRole="ReciboPago" />
           <NavigationProperty Name="ReciboSIRA" Relationship="Self.FK_ReciboSIRA_Recibo" FromRole="Recibo" ToRole="ReciboSIRA" />
+          <NavigationProperty Name="OrdenPago" Relationship="SIFOPModel.FK_Recibo_OrdenPago" FromRole="Recibo" ToRole="OrdenPago" />
         </EntityType>
         <EntityType Name="ReciboAnulado">
           <Key>
@@ -4163,8 +4157,8 @@ advertencia 6002: La tabla o vista 'SIFOP.dbo.vw_ObtenerPeriodosEspecificos' no 
           <Property Name="UsuarioAnulacion" Type="String" MaxLength="20" FixedLength="false" Unicode="true" Nullable="false" />
           <Property Name="FechaAnulacion" Type="DateTime" Nullable="false" Precision="3" />
           <NavigationProperty Name="Usuario" Relationship="Self.FK_ReciboAnulado_Usuario" FromRole="ReciboAnulado" ToRole="Usuario" />
-          <NavigationProperty Name="OrdenPago" Relationship="Self.FK_ReciboAnulado_OrdenPago" FromRole="ReciboAnulado" ToRole="OrdenPago" />
           <NavigationProperty Name="Recibo" Relationship="Self.FK_ReciboAnulado_Recibo" FromRole="ReciboAnulado" ToRole="Recibo" />
+          <NavigationProperty Name="OrdenPago" Relationship="SIFOPModel.FK_ReciboAnulado_OrdenPago" FromRole="ReciboAnulado" ToRole="OrdenPago" />
         </EntityType>
         <EntityType Name="ReciboDatos">
           <Key>
@@ -4271,6 +4265,8 @@ advertencia 6002: La tabla o vista 'SIFOP.dbo.vw_ObtenerPeriodosEspecificos' no 
           <Property Name="Transaccion" Type="String" MaxLength="20" FixedLength="false" Unicode="false" Nullable="false" />
           <Property Name="Observacion" Type="String" MaxLength="120" FixedLength="false" Unicode="false" />
           <NavigationProperty Name="ReciboPago" Relationship="Self.FK_ReciboPagoDeposito_ReciboPago" FromRole="ReciboPagoDeposito" ToRole="ReciboPago" />
+          <Property Name="IdBanco" Type="Byte" />
+          <NavigationProperty Name="Banco" Relationship="SIFOPModel.FK_ReciboPagoDeposito_Banco" FromRole="ReciboPagoDeposito" ToRole="Banco" />
         </EntityType>
         <EntityType Name="ReciboPagoTarjeta">
           <Key>
@@ -4319,9 +4315,9 @@ advertencia 6002: La tabla o vista 'SIFOP.dbo.vw_ObtenerPeriodosEspecificos' no 
           <NavigationProperty Name="Usuario" Relationship="Self.FK_TipoDeposito_Usuario" FromRole="TipoDeposito" ToRole="Usuario" />
           <NavigationProperty Name="ArancelTipoDeposito" Relationship="Self.FK_ArancelTipoDeposito_TipoDeposito" FromRole="TipoDeposito" ToRole="ArancelTipoDeposito" />
           <NavigationProperty Name="Exoneracion" Relationship="Self.FK_Exoneracion_TipoDeposito" FromRole="TipoDeposito" ToRole="Exoneracion" />
-          <NavigationProperty Name="OrdenPago" Relationship="Self.FK_OrdenPago_TipoDeposito" FromRole="TipoDeposito" ToRole="OrdenPago" />
           <NavigationProperty Name="TipoArancel" Relationship="Self.FK_TipoArancel_TipoDeposito" FromRole="TipoDeposito" ToRole="TipoArancel" />
           <NavigationProperty Name="ReciboDatos" Relationship="Self.FK_ReciboDatos_TipoDeposito" FromRole="TipoDeposito" ToRole="ReciboDatos" />
+          <NavigationProperty Name="OrdenPago" Relationship="SIFOPModel.FK_OrdenPago_TipoDeposito" FromRole="TipoDeposito" ToRole="OrdenPago" />
         </EntityType>
         <EntityType Name="VoucherBanco">
           <Key>
@@ -5466,18 +5462,6 @@ advertencia 6002: La tabla o vista 'SIFOP.dbo.vw_ObtenerPeriodosEspecificos' no 
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_OrdenPago_OrdenPago">
-          <End Role="Usuario" Type="Self.Usuario" Multiplicity="1" />
-          <End Role="OrdenPago" Type="Self.OrdenPago" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Usuario">
-              <PropertyRef Name="Login" />
-            </Principal>
-            <Dependent Role="OrdenPago">
-              <PropertyRef Name="UsuarioRemitente" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <Association Name="FK_Permiso_Usuario">
           <End Role="Usuario" Type="Self.Usuario" Multiplicity="1" />
           <End Role="Permiso" Type="Self.Permiso" Multiplicity="*" />
@@ -5742,18 +5726,6 @@ advertencia 6002: La tabla o vista 'SIFOP.dbo.vw_ObtenerPeriodosEspecificos' no 
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_DetOrdenPagoArancel_OrdenPago">
-          <End Role="OrdenPago" Type="Self.OrdenPago" Multiplicity="1" />
-          <End Role="DetOrdenPagoArancel" Type="Self.DetOrdenPagoArancel" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="OrdenPago">
-              <PropertyRef Name="IdOrdenPago" />
-            </Principal>
-            <Dependent Role="DetOrdenPagoArancel">
-              <PropertyRef Name="IdOrdenPago" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <Association Name="FK_Exoneracion_TipoDeposito">
           <End Role="TipoDeposito" Type="Self.TipoDeposito" Multiplicity="1" />
           <End Role="Exoneracion" Type="Self.Exoneracion" Multiplicity="*" />
@@ -5775,42 +5747,6 @@ advertencia 6002: La tabla o vista 'SIFOP.dbo.vw_ObtenerPeriodosEspecificos' no 
             </Principal>
             <Dependent Role="ReciboDet">
               <PropertyRef Name="IdExoneracion" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_OrdenPago_TipoDeposito">
-          <End Role="TipoDeposito" Type="Self.TipoDeposito" Multiplicity="1" />
-          <End Role="OrdenPago" Type="Self.OrdenPago" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="TipoDeposito">
-              <PropertyRef Name="IdTipoDeposito" />
-            </Principal>
-            <Dependent Role="OrdenPago">
-              <PropertyRef Name="IdTipoDeposito" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_Recibo_OrdenPago">
-          <End Role="OrdenPago" Type="Self.OrdenPago" Multiplicity="0..1" />
-          <End Role="Recibo" Type="Self.Recibo" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="OrdenPago">
-              <PropertyRef Name="IdOrdenPago" />
-            </Principal>
-            <Dependent Role="Recibo">
-              <PropertyRef Name="IdOrdenPago" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_ReciboAnulado_OrdenPago">
-          <End Role="OrdenPago" Type="Self.OrdenPago" Multiplicity="0..1" />
-          <End Role="ReciboAnulado" Type="Self.ReciboAnulado" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="OrdenPago">
-              <PropertyRef Name="IdOrdenPago" />
-            </Principal>
-            <Dependent Role="ReciboAnulado">
-              <PropertyRef Name="IdOrdenPago" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -6171,7 +6107,6 @@ advertencia 6002: La tabla o vista 'SIFOP.dbo.vw_ObtenerPeriodosEspecificos' no 
           <EntitySet Name="DetOrdenPagoArancel" EntityType="Self.DetOrdenPagoArancel" />
           <EntitySet Name="Exoneracion" EntityType="Self.Exoneracion" />
           <EntitySet Name="ExoneracionTotalArea" EntityType="Self.ExoneracionTotalArea" />
-          <EntitySet Name="OrdenPago" EntityType="Self.OrdenPago" />
           <EntitySet Name="TipoArancel" EntityType="Self.TipoArancel" />
           <EntitySet Name="UsuarioArancel" EntityType="Self.UsuarioArancel" />
           <EntitySet Name="AperturaCaja" EntityType="Self.AperturaCaja" />
@@ -6489,10 +6424,6 @@ advertencia 6002: La tabla o vista 'SIFOP.dbo.vw_ObtenerPeriodosEspecificos' no 
             <End Role="Usuario" EntitySet="Usuario" />
             <End Role="InfoRecibo" EntitySet="InfoRecibo" />
           </AssociationSet>
-          <AssociationSet Name="FK_OrdenPago_OrdenPago" Association="Self.FK_OrdenPago_OrdenPago">
-            <End Role="Usuario" EntitySet="Usuario" />
-            <End Role="OrdenPago" EntitySet="OrdenPago" />
-          </AssociationSet>
           <AssociationSet Name="FK_Permiso_Usuario" Association="Self.FK_Permiso_Usuario">
             <End Role="Usuario" EntitySet="Usuario" />
             <End Role="Permiso" EntitySet="Permiso" />
@@ -6581,10 +6512,6 @@ advertencia 6002: La tabla o vista 'SIFOP.dbo.vw_ObtenerPeriodosEspecificos' no 
             <End Role="Exoneracion" EntitySet="Exoneracion" />
             <End Role="DetOrdenPagoArancel" EntitySet="DetOrdenPagoArancel" />
           </AssociationSet>
-          <AssociationSet Name="FK_DetOrdenPagoArancel_OrdenPago" Association="Self.FK_DetOrdenPagoArancel_OrdenPago">
-            <End Role="OrdenPago" EntitySet="OrdenPago" />
-            <End Role="DetOrdenPagoArancel" EntitySet="DetOrdenPagoArancel" />
-          </AssociationSet>
           <AssociationSet Name="FK_Exoneracion_TipoDeposito" Association="Self.FK_Exoneracion_TipoDeposito">
             <End Role="TipoDeposito" EntitySet="TipoDeposito" />
             <End Role="Exoneracion" EntitySet="Exoneracion" />
@@ -6592,18 +6519,6 @@ advertencia 6002: La tabla o vista 'SIFOP.dbo.vw_ObtenerPeriodosEspecificos' no 
           <AssociationSet Name="FK_ReciboDet_Exoneracion" Association="Self.FK_ReciboDet_Exoneracion">
             <End Role="Exoneracion" EntitySet="Exoneracion" />
             <End Role="ReciboDet" EntitySet="ReciboDet" />
-          </AssociationSet>
-          <AssociationSet Name="FK_OrdenPago_TipoDeposito" Association="Self.FK_OrdenPago_TipoDeposito">
-            <End Role="TipoDeposito" EntitySet="TipoDeposito" />
-            <End Role="OrdenPago" EntitySet="OrdenPago" />
-          </AssociationSet>
-          <AssociationSet Name="FK_Recibo_OrdenPago" Association="Self.FK_Recibo_OrdenPago">
-            <End Role="OrdenPago" EntitySet="OrdenPago" />
-            <End Role="Recibo" EntitySet="Recibo" />
-          </AssociationSet>
-          <AssociationSet Name="FK_ReciboAnulado_OrdenPago" Association="Self.FK_ReciboAnulado_OrdenPago">
-            <End Role="OrdenPago" EntitySet="OrdenPago" />
-            <End Role="ReciboAnulado" EntitySet="ReciboAnulado" />
           </AssociationSet>
           <AssociationSet Name="FK_TipoArancel_TipoDeposito" Association="Self.FK_TipoArancel_TipoDeposito">
             <End Role="TipoDeposito" EntitySet="TipoDeposito" />
@@ -6768,6 +6683,31 @@ advertencia 6002: La tabla o vista 'SIFOP.dbo.vw_ObtenerPeriodosEspecificos' no 
           </AssociationSet>
           <EntitySet Name="Programa" EntityType="SIFOPModel.Programa" />
           <EntitySet Name="vw_ObtenerPeriodosEspecificos" EntityType="SIFOPModel.vw_ObtenerPeriodosEspecificos" />
+          <AssociationSet Name="FK_ReciboPagoDeposito_Banco" Association="SIFOPModel.FK_ReciboPagoDeposito_Banco">
+            <End Role="Banco" EntitySet="Banco" />
+            <End Role="ReciboPagoDeposito" EntitySet="ReciboPagoDeposito" />
+          </AssociationSet>
+          <EntitySet Name="OrdenPago" EntityType="SIFOPModel.OrdenPago" />
+          <AssociationSet Name="FK_OrdenPago_OrdenPago" Association="SIFOPModel.FK_OrdenPago_OrdenPago">
+            <End Role="Usuario" EntitySet="Usuario" />
+            <End Role="OrdenPago" EntitySet="OrdenPago" />
+          </AssociationSet>
+          <AssociationSet Name="FK_DetOrdenPagoArancel_OrdenPago" Association="SIFOPModel.FK_DetOrdenPagoArancel_OrdenPago">
+            <End Role="OrdenPago" EntitySet="OrdenPago" />
+            <End Role="DetOrdenPagoArancel" EntitySet="DetOrdenPagoArancel" />
+          </AssociationSet>
+          <AssociationSet Name="FK_OrdenPago_TipoDeposito" Association="SIFOPModel.FK_OrdenPago_TipoDeposito">
+            <End Role="TipoDeposito" EntitySet="TipoDeposito" />
+            <End Role="OrdenPago" EntitySet="OrdenPago" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Recibo_OrdenPago" Association="SIFOPModel.FK_Recibo_OrdenPago">
+            <End Role="OrdenPago" EntitySet="OrdenPago" />
+            <End Role="Recibo" EntitySet="Recibo" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ReciboAnulado_OrdenPago" Association="SIFOPModel.FK_ReciboAnulado_OrdenPago">
+            <End Role="OrdenPago" EntitySet="OrdenPago" />
+            <End Role="ReciboAnulado" EntitySet="ReciboAnulado" />
+          </AssociationSet>
         </EntityContainer>
         <EntityType Name="TipoCuenta">
           <Key>
@@ -6828,6 +6768,102 @@ advertencia 6002: La tabla o vista 'SIFOP.dbo.vw_ObtenerPeriodosEspecificos' no 
           <Property Name="Periodo" Type="String" MaxLength="17" FixedLength="false" Unicode="false" />
           <Property Name="Estado" Type="Byte" Nullable="false" />
         </EntityType>
+        <Association Name="FK_ReciboPagoDeposito_Banco">
+          <End Type="SIFOPModel.Banco" Role="Banco" Multiplicity="0..1" />
+          <End Type="SIFOPModel.ReciboPagoDeposito" Role="ReciboPagoDeposito" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Banco">
+              <PropertyRef Name="IdBanco" />
+            </Principal>
+            <Dependent Role="ReciboPagoDeposito">
+              <PropertyRef Name="IdBanco" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="OrdenPago">
+          <Key>
+            <PropertyRef Name="IdOrdenPago" />
+          </Key>
+          <Property Name="IdOrdenPago" Type="Int32" Nullable="false" />
+          <Property Name="NoOrdenPago" Type="String" Nullable="false" MaxLength="10" FixedLength="false" Unicode="false" />
+          <Property Name="IdArea" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="IdRecinto" Type="Int32" Nullable="false" />
+          <Property Name="IdTipoDeposito" Type="Int32" Nullable="false" />
+          <Property Name="Identificador" Type="String" Nullable="false" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="TextoIdentificador" Type="String" Nullable="false" MaxLength="80" FixedLength="false" Unicode="false" />
+          <Property Name="UsuarioRemitente" Type="String" Nullable="false" MaxLength="20" FixedLength="false" Unicode="true" />
+          <Property Name="EmailNotificacion" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Sistema" Type="String" Nullable="false" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="FechaEnvio" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="CodRecibo" Type="String" MaxLength="25" FixedLength="false" Unicode="false" />
+          <Property Name="regAnulado" Type="Boolean" Nullable="false" />
+          <Property Name="Observacion" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="Usuario" Relationship="SIFOPModel.FK_OrdenPago_OrdenPago" FromRole="OrdenPago" ToRole="Usuario" />
+          <NavigationProperty Name="DetOrdenPagoArancel" Relationship="SIFOPModel.FK_DetOrdenPagoArancel_OrdenPago" FromRole="OrdenPago" ToRole="DetOrdenPagoArancel" />
+          <NavigationProperty Name="TipoDeposito" Relationship="SIFOPModel.FK_OrdenPago_TipoDeposito" FromRole="OrdenPago" ToRole="TipoDeposito" />
+          <NavigationProperty Name="Recibo" Relationship="SIFOPModel.FK_Recibo_OrdenPago" FromRole="OrdenPago" ToRole="Recibo" />
+          <NavigationProperty Name="ReciboAnulado" Relationship="SIFOPModel.FK_ReciboAnulado_OrdenPago" FromRole="OrdenPago" ToRole="ReciboAnulado" />
+        </EntityType>
+        <Association Name="FK_OrdenPago_OrdenPago">
+          <End Type="SIFOPModel.Usuario" Role="Usuario" Multiplicity="1" />
+          <End Type="SIFOPModel.OrdenPago" Role="OrdenPago" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Usuario">
+              <PropertyRef Name="Login" />
+            </Principal>
+            <Dependent Role="OrdenPago">
+              <PropertyRef Name="UsuarioRemitente" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_DetOrdenPagoArancel_OrdenPago">
+          <End Type="SIFOPModel.OrdenPago" Role="OrdenPago" Multiplicity="1" />
+          <End Type="SIFOPModel.DetOrdenPagoArancel" Role="DetOrdenPagoArancel" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="OrdenPago">
+              <PropertyRef Name="IdOrdenPago" />
+            </Principal>
+            <Dependent Role="DetOrdenPagoArancel">
+              <PropertyRef Name="IdOrdenPago" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_OrdenPago_TipoDeposito">
+          <End Type="SIFOPModel.TipoDeposito" Role="TipoDeposito" Multiplicity="1" />
+          <End Type="SIFOPModel.OrdenPago" Role="OrdenPago" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="TipoDeposito">
+              <PropertyRef Name="IdTipoDeposito" />
+            </Principal>
+            <Dependent Role="OrdenPago">
+              <PropertyRef Name="IdTipoDeposito" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Recibo_OrdenPago">
+          <End Type="SIFOPModel.OrdenPago" Role="OrdenPago" Multiplicity="0..1" />
+          <End Type="SIFOPModel.Recibo" Role="Recibo" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="OrdenPago">
+              <PropertyRef Name="IdOrdenPago" />
+            </Principal>
+            <Dependent Role="Recibo">
+              <PropertyRef Name="IdOrdenPago" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ReciboAnulado_OrdenPago">
+          <End Type="SIFOPModel.OrdenPago" Role="OrdenPago" Multiplicity="0..1" />
+          <End Type="SIFOPModel.ReciboAnulado" Role="ReciboAnulado" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="OrdenPago">
+              <PropertyRef Name="IdOrdenPago" />
+            </Principal>
+            <Dependent Role="ReciboAnulado">
+              <PropertyRef Name="IdOrdenPago" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -7272,26 +7308,6 @@ advertencia 6002: La tabla o vista 'SIFOP.dbo.vw_ObtenerPeriodosEspecificos' no 
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="OrdenPago">
-            <EntityTypeMapping TypeName="SIFOPModel.OrdenPago">
-              <MappingFragment StoreEntitySet="OrdenPago">
-                <ScalarProperty Name="Obervacion" ColumnName="Obervacion" />
-                <ScalarProperty Name="IdOrdenPago" ColumnName="IdOrdenPago" />
-                <ScalarProperty Name="NoOrdenPago" ColumnName="NoOrdenPago" />
-                <ScalarProperty Name="IdArea" ColumnName="IdArea" />
-                <ScalarProperty Name="IdRecinto" ColumnName="IdRecinto" />
-                <ScalarProperty Name="IdTipoDeposito" ColumnName="IdTipoDeposito" />
-                <ScalarProperty Name="Identificador" ColumnName="Identificador" />
-                <ScalarProperty Name="TextoIdentificador" ColumnName="TextoIdentificador" />
-                <ScalarProperty Name="UsuarioRemitente" ColumnName="UsuarioRemitente" />
-                <ScalarProperty Name="EmailNotificacion" ColumnName="EmailNotificacion" />
-                <ScalarProperty Name="Sistema" ColumnName="Sistema" />
-                <ScalarProperty Name="FechaEnvio" ColumnName="FechaEnvio" />
-                <ScalarProperty Name="CodRecibo" ColumnName="CodRecibo" />
-                <ScalarProperty Name="regAnulado" ColumnName="regAnulado" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
           <EntitySetMapping Name="TipoArancel">
             <EntityTypeMapping TypeName="SIFOPModel.TipoArancel">
               <MappingFragment StoreEntitySet="TipoArancel">
@@ -7486,6 +7502,7 @@ advertencia 6002: La tabla o vista 'SIFOP.dbo.vw_ObtenerPeriodosEspecificos' no 
           <EntitySetMapping Name="ReciboPagoDeposito">
             <EntityTypeMapping TypeName="SIFOPModel.ReciboPagoDeposito">
               <MappingFragment StoreEntitySet="ReciboPagoDeposito">
+                <ScalarProperty Name="IdBanco" ColumnName="IdBanco" />
                 <ScalarProperty Name="IdReciboPago" ColumnName="IdReciboPago" />
                 <ScalarProperty Name="Tipo" ColumnName="Tipo" />
                 <ScalarProperty Name="Transaccion" ColumnName="Transaccion" />
@@ -7909,6 +7926,26 @@ advertencia 6002: La tabla o vista 'SIFOP.dbo.vw_ObtenerPeriodosEspecificos' no 
                 <ScalarProperty Name="FechaFin" ColumnName="FechaFin" />
                 <ScalarProperty Name="FechaInicio" ColumnName="FechaInicio" />
                 <ScalarProperty Name="IdPeriodoEspecifico" ColumnName="IdPeriodoEspecifico" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="OrdenPago">
+            <EntityTypeMapping TypeName="SIFOPModel.OrdenPago">
+              <MappingFragment StoreEntitySet="OrdenPago">
+                <ScalarProperty Name="Observacion" ColumnName="Observacion" />
+                <ScalarProperty Name="regAnulado" ColumnName="regAnulado" />
+                <ScalarProperty Name="CodRecibo" ColumnName="CodRecibo" />
+                <ScalarProperty Name="FechaEnvio" ColumnName="FechaEnvio" />
+                <ScalarProperty Name="Sistema" ColumnName="Sistema" />
+                <ScalarProperty Name="EmailNotificacion" ColumnName="EmailNotificacion" />
+                <ScalarProperty Name="UsuarioRemitente" ColumnName="UsuarioRemitente" />
+                <ScalarProperty Name="TextoIdentificador" ColumnName="TextoIdentificador" />
+                <ScalarProperty Name="Identificador" ColumnName="Identificador" />
+                <ScalarProperty Name="IdTipoDeposito" ColumnName="IdTipoDeposito" />
+                <ScalarProperty Name="IdRecinto" ColumnName="IdRecinto" />
+                <ScalarProperty Name="IdArea" ColumnName="IdArea" />
+                <ScalarProperty Name="NoOrdenPago" ColumnName="NoOrdenPago" />
+                <ScalarProperty Name="IdOrdenPago" ColumnName="IdOrdenPago" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

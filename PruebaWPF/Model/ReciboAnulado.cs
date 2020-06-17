@@ -22,7 +22,7 @@ namespace PruebaWPF.Model
         public System.DateTime FechaAnulacion { get; set; }
     
         public virtual Usuario Usuario { get; set; }
-        public virtual OrdenPago OrdenPago { get; set; }
         public virtual Recibo Recibo { get; set; }
+        public virtual OrdenPago OrdenPago { get; set; }
     }
 }

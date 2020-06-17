@@ -44,7 +44,6 @@ namespace PruebaWPF.Model
         public virtual ICollection<Asiento> Asiento { get; set; }
         public virtual FuenteFinanciamiento FuenteFinanciamiento { get; set; }
         public virtual Usuario Usuario { get; set; }
-        public virtual OrdenPago OrdenPago { get; set; }
         public virtual DetAperturaCaja DetAperturaCaja { get; set; }
         public virtual InfoRecibo InfoRecibo { get; set; }
         public virtual SerieRecibo SerieRecibo { get; set; }
@@ -56,5 +55,6 @@ namespace PruebaWPF.Model
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<ReciboPago> ReciboPago { get; set; }
         public virtual ReciboSIRA ReciboSIRA { get; set; }
+        public virtual OrdenPago OrdenPago { get; set; }
     }
 }

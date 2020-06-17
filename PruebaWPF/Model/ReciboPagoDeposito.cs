@@ -18,7 +18,9 @@ namespace PruebaWPF.Model
         public bool Tipo { get; set; }
         public string Transaccion { get; set; }
         public string Observacion { get; set; }
+        public Nullable<byte> IdBanco { get; set; }
     
         public virtual ReciboPago ReciboPago { get; set; }
+        public virtual Banco Banco { get; set; }
     }
 }

@@ -79,8 +79,8 @@ namespace PruebaWPF.ViewModel
                 //    .Where(w => busqueda.All(a => w.IdRecibo == GetIfNumber(a) || w.Serie.Contains(a))
                 //    && r.Any(a => w.InfoRecibo.IdRecinto == a.IdRecinto)
                 //    );
-                return FindAll().Where(w => busqueda.All(a => w.IdRecibo.ToString().Contains(a) || 
-                                            w.Serie.ToUpper().Contains(a.ToUpper()) || 
+                return FindAll().Where(w => busqueda.All(a => w.IdRecibo.ToString().Contains(a) ||
+                                            w.Serie.ToUpper().Contains(a.ToUpper()) ||
                                             w.Identificador.ToUpper().Contains(a))).ToList();
             }
             else
@@ -488,17 +488,17 @@ namespace PruebaWPF.ViewModel
                     razon = "los pagos con tarjeta actualmente ingresados.";
 
                 }
-                else
-                {
-                    existeAutorizado = db.ReciboPagoTarjeta.Any(a => a.Autorizacion == tarjeta.Autorizacion);
-                    razon = "los pagos con tarjeta almacenados";
-                }
+                //else
+                //{
+                //    existeAutorizado = db.ReciboPagoTarjeta.Any(a => a.Autorizacion == tarjeta.Autorizacion && a.IdTarjeta == tarjeta.IdTarjeta);
+                //    razon = "los pagos con tarjeta almacenados";
+                //}
             }
 
             if (!existeAutorizado) //Si la autorizacion no se encuentra en memoria, la mando a buscar a la base de datos
             {
 
-                existeAutorizado = db.ReciboPagoTarjeta.Any(a => a.Autorizacion == tarjeta.Autorizacion);
+                existeAutorizado = db.ReciboPagoTarjeta.Any(a => a.Autorizacion == tarjeta.Autorizacion && a.IdTarjeta == tarjeta.IdTarjeta);
                 razon = "pagos con tarjeta almacenados.";
             }
 
@@ -664,20 +664,24 @@ namespace PruebaWPF.ViewModel
                         if (ordenPago.IdOrdenPago == 0) // se crea el recibo sin una orden de pago
                         {
                             //TODO Unable to determine the principal end of the 'SIFOPModel.FK_ReciboDatos_Recibo' relationship. Multiple added entities may have the same primary key.
-                            datos = new ReciboDatos();
-                            datos.Recibo = roc;
-                            datos.IdRecibo = roc.IdRecibo;
-                            datos.Serie = roc.Serie;
-                            datos.IdArea = ordenPago.IdArea == "" ? "000" : ordenPago.IdArea;
-                            datos.IdTipoDeposito = ordenPago.IdTipoDeposito;
-                            datos.Identificador = ordenPago.Identificador;
-                            datos.TextoIdentificador = ordenPago.TextoIdentificador;
-                            roc.IdOrdenPago = null;
-                            
-
-                            detalles = new List<ReciboDet>(detalleRecibo.Select((s,i) => new ReciboDet()
+                            datos = new ReciboDatos
                             {
-                                IdReciboDet=i+1,
+                                Recibo = roc,
+                                IdRecibo = roc.IdRecibo,
+                                Serie = roc.Serie,
+                                IdArea = ordenPago.IdArea == "" ? "000" : ordenPago.IdArea,
+                                IdTipoDeposito = ordenPago.IdTipoDeposito,
+                                Identificador = ordenPago.Identificador,
+                                TextoIdentificador = ordenPago.TextoIdentificador,
+                                Obervacion = ordenPago.Observacion
+                            };
+
+                            roc.IdOrdenPago = null;
+
+
+                            detalles = new List<ReciboDet>(detalleRecibo.Select((s, i) => new ReciboDet()
+                            {
+                                IdReciboDet = i + 1,
                                 IdRecibo = recibo.IdRecibo,
                                 Serie = recibo.Serie,
                                 IdPrecioArancel = s.ArancelPrecio.IdArancelPrecio,
@@ -1360,7 +1364,7 @@ namespace PruebaWPF.ViewModel
 
                 if (rd != null)
                 {
-                    info = string.Format("{0}, Transacción No.{1}, Obs. {2}", rd.Tipo ? "Transferencia" : "Minuta", rd.Transaccion, rd.Observacion);
+                    info = string.Format("{0}, {2} Transacción No.{1}, Obs. {3}", rd.Tipo ? "Transferencia" : "Minuta", rd.Transaccion, rd.Banco?.Nombre, rd.Observacion);
                 }
             }
             else if (ReciboPagoBono != null)

@@ -35,7 +35,7 @@ namespace PruebaWPF.Model
         public System.DateTime FechaEnvio { get; set; }
         public string CodRecibo { get; set; }
         public bool regAnulado { get; set; }
-        public string Obervacion { get; set; }
+        public string Observacion { get; set; }
     
         public virtual Usuario Usuario { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]

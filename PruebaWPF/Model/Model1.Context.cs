@@ -59,7 +59,6 @@ namespace PruebaWPF.Model
         public virtual DbSet<DetOrdenPagoArancel> DetOrdenPagoArancel { get; set; }
         public virtual DbSet<Exoneracion> Exoneracion { get; set; }
         public virtual DbSet<ExoneracionTotalArea> ExoneracionTotalArea { get; set; }
-        public virtual DbSet<OrdenPago> OrdenPago { get; set; }
         public virtual DbSet<TipoArancel> TipoArancel { get; set; }
         public virtual DbSet<UsuarioArancel> UsuarioArancel { get; set; }
         public virtual DbSet<AperturaCaja> AperturaCaja { get; set; }
@@ -104,6 +103,7 @@ namespace PruebaWPF.Model
         public virtual DbSet<TipoCuenta> TipoCuenta { get; set; }
         public virtual DbSet<Programa> Programa { get; set; }
         public virtual DbSet<vw_ObtenerPeriodosEspecificos> vw_ObtenerPeriodosEspecificos { get; set; }
+        public virtual DbSet<OrdenPago> OrdenPago { get; set; }
     
         [DbFunction("SIFOPEntities", "fn_TotalesArqueo")]
         public virtual IQueryable<fn_TotalesArqueo_Result> fn_TotalesArqueo(Nullable<int> idArqueo, Nullable<bool> isDoc)

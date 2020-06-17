@@ -143,7 +143,7 @@ namespace PruebaWPF.Views.Recibo
             clsValidateInput.Validate(txtAutorizacion, clsValidateInput.OnlyNumber);
             clsValidateInput.Validate(txtTarjeta, clsValidateInput.OnlyNumber);
 
-            validate.AsignarBorderNormal(new Control[] { txtArea, cboTipoDeposito, txtIdentificador, txtPorCuenta, txtRecibimos, cboFuenteFinanciamiento, cboTipoArancel, cboArancel, txtMonto, cboFormaPago, txtMontoPago, cboMonedaPago, txtEmisor, txtBono, cboBanco, txtCuenta, txtNumeroCK, cboTarjeta, txtAutorizacion, txtTarjeta, cboTipo, txtTransaccion, txtConcepto });
+            validate.AsignarBorderNormal(new Control[] { txtArea, cboTipoDeposito, txtIdentificador, txtPorCuenta, txtRecibimos, cboFuenteFinanciamiento, cboTipoArancel, cboArancel, txtMonto, cboFormaPago, txtMontoPago, cboMonedaPago, txtEmisor, txtBono, cboBanco, txtCuenta, txtNumeroCK, cboTarjeta, txtAutorizacion, txtTarjeta, cboTipo, cboBancoDeposito, txtTransaccion, txtConcepto });
 
         }
 
@@ -266,11 +266,11 @@ namespace PruebaWPF.Views.Recibo
         }
 
 
-        private void CargarBancos()
+        private void CargarBancos(ComboBox combo)
         {
-            if (cboBanco.ItemsSource == null)
+            if (combo.ItemsSource == null)
             {
-                cboBanco.ItemsSource = controller.ObtenerBancos();
+                combo.ItemsSource = controller.ObtenerBancos();
             }
         }
 
@@ -290,7 +290,7 @@ namespace PruebaWPF.Views.Recibo
 
                 //Esto se hace para que todo cargue sin la parametrizacion, esta linea debe ser borrada al momento que se vuelva a activar la parametrizacion contable
                 cboMonedaPago.ItemsSource = controller.ObtenerMonedas(null);
-                
+
             }
         }
 
@@ -711,7 +711,7 @@ namespace PruebaWPF.Views.Recibo
             switch (formapago)
             {
                 case 2: //Cheque
-                    CargarBancos();
+                    CargarBancos(cboBanco);
                     OcultarVerAdicionales(Cheque, new Panel[] { Tarjeta, Bono, EspacioVacio, Deposito });
                     break;
                 case 3: //Tarjeta
@@ -722,6 +722,7 @@ namespace PruebaWPF.Views.Recibo
                     OcultarVerAdicionales(Bono, new Panel[] { Tarjeta, Cheque, EspacioVacio, Deposito });
                     break;
                 case 5: //Deposito
+                    CargarBancos(cboBancoDeposito);
                     OcultarVerAdicionales(Deposito, new Panel[] { Tarjeta, Cheque, EspacioVacio, Bono });
                     break;
                 default:
@@ -783,9 +784,11 @@ namespace PruebaWPF.Views.Recibo
                 case 5: //Deposito
                     ReciboPagoDeposito rd = new ReciboPagoDeposito()
                     {
+                        Banco = (Banco)cboBancoDeposito.SelectedItem,
                         Tipo = cboTipo.SelectedIndex == 0 ? false : true,
                         Transaccion = txtTransaccion.Text,
-                        Observacion = txtObservación.Text
+                        Observacion = txtObservación.Text,
+                        IdBanco = Byte.Parse(cboBancoDeposito.SelectedValue.ToString())
                     };
 
                     //o[0] = rd;
@@ -854,6 +857,7 @@ namespace PruebaWPF.Views.Recibo
                 case 5: //Deposito
                     campos[2] = cboTipo;
                     campos[3] = txtTransaccion;
+                    campos[4] = cboBancoDeposito;
                     break;
                 default:
                     break;
@@ -935,9 +939,9 @@ namespace PruebaWPF.Views.Recibo
             orden.Identificador = selectedResult.Id;
             orden.PorCuenta = selectedResult.Nombre;
             orden.TextoIdentificador = selectedResult.Nombre;
+            orden.Observacion = selectedResult.Info1;
 
             txtRecibimos.Text = selectedResult.Nombre;
-
 
             ActualizarCampo(new TextBox[] { txtIdentificador, txtPorCuenta });
 

@@ -87,7 +87,7 @@ namespace PruebaWPF.Views.Recibo
             List<VariacionCambiariaSon> variacionCambiarias = new List<VariacionCambiariaSon>();
             variacionCambiarias.Add(new VariacionCambiariaSon() { Valor = 0, Moneda = new Moneda() });
 
-            CargarVisor(recibos, ordenPago, barcode, infos, cuenta, detrecibo, formaPago, variacionCambiarias,true);
+            CargarVisor(recibos, ordenPago, barcode, infos, cuenta, detrecibo, formaPago, variacionCambiarias, true);
         }
 
         public void VerRecibo()
@@ -107,7 +107,7 @@ namespace PruebaWPF.Views.Recibo
             infos.Add(recibo.InfoRecibo);
 
             List<clsBarCode> barcode = new List<clsBarCode>();
-            barcode.Add(new clsBarCode() { texto =  recibo.IdRecibo + "-" + recibo.Serie });
+            barcode.Add(new clsBarCode() { texto = recibo.IdRecibo + "-" + recibo.Serie });
 
             List<fn_ConsultarInfoExterna_Result> cuenta = new List<fn_ConsultarInfoExterna_Result>();
 
@@ -134,8 +134,10 @@ namespace PruebaWPF.Views.Recibo
             //    info.IdentificatorType = recibo.TipoDeposito.TextHint;
 
             //}
-                info.Id = recibo.Identificador;
-                info.IdentificatorType = recibo.TipoDeposito.TextHint;
+
+            info.Id = recibo.Identificador;
+            info.IdentificatorType = recibo.TipoDeposito.TextHint;
+            info.Info1 = recibo.ReciboDatos.Obervacion;
 
             cuenta.Add(info);
             //  new SearchTipoDepositoViewModel().ObtenerTipoDeposito(string.IsNullOrEmpty(recibo.IdTipoDeposito.Value.ToString()) ? 0 : recibo.IdTipoDeposito.Value, recibo.Identificador, true, "", 1,null);
@@ -145,10 +147,10 @@ namespace PruebaWPF.Views.Recibo
 
             List<VariacionCambiariaSon> variacionCambiarias = modeloRecibo.FindTipoCambio(recibo, detrecibo);
 
-            CargarVisor(recibos, ordenPago, barcode, infos, cuenta, detrecibo, formaPago, variacionCambiarias,false);
+            CargarVisor(recibos, ordenPago, barcode, infos, cuenta, detrecibo, formaPago, variacionCambiarias, false);
         }
 
-        private void CargarVisor(List<ReciboSon> recibos, List<Model.OrdenPago> ordenPago, List<clsBarCode> barcode, List<InfoRecibo> infos, List<fn_ConsultarInfoExterna_Result> cuenta, List<DetReciboSon> detrecibo, List<ReciboPagoSon> formaPago, List<VariacionCambiariaSon> variacionCambiarias,bool isPreview)
+        private void CargarVisor(List<ReciboSon> recibos, List<Model.OrdenPago> ordenPago, List<clsBarCode> barcode, List<InfoRecibo> infos, List<fn_ConsultarInfoExterna_Result> cuenta, List<DetReciboSon> detrecibo, List<ReciboPagoSon> formaPago, List<VariacionCambiariaSon> variacionCambiarias, bool isPreview)
         {
             ReportDataSource[] datasSource = new ReportDataSource[8];
 

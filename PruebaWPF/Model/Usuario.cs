@@ -50,7 +50,6 @@ namespace PruebaWPF.Model
             this.ExoneracionTotalArea = new HashSet<ExoneracionTotalArea>();
             this.FormaPago = new HashSet<FormaPago>();
             this.InfoRecibo = new HashSet<InfoRecibo>();
-            this.OrdenPago = new HashSet<OrdenPago>();
             this.Permiso = new HashSet<Permiso>();
             this.Recibo = new HashSet<Recibo>();
             this.ReciboAnulado = new HashSet<ReciboAnulado>();
@@ -63,6 +62,7 @@ namespace PruebaWPF.Model
             this.UsuarioPerfil = new HashSet<UsuarioPerfil>();
             this.VariacionCambiaria = new HashSet<VariacionCambiaria>();
             this.TipoCuenta = new HashSet<TipoCuenta>();
+            this.OrdenPago = new HashSet<OrdenPago>();
         }
     
         public string Login { get; set; }
@@ -154,8 +154,6 @@ namespace PruebaWPF.Model
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<InfoRecibo> InfoRecibo { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<OrdenPago> OrdenPago { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Permiso> Permiso { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Recibo> Recibo { get; set; }
@@ -179,5 +177,7 @@ namespace PruebaWPF.Model
         public virtual ICollection<VariacionCambiaria> VariacionCambiaria { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<TipoCuenta> TipoCuenta { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<OrdenPago> OrdenPago { get; set; }
     }
 }
