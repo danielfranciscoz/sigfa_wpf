@@ -178,19 +178,25 @@ namespace PruebaWPF.Views.Recibo
             switch (TipoDeposito)
             {
                 case 1:
-                    CambiarHeaderTabla(new String[] { "Identificación", "Estudiante", "Carrera", "Sede" });
+                    CambiarHeaderTabla(new String[] { "Carnet", "Estudiante", "Carrera", "Sede" });
                     break;
                 case 2:
-                    CambiarHeaderTabla(new String[] { "Identificación", "Trabajador", "Código", "Area" });
+                    CambiarHeaderTabla(new String[] { "No.Trabajador", "Trabajador", "Código", "Area" });
                     break;
                 case 3:
                     CambiarHeaderTabla(new String[] { "Identificación", "Agente Externo", "Procedencia" });
                     break;
                 case 4:
-                    CambiarHeaderTabla(new String[] { "Identificación", "Razón Social", "Nombre Comercial" });
+                    CambiarHeaderTabla(new String[] { "RUC", "Razón Social", "Nombre Comercial" });
                     break;
                 case 5:
                     CambiarHeaderTabla(new String[] { "Identificación", "Nombre", "Primera Opción" });
+                    break;
+                case 6:
+                    CambiarHeaderTabla(new String[] { "Código", "Área", "Ubicación" });
+                    break;
+                case 7:
+                    CambiarHeaderTabla(new String[] { "Carnet", "Estudiante", "Estudio","Tipo de Estudio" });
                     break;
 
             }
@@ -231,6 +237,19 @@ namespace PruebaWPF.Views.Recibo
                     if (ValidarCampos(new TextBox[] { txtPrematricula, txtCandidato }))
                     {
                         BuscarInformacion(txtPrematricula.Text, txtCandidato.Text);
+                    }
+                    break;
+                case 6://Area
+                    if (ValidarCampos(new TextBox[] { txtArea, txtCodArea }))
+                    {
+                        BuscarInformacion(txtCodArea.Text, txtArea.Text);
+                    }
+                    break;
+
+                case 7://Estudiante Modalidad Especial
+                    if (ValidarCampos(new TextBox[] { txtCarnetME, txtApellidosME}))
+                    {
+                        BuscarInformacion(txtCarnetME.Text, txtApellidosME.Text);
                     }
                     break;
 
@@ -424,6 +443,51 @@ namespace PruebaWPF.Views.Recibo
         {
             VerificarEnter(e);
             CambiarRadioButton(txtPrematricula, rbCandidato);
+        }
+
+        private void RbCodArea_Checked(object sender, RoutedEventArgs e)
+        {
+            setChecked(true, txtArea, txtCodArea);
+        }
+
+        private void TxtCodArea_KeyDown(object sender, KeyEventArgs e)
+        {
+            VerificarEnter(e);
+            CambiarRadioButton(txtArea, rbCodArea);
+        }
+
+        private void RbArea_Checked(object sender, RoutedEventArgs e)
+        {
+            setChecked(false, txtArea, txtCodArea);
+
+        }
+
+        private void TxtArea_KeyDown(object sender, KeyEventArgs e)
+        {
+            VerificarEnter(e);
+            CambiarRadioButton(txtCodArea, rbArea);
+        }
+
+        private void RbCarnetME_Checked(object sender, RoutedEventArgs e)
+        {
+            setChecked(true, txtApellidosME, txtCarnetME);
+        }
+
+        private void TxtCarnetME_KeyDown(object sender, KeyEventArgs e)
+        {
+            VerificarEnter(e);
+            CambiarRadioButton(txtApellidosME, rbCarnetME);
+        }
+
+        private void RbApellidosME_Checked(object sender, RoutedEventArgs e)
+        {
+            setChecked(false, txtApellidosME, txtCarnetME);
+        }
+
+        private void TxtApellidosME_KeyDown(object sender, KeyEventArgs e)
+        {
+            VerificarEnter(e);
+            CambiarRadioButton(txtCarnetME, rbApellidosME);
         }
     }
 }

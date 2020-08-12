@@ -54,6 +54,8 @@ namespace PruebaWPF.Views.AgenteExterno
 
         private void Inicializar()
         {
+
+     
             controller = new AgenteExternoViewModel(pantalla);
             CargarCombo();
             DataContext = agente;
@@ -141,5 +143,8 @@ namespace PruebaWPF.Views.AgenteExterno
         {
             return clsValidateInput.ValidateALL(new Control[] { txtNombre, cboIdentificacion, txtIdentificacion, txtProcedencia });
         }
+ 
     }
+
+
 }

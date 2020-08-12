@@ -95,7 +95,7 @@ namespace PruebaWPF.ViewModel
             if (!text.Equals(""))
             {
                 return FindAllAperturas()
-                .Where(b => 
+                .Where(b =>
                     (b.AperturaCaja.FechaApertura.Year.ToString() + "/" + b.AperturaCaja.FechaApertura.ToString("MM")).Contains(text)).ToList();
             }
             else
@@ -118,7 +118,7 @@ namespace PruebaWPF.ViewModel
                     db.AperturaCaja.Add(Obj);
                     List<DetAperturaCaja> det = new List<DetAperturaCaja>();
 
-                    int maxID = db.DetAperturaCaja.Max(m =>(int?) m.IdDetAperturaCaja)??0;
+                    int maxID = db.DetAperturaCaja.Max(m => (int?)m.IdDetAperturaCaja) ?? 0;
 
                     foreach (Caja c in cajas)
                     {
@@ -138,13 +138,26 @@ namespace PruebaWPF.ViewModel
                 }
             }
         }
-        public void CerrarCaja(DetAperturaCaja caja)
+        public void CerrarCaja(List<DetAperturaCaja> caja)
         {
-            DetAperturaCaja apertura = db.DetAperturaCaja.Find(caja.IdDetAperturaCaja);
-            apertura.FechaCierre = System.DateTime.Now;
-            apertura.UsuarioCierre = clsSessionHelper.usuario.Login;
 
-            db.Entry(apertura).State = System.Data.Entity.EntityState.Modified;
+            var cajasId = caja.Select(s => s.IdDetAperturaCaja).ToArray();
+            db.DetAperturaCaja
+                .Where(w => cajasId.Contains(w.IdDetAperturaCaja))
+                .ToList()
+                .ForEach(a =>
+                {
+                    a.FechaCierre = DateTime.Now;
+                    a.UsuarioCierre = clsSessionHelper.usuario.Login;
+
+                }
+                );
+
+            //DetAperturaCaja apertura = db.DetAperturaCaja.Find(caja.IdDetAperturaCaja);
+            //apertura.FechaCierre = System.DateTime.Now;
+            //apertura.UsuarioCierre = clsSessionHelper.usuario.Login;
+
+            //db.Entry(apertura).State = System.Data.Entity.EntityState.Modified;
 
             db.SaveChanges();
         }
@@ -166,7 +179,7 @@ namespace PruebaWPF.ViewModel
             }
             else
             {
-                throw new AuthorizationException(PermisoName, IdRecinto,db);
+                throw new AuthorizationException(PermisoName, IdRecinto, db);
             }
         }
 

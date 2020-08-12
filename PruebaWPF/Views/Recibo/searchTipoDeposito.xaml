@@ -231,6 +231,80 @@
                         </StackPanel>
                     </TabItem>
 
+                    <!--Pestaña para mostrar campos de busqueda de areas-->
+                    <TabItem x:Name="tabArea" Tag="6">
+                        <StackPanel>
+                            <StackPanel  Margin="10 20 10 10">
+                                <Grid  Width="auto">
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition/>
+                                        <RowDefinition/>
+                                    </Grid.RowDefinitions>
+                                    <Grid.ColumnDefinitions>
+
+                                        <ColumnDefinition Width="120"/>
+                                        <ColumnDefinition Width="*"/>
+                                    </Grid.ColumnDefinitions>
+                                    <RadioButton GroupName="radios" x:Name="rbCodArea" Grid.Column="0" Grid.Row="0" VerticalAlignment="Center" HorizontalAlignment="Left" IsChecked="True" Checked="RbCodArea_Checked" >Código de Area:</RadioButton>
+                                    <TextBox Grid.Column="2" Grid.Row="0"  x:Name="txtCodArea" materialDesign:HintAssist.Hint="Especifique el código del área" KeyDown="TxtCodArea_KeyDown"/>
+
+                                    <RadioButton GroupName="radios" x:Name="rbArea" Grid.Column="0" Grid.Row="1" VerticalAlignment="Center" HorizontalAlignment="Left" Checked="RbArea_Checked">Área:</RadioButton>
+                                    <TextBox Grid.Column="2" Grid.Row="1" x:Name="txtArea"  materialDesign:HintAssist.Hint="Especifique el nombre del área"  KeyDown="TxtArea_KeyDown" />
+                                </Grid>
+                            </StackPanel>
+                            <StackPanel Margin="0 0 0 0">
+                                <Grid  Width="auto">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*"/>
+                                        <ColumnDefinition Width="auto"/>
+                                    </Grid.ColumnDefinitions>
+                                    <TextBlock Grid.Column="0" Margin="5" Foreground="{StaticResource DarkGray}" TextWrapping="Wrap">
+                                        Asegúrese de escribir correctamente el nombre del área.
+                                    <LineBreak/>        
+                                        Buscaremos su información en la base de datos de Recursos Humanos, en caso de no ser encontrado, favor contactar al administrador del sistema.
+                                    </TextBlock>
+                                </Grid>
+                            </StackPanel>
+                        </StackPanel>
+                    </TabItem>
+
+                    <!--Pestaña para mostrar campos de busqueda de Estudiantes de Modalidad Especial-->
+                    <TabItem x:Name="tabEstudianteME" Tag="7">
+                        <StackPanel>
+                            <StackPanel  Margin="10 20 10 10">
+                                <Grid  Width="auto">
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition/>
+                                        <RowDefinition/>
+                                    </Grid.RowDefinitions>
+                                    <Grid.ColumnDefinitions>
+
+                                        <ColumnDefinition Width="80"/>
+                                        <ColumnDefinition Width="*"/>
+                                    </Grid.ColumnDefinitions>
+                                    <RadioButton GroupName="radios" x:Name="rbCarnetME" Grid.Column="0" Grid.Row="0" VerticalAlignment="Center" HorizontalAlignment="Left" IsChecked="True" Checked="RbCarnetME_Checked" >Carnet:</RadioButton>
+                                    <TextBox Grid.Column="1" Grid.Row="0"  x:Name="txtCarnetME" materialDesign:HintAssist.Hint="Especifique el Número de Carnet" KeyDown="TxtCarnetME_KeyDown"/>
+
+                                    <RadioButton GroupName="radios" x:Name="rbApellidosME" Grid.Column="0" Grid.Row="1" VerticalAlignment="Center" HorizontalAlignment="Left" Checked="RbApellidosME_Checked">Apellidos:</RadioButton>
+                                    <TextBox Grid.Column="1" Grid.Row="1" x:Name="txtApellidosME"  materialDesign:HintAssist.Hint="Especifique los apellidos del estudiante"  KeyDown="TxtApellidosME_KeyDown" />
+                                </Grid>
+                            </StackPanel>
+                            <StackPanel Margin="0 0 0 0">
+                                <Grid  Width="auto">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*"/>
+                                        <ColumnDefinition Width="auto"/>
+                                    </Grid.ColumnDefinitions>
+                                    <TextBlock Grid.Column="0" Margin="5" Foreground="{StaticResource DarkGray}" TextWrapping="Wrap">
+                                        Asegúrese de escribir el carnet correctamente respetando guiones y letras.
+                                    <LineBreak/>        
+                                        Buscaremos al estudiante en la base de datos del Sistema de Carnetización de la Universidad Nacional de Ingeniería, en caso de no ser encontrado, favor contactar al administrador del sistema.
+                                    </TextBlock>
+                                </Grid>
+                            </StackPanel>
+                        </StackPanel>
+                    </TabItem>
+
                 </TabControl>
                 <Separator></Separator>
                 <StackPanel HorizontalAlignment="Right">

@@ -51,7 +51,7 @@
             </StackPanel>
 
             <DockPanel  Grid.Row="1" x:Name="panelGrid" VerticalAlignment="Stretch">
-                <DataGrid Name="tblAperturas" CanUserDeleteRows="False" CanUserAddRows="False" AutoGenerateColumns="False" SelectionUnit="FullRow" SelectionMode="Single" SelectionChanged="tblAperturas_SelectionChanged">
+                <DataGrid Name="tblAperturas" CanUserDeleteRows="False" CanUserAddRows="False" AutoGenerateColumns="False" SelectionUnit="FullRow" SelectionMode="Extended" SelectionChanged="tblAperturas_SelectionChanged">
 
                     <DataGrid.Columns>
                         <DataGridTemplateColumn CanUserResize="False" Width="50" Header="">

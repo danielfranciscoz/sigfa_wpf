@@ -6,6 +6,7 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:PruebaWPF.Views.AgenteExterno"
+ xmlns:dotNetKitControls="clr-namespace:DotNetKit.Windows.Controls;assembly=DotNetKit.Wpf.AutoCompleteComboBox"
         mc:Ignorable="d"
         WindowStyle="None"
         Title="GestionarAgenteExterno" >
@@ -66,9 +67,9 @@
                                 </TextBlock.Inlines>
                             </TextBlock>
                         </Grid>
+                          
                     </StackPanel>
                     <TextBox Margin="0 15 0 15" x:Name="txtProcedencia" Text="{Binding Procedencia,Mode=TwoWay}" materialDesign:HintAssist.Hint="* Procedencia (Departamento)" materialDesign:HintAssist.IsFloating="True" FontSize="12" />
-
                 </StackPanel>
 
                 <StackPanel Grid.Row="2" Height="auto" Margin="20 0 20 10">

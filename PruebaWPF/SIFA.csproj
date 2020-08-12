@@ -30,7 +30,7 @@
     <UpdateUrl>http://si.uni.edu.ni/tesoreria/</UpdateUrl>
     <CreateWebPageOnPublish>true</CreateWebPageOnPublish>
     <WebPage>publish.htm</WebPage>
-    <ApplicationRevision>26</ApplicationRevision>
+    <ApplicationRevision>30</ApplicationRevision>
     <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
     <UseApplicationTrust>false</UseApplicationTrust>
     <PublishWizardCompleted>true</PublishWizardCompleted>
@@ -82,6 +82,9 @@
     </Reference>
     <Reference Include="DCL">
       <HintPath>..\..\..\..\..\..\OneDrive\Escritorio\kinder\Proyecto\DCL_Demo\DCL_Demo\bin\Debug\DCL.dll</HintPath>
+    </Reference>
+    <Reference Include="DotNetKit.Wpf.AutoCompleteComboBox, Version=1.3.3.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\DotNetKit.Wpf.AutoCompleteComboBox.1.3.3\lib\net45\DotNetKit.Wpf.AutoCompleteComboBox.dll</HintPath>
     </Reference>
     <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
       <HintPath>..\packages\EntityFramework.6.4.4\lib\net45\EntityFramework.dll</HintPath>
@@ -464,6 +467,7 @@
     <Compile Include="ViewModel\AgenteExternoViewModel.cs" />
     <Compile Include="ViewModel\AperturaCajaViewModel.cs" />
     <Compile Include="ViewModel\ArqueoViewModel.cs" />
+    <Compile Include="ViewModel\AutoCompleteArancelViewModel.cs" />
     <Compile Include="ViewModel\CatalogoCuentasViewModel.cs" />
     <Compile Include="ViewModel\ExportaViewModel.cs" />
     <Compile Include="ViewModel\InformesViewModel.cs" />
@@ -476,6 +480,10 @@
     <Compile Include="ViewModel\SharedViewModel.cs" />
     <Compile Include="ViewModel\TesoreriaViewModel.cs" />
     <Compile Include="ViewModel\VariacionCambiariaViewModel.cs" />
+    <Compile Include="Views\Acceso\AutocompleteViewModel.cs" />
+    <Compile Include="Views\Acceso\Window1.xaml.cs">
+      <DependentUpon>Window1.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\Account\Configuracion.xaml.cs">
       <DependentUpon>Configuracion.xaml</DependentUpon>
     </Compile>
@@ -632,6 +640,10 @@
       <SubType>Code</SubType>
     </Compile>
     <Page Include="Resources\Temas.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\Acceso\Window1.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -851,7 +863,9 @@
     <None Include="Model\Model1.edmx.diagram">
       <DependentUpon>Model1.edmx</DependentUpon>
     </None>
-    <None Include="packages.config" />
+    <None Include="packages.config">
+      <SubType>Designer</SubType>
+    </None>
     <None Include="Properties\DataSources\PruebaWPF.Model.AperturaCaja.datasource" />
     <None Include="Properties\DataSources\PruebaWPF.Model.Arancel.datasource" />
     <None Include="Properties\DataSources\PruebaWPF.Model.Arqueo.datasource" />

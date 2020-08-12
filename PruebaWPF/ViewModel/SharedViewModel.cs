@@ -33,9 +33,9 @@ namespace PruebaWPF.ViewModel
         {
             if (!text.Equals(""))
             {
-                string[] busqueda = text.Trim().Split(' ');
+                string[] busqueda = text.ToLower().Trim().Split(' ');
                 return ObtenerAreasRH().Where(
-                       w => busqueda.All(a => w.nombre.Contains(a) || w.codigo.Contains(text))
+                       w => busqueda.All(a => w.nombre.ToLower().Contains(a) || w.codigo.Contains(text))
                        ).ToList();
             }
             else
@@ -48,9 +48,9 @@ namespace PruebaWPF.ViewModel
         {
             if (!text.Equals(""))
             {
-                string[] busqueda = text.Trim().Split(' ');
+                string[] busqueda = text.ToLower().Trim().Split(' ');
                 return ObtenerAreasRH(idtipoArancel).Where(
-                       w => busqueda.All(a => w.nombre.Contains(a) || w.codigo.Contains(text))
+                       w => busqueda.All(a => w.nombre.ToLower().Contains(a) || w.codigo.Contains(text))
                        && w.estado.Equals("A")).OrderBy(a => a.codigo).ToList();
             }
             else

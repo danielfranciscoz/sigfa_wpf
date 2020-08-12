@@ -70,18 +70,6 @@ namespace PruebaWPF.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("True")]
-        public bool rememberSession {
-            get {
-                return ((bool)(this["rememberSession"]));
-            }
-            set {
-                this["rememberSession"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("")]
         public string UserRemember {
             get {
@@ -89,6 +77,18 @@ namespace PruebaWPF.Properties {
             }
             set {
                 this["UserRemember"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("True")]
+        public bool isRememberSession {
+            get {
+                return ((bool)(this["isRememberSession"]));
+            }
+            set {
+                this["isRememberSession"] = value;
             }
         }
     }

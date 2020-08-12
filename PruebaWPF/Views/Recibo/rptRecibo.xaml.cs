@@ -137,7 +137,7 @@ namespace PruebaWPF.Views.Recibo
 
             info.Id = recibo.Identificador;
             info.IdentificatorType = recibo.TipoDeposito.TextHint;
-            info.Info1 = recibo.ReciboDatos.Obervacion;
+            info.Info1 = recibo.ReciboDatos != null ? (recibo.ReciboDatos.Obervacion ?? "Ninguno") : (recibo.OrdenPago.Observacion ?? "Ninguno");
 
             cuenta.Add(info);
             //  new SearchTipoDepositoViewModel().ObtenerTipoDeposito(string.IsNullOrEmpty(recibo.IdTipoDeposito.Value.ToString()) ? 0 : recibo.IdTipoDeposito.Value, recibo.Identificador, true, "", 1,null);

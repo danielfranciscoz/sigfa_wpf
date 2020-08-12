@@ -1,4 +1,5 @@
-﻿using System;
+﻿using MaterialDesignExtensions.Controls;
+using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Text.RegularExpressions;
@@ -103,6 +104,18 @@ namespace PruebaWPF.Clases
             return flag;
         }
 
+        public static bool ValidarSeleccion(Autocomplete combo)
+        {
+            bool flag = true;
+            if (combo.SelectedItem == null)
+            {
+                combo.BorderBrush = clsUtilidades.BorderError();
+                flag = false;
+            }
+
+            return flag;
+        }
+
         public static void ActivateBorderError(Control campo)
         {
             campo.BorderBrush = clsUtilidades.BorderError();
@@ -141,6 +154,15 @@ namespace PruebaWPF.Clases
                         flag = false;
                         pss.BorderBrush = clsUtilidades.BorderError();
                     }
+                }
+                else if (campos[i] is Autocomplete)
+                {
+                    Autocomplete auto = (Autocomplete)campos[i];
+                    if (!ValidarSeleccion(auto))
+                    {
+                        flag = false;
+                    }
+
                 }
             }
 

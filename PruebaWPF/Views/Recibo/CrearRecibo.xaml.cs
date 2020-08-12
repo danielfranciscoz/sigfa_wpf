@@ -57,6 +57,7 @@ namespace PruebaWPF.Views.Recibo
             this.orden = new OrdenPagoSon();
             DataContext = orden;
             Diseñar();
+          
 
         }
 
@@ -123,8 +124,24 @@ namespace PruebaWPF.Views.Recibo
 
                 if (tipoArancel != null)
                 {
-                    aranceles = new ObservableCollection<ArancelPrecio>(controller.ObtenerAranceles(idarea, idtipodeposito, tipoArancel.IdTipoArancel, txtIdentificador.Text, IdPreMatricula, IdMatricula).ToList());
-                    cboArancel.ItemsSource = aranceles;
+                    //  aranceles = new ObservableCollection<ArancelPrecio>(controller.ObtenerAranceles(idarea, idtipodeposito, tipoArancel.IdTipoArancel, txtIdentificador.Text, IdPreMatricula, IdMatricula).ToList());
+                    //////////  cboArancel.ItemsSource = aranceles;
+                    ///
+                   // var temp = cboArancel.ItemTemplate;
+                   //cboArancel = new MaterialDesignExtensions.Controls.Autocomplete();
+                    AutoCompleteArancelViewModel vw = new AutoCompleteArancelViewModel(idarea, idtipodeposito, tipoArancel.IdTipoArancel, txtIdentificador.Text, IdPreMatricula, IdMatricula);
+                    cboArancel.SelectedItem = new ArancelPrecio();
+                   cboArancel.AutocompleteSource = vw.AutocompleteSource;
+                    cboArancel.DataContext = vw;
+
+    //                cboArancel.ItemTemplate = temp;
+                    
+                    
+                    //cboArancel.SearchTerm;
+                    //       cboArancel.OnApplyTemplate();
+                    //     cboArancel.UpdatePopup();
+                    //   cboArancel.SearchOnInitialFocus = true;
+                    //cboArancel.UpdatePopup();
                 }
             }
         }
@@ -689,6 +706,7 @@ namespace PruebaWPF.Views.Recibo
             {
                 items.Add(detalle);
                 LimpiarCampos(new Control[] { cboArancel, txtMonto, txtMonedaDeuda, txtConcepto });
+                cboArancel.SelectedItem = null;
                 txtMonto.IsEnabled = true;
             }
             else
@@ -1037,7 +1055,8 @@ namespace PruebaWPF.Views.Recibo
                 {
                     if (IdPreMatricula != null || IdMatricula != null)
                     {
-                        cboArancel.ItemsSource = null;
+                       ////////// cboArancel.ItemsSource = null;
+                        cboArancel.DataContext = null;
                     }
                     clsUtilidades.OpenMessage(new Operacion() { Mensaje = new clsException(ex).ErrorMessage(), OperationType = clsReferencias.TYPE_MESSAGE_Error });
                 }
@@ -1154,7 +1173,7 @@ namespace PruebaWPF.Views.Recibo
         private void CargarDatosArancel()
         {
             var arancel = (ArancelPrecio)cboArancel.SelectedItem;
-            if (arancel is null)
+            if (arancel is null || arancel.ArancelArea is null)
             {
                 txtMonto.Text = "";
                 txtMonedaDeuda.Text = "";
@@ -1249,8 +1268,11 @@ namespace PruebaWPF.Views.Recibo
             ActualizarCampo(new TextBox[] { txtArea });
         }
 
-        private void TabControl_SelectionChanged(object sender, SelectionChangedEventArgs e)
+       
+
+        private void CboArancel_SelectedItemChanged(object sender, MaterialDesignExtensions.Controls.SelectedItemChangedEventArgs args)
         {
+            CargarDatosArancel();
 
         }
     }

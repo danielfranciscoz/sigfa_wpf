@@ -18,7 +18,7 @@ namespace PruebaWPF.Clases
             Sleep = settings.ThreadSleep;
             AutoLoad = settings.AutomaticReload;
             TopRow = settings.TopRow;
-            rememberMe = settings.rememberSession;
+            rememberMe = settings.isRememberSession;
             userRemember = settings.UserRemember;
         }
 
@@ -67,7 +67,7 @@ namespace PruebaWPF.Clases
             settings.AutomaticReload = AutoLoad;
             settings.TopRow = TopRow;
             settings.ThreadSleep = Sleep;
-            settings.rememberSession = rememberMe;
+            settings.isRememberSession = rememberMe;
 
             if (rememberMe)
             {

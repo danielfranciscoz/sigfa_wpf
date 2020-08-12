@@ -7,12 +7,20 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:PruebaWPF.Views.Recibo"
         mc:Ignorable="d"
-        
+        xmlns:mde="clr-namespace:MaterialDesignExtensions.Controls;assembly=MaterialDesignExtensions"        
         WindowStyle="None" 
         WindowStartupLocation="CenterScreen"
         Title="Creación de Recibo Oficial de Caja" Height="710" Width="862.712" 
         ResizeMode="NoResize" Loaded="Window_Loaded"
         Uid="CreateRecibo">
+    <Window.Resources>
+        <DataTemplate x:Name="itemTemplate" x:Key="itemTemplate">
+            <DockPanel >
+                <!--<md:PackIcon DockPanel.Dock="Left" Kind="{Binding Path=Icon}" Width="24" Height="24" VerticalAlignment="Center" SnapsToDevicePixels="True" />-->
+                <TextBlock  FontSize="12" Text="{Binding Path=ArancelArea.Arancel.Nombre}" VerticalAlignment="Center" />
+            </DockPanel>
+        </DataTemplate>
+    </Window.Resources>
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="*"/>
@@ -111,7 +119,7 @@
                                                 <Run Text="Area:"></Run>
                                             </TextBlock.Inlines>
                                         </TextBlock>
-                                        <TextBox x:Name="txtArea" Grid.Column="3" Background="{StaticResource Gray_BackgroundDisabled}" Foreground="{StaticResource DarkGray}"  VerticalAlignment="Center" materialDesign:HintAssist.Hint="Seleccione un área" Text="{Binding Area}"></TextBox>
+                                        <TextBox x:Name="txtArea" Grid.Column="3" Background="{StaticResource Gray_BackgroundDisabled}" Foreground="{StaticResource DarkGray}" IsReadOnly="True"  VerticalAlignment="Center" materialDesign:HintAssist.Hint="Seleccione un área" Text="{Binding Area}"></TextBox>
 
                                         <Button x:Name="btnSelectArea" Width="25" Height="25" Grid.Column="4" Background="{StaticResource Search_Button}" Style="{StaticResource MaterialDesignFloatingActionDarkButton}" BorderBrush="Transparent"  Click="btnSelectArea_Click">
                                             <materialDesign:PackIcon Kind="Folder"  VerticalAlignment="Center" Margin="0 0 0 0"></materialDesign:PackIcon>
@@ -225,34 +233,46 @@
                                             </Grid.RowDefinitions>
 
                                             <StackPanel Margin="10 0 10 0" Grid.Row="0" Height="auto">
-                                                <Grid>
-                                                    <Grid.ColumnDefinitions>
-                                                        <ColumnDefinition Width="80"/>
-                                                        <ColumnDefinition Width="260"/>
-                                                        <ColumnDefinition Width="10"/>
-                                                        <ColumnDefinition Width="90"/>
-                                                        <ColumnDefinition Width="*"/>
-                                                    </Grid.ColumnDefinitions>
-                                                    <Grid.RowDefinitions>
-                                                        <RowDefinition Height="30"/>
-                                                        <RowDefinition Height="30"/>
-                                                        <RowDefinition Height="30"/>
-
-                                                    </Grid.RowDefinitions>
-
-                                                    <TextBlock Grid.Row="0" Grid.Column="0" VerticalAlignment="Center">
+                                                <DockPanel >
+                                                    <TextBlock Grid.Row="0" Grid.Column="0" VerticalAlignment="Center" Margin="0 0 10 0">
                                                         <TextBlock.Inlines>
                                                             <Run Foreground="{StaticResource ErrorMsj}" Text="*"></Run>
                                                             <Run Text="Arancel:"></Run>
                                                         </TextBlock.Inlines>
                                                     </TextBlock>
-                                                    <ComboBox x:Name="cboArancel" DisplayMemberPath="ArancelArea.Arancel.Nombre" SelectedValuePath="IdArancelPrecio" Grid.Row="0" Grid.Column="1"  IsTextSearchEnabled="True" IsEditable="False" IsTextSearchCaseSensitive="False" Width="260" materialDesign:HintAssist.Hint="Seleccione" VerticalAlignment="Center" HorizontalAlignment="Left" SelectionChanged="cboArancel_SelectionChanged">
 
-                                                    </ComboBox>
+                                                    <mde:Autocomplete x:Name="cboArancel" AutocompleteSource="{Binding Path=AutocompleteSource}" FontSize="12" Height="auto"  Grid.Row="0" Grid.Column="1" 
+                                   ItemTemplate="{StaticResource itemTemplate}" SearchOnInitialFocus="True" TextSearch.Text=""  SelectedItem="{Binding Path=SelectedItem, Mode=TwoWay}" SelectedItemChanged="CboArancel_SelectedItemChanged">
+                                                        <mde:Autocomplete.Hint>
+                                                            <StackPanel Orientation="Horizontal" HorizontalAlignment="Stretch" VerticalAlignment="Center">
+                                                                <!--<materialDesign:PackIcon Kind="Magnify" Width="24" Height="24" VerticalAlignment="Center" />-->
+                                                                <TextBlock Text="Seleccione" FontSize="{Binding Path=FontSize, ElementName=cboArancel}"
+                                        VerticalAlignment="Center" />
+                                                            </StackPanel>
+                                                        </mde:Autocomplete.Hint>
+                                                    </mde:Autocomplete>
 
-                                                    <TextBlock Grid.Row="0" Grid.Column="3" VerticalAlignment="Center" >Concepto:</TextBlock>
+                                                </DockPanel>
+                                                <Grid >
+                                                    <Grid.ColumnDefinitions>
+                                                        <ColumnDefinition Width="80"/>
+                                                        <ColumnDefinition Width="*"/>
+                                                        <ColumnDefinition Width="10"/>
+                                                        <ColumnDefinition Width="80"/>
+                                                        <ColumnDefinition Width="60"/>
+                                                        <ColumnDefinition Width="10"/>
+                                                        <ColumnDefinition Width="80"/>
+                                                        <ColumnDefinition Width="auto"/>
+                                                    </Grid.ColumnDefinitions>
+                                                    <Grid.RowDefinitions>
+                                                        <RowDefinition Height="auto"/>
 
-                                                    <Grid  Grid.Row="0" Grid.Column="4">
+                                                    </Grid.RowDefinitions>
+
+
+                                                    <TextBlock Grid.Row="0" Grid.Column="0" VerticalAlignment="Center" >Concepto:</TextBlock>
+
+                                                    <Grid  Grid.Row="0" Grid.Column="1">
                                                         <Grid.ColumnDefinitions>
                                                             <ColumnDefinition Width="*"/>
                                                             <ColumnDefinition Width="auto"/>
@@ -270,30 +290,33 @@
                                                     </Grid>
 
 
-                                                    <TextBlock Grid.Row="1" Grid.Column="0" Width="230"  VerticalAlignment="Center" >
+                                                    <TextBlock Grid.Row="0" Grid.Column="3" Width="230"  VerticalAlignment="Center" >
                                                         <TextBlock.Inlines>
                                                             <Run Foreground="{StaticResource ErrorMsj}" Text="*"></Run>
                                                             <Run Text="Moneda:"></Run>
                                                         </TextBlock.Inlines>
                                                     </TextBlock>
-                                                    <TextBox x:Name="txtMonto" Grid.Row="1" Grid.Column="4" Width="260" VerticalAlignment="Center" HorizontalAlignment="Left" TextAlignment="Right"></TextBox>
+                                                    <TextBox x:Name="txtMonedaDeuda" IsEnabled="False" Grid.Row="0" Grid.Column="4" Width="260" materialDesign:HintAssist.Hint="Seleccione un arancel" VerticalAlignment="Center" HorizontalAlignment="Left">
 
-                                                    <!--<TextBlock Grid.Row="1" Grid.Column="3" VerticalAlignment="Center" >Exonerado:</TextBlock>-->
-                                                    <!--<TextBox x:Name="txtExonerado" Grid.Row="1" Grid.Column="4" Width="230" HorizontalAlignment="Left" VerticalAlignment="Center" TextAlignment="Right"></TextBox>-->
-
-                                                    <TextBlock Grid.Row="1" Grid.Column="3" Width="110"  VerticalAlignment="Center" >
+                                                    </TextBox>
+                                                    <TextBlock Grid.Row="0" Grid.Column="6" Width="110"  VerticalAlignment="Center" >
                                                         <TextBlock.Inlines>
                                                             <Run Foreground="{StaticResource ErrorMsj}" Text="*"></Run>
                                                             <Run Text="Monto:"></Run>
                                                         </TextBlock.Inlines>
                                                     </TextBlock>
-                                                    <TextBox x:Name="txtMonedaDeuda" IsEnabled="False" Grid.Row="1" Grid.Column="1" Width="260" materialDesign:HintAssist.Hint="Seleccione un arancel" VerticalAlignment="Center" HorizontalAlignment="Left">
+                                                    <TextBox x:Name="txtMonto" Grid.Row="0" Grid.Column="7" Width="60" VerticalAlignment="Center" HorizontalAlignment="Left" TextAlignment="Right"></TextBox>
 
-                                                    </TextBox>
+                                                    <!--<TextBlock Grid.Row="1" Grid.Column="3" VerticalAlignment="Center" >Exonerado:</TextBlock>-->
+                                                    <!--<TextBox x:Name="txtExonerado" Grid.Row="1" Grid.Column="4" Width="230" HorizontalAlignment="Left" VerticalAlignment="Center" TextAlignment="Right"></TextBox>-->
+
+                       
+                                                </Grid>
+                                                <StackPanel Margin="0 5 0 5">
                                                     <Button Background="{StaticResource Add_Button}" BorderBrush="Transparent" Grid.Row="1" Grid.Column="4" Height="30"  Width="120" HorizontalAlignment="Right" x:Name="btnAdd" Click="btnAdd_Click" Content="{StaticResource Text_Add_Button}">
 
                                                     </Button>
-                                                </Grid>
+                                                </StackPanel>
 
                                             </StackPanel>
 
@@ -559,7 +582,7 @@
                                             <Grid.ColumnDefinitions>
                                                 <ColumnDefinition Width="auto"/>
                                                 <ColumnDefinition Width="auto"/>
-                                                <ColumnDefinition Width="10"/>                                                
+                                                <ColumnDefinition Width="10"/>
                                                 <ColumnDefinition Width="auto"/>
                                                 <ColumnDefinition Width="auto"/>
                                                 <ColumnDefinition Width="10"/>

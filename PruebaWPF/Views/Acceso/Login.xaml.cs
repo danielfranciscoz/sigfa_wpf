@@ -35,7 +35,7 @@ namespace PruebaWPF.Views.Acceso
             lblYear.Text = DateTime.Now.Year.ToString();
             CamposNormales();
             Ensamblados();
-
+     //       new Window1().Show();
         }
 
         private void Ensamblados()

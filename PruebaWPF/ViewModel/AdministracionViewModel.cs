@@ -45,7 +45,7 @@ namespace PruebaWPF.ViewModel
 
         public void DeletePerfilUsuario(UsuarioPerfil u)
         {
-            UsuarioPerfil del = db.UsuarioPerfil.Find(u.Login, u.IdPerfil, u.IdRecinto);
+            UsuarioPerfil del = db.UsuarioPerfil.Find(u.IdPerfil, u.Login, u.IdRecinto);
             db.Entry(del).State = System.Data.Entity.EntityState.Deleted;
             db.SaveChanges();
         }

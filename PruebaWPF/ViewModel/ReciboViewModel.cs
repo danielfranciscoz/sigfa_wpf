@@ -425,7 +425,7 @@ namespace PruebaWPF.ViewModel
         public List<ReciboPagoSon> ReciboFormaPagoConsolidado(ReciboSon recibo)
         {
             return db.ReciboPago.Where(w => w.IdRecibo == recibo.IdRecibo && w.Serie == recibo.Serie).ToList()
-                .GroupBy(g => new { g.IdFormaPago, g.IdMoneda, g.FormaPago.FormaPago1, g.Moneda.Moneda1, g.Moneda.Simbolo })
+                .GroupBy(g => new { g.IdFormaPago, g.IdMoneda, g.FormaPago.FormaPago1, g.Moneda.Moneda1, g.Moneda.Simbolo, g.ReciboPagoBono, g.ReciboPagoCheque, g.ReciboPagoDeposito, g.ReciboPagoTarjeta })
                 .Select(s => new ReciboPagoSon()
                 {
                     //ReciboPagoBono = s.ReciboPagoBono,

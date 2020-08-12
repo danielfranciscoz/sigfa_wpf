@@ -150,7 +150,7 @@
           <Property Name="UsuarioCreacion" Type="nvarchar" MaxLength="20" Nullable="false" />
         </EntityType>
         <!--Errores durante la generación:
-advertencia 6002: La tabla o vista 'SIFOP.coin.FormulaConversion' no tiene definida ninguna clave principal. Se ha inferido la clave y la definición se creado como una vista o tabla de solo lectura.-->
+advertencia 6002: La tabla o vista 'SIFOP_TEST.coin.FormulaConversion' no tiene definida ninguna clave principal. Se ha inferido la clave y la definición se creado como una vista o tabla de solo lectura.-->
         <EntityType Name="FormulaConversion">
           <Key>
             <PropertyRef Name="IdFormulaConversion" />
@@ -179,7 +179,7 @@ advertencia 6002: La tabla o vista 'SIFOP.coin.FormulaConversion' no tiene defin
           <Property Name="regAnulado" Type="bit" Nullable="false" />
         </EntityType>
         <!--Errores durante la generación:
-advertencia 6002: La tabla o vista 'SIFOP.coin.Parametro' no tiene definida ninguna clave principal. Se ha inferido la clave y la definición se creado como una vista o tabla de solo lectura.-->
+advertencia 6002: La tabla o vista 'SIFOP_TEST.coin.Parametro' no tiene definida ninguna clave principal. Se ha inferido la clave y la definición se creado como una vista o tabla de solo lectura.-->
         <EntityType Name="Parametro">
           <Key>
             <PropertyRef Name="IdParametroMoneda" />
@@ -346,12 +346,12 @@ advertencia 6002: La tabla o vista 'SIFOP.coin.Parametro' no tiene definida ning
         </EntityType>
         <EntityType Name="UsuarioPerfil">
           <Key>
-            <PropertyRef Name="Login" />
             <PropertyRef Name="IdPerfil" />
+            <PropertyRef Name="Login" />
             <PropertyRef Name="IdRecinto" />
           </Key>
-          <Property Name="Login" Type="nvarchar" MaxLength="20" Nullable="false" />
           <Property Name="IdPerfil" Type="tinyint" Nullable="false" />
+          <Property Name="Login" Type="nvarchar" MaxLength="20" Nullable="false" />
           <Property Name="IdRecinto" Type="tinyint" Nullable="false" />
           <Property Name="LoginCreacion" Type="nvarchar" MaxLength="20" Nullable="false" />
           <Property Name="RegAnulado" Type="bit" Nullable="false" />
@@ -373,7 +373,7 @@ advertencia 6002: La tabla o vista 'SIFOP.coin.Parametro' no tiene definida ning
             <PropertyRef Name="IdArancel" />
           </Key>
           <Property Name="IdArancel" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="Nombre" Type="varchar" MaxLength="80" Nullable="false" />
+          <Property Name="Nombre" Type="varchar" MaxLength="150" Nullable="false" />
           <Property Name="Descripcion" Type="varchar" MaxLength="300" />
           <Property Name="IdTipoArancel" Type="int" Nullable="false" />
           <Property Name="IdCuentaContable" Type="smallint" Nullable="false" />
@@ -477,7 +477,7 @@ advertencia 6002: La tabla o vista 'SIFOP.coin.Parametro' no tiene definida ning
           <Property Name="Identificador" Type="varchar" MaxLength="20" Nullable="false" />
           <Property Name="TextoIdentificador" Type="varchar" MaxLength="80" Nullable="false" />
           <Property Name="UsuarioRemitente" Type="nvarchar" MaxLength="20" Nullable="false" />
-          <Property Name="EmailNotificacion" Type="varchar" MaxLength="50" />
+          <Property Name="EmailNotificacion" Type="varchar" MaxLength="100" />
           <Property Name="Sistema" Type="varchar" MaxLength="20" Nullable="false" />
           <Property Name="FechaEnvio" Type="datetime" Nullable="false" />
           <Property Name="CodRecibo" Type="varchar" MaxLength="25" />
@@ -811,7 +811,7 @@ advertencia 6002: La tabla o vista 'SIFOP.coin.Parametro' no tiene definida ning
           <Property Name="FechaCreacion" Type="datetime" Nullable="false" />
         </EntityType>
         <!--Errores durante la generación:
-advertencia 6002: La tabla o vista 'SIFOP.cat.vw_Aranceles' no tiene definida ninguna clave principal. Se ha inferido la clave y la definición se creado como una vista o tabla de solo lectura.-->
+advertencia 6002: La tabla o vista 'SIFOP_TEST.cat.vw_Aranceles' no tiene definida ninguna clave principal. Se ha inferido la clave y la definición se creado como una vista o tabla de solo lectura.-->
         <EntityType Name="vw_Aranceles">
           <Key>
             <PropertyRef Name="IdArancel" />
@@ -827,7 +827,7 @@ advertencia 6002: La tabla o vista 'SIFOP.cat.vw_Aranceles' no tiene definida ni
           <Property Name="IdArancel" Type="int" Nullable="false" />
           <Property Name="Arancel" Type="varchar" MaxLength="80" Nullable="false" />
           <Property Name="IdTipo" Type="int" Nullable="false" />
-          <Property Name="Tipo" Type="varchar" MaxLength="20" Nullable="false" />
+          <Property Name="Tipo" Type="varchar" MaxLength="50" Nullable="false" />
           <Property Name="IdArancelPrecio" Type="int" Nullable="false" />
           <Property Name="Precio" Type="decimal" Precision="18" Scale="2" Nullable="false" />
           <Property Name="IdMoneda" Type="int" Nullable="false" />
@@ -836,7 +836,7 @@ advertencia 6002: La tabla o vista 'SIFOP.cat.vw_Aranceles' no tiene definida ni
           <Property Name="Area" Type="varchar" MaxLength="200" />
         </EntityType>
         <!--Errores durante la generación:
-advertencia 6002: La tabla o vista 'SIFOP.cat.vw_AreaEquivalencia' no tiene definida ninguna clave principal. Se ha inferido la clave y la definición se creado como una vista o tabla de solo lectura.-->
+advertencia 6002: La tabla o vista 'SIFOP_TEST.cat.vw_AreaEquivalencia' no tiene definida ninguna clave principal. Se ha inferido la clave y la definición se creado como una vista o tabla de solo lectura.-->
         <EntityType Name="vw_AreaEquivalencia">
           <Key>
             <PropertyRef Name="CodRH" />
@@ -857,7 +857,7 @@ advertencia 6002: La tabla o vista 'SIFOP.cat.vw_AreaEquivalencia' no tiene defi
           <Property Name="FechaCreacion" Type="datetime" Nullable="false" />
         </EntityType>
         <!--Errores durante la generación:
-advertencia 6002: La tabla o vista 'SIFOP.cat.vw_Areas' no tiene definida ninguna clave principal. Se ha inferido la clave y la definición se creado como una vista o tabla de solo lectura.-->
+advertencia 6002: La tabla o vista 'SIFOP_TEST.cat.vw_Areas' no tiene definida ninguna clave principal. Se ha inferido la clave y la definición se creado como una vista o tabla de solo lectura.-->
         <EntityType Name="vw_Areas">
           <Key>
             <PropertyRef Name="codigo" />
@@ -872,7 +872,7 @@ advertencia 6002: La tabla o vista 'SIFOP.cat.vw_Areas' no tiene definida ningun
           <Property Name="strtipo_area" Type="varchar" MaxLength="14" Nullable="false" />
         </EntityType>
         <!--Errores durante la generación:
-advertencia 6002: La tabla o vista 'SIFOP.cat.vw_FuentesSIPPSI' no tiene definida ninguna clave principal. Se ha inferido la clave y la definición se creado como una vista o tabla de solo lectura.-->
+advertencia 6002: La tabla o vista 'SIFOP_TEST.cat.vw_FuentesSIPPSI' no tiene definida ninguna clave principal. Se ha inferido la clave y la definición se creado como una vista o tabla de solo lectura.-->
         <EntityType Name="vw_FuentesSIPPSI">
           <Key>
             <PropertyRef Name="IdFuenteFinanciamiento" />
@@ -885,7 +885,7 @@ advertencia 6002: La tabla o vista 'SIFOP.cat.vw_FuentesSIPPSI' no tiene definid
           <Property Name="isActiva" Type="int" Nullable="false" />
         </EntityType>
         <!--Errores durante la generación:
-advertencia 6002: La tabla o vista 'SIFOP.cat.vw_Prematricula' no tiene definida ninguna clave principal. Se ha inferido la clave y la definición se creado como una vista o tabla de solo lectura.-->
+advertencia 6002: La tabla o vista 'SIFOP_TEST.cat.vw_Prematricula' no tiene definida ninguna clave principal. Se ha inferido la clave y la definición se creado como una vista o tabla de solo lectura.-->
         <EntityType Name="vw_Prematricula">
           <Key>
             <PropertyRef Name="AñoLectivo" />
@@ -911,7 +911,7 @@ advertencia 6002: La tabla o vista 'SIFOP.cat.vw_Prematricula' no tiene definida
           <Property Name="Sede" Type="varchar" MaxLength="7" Nullable="false" />
         </EntityType>
         <!--Errores durante la generación:
-advertencia 6002: La tabla o vista 'SIFOP.cat.vw_ProveedoresSISCOM' no tiene definida ninguna clave principal. Se ha inferido la clave y la definición se creado como una vista o tabla de solo lectura.-->
+advertencia 6002: La tabla o vista 'SIFOP_TEST.cat.vw_ProveedoresSISCOM' no tiene definida ninguna clave principal. Se ha inferido la clave y la definición se creado como una vista o tabla de solo lectura.-->
         <EntityType Name="vw_ProveedoresSISCOM">
           <Key>
             <PropertyRef Name="RUC" />
@@ -933,7 +933,7 @@ advertencia 6002: La tabla o vista 'SIFOP.cat.vw_ProveedoresSISCOM' no tiene def
           <Property Name="EstadoProv" Type="bit" Nullable="false" />
         </EntityType>
         <!--Errores durante la generación:
-advertencia 6002: La tabla o vista 'SIFOP.cat.vw_RecintosRH' no tiene definida ninguna clave principal. Se ha inferido la clave y la definición se creado como una vista o tabla de solo lectura.-->
+advertencia 6002: La tabla o vista 'SIFOP_TEST.cat.vw_RecintosRH' no tiene definida ninguna clave principal. Se ha inferido la clave y la definición se creado como una vista o tabla de solo lectura.-->
         <EntityType Name="vw_RecintosRH">
           <Key>
             <PropertyRef Name="IdRecinto" />
@@ -943,7 +943,7 @@ advertencia 6002: La tabla o vista 'SIFOP.cat.vw_RecintosRH' no tiene definida n
           <Property Name="Siglas" Type="varchar" MaxLength="20" Nullable="false" />
         </EntityType>
         <!--Errores durante la generación:
-advertencia 6002: La tabla o vista 'SIFOP.cat.vwCarrerasSIRA' no tiene definida ninguna clave principal. Se ha inferido la clave y la definición se creado como una vista o tabla de solo lectura.-->
+advertencia 6002: La tabla o vista 'SIFOP_TEST.cat.vwCarrerasSIRA' no tiene definida ninguna clave principal. Se ha inferido la clave y la definición se creado como una vista o tabla de solo lectura.-->
         <EntityType Name="vwCarrerasSIRA">
           <Key>
             <PropertyRef Name="CarreraCodigo" />
@@ -953,7 +953,7 @@ advertencia 6002: La tabla o vista 'SIFOP.cat.vwCarrerasSIRA' no tiene definida 
           <Property Name="CarreraNombre" Type="nvarchar" MaxLength="100" Nullable="false" />
         </EntityType>
         <!--Errores durante la generación:
-advertencia 6002: La tabla o vista 'SIFOP.cat.vwEmpleadosRH' no tiene definida ninguna clave principal. Se ha inferido la clave y la definición se creado como una vista o tabla de solo lectura.-->
+advertencia 6002: La tabla o vista 'SIFOP_TEST.cat.vwEmpleadosRH' no tiene definida ninguna clave principal. Se ha inferido la clave y la definición se creado como una vista o tabla de solo lectura.-->
         <EntityType Name="vwEmpleadosRH">
           <Key>
             <PropertyRef Name="Cod_Interno" />
@@ -974,7 +974,7 @@ advertencia 6002: La tabla o vista 'SIFOP.cat.vwEmpleadosRH' no tiene definida n
           <Property Name="Area" Type="varchar" MaxLength="200" />
         </EntityType>
         <!--Errores durante la generación:
-advertencia 6002: La tabla o vista 'SIFOP.cat.vwEstudiantesSIRA' no tiene definida ninguna clave principal. Se ha inferido la clave y la definición se creado como una vista o tabla de solo lectura.-->
+advertencia 6002: La tabla o vista 'SIFOP_TEST.cat.vwEstudiantesSIRA' no tiene definida ninguna clave principal. Se ha inferido la clave y la definición se creado como una vista o tabla de solo lectura.-->
         <EntityType Name="vwEstudiantesSIRA">
           <Key>
             <PropertyRef Name="Carnet" />
@@ -993,7 +993,7 @@ advertencia 6002: La tabla o vista 'SIFOP.cat.vwEstudiantesSIRA' no tiene defini
           <Property Name="RegAnulado" Type="bit" Nullable="false" />
         </EntityType>
         <!--Errores durante la generación:
-advertencia 6002: La tabla o vista 'SIFOP.cat.vwSedesSIRA' no tiene definida ninguna clave principal. Se ha inferido la clave y la definición se creado como una vista o tabla de solo lectura.-->
+advertencia 6002: La tabla o vista 'SIFOP_TEST.cat.vwSedesSIRA' no tiene definida ninguna clave principal. Se ha inferido la clave y la definición se creado como una vista o tabla de solo lectura.-->
         <EntityType Name="vwSedesSIRA">
           <Key>
             <PropertyRef Name="Sede" />
@@ -1001,7 +1001,7 @@ advertencia 6002: La tabla o vista 'SIFOP.cat.vwSedesSIRA' no tiene definida nin
           <Property Name="Sede" Type="varchar" MaxLength="8" Nullable="false" />
         </EntityType>
         <!--Errores durante la generación:
-advertencia 6002: La tabla o vista 'SIFOP.dbo.vw_ObtenerPeriodosEspecificos' no tiene definida ninguna clave principal. Se ha inferido la clave y la definición se creado como una vista o tabla de solo lectura.-->
+advertencia 6002: La tabla o vista 'SIFOP_TEST.dbo.vw_ObtenerPeriodosEspecificos' no tiene definida ninguna clave principal. Se ha inferido la clave y la definición se creado como una vista o tabla de solo lectura.-->
         <EntityType Name="vw_ObtenerPeriodosEspecificos">
           <Key>
             <PropertyRef Name="IdPeriodoEspecifico" />
@@ -3885,7 +3885,7 @@ advertencia 6002: La tabla o vista 'SIFOP.dbo.vw_ObtenerPeriodosEspecificos' no 
             <PropertyRef Name="IdArancel" />
           </Key>
           <Property Name="IdArancel" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="Nombre" Type="String" MaxLength="80" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Nombre" Type="String" MaxLength="150" FixedLength="false" Unicode="false" Nullable="false" />
           <Property Name="Descripcion" Type="String" MaxLength="300" FixedLength="false" Unicode="false" />
           <Property Name="IdTipoArancel" Type="Int32" Nullable="false" />
           <Property Name="IdCuentaContable" Type="Int16" Nullable="false" />
@@ -4475,7 +4475,7 @@ advertencia 6002: La tabla o vista 'SIFOP.dbo.vw_ObtenerPeriodosEspecificos' no 
           <Property Name="IdArancel" Type="Int32" Nullable="false" />
           <Property Name="Arancel" Type="String" MaxLength="80" FixedLength="false" Unicode="false" Nullable="false" />
           <Property Name="IdTipo" Type="Int32" Nullable="false" />
-          <Property Name="Tipo" Type="String" MaxLength="20" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Tipo" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
           <Property Name="IdArancelPrecio" Type="Int32" Nullable="false" />
           <Property Name="Precio" Type="Decimal" Precision="18" Scale="2" Nullable="false" />
           <Property Name="IdMoneda" Type="Int32" Nullable="false" />
@@ -6792,7 +6792,7 @@ advertencia 6002: La tabla o vista 'SIFOP.dbo.vw_ObtenerPeriodosEspecificos' no 
           <Property Name="Identificador" Type="String" Nullable="false" MaxLength="20" FixedLength="false" Unicode="false" />
           <Property Name="TextoIdentificador" Type="String" Nullable="false" MaxLength="80" FixedLength="false" Unicode="false" />
           <Property Name="UsuarioRemitente" Type="String" Nullable="false" MaxLength="20" FixedLength="false" Unicode="true" />
-          <Property Name="EmailNotificacion" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="EmailNotificacion" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
           <Property Name="Sistema" Type="String" Nullable="false" MaxLength="20" FixedLength="false" Unicode="false" />
           <Property Name="FechaEnvio" Type="DateTime" Nullable="false" Precision="3" />
           <Property Name="CodRecibo" Type="String" MaxLength="25" FixedLength="false" Unicode="false" />

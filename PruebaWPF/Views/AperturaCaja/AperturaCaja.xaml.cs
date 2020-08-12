@@ -155,15 +155,13 @@ namespace PruebaWPF.Views.AperturaCaja
             {
                 if (tblAperturas.SelectedItem != null)
                 {
-                    int recinto = ((DetAperturaCajaSon)tblAperturas.SelectedItem).AperturaCaja.IdRecinto;
 
-                    if (controller().Authorize_Recinto(((Button)sender).Tag.ToString(), recinto))
+                    if (clsUtilidades.OpenDeleteQuestionMessage(
+                        tblAperturas.SelectedItems.Count > 1 ? "Está a punto de cerrar varias cajas, lo cual provocará que no puedan generarse mas recibos desde ellas, ¿Realmente dese continuar?" :
+                        "Esta a punto de cerrar esta caja, no podrán generarse mas recibos, ¿Realmente desea continuar?"
+                        ))
                     {
-
-                        if (clsUtilidades.OpenDeleteQuestionMessage("Esta a punto de cerrar esta caja, no podrán generarse mas recibos, ¿Realmente desea continuar?"))
-                        {
-                            clsUtilidades.OpenMessage(CerrarCaja());
-                        }
+                        clsUtilidades.OpenMessage(CerrarCaja());
                     }
                 }
                 else
@@ -184,7 +182,7 @@ namespace PruebaWPF.Views.AperturaCaja
             Operacion o = new Operacion();
             try
             {
-                controller().CerrarCaja((DetAperturaCaja)tblAperturas.SelectedItem);
+                controller().CerrarCaja(tblAperturas.SelectedItems.Cast<DetAperturaCaja>().ToList());
 
                 o.Mensaje = clsReferencias.MESSAGE_Exito_Save;
                 o.OperationType = clsReferencias.TYPE_MESSAGE_Exito;
@@ -202,20 +200,46 @@ namespace PruebaWPF.Views.AperturaCaja
         {
             if (tblAperturas.SelectedItem != null)
             {
-                BotonCierre((DetAperturaCajaSon)tblAperturas.SelectedItem);
+                BotonCierre(tblAperturas.SelectedItems.Cast<DetAperturaCajaSon>().ToList());
             }
         }
 
-        private void BotonCierre(DetAperturaCajaSon selectedItem)
+
+        private void BotonCierre(List<DetAperturaCajaSon> selectedItem)
         {
-            if (selectedItem.FechaCierre != null)
+            btnCerrar.IsEnabled = true;
+            if (selectedItem.Count > 1)
             {
-                btnCerrar.IsEnabled = false;
+                btnCerrar.Content = "CERRAR CAJAS";
             }
             else
             {
-                btnCerrar.IsEnabled = true;
+                btnCerrar.Content = "CERRAR CAJA";
             }
+
+            try
+            {
+                foreach (var i in selectedItem)
+                {
+                    int recinto = i.AperturaCaja.IdRecinto;
+
+                    if (i.FechaCierre != null)
+                    {
+                        btnCerrar.IsEnabled = false;
+                        break;
+                    }
+                    else if (!controller().Authorize_Recinto(btnCerrar.Tag.ToString(), recinto))
+                    {
+                        btnCerrar.IsEnabled = false;
+                        break;
+                    }
+                }
+            }
+            catch (AuthorizationException)
+            {
+                btnCerrar.IsEnabled = false;
+            }
+
         }
 
         private void btnInformeCierre_Click(object sender, RoutedEventArgs e)
