@@ -3135,7 +3135,7 @@
                         <Style />
                       </TextRun>
                       <TextRun>
-                        <Value>=IIF(string.IsNullOrEmpty(First(Fields!Observaciones.Value,"Arqueo")),"Ninguno.",First(Fields!Observaciones.Value,"Arqueo"))</Value>
+                        <Value>=IIF(string.IsNullOrEmpty(First(Fields!Observaciones.Value,"Arqueo")),"Ninguno.",First(Fields!Observaciones.Value, "Arqueo"))</Value>
                         <Style />
                       </TextRun>
                     </TextRuns>

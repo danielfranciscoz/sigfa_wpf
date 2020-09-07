@@ -6,5 +6,5 @@
     cause the file to be unrecognizable by the program.
 -->
 <GenericObjectDataSource DisplayName="ArqueoEfectivoSon" Version="1.0" xmlns="urn:schemas-microsoft-com:xml-msdatasource">
-   <TypeInfo>PruebaWPF.ViewModel.ArqueoEfectivoSon, PruebaWPF, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null</TypeInfo>
+   <TypeInfo>PruebaWPF.ViewModel.ArqueoEfectivoSon, SIGFA-Tesorería, Version=1.0.0.35, Culture=neutral, PublicKeyToken=null</TypeInfo>
 </GenericObjectDataSource>

@@ -225,7 +225,7 @@ namespace PruebaWPF.ViewModel
 
                     List<SqlParameter> p = new List<SqlParameter>();
                     p.Add(new SqlParameter("@carnet", criterio));
-                    //p.Add(new SqlParameter("@isMatricula", true));
+                    p.Add(new SqlParameter("@isMatricula", IdMatricula!=null));
 
                     arancelesSIRA = clsCallProcedure<ArancelSIRAValidate>.GetFromQuery(db, CatalogoConsultas.arancelesSIRA, p).ToList();
 
@@ -428,10 +428,10 @@ namespace PruebaWPF.ViewModel
                 .GroupBy(g => new { g.IdFormaPago, g.IdMoneda, g.FormaPago.FormaPago1, g.Moneda.Moneda1, g.Moneda.Simbolo, g.ReciboPagoBono, g.ReciboPagoCheque, g.ReciboPagoDeposito, g.ReciboPagoTarjeta })
                 .Select(s => new ReciboPagoSon()
                 {
-                    //ReciboPagoBono = s.ReciboPagoBono,
-                    //ReciboPagoCheque = s.ReciboPagoCheque,
-                    //ReciboPagoDeposito = s.ReciboPagoDeposito,
-                    //ReciboPagoTarjeta = s.ReciboPagoTarjeta,
+                    ReciboPagoBono = s.Key.ReciboPagoBono,
+                    ReciboPagoCheque = s.Key.ReciboPagoCheque,
+                    ReciboPagoDeposito = s.Key.ReciboPagoDeposito,
+                    ReciboPagoTarjeta = s.Key.ReciboPagoTarjeta,
                     //IdReciboPago = s.IdReciboPago,
                     //IdRecibo = s.IdRecibo,
                     //Serie = s.Serie,
@@ -640,7 +640,6 @@ namespace PruebaWPF.ViewModel
             Exception exception = null;
             if (ValidarOrdenActiva(ordenPago))
             {
-
                 using (var transaction = db.Database.BeginTransaction())
                 {
                     try
@@ -764,7 +763,6 @@ namespace PruebaWPF.ViewModel
 
                         }
 
-
                         Asiento asientoVariacion = new Asiento();
 
                         if (diferencias.Any()) //Se guardan las diferencias cambiarias en caso de existir
@@ -780,11 +778,11 @@ namespace PruebaWPF.ViewModel
                                 Monto = Decimal.Parse(s.Valor.ToString())
                             }).Where(w => w.Monto != 0 && w.IdMoneda == idCordoba).FirstOrDefault();
 
-                            db.ReciboDiferencias.Add(variacionCordoba);
-
-
+                    
                             if (variacionCordoba != null)
                             {
+                                db.ReciboDiferencias.Add(variacionCordoba);
+
                                 int IdCuentaVariacion;
 
                                 //Obtengo la cuenta contable en base a la variacion siendo positiva o negativa pero solo para la moneda nacional, me apoyo en las variables de configuracion para no crear una nueva tabla solo para almacenar las 2 cuentas
@@ -828,6 +826,8 @@ namespace PruebaWPF.ViewModel
 
                         //List<Asiento> asientos = new List<Asiento>();
                         int idpago = 0;
+
+
                         foreach (ReciboPagoSon item in detallePago)
                         {
                             ReciboPago pago = new ReciboPago()
@@ -843,7 +843,6 @@ namespace PruebaWPF.ViewModel
                             };
 
                             db.ReciboPago.Add(pago);
-
                             if (item.ObjInfoAdicional?.GetType() == typeof(ReciboPagoCheque))
                             {
                                 ReciboPagoCheque rc = (ReciboPagoCheque)item.ObjInfoAdicional;
@@ -913,6 +912,9 @@ namespace PruebaWPF.ViewModel
                     }
                     catch (Exception ex)
                     {
+                        db.Dispose();
+                        db = new SIFOPEntities();
+                       // db.ReciboPago.Clear();
                         if (isSIRAPagado.HasValue)
                         {
                             if (isSIRAPagado.Value)
@@ -924,14 +926,15 @@ namespace PruebaWPF.ViewModel
 
                         exception = ex;
                     }
-                }
-
-                if (exception != null)
-                {
-                    new SharedViewModel().SaveError(exception);
-                    throw exception;
-                }
-
+                    finally
+                    {
+                        if (exception != null)
+                        {
+                            new SharedViewModel().SaveError(exception);
+                            throw exception;
+                        }
+                    }
+                }            
             }
             return recibo;
 
@@ -1017,6 +1020,7 @@ namespace PruebaWPF.ViewModel
                 catch (Exception ex)
                 {
                     transaction.Rollback();
+                        new SharedViewModel().SaveError(ex);
                     throw ex;
                 }
             }
@@ -1284,6 +1288,8 @@ namespace PruebaWPF.ViewModel
 
         //Estos campos son creados para el reporte
         public string FormaPagoRecibo => FormaPago.FormaPago1;
+
+        public string FormaPagoReciboImpreso => GetDataAdicionalStringImpresion();
         public string SimboloMoneda => Moneda.Simbolo;
 
         public Object ObjInfoAdicional => GetDataAdicional();
@@ -1375,6 +1381,52 @@ namespace PruebaWPF.ViewModel
                 {
                     info = string.Format("Emitipo por {0}, Bono No.{1}", rb.Emisor, rb.Numero);
                 }
+            }
+
+            return info;
+        }
+
+        private String GetDataAdicionalStringImpresion()
+        {
+            String info = "";
+            if (ReciboPagoCheque != null)
+            {
+                ReciboPagoCheque rc = (ReciboPagoCheque)ObjInfoAdicional;
+
+                if (rc != null)
+                {
+                    info = string.Format("{0} No.{1}",FormaPago.FormaPago1, rc.NumeroCK);
+                }
+            }
+            else if (ReciboPagoTarjeta != null)
+            {
+                ReciboPagoTarjeta rt = (ReciboPagoTarjeta)ObjInfoAdicional;
+
+                if (rt != null)
+                {
+                    info = string.Format("{0} ****{1}", FormaPago.FormaPago1,rt.Tarjeta);
+                }
+            }
+            else if (ReciboPagoDeposito != null)
+            {
+                ReciboPagoDeposito rd = (ReciboPagoDeposito)ObjInfoAdicional;
+
+                if (rd != null)
+                {
+                    info = string.Format("{0} TRX.{1}", FormaPago.FormaPago1, rd.Transaccion);
+                }
+            }
+            else if (ReciboPagoBono != null)
+            {
+                ReciboPagoBono rb = (ReciboPagoBono)ObjInfoAdicional;
+
+                if (rb != null)
+                {
+                    info = string.Format("{0} No.{1}", FormaPago.FormaPago1, rb.Numero);
+                }
+            }else
+            {
+                info = FormaPago.FormaPago1;
             }
 
             return info;

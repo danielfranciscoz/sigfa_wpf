@@ -123,6 +123,8 @@ namespace PruebaWPF.ViewModel
 
         public Usuario SaveUser(Usuario user, List<UsuarioPerfilSon> perfiles)
         {
+            string perfilesText="";
+            bool activarOP = false, activarTesoreria = false;
             using (var transaction = db.Database.BeginTransaction())
             {
                 try
@@ -141,6 +143,13 @@ namespace PruebaWPF.ViewModel
                         perfil.LoginCreacion = user.LoginCreacion;
 
                         db.UsuarioPerfil.Add(perfil);
+
+                        perfilesText += (perfilesText.Length == 0 ? string.Format("{0} ({1})", item.Perfil.Perfil1, item.Recinto) : ", " + string.Format("{0} ({1})", item.Perfil.Perfil1, item.Recinto));
+
+                        if (item.Perfil.isWeb)
+                            activarOP = true;
+                        else
+                            activarTesoreria = true;
                     }
 
                     db.SaveChanges();
@@ -151,6 +160,13 @@ namespace PruebaWPF.ViewModel
                     transaction.Rollback();
                     throw ex;
                 }
+            }
+
+            if (user != null)
+            {
+                Email e = new Email();
+                e.SendCreatedUser(
+                    user.Nombre,perfilesText, user.LoginEmail, clsSessionHelper.usuario.LoginEmail,activarOP,activarTesoreria);
             }
             return user;
         }
@@ -171,6 +187,7 @@ namespace PruebaWPF.ViewModel
 
         public void UpdateRoles(string login, List<UsuarioPerfilSon> perfiles)
         {
+            string perfilesText = "";
             UsuarioPerfil perfil;
 
             foreach (UsuarioPerfilSon item in perfiles)
@@ -181,10 +198,19 @@ namespace PruebaWPF.ViewModel
                 perfil.IdRecinto = item.IdRecinto;
                 perfil.LoginCreacion = clsSessionHelper.usuario.Login;
 
+                perfilesText += (perfilesText.Length == 0 ? string.Format("{0} ({1})", item.Perfil.Perfil1,item.Recinto) : ", " + string.Format("{0} ({1})", item.Perfil.Perfil1, item.Recinto));
+                
                 db.UsuarioPerfil.Add(perfil);
             }
 
             db.SaveChanges();
+
+            var user = db.Usuario.FirstOrDefault(f => f.Login == login);
+
+                Email e = new Email();
+                e.SendUpdatedUser(
+                    user.Nombre, perfilesText, user.LoginEmail, clsSessionHelper.usuario.LoginEmail);
+            
 
         }
 
@@ -309,6 +335,7 @@ namespace PruebaWPF.ViewModel
                 List<Perfil> perfiles =
                     db.Perfil.Where(w =>
                                 w.Perfil1.ToLower().Contains(text.ToLower())
+                                && w.RegAnulado == false
                     ).ToList();
 
                 return perfiles;
@@ -764,7 +791,8 @@ namespace PruebaWPF.ViewModel
 
         #endregion
 
-        public List<vw_RecintosRH> Recintos() {
+        public List<vw_RecintosRH> Recintos()
+        {
             return db.vw_RecintosRH.ToList();
         }
     }

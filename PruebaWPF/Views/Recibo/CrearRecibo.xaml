@@ -241,7 +241,7 @@
                                                         </TextBlock.Inlines>
                                                     </TextBlock>
 
-                                                    <mde:Autocomplete x:Name="cboArancel" AutocompleteSource="{Binding Path=AutocompleteSource}" FontSize="12" Height="auto"  Grid.Row="0" Grid.Column="1" 
+                                                    <mde:Autocomplete TabIndex="0" x:Name="cboArancel" AutocompleteSource="{Binding Path=AutocompleteSource}" FontSize="12" Height="auto"  Grid.Row="0" Grid.Column="1" 
                                    ItemTemplate="{StaticResource itemTemplate}" SearchOnInitialFocus="True" TextSearch.Text=""  SelectedItem="{Binding Path=SelectedItem, Mode=TwoWay}" SelectedItemChanged="CboArancel_SelectedItemChanged">
                                                         <mde:Autocomplete.Hint>
                                                             <StackPanel Orientation="Horizontal" HorizontalAlignment="Stretch" VerticalAlignment="Center">
@@ -279,7 +279,7 @@
                                                             <ColumnDefinition Width="auto"/>
                                                         </Grid.ColumnDefinitions>
 
-                                                        <TextBox x:Name="txtConcepto" Grid.Column="0" VerticalAlignment="Center" MaxLength="200"></TextBox>
+                                                        <TextBox x:Name="txtConcepto" TabIndex="1" Grid.Column="0" VerticalAlignment="Center" MaxLength="200"></TextBox>
                                                         <TextBlock x:Name="lblCount" Grid.Column="1" Margin="10 0 0 0" Foreground="{StaticResource DarkGray}" VerticalAlignment="Bottom" Text="{Binding ElementName=txtConcepto,Path=Text.Length}"></TextBlock>
                                                         <TextBlock Grid.Column="2"  Foreground="{StaticResource DarkGray}" VerticalAlignment="Bottom" >
                                                             <TextBlock.Inlines>
@@ -296,7 +296,7 @@
                                                             <Run Text="Moneda:"></Run>
                                                         </TextBlock.Inlines>
                                                     </TextBlock>
-                                                    <TextBox x:Name="txtMonedaDeuda" IsEnabled="False" Grid.Row="0" Grid.Column="4" Width="260" materialDesign:HintAssist.Hint="Seleccione un arancel" VerticalAlignment="Center" HorizontalAlignment="Left">
+                                                    <TextBox x:Name="txtMonedaDeuda" TabIndex="2" IsEnabled="False" Grid.Row="0" Grid.Column="4" Width="260" materialDesign:HintAssist.Hint="Seleccione un arancel" VerticalAlignment="Center" HorizontalAlignment="Left">
 
                                                     </TextBox>
                                                     <TextBlock Grid.Row="0" Grid.Column="6" Width="110"  VerticalAlignment="Center" >
@@ -305,7 +305,7 @@
                                                             <Run Text="Monto:"></Run>
                                                         </TextBlock.Inlines>
                                                     </TextBlock>
-                                                    <TextBox x:Name="txtMonto" Grid.Row="0" Grid.Column="7" Width="60" VerticalAlignment="Center" HorizontalAlignment="Left" TextAlignment="Right"></TextBox>
+                                                    <TextBox x:Name="txtMonto" TabIndex="3" Grid.Row="0" Grid.Column="7" Width="60" VerticalAlignment="Center" HorizontalAlignment="Left" TextAlignment="Right"></TextBox>
 
                                                     <!--<TextBlock Grid.Row="1" Grid.Column="3" VerticalAlignment="Center" >Exonerado:</TextBlock>-->
                                                     <!--<TextBox x:Name="txtExonerado" Grid.Row="1" Grid.Column="4" Width="230" HorizontalAlignment="Left" VerticalAlignment="Center" TextAlignment="Right"></TextBox>-->
@@ -313,7 +313,7 @@
                        
                                                 </Grid>
                                                 <StackPanel Margin="0 5 0 5">
-                                                    <Button Background="{StaticResource Add_Button}" BorderBrush="Transparent" Grid.Row="1" Grid.Column="4" Height="30"  Width="120" HorizontalAlignment="Right" x:Name="btnAdd" Click="btnAdd_Click" Content="{StaticResource Text_Add_Button}">
+                                                    <Button TabIndex="4" Background="{StaticResource Add_Button}" BorderBrush="Transparent" Grid.Row="1" Grid.Column="4" Height="30"  Width="120" HorizontalAlignment="Right" x:Name="btnAdd" Click="btnAdd_Click" Content="{StaticResource Text_Add_Button}">
 
                                                     </Button>
                                                 </StackPanel>

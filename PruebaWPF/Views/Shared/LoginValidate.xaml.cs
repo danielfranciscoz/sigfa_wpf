@@ -4,6 +4,7 @@ using PruebaWPF.Referencias;
 using PruebaWPF.ViewModel;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
@@ -119,7 +120,7 @@ namespace PruebaWPF.Views.Shared
                 case (int)validationsType.CajeroPermito:
                     if (VerificarCajerosPermitidos(user))
                     {
-                        cajero = user;
+                    //    cajero = user;
                         Close();
                     }
                     else
@@ -137,11 +138,23 @@ namespace PruebaWPF.Views.Shared
         {
             if (cajerosPermitidos.Count > 0)
             {
-                return cajerosPermitidos.Exists(e => e.Login == text);
+                
+                    if (cajerosPermitidos.Exists(e => e.LoginEmail == text.ToLower() || e.Login.ToLower() == text.ToLower()))
+                    {
+                        cajero = cajerosPermitidos.FirstOrDefault().Login;
+                        return true;
+                    }
+                    else
+                    {
+                        return false;
+                    }
+              
+
+                
             }
             else
             {
-                return controller.isCajero(text, null);
+                return controller.isCajero(text.ToLower(), null);
             }
         }
 

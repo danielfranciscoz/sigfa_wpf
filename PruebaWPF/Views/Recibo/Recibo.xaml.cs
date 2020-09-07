@@ -239,10 +239,12 @@ namespace PruebaWPF.Views.Recibo
             if (!selected.regAnulado)
             {
                 btn_Anular.IsEnabled = (selected.Fecha.Date == DateTime.Now.Date);
+                btn_Imprimir.IsEnabled = true;
             }
             else
             {
                 btn_Anular.IsEnabled = !selected.regAnulado;
+                btn_Imprimir.IsEnabled = !selected.regAnulado;
             }
         }
 

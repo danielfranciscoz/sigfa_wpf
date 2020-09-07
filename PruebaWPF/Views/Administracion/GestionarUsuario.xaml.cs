@@ -122,6 +122,11 @@ namespace PruebaWPF.Views.Administracion
             return clsValidateInput.ValidateALL(new Control[] { txtcodigoEmpleado });
         }
 
+        private bool ValidarInformacionRequerida()
+        {
+            return (usuario.noInterno!=null || !string.IsNullOrEmpty(usuario.LoginEmail));
+        }
+
 
 
         private void cboRecinto_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -176,8 +181,15 @@ namespace PruebaWPF.Views.Administracion
                 {
                     if (uperfiles.Count > 0)
                     {
+                        if (ValidarInformacionRequerida())
+                        {
                         clsUtilidades.OpenMessage(Guardar(), this);
                         Finalizar();
+                        }
+                        else
+                        {
+                        clsUtilidades.OpenMessage(new Operacion() { Mensaje = clsReferencias.MESSAGE_Informacion_Incompleta, OperationType = clsReferencias.TYPE_MESSAGE_Error });
+                        }
                     }
                     else
                     {

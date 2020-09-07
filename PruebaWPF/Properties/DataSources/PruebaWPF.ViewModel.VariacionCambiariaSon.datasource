@@ -6,5 +6,5 @@
     cause the file to be unrecognizable by the program.
 -->
 <GenericObjectDataSource DisplayName="VariacionCambiariaSon" Version="1.0" xmlns="urn:schemas-microsoft-com:xml-msdatasource">
-   <TypeInfo>PruebaWPF.ViewModel.VariacionCambiariaSon, PruebaWPF, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null</TypeInfo>
+   <TypeInfo>PruebaWPF.ViewModel.VariacionCambiariaSon, SIGFA-Tesorería, Version=1.0.0.35, Culture=neutral, PublicKeyToken=null</TypeInfo>
 </GenericObjectDataSource>

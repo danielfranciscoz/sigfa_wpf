@@ -126,6 +126,7 @@ namespace PruebaWPF.Views.Arqueo
 
                 lblErrorMesaje.Text = new clsException(ex).ErrorMessage();
                 panelMensaje.Visibility = Visibility.Visible;
+                btnArqueo.IsEnabled = false;
             }
 
         }

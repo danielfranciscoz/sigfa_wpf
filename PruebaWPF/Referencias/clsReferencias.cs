@@ -38,6 +38,7 @@
         public const string MESSAGE_Cero_Registro = "No se detectaron nuevos registros que guardar.";
 
         public const string MESSAGE_Cero_Registro_Table = "Para poder continuar debe agregar al menos un registro a la tabla.";
+        public const string MESSAGE_Informacion_Incompleta = "No puede continuar, es posible que el usuario no tenga registrado Correo Institucional o Número de Trabajador, por favor verifique los datos e intente de nuevo";
         public const string MESSAGE_Cero_Search = "No hemos encontrado resultados para sus criterios de búsqueda.";
         public const string MESSAGE_Confirm_Delete = "Esta a punto de eliminar un registro de la base de datos, este proceso es irreversible, ¿Realmente desea continuar?";
         public const string MESSAGE_Total_Menor_Cero = "No pueden existir montos menores a cero, por favor revise la información.";

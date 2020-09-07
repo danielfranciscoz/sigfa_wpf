@@ -375,12 +375,24 @@
           <DataField>FechaCreacion</DataField>
           <rd:TypeName>System.DateTime</rd:TypeName>
         </Field>
+        <Field Name="FechaROC">
+          <DataField>FechaROC</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
         <Field Name="FormaPago">
           <DataField>FormaPago</DataField>
           <rd:TypeName>PruebaWPF.Model.FormaPago</rd:TypeName>
         </Field>
+        <Field Name="FormaPago1">
+          <DataField>FormaPago1</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
         <Field Name="FormaPagoRecibo">
           <DataField>FormaPagoRecibo</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="FormaPagoReciboImpreso">
+          <DataField>FormaPagoReciboImpreso</DataField>
           <rd:TypeName>System.String</rd:TypeName>
         </Field>
         <Field Name="IdFormaPago">
@@ -399,17 +411,69 @@
           <DataField>IdReciboPago</DataField>
           <rd:TypeName>System.Int32</rd:TypeName>
         </Field>
+        <Field Name="IdRectificacion">
+          <DataField>IdRectificacion</DataField>
+          <rd:TypeName>System.Nullable`1[[System.Int32, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089]]</rd:TypeName>
+        </Field>
+        <Field Name="isRectificacion">
+          <DataField>isRectificacion</DataField>
+          <rd:TypeName>System.Boolean</rd:TypeName>
+        </Field>
         <Field Name="Moneda">
           <DataField>Moneda</DataField>
           <rd:TypeName>PruebaWPF.Model.Moneda</rd:TypeName>
+        </Field>
+        <Field Name="Moneda1">
+          <DataField>Moneda1</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
         </Field>
         <Field Name="Monto">
           <DataField>Monto</DataField>
           <rd:TypeName>System.Decimal</rd:TypeName>
         </Field>
+        <Field Name="ObjInfoAdicional">
+          <DataField>ObjInfoAdicional</DataField>
+          <rd:TypeName>System.Object</rd:TypeName>
+        </Field>
+        <Field Name="OrdenPago">
+          <DataField>OrdenPago</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="porCuenta">
+          <DataField>porCuenta</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="r">
+          <DataField>r</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
         <Field Name="Recibo">
           <DataField>Recibo</DataField>
           <rd:TypeName>PruebaWPF.Model.Recibo</rd:TypeName>
+        </Field>
+        <Field Name="ReciboPago2">
+          <DataField>ReciboPago2</DataField>
+          <rd:TypeName>PruebaWPF.Model.ReciboPago</rd:TypeName>
+        </Field>
+        <Field Name="ReciboPagoBono">
+          <DataField>ReciboPagoBono</DataField>
+          <rd:TypeName>PruebaWPF.Model.ReciboPagoBono</rd:TypeName>
+        </Field>
+        <Field Name="ReciboPagoCheque">
+          <DataField>ReciboPagoCheque</DataField>
+          <rd:TypeName>PruebaWPF.Model.ReciboPagoCheque</rd:TypeName>
+        </Field>
+        <Field Name="ReciboPagoDeposito">
+          <DataField>ReciboPagoDeposito</DataField>
+          <rd:TypeName>PruebaWPF.Model.ReciboPagoDeposito</rd:TypeName>
+        </Field>
+        <Field Name="ReciboPagoTarjeta">
+          <DataField>ReciboPagoTarjeta</DataField>
+          <rd:TypeName>PruebaWPF.Model.ReciboPagoTarjeta</rd:TypeName>
+        </Field>
+        <Field Name="RectificacionPago1">
+          <DataField>RectificacionPago1</DataField>
+          <rd:TypeName>PruebaWPF.Model.RectificacionPago</rd:TypeName>
         </Field>
         <Field Name="regAnulado">
           <DataField>regAnulado</DataField>
@@ -421,6 +485,10 @@
         </Field>
         <Field Name="SimboloMoneda">
           <DataField>SimboloMoneda</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="StringInfoAdicional">
+          <DataField>StringInfoAdicional</DataField>
           <rd:TypeName>System.String</rd:TypeName>
         </Field>
         <Field Name="TipoCambio">
@@ -439,7 +507,7 @@
       <rd:DataSetInfo>
         <rd:DataSetName>PruebaWPF.ViewModel</rd:DataSetName>
         <rd:TableName>ReciboPagoSon</rd:TableName>
-        <rd:ObjectDataSourceType>PruebaWPF.ViewModel.ReciboPagoSon, PruebaWPF, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null</rd:ObjectDataSourceType>
+        <rd:ObjectDataSourceType>PruebaWPF.ViewModel.ReciboPagoSon, SIGFA-Tesorería, Version=1.0.0.35, Culture=neutral, PublicKeyToken=null</rd:ObjectDataSourceType>
       </rd:DataSetInfo>
     </DataSet>
     <DataSet Name="TipoCambio">
@@ -580,6 +648,7 @@
               </Paragraph>
             </Paragraphs>
             <rd:DefaultName>Encabezado</rd:DefaultName>
+            <Left>0cm</Left>
             <Height>0.6cm</Height>
             <Width>6.4cm</Width>
             <Style>
@@ -614,113 +683,10 @@
             </Paragraphs>
             <rd:DefaultName>Textbox8</rd:DefaultName>
             <Top>1.50495cm</Top>
+            <Left>0cm</Left>
             <Height>0.6cm</Height>
             <Width>6.4cm</Width>
             <ZIndex>1</ZIndex>
-            <Style>
-              <Border>
-                <Style>None</Style>
-              </Border>
-              <PaddingLeft>2pt</PaddingLeft>
-              <PaddingRight>2pt</PaddingRight>
-              <PaddingTop>2pt</PaddingTop>
-              <PaddingBottom>2pt</PaddingBottom>
-            </Style>
-          </Textbox>
-          <Image Name="Image1">
-            <Source>Database</Source>
-            <Value>=First(Fields!barcode.Value, "Barcode")</Value>
-            <MIMEType>image/png</MIMEType>
-            <Sizing>Fit</Sizing>
-            <Top>13.69095cm</Top>
-            <Height>1.83cm</Height>
-            <Width>6.4cm</Width>
-            <ZIndex>2</ZIndex>
-            <Style>
-              <Border>
-                <Style>None</Style>
-              </Border>
-            </Style>
-          </Image>
-          <Textbox Name="Textbox9">
-            <CanGrow>true</CanGrow>
-            <KeepTogether>true</KeepTogether>
-            <Paragraphs>
-              <Paragraph>
-                <TextRuns>
-                  <TextRun>
-                    <Value>Cajero:</Value>
-                    <Style>
-                      <FontWeight>Bold</FontWeight>
-                    </Style>
-                  </TextRun>
-                  <TextRun>
-                    <Value xml:space="preserve"> </Value>
-                    <Style />
-                  </TextRun>
-                  <TextRun>
-                    <Value>=First(Fields!UsuarioCreacion.Value, "Recibo")</Value>
-                    <Style />
-                  </TextRun>
-                </TextRuns>
-                <Style />
-              </Paragraph>
-              <Paragraph>
-                <TextRuns>
-                  <TextRun>
-                    <Value>Fecha: </Value>
-                    <Style>
-                      <FontWeight>Bold</FontWeight>
-                    </Style>
-                  </TextRun>
-                  <TextRun>
-                    <Value>=First(Fields!Fecha.Value, "Recibo")</Value>
-                    <Style>
-                      <FontWeight>Normal</FontWeight>
-                    </Style>
-                  </TextRun>
-                </TextRuns>
-                <Style />
-              </Paragraph>
-            </Paragraphs>
-            <rd:DefaultName>Textbox8</rd:DefaultName>
-            <Top>12.49123cm</Top>
-            <Height>1.02333cm</Height>
-            <Width>6.4cm</Width>
-            <ZIndex>3</ZIndex>
-            <Style>
-              <Border>
-                <Style>None</Style>
-              </Border>
-              <PaddingLeft>2pt</PaddingLeft>
-              <PaddingRight>2pt</PaddingRight>
-              <PaddingTop>2pt</PaddingTop>
-              <PaddingBottom>2pt</PaddingBottom>
-            </Style>
-          </Textbox>
-          <Textbox Name="Pie">
-            <CanGrow>true</CanGrow>
-            <KeepTogether>true</KeepTogether>
-            <Paragraphs>
-              <Paragraph>
-                <TextRuns>
-                  <TextRun>
-                    <Value>=First(Fields!Pie.Value, "InfoRecibo")</Value>
-                    <Style>
-                      <FontWeight>Bold</FontWeight>
-                    </Style>
-                  </TextRun>
-                </TextRuns>
-                <Style>
-                  <TextAlign>Center</TextAlign>
-                </Style>
-              </Paragraph>
-            </Paragraphs>
-            <rd:DefaultName>Pie</rd:DefaultName>
-            <Top>17.42766cm</Top>
-            <Height>0.6cm</Height>
-            <Width>6.4cm</Width>
-            <ZIndex>4</ZIndex>
             <Style>
               <Border>
                 <Style>None</Style>
@@ -773,73 +739,10 @@
             </Paragraphs>
             <rd:DefaultName>Textbox1</rd:DefaultName>
             <Top>0.70583cm</Top>
+            <Left>0cm</Left>
             <Height>0.6994cm</Height>
             <Width>6.4cm</Width>
-            <ZIndex>5</ZIndex>
-            <Style>
-              <Border>
-                <Style>None</Style>
-              </Border>
-              <PaddingLeft>2pt</PaddingLeft>
-              <PaddingRight>2pt</PaddingRight>
-              <PaddingTop>2pt</PaddingTop>
-              <PaddingBottom>2pt</PaddingBottom>
-            </Style>
-          </Textbox>
-          <Textbox Name="Textbox10">
-            <CanGrow>true</CanGrow>
-            <KeepTogether>true</KeepTogether>
-            <Paragraphs>
-              <Paragraph>
-                <TextRuns>
-                  <TextRun>
-                    <Value>Por Cuenta de:</Value>
-                    <Style>
-                      <FontWeight>Bold</FontWeight>
-                    </Style>
-                  </TextRun>
-                  <TextRun>
-                    <Value xml:space="preserve"> </Value>
-                    <Style />
-                  </TextRun>
-                  <TextRun>
-                    <Value>=First(Fields!Nombre.Value, "CuentaDe")</Value>
-                    <Style />
-                  </TextRun>
-                  <TextRun>
-                    <Value xml:space="preserve"> </Value>
-                    <Style />
-                  </TextRun>
-                </TextRuns>
-                <Style />
-              </Paragraph>
-              <Paragraph>
-                <TextRuns>
-                  <TextRun>
-                    <Value>Observación:</Value>
-                    <Style>
-                      <FontWeight>Bold</FontWeight>
-                    </Style>
-                  </TextRun>
-                  <TextRun>
-                    <Value xml:space="preserve"> </Value>
-                    <Style />
-                  </TextRun>
-                  <TextRun>
-                    <Value>=First(Fields!Info1.Value, "CuentaDe")</Value>
-                    <Style>
-                      <FontWeight>Normal</FontWeight>
-                    </Style>
-                  </TextRun>
-                </TextRuns>
-                <Style />
-              </Paragraph>
-            </Paragraphs>
-            <rd:DefaultName>Textbox8</rd:DefaultName>
-            <Top>2.1325cm</Top>
-            <Height>0.6cm</Height>
-            <Width>6.4cm</Width>
-            <ZIndex>6</ZIndex>
+            <ZIndex>2</ZIndex>
             <Style>
               <Border>
                 <Style>None</Style>
@@ -879,10 +782,11 @@
               </Paragraph>
             </Paragraphs>
             <rd:DefaultName>Textbox7</rd:DefaultName>
-            <Top>2.73995cm</Top>
+            <Top>3.37495cm</Top>
+            <Left>0cm</Left>
             <Height>0.6cm</Height>
             <Width>6.4cm</Width>
-            <ZIndex>7</ZIndex>
+            <ZIndex>3</ZIndex>
             <Style>
               <Border>
                 <Style>None</Style>
@@ -912,10 +816,11 @@
               </Paragraph>
             </Paragraphs>
             <rd:DefaultName>Textbox11</rd:DefaultName>
-            <Top>4.25745cm</Top>
+            <Top>4.89245cm</Top>
+            <Left>0cm</Left>
             <Height>0.6cm</Height>
             <Width>6.4cm</Width>
-            <ZIndex>8</ZIndex>
+            <ZIndex>4</ZIndex>
             <Style>
               <Border>
                 <Style>None</Style>
@@ -1366,10 +1271,11 @@ IIF(string.IsNullOrEmpty(Fields!Concepto.Value),Fields!Arancel.Value,Fields!Conc
               </TablixMembers>
             </TablixRowHierarchy>
             <DataSetName>DetalleRecibo</DataSetName>
-            <Top>4.92801cm</Top>
+            <Top>5.56301cm</Top>
+            <Left>0cm</Left>
             <Height>2cm</Height>
             <Width>6.4cm</Width>
-            <ZIndex>9</ZIndex>
+            <ZIndex>5</ZIndex>
             <Style>
               <Border>
                 <Style>None</Style>
@@ -1377,10 +1283,11 @@ IIF(string.IsNullOrEmpty(Fields!Concepto.Value),Fields!Arancel.Value,Fields!Conc
             </Style>
           </Tablix>
           <Line Name="Line3">
-            <Top>4.12633cm</Top>
+            <Top>4.76133cm</Top>
+            <Left>0cm</Left>
             <Height>0cm</Height>
             <Width>6.4cm</Width>
-            <ZIndex>10</ZIndex>
+            <ZIndex>6</ZIndex>
             <Style>
               <Border>
                 <Style>Dashed</Style>
@@ -1406,10 +1313,11 @@ IIF(string.IsNullOrEmpty(Fields!Concepto.Value),Fields!Arancel.Value,Fields!Conc
               </Paragraph>
             </Paragraphs>
             <rd:DefaultName>Textbox11</rd:DefaultName>
-            <Top>7.55411cm</Top>
+            <Top>8.18911cm</Top>
+            <Left>0cm</Left>
             <Height>0.6cm</Height>
             <Width>6.4cm</Width>
-            <ZIndex>11</ZIndex>
+            <ZIndex>7</ZIndex>
             <Style>
               <Border>
                 <Style>None</Style>
@@ -1421,10 +1329,11 @@ IIF(string.IsNullOrEmpty(Fields!Concepto.Value),Fields!Arancel.Value,Fields!Conc
             </Style>
           </Textbox>
           <Line Name="Line4">
-            <Top>7.42299cm</Top>
+            <Top>8.05799cm</Top>
+            <Left>0cm</Left>
             <Height>0cm</Height>
             <Width>6.4cm</Width>
-            <ZIndex>12</ZIndex>
+            <ZIndex>8</ZIndex>
             <Style>
               <Border>
                 <Style>Dashed</Style>
@@ -1552,7 +1461,7 @@ IIF(string.IsNullOrEmpty(Fields!Concepto.Value),Fields!Arancel.Value,Fields!Conc
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value>=Fields!FormaPagoRecibo.Value</Value>
+                                  <Value>=Fields!FormaPagoReciboImpreso.Value</Value>
                                   <Style />
                                 </TextRun>
                               </TextRuns>
@@ -1876,10 +1785,11 @@ IIF(string.IsNullOrEmpty(Fields!Concepto.Value),Fields!Arancel.Value,Fields!Conc
               </TablixMembers>
             </TablixRowHierarchy>
             <DataSetName>FormaPago</DataSetName>
-            <Top>8.15411cm</Top>
+            <Top>8.78911cm</Top>
+            <Left>0cm</Left>
             <Height>2cm</Height>
             <Width>6.4cm</Width>
-            <ZIndex>13</ZIndex>
+            <ZIndex>9</ZIndex>
             <Style>
               <Border>
                 <Style>None</Style>
@@ -2018,10 +1928,11 @@ IIF(string.IsNullOrEmpty(Fields!Concepto.Value),Fields!Arancel.Value,Fields!Conc
               </TablixMembers>
             </TablixRowHierarchy>
             <DataSetName>TipoCambio</DataSetName>
-            <Top>11.43564cm</Top>
+            <Top>12.07064cm</Top>
+            <Left>0cm</Left>
             <Height>0.6cm</Height>
             <Width>6.42882cm</Width>
-            <ZIndex>14</ZIndex>
+            <ZIndex>10</ZIndex>
             <Style>
               <Border>
                 <Style>None</Style>
@@ -2047,10 +1958,11 @@ IIF(string.IsNullOrEmpty(Fields!Concepto.Value),Fields!Arancel.Value,Fields!Conc
               </Paragraph>
             </Paragraphs>
             <rd:DefaultName>Textbox11</rd:DefaultName>
-            <Top>10.83564cm</Top>
+            <Top>11.47064cm</Top>
+            <Left>0cm</Left>
             <Height>0.6cm</Height>
             <Width>6.4cm</Width>
-            <ZIndex>15</ZIndex>
+            <ZIndex>11</ZIndex>
             <Style>
               <Border>
                 <Style>None</Style>
@@ -2062,10 +1974,11 @@ IIF(string.IsNullOrEmpty(Fields!Concepto.Value),Fields!Arancel.Value,Fields!Conc
             </Style>
           </Textbox>
           <Line Name="Line5">
-            <Top>10.65926cm</Top>
+            <Top>11.29426cm</Top>
+            <Left>0cm</Left>
             <Height>0cm</Height>
             <Width>6.4cm</Width>
-            <ZIndex>16</ZIndex>
+            <ZIndex>12</ZIndex>
             <Style>
               <Border>
                 <Style>Dashed</Style>
@@ -2076,11 +1989,11 @@ IIF(string.IsNullOrEmpty(Fields!Concepto.Value),Fields!Arancel.Value,Fields!Conc
             <Source>Embedded</Source>
             <Value>anulado</Value>
             <Sizing>FitProportional</Sizing>
-            <Top>1.58162cm</Top>
+            <Top>2.21662cm</Top>
             <Left>0.1cm</Left>
             <Height>3.94639cm</Height>
             <Width>1.50146cm</Width>
-            <ZIndex>17</ZIndex>
+            <ZIndex>13</ZIndex>
             <Visibility>
               <Hidden>=First(Fields!regAnulado.Value, "Recibo")=False</Hidden>
             </Visibility>
@@ -2090,87 +2003,6 @@ IIF(string.IsNullOrEmpty(Fields!Concepto.Value),Fields!Arancel.Value,Fields!Conc
               </Border>
             </Style>
           </Image>
-          <Textbox Name="Area">
-            <CanGrow>true</CanGrow>
-            <KeepTogether>true</KeepTogether>
-            <Paragraphs>
-              <Paragraph>
-                <TextRuns>
-                  <TextRun>
-                    <Value>Ingresos acreditados a </Value>
-                    <Style>
-                      <FontWeight>Bold</FontWeight>
-                    </Style>
-                  </TextRun>
-                  <TextRun>
-                    <Value>=First(Fields!Area.Value, "Recibo")</Value>
-                    <Style>
-                      <FontWeight>Normal</FontWeight>
-                    </Style>
-                  </TextRun>
-                </TextRuns>
-                <Style>
-                  <TextAlign>Left</TextAlign>
-                </Style>
-              </Paragraph>
-            </Paragraphs>
-            <rd:DefaultName>Area</rd:DefaultName>
-            <Top>15.69734cm</Top>
-            <Height>0.6cm</Height>
-            <Width>6.4cm</Width>
-            <ZIndex>18</ZIndex>
-            <Style>
-              <Border>
-                <Style>None</Style>
-              </Border>
-              <PaddingLeft>2pt</PaddingLeft>
-              <PaddingRight>2pt</PaddingRight>
-              <PaddingTop>2pt</PaddingTop>
-              <PaddingBottom>2pt</PaddingBottom>
-            </Style>
-          </Textbox>
-          <Textbox Name="OrdenPago">
-            <CanGrow>true</CanGrow>
-            <KeepTogether>true</KeepTogether>
-            <Paragraphs>
-              <Paragraph>
-                <TextRuns>
-                  <TextRun>
-                    <Value>Orden de Pago No. </Value>
-                    <Style>
-                      <FontWeight>Bold</FontWeight>
-                    </Style>
-                  </TextRun>
-                  <TextRun>
-                    <Value>=First(Fields!NoOrdenPago.Value,"OrdenPago")</Value>
-                    <Style>
-                      <FontWeight>Normal</FontWeight>
-                    </Style>
-                  </TextRun>
-                </TextRuns>
-                <Style>
-                  <TextAlign>Left</TextAlign>
-                </Style>
-              </Paragraph>
-            </Paragraphs>
-            <rd:DefaultName>OrdenPago</rd:DefaultName>
-            <Top>16.29734cm</Top>
-            <Height>0.6cm</Height>
-            <Width>6.4cm</Width>
-            <ZIndex>19</ZIndex>
-            <Visibility>
-              <Hidden>=IIF(First(Fields!NoOrdenPago.Value,"OrdenPago") =nothing, true, false)</Hidden>
-            </Visibility>
-            <Style>
-              <Border>
-                <Style>None</Style>
-              </Border>
-              <PaddingLeft>2pt</PaddingLeft>
-              <PaddingRight>2pt</PaddingRight>
-              <PaddingTop>2pt</PaddingTop>
-              <PaddingBottom>2pt</PaddingBottom>
-            </Style>
-          </Textbox>
           <Textbox Name="Textbox2">
             <CanGrow>true</CanGrow>
             <KeepTogether>true</KeepTogether>
@@ -2205,10 +2037,11 @@ IIF(string.IsNullOrEmpty(Fields!Concepto.Value),Fields!Arancel.Value,Fields!Conc
               </Paragraph>
             </Paragraphs>
             <rd:DefaultName>Textbox1</rd:DefaultName>
-            <Top>3.33995cm</Top>
+            <Top>3.97495cm</Top>
+            <Left>0cm</Left>
             <Height>0.6cm</Height>
             <Width>6.4cm</Width>
-            <ZIndex>20</ZIndex>
+            <ZIndex>14</ZIndex>
             <Visibility>
               <Hidden>=Parameters!isFirstTime.Value=True</Hidden>
             </Visibility>
@@ -2222,19 +2055,313 @@ IIF(string.IsNullOrEmpty(Fields!Concepto.Value),Fields!Arancel.Value,Fields!Conc
               <PaddingBottom>2pt</PaddingBottom>
             </Style>
           </Textbox>
-          <Line Name="Line7">
-            <Top>17.17675cm</Top>
-            <Height>0cm</Height>
+          <Rectangle Name="Rectangle1">
+            <ReportItems>
+              <Textbox Name="Textbox10">
+                <CanGrow>true</CanGrow>
+                <KeepTogether>true</KeepTogether>
+                <Paragraphs>
+                  <Paragraph>
+                    <TextRuns>
+                      <TextRun>
+                        <Value>Por Cuenta de:</Value>
+                        <Style>
+                          <FontWeight>Bold</FontWeight>
+                        </Style>
+                      </TextRun>
+                      <TextRun>
+                        <Value xml:space="preserve"> </Value>
+                        <Style />
+                      </TextRun>
+                      <TextRun>
+                        <Value>=First(Fields!Nombre.Value, "CuentaDe")</Value>
+                        <Style />
+                      </TextRun>
+                    </TextRuns>
+                    <Style />
+                  </Paragraph>
+                </Paragraphs>
+                <rd:DefaultName>Textbox8</rd:DefaultName>
+                <Height>0.6cm</Height>
+                <Width>6.4cm</Width>
+                <Style>
+                  <Border>
+                    <Style>None</Style>
+                  </Border>
+                  <PaddingLeft>2pt</PaddingLeft>
+                  <PaddingRight>2pt</PaddingRight>
+                  <PaddingTop>2pt</PaddingTop>
+                  <PaddingBottom>2pt</PaddingBottom>
+                </Style>
+              </Textbox>
+              <Textbox Name="Textbox13">
+                <CanGrow>true</CanGrow>
+                <CanShrink>true</CanShrink>
+                <KeepTogether>true</KeepTogether>
+                <Paragraphs>
+                  <Paragraph>
+                    <TextRuns>
+                      <TextRun>
+                        <Value>Observación:</Value>
+                        <Style>
+                          <FontWeight>Bold</FontWeight>
+                        </Style>
+                      </TextRun>
+                      <TextRun>
+                        <Value xml:space="preserve"> </Value>
+                        <Style />
+                      </TextRun>
+                      <TextRun>
+                        <Value>=First(Fields!Info1.Value, "CuentaDe")</Value>
+                        <Style>
+                          <FontWeight>Normal</FontWeight>
+                        </Style>
+                      </TextRun>
+                    </TextRuns>
+                    <Style />
+                  </Paragraph>
+                </Paragraphs>
+                <rd:DefaultName>Textbox8</rd:DefaultName>
+                <Top>0.6cm</Top>
+                <Height>0.6cm</Height>
+                <Width>6.4cm</Width>
+                <ZIndex>1</ZIndex>
+                <Visibility>
+                  <Hidden>=
+IIF(string.IsNullOrEmpty(First(Fields!Info1.Value, "CuentaDe")),true,false)</Hidden>
+                </Visibility>
+                <Style>
+                  <Border>
+                    <Style>None</Style>
+                  </Border>
+                  <PaddingLeft>2pt</PaddingLeft>
+                  <PaddingRight>2pt</PaddingRight>
+                  <PaddingTop>2pt</PaddingTop>
+                  <PaddingBottom>2pt</PaddingBottom>
+                </Style>
+              </Textbox>
+            </ReportItems>
+            <KeepTogether>true</KeepTogether>
+            <Top>2.14023cm</Top>
+            <Height>1.2cm</Height>
             <Width>6.4cm</Width>
-            <ZIndex>21</ZIndex>
+            <ZIndex>15</ZIndex>
             <Style>
               <Border>
-                <Style>Dashed</Style>
+                <Style>None</Style>
               </Border>
             </Style>
-          </Line>
+          </Rectangle>
+          <Rectangle Name="Rectangle2">
+            <ReportItems>
+              <Image Name="Image1">
+                <Source>Database</Source>
+                <Value>=First(Fields!barcode.Value, "Barcode")</Value>
+                <MIMEType>image/png</MIMEType>
+                <Sizing>Fit</Sizing>
+                <Top>1.19972cm</Top>
+                <Height>1.83cm</Height>
+                <Width>6.4cm</Width>
+                <Style>
+                  <Border>
+                    <Style>None</Style>
+                  </Border>
+                </Style>
+              </Image>
+              <Textbox Name="Textbox9">
+                <CanGrow>true</CanGrow>
+                <KeepTogether>true</KeepTogether>
+                <Paragraphs>
+                  <Paragraph>
+                    <TextRuns>
+                      <TextRun>
+                        <Value>Cajero:</Value>
+                        <Style>
+                          <FontWeight>Bold</FontWeight>
+                        </Style>
+                      </TextRun>
+                      <TextRun>
+                        <Value xml:space="preserve"> </Value>
+                        <Style />
+                      </TextRun>
+                      <TextRun>
+                        <Value>=First(Fields!UsuarioCreacion.Value, "Recibo")</Value>
+                        <Style />
+                      </TextRun>
+                    </TextRuns>
+                    <Style />
+                  </Paragraph>
+                  <Paragraph>
+                    <TextRuns>
+                      <TextRun>
+                        <Value>Fecha: </Value>
+                        <Style>
+                          <FontWeight>Bold</FontWeight>
+                        </Style>
+                      </TextRun>
+                      <TextRun>
+                        <Value>=First(Fields!Fecha.Value, "Recibo")</Value>
+                        <Style>
+                          <FontWeight>Normal</FontWeight>
+                        </Style>
+                      </TextRun>
+                    </TextRuns>
+                    <Style />
+                  </Paragraph>
+                </Paragraphs>
+                <rd:DefaultName>Textbox8</rd:DefaultName>
+                <Height>1.02333cm</Height>
+                <Width>6.4cm</Width>
+                <ZIndex>1</ZIndex>
+                <Style>
+                  <Border>
+                    <Style>None</Style>
+                  </Border>
+                  <PaddingLeft>2pt</PaddingLeft>
+                  <PaddingRight>2pt</PaddingRight>
+                  <PaddingTop>2pt</PaddingTop>
+                  <PaddingBottom>2pt</PaddingBottom>
+                </Style>
+              </Textbox>
+              <Textbox Name="Area">
+                <CanGrow>true</CanGrow>
+                <KeepTogether>true</KeepTogether>
+                <Paragraphs>
+                  <Paragraph>
+                    <TextRuns>
+                      <TextRun>
+                        <Value>Ingresos acreditados a </Value>
+                        <Style>
+                          <FontWeight>Bold</FontWeight>
+                        </Style>
+                      </TextRun>
+                      <TextRun>
+                        <Value>=First(Fields!Area.Value, "Recibo")</Value>
+                        <Style>
+                          <FontWeight>Normal</FontWeight>
+                        </Style>
+                      </TextRun>
+                    </TextRuns>
+                    <Style>
+                      <TextAlign>Left</TextAlign>
+                    </Style>
+                  </Paragraph>
+                </Paragraphs>
+                <rd:DefaultName>Area</rd:DefaultName>
+                <Top>3.20611cm</Top>
+                <Height>0.6cm</Height>
+                <Width>6.4cm</Width>
+                <ZIndex>2</ZIndex>
+                <Style>
+                  <Border>
+                    <Style>None</Style>
+                  </Border>
+                  <PaddingLeft>2pt</PaddingLeft>
+                  <PaddingRight>2pt</PaddingRight>
+                  <PaddingTop>2pt</PaddingTop>
+                  <PaddingBottom>2pt</PaddingBottom>
+                </Style>
+              </Textbox>
+              <Textbox Name="OrdenPago">
+                <CanGrow>true</CanGrow>
+                <KeepTogether>true</KeepTogether>
+                <Paragraphs>
+                  <Paragraph>
+                    <TextRuns>
+                      <TextRun>
+                        <Value>Orden de Pago No. </Value>
+                        <Style>
+                          <FontWeight>Bold</FontWeight>
+                        </Style>
+                      </TextRun>
+                      <TextRun>
+                        <Value>=First(Fields!NoOrdenPago.Value,"OrdenPago")</Value>
+                        <Style>
+                          <FontWeight>Normal</FontWeight>
+                        </Style>
+                      </TextRun>
+                    </TextRuns>
+                    <Style>
+                      <TextAlign>Left</TextAlign>
+                    </Style>
+                  </Paragraph>
+                </Paragraphs>
+                <rd:DefaultName>OrdenPago</rd:DefaultName>
+                <Top>3.80611cm</Top>
+                <Height>0.6cm</Height>
+                <Width>6.4cm</Width>
+                <ZIndex>3</ZIndex>
+                <Visibility>
+                  <Hidden>=IIF(First(Fields!NoOrdenPago.Value,"OrdenPago") =nothing, true, false)</Hidden>
+                </Visibility>
+                <Style>
+                  <Border>
+                    <Style>None</Style>
+                  </Border>
+                  <PaddingLeft>2pt</PaddingLeft>
+                  <PaddingRight>2pt</PaddingRight>
+                  <PaddingTop>2pt</PaddingTop>
+                  <PaddingBottom>2pt</PaddingBottom>
+                </Style>
+              </Textbox>
+              <Line Name="Line7">
+                <Top>4.68552cm</Top>
+                <Height>0cm</Height>
+                <Width>6.4cm</Width>
+                <ZIndex>4</ZIndex>
+                <Style>
+                  <Border>
+                    <Style>Dashed</Style>
+                  </Border>
+                </Style>
+              </Line>
+            </ReportItems>
+            <KeepTogether>true</KeepTogether>
+            <Top>12.81175cm</Top>
+            <Height>4.76914cm</Height>
+            <Width>6.42882cm</Width>
+            <ZIndex>16</ZIndex>
+            <Style>
+              <Border>
+                <Style>None</Style>
+              </Border>
+            </Style>
+          </Rectangle>
+          <Textbox Name="Pie">
+            <CanGrow>true</CanGrow>
+            <KeepTogether>true</KeepTogether>
+            <Paragraphs>
+              <Paragraph>
+                <TextRuns>
+                  <TextRun>
+                    <Value>=First(Fields!Pie.Value, "InfoRecibo")</Value>
+                    <Style>
+                      <FontWeight>Bold</FontWeight>
+                    </Style>
+                  </TextRun>
+                </TextRuns>
+                <Style>
+                  <TextAlign>Center</TextAlign>
+                </Style>
+              </Paragraph>
+            </Paragraphs>
+            <rd:DefaultName>Pie</rd:DefaultName>
+            <Top>17.61617cm</Top>
+            <Height>0.6cm</Height>
+            <Width>6.4cm</Width>
+            <ZIndex>17</ZIndex>
+            <Style>
+              <Border>
+                <Style>None</Style>
+              </Border>
+              <PaddingLeft>2pt</PaddingLeft>
+              <PaddingRight>2pt</PaddingRight>
+              <PaddingTop>2pt</PaddingTop>
+              <PaddingBottom>2pt</PaddingBottom>
+            </Style>
+          </Textbox>
         </ReportItems>
-        <Height>18.89736cm</Height>
+        <Height>25.64766cm</Height>
         <Style>
           <Border>
             <Style>None</Style>

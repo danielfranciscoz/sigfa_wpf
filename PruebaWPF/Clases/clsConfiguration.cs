@@ -57,6 +57,7 @@ namespace PruebaWPF.Clases
             Variacion_Positiva,
             Variacion_Negativa,
             Email_Finanzas,
+            Email_Sistemas,
             POS_Banpro,
             dias_OP
         };

@@ -30,7 +30,7 @@
     <UpdateUrl>http://si.uni.edu.ni/tesoreria/</UpdateUrl>
     <CreateWebPageOnPublish>true</CreateWebPageOnPublish>
     <WebPage>publish.htm</WebPage>
-    <ApplicationRevision>30</ApplicationRevision>
+    <ApplicationRevision>39</ApplicationRevision>
     <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
     <UseApplicationTrust>false</UseApplicationTrust>
     <PublishWizardCompleted>true</PublishWizardCompleted>
@@ -80,8 +80,9 @@
     <Reference Include="BarcodeLib, Version=1.3.0.0, Culture=neutral, PublicKeyToken=5f09bda868cc39e7, processorArchitecture=MSIL">
       <HintPath>..\packages\BarcodeLib.1.3.0.0\lib\net20\BarcodeLib.dll</HintPath>
     </Reference>
-    <Reference Include="DCL">
-      <HintPath>..\..\..\..\..\..\OneDrive\Escritorio\kinder\Proyecto\DCL_Demo\DCL_Demo\bin\Debug\DCL.dll</HintPath>
+    <Reference Include="DCL, Version=1.0.0.0, Culture=neutral, PublicKeyToken=c66a9c27e59c8298, processorArchitecture=x86">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\Libreria BANPRO\DCL.dll</HintPath>
     </Reference>
     <Reference Include="DotNetKit.Wpf.AutoCompleteComboBox, Version=1.3.3.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\DotNetKit.Wpf.AutoCompleteComboBox.1.3.3\lib\net45\DotNetKit.Wpf.AutoCompleteComboBox.dll</HintPath>
@@ -97,7 +98,7 @@
     </Reference>
     <Reference Include="log4net, Version=1.2.10.0, Culture=neutral, PublicKeyToken=692fbea5521e1304, processorArchitecture=AMD64">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\..\..\OneDrive\Escritorio\kinder\Proyecto\DCL_Demo\DCL_Demo\bin\Debug\log4net.dll</HintPath>
+      <HintPath>..\..\..\..\Libreria BANPRO\log4net.dll</HintPath>
     </Reference>
     <Reference Include="MaterialDesignColors, Version=1.2.0.325, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\MaterialDesignColors.1.2.0\lib\net45\MaterialDesignColors.dll</HintPath>
@@ -985,6 +986,8 @@
       <DependentUpon>Model1.edmx</DependentUpon>
       <LastGenOutput>Model1.cs</LastGenOutput>
     </Content>
+    <Content Include="Resources\html\UsuarioEditado.html" />
+    <Content Include="Resources\html\UsuarioCreado.html" />
     <Content Include="Resources\html\ReciboPago.html" />
     <Content Include="SqlServerTypes\readme.htm" />
     <Content Include="SqlServerTypes\x64\msvcr120.dll">

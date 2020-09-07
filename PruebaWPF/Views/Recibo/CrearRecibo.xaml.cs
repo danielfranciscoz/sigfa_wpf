@@ -190,10 +190,7 @@ namespace PruebaWPF.Views.Recibo
             {
                 btnSelectArea.IsEnabled = v;
             }
-            else
-            {
                 btnSelectTipoDeposito.IsEnabled = v;
-            }
         }
 
         private void Pagos_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
@@ -702,7 +699,14 @@ namespace PruebaWPF.Views.Recibo
                 Exoneracion = exoneracion,
                 ArancelPrecio = a
             };
-            if (!items.Any(w => w.ArancelPrecio.IdArancelPrecio == detalle.ArancelPrecio.IdArancelPrecio && w.Concepto == detalle.Concepto))
+
+
+            //tipoArancel.IdDepositanteUnico == null
+            if (tipoArancel.IdDepositanteUnico != null && items.Any(w => w.ArancelPrecio.IdArancelPrecio == detalle.ArancelPrecio.IdArancelPrecio))
+            {
+                clsUtilidades.OpenMessage(new Operacion() { Mensaje = "Los aranceles de tipo "+tipoArancel.TipoArancel1+" no admiten que se agregue mas de una vez el mismo pago aunque tengan conceptos distintos", OperationType = clsReferencias.TYPE_MESSAGE_Advertencia });
+            }
+            else if (!items.Any(w => w.ArancelPrecio.IdArancelPrecio == detalle.ArancelPrecio.IdArancelPrecio && w.Concepto == detalle.Concepto))
             {
                 items.Add(detalle);
                 LimpiarCampos(new Control[] { cboArancel, txtMonto, txtMonedaDeuda, txtConcepto });
@@ -1249,11 +1253,13 @@ namespace PruebaWPF.Views.Recibo
                 if (tipoArancel.IdDepositanteUnico == null)
                 {
                     btnSelectArea.IsEnabled = true;
+                    btnSelectTipoDeposito.IsEnabled = true;
                     cboTipoDeposito.ItemsSource = new List<TipoArancel>();
                 }
                 else
                 {
                     btnSelectArea.IsEnabled = false;
+                    btnSelectTipoDeposito.IsEnabled = false;
                     CargarTiposDeposito("");
                 }
 

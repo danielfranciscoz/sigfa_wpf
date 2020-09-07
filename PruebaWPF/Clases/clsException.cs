@@ -14,24 +14,35 @@ namespace PruebaWPF.Clases
 
         public String ErrorMessage()
         {
-            string message = "";
+            //string message = "";
 
-            if (ex.InnerException != null)
-            {
-                if (ex.InnerException.InnerException != null)
-                {
-                    message = ex.InnerException.InnerException.Message;
-                }
-                else
-                {
-                    message = ex.InnerException.Message;
-                }
-            }
-            else
-            {
-                message = ex.Message;
-            }
-            return message;
+            //if (ex.InnerException != null)
+            //{
+            //    if (ex.InnerException.InnerException != null)
+            //    {
+            //        message = ex.InnerException.InnerException.Message;
+            //    }
+            //    else
+            //    {
+            //        message = ex.InnerException.Message;
+            //    }
+            //}
+            //else
+            //{
+            //    message = ex.Message;
+            //}
+            //return message;
+
+            return ErrorMessage(ex);
+        }
+
+        public string ErrorMessage(Exception e, string msgs = "")
+        {
+            if (e == null) return string.Empty;
+            if (msgs == "") msgs = e.Message;
+            if (e.InnerException != null)
+                msgs += "\r\nMensaje Interno: " + ErrorMessage(e.InnerException);
+            return msgs;
         }
 
         public String DataValidationErrors()
