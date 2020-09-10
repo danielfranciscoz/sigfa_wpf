@@ -7,6 +7,7 @@ using PruebaWPF.Views.Shared;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
@@ -234,7 +235,9 @@ namespace PruebaWPF.Views.Recibo
         {
             ReciboSon selected = (ReciboSon)tblRecibo.SelectedItem;
             tblReciboDet.ItemsSource = controller().DetallesRecibo(selected);
-            tblReciboPay.ItemsSource = controller().ReciboFormaPago(selected, false);
+            List<ReciboPagoSon> pagos = controller().ReciboFormaPago(selected, false);
+
+            tblReciboPay.ItemsSource = pagos;
 
             if (!selected.regAnulado)
             {
@@ -244,7 +247,19 @@ namespace PruebaWPF.Views.Recibo
             else
             {
                 btn_Anular.IsEnabled = !selected.regAnulado;
-                btn_Imprimir.IsEnabled = !selected.regAnulado;
+              //  btn_Imprimir.IsEnabled = !selected.regAnulado; //Esta opcion queda comentareada porque al inicio don Carlos habia dicho que no queria que se pudieran reimprimir los ROCs anulados
+            }
+
+            if (pagos.Any(a=>a.IdRectificacion !=null))
+            {
+                lblRectificacionTex.Visibility = Visibility.Visible;
+            }
+            else
+            {
+                if (lblRectificacionTex.Visibility != Visibility.Hidden)
+                {
+                lblRectificacionTex.Visibility = Visibility.Hidden;
+                }
             }
         }
 

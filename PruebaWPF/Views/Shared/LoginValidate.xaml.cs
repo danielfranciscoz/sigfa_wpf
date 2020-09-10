@@ -154,7 +154,10 @@ namespace PruebaWPF.Views.Shared
             }
             else
             {
-                return controller.isCajero(text.ToLower(), null);
+                var user=controller.isCajero(text.ToLower());
+                cajero = user.Login;
+                return user.UsuarioPerfil.Any(w => w.IdPerfil == clsReferencias.PerfilCajero);
+      
             }
         }
 

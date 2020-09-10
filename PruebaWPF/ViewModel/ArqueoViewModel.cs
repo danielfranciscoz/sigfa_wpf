@@ -83,7 +83,7 @@ namespace PruebaWPF.ViewModel
 
         public List<Arqueo> FindAll()
         {
-            return db.Arqueo.ToList();
+            return db.Arqueo.OrderByDescending(o=>o.IdArqueoDetApertura).ToList();
         }
         public void Guardar(Arqueo Obj)
         {
@@ -241,6 +241,7 @@ namespace PruebaWPF.ViewModel
                         {
                             IdReciboPago = pago.IdReciboPago,
                             Tipo = pago.ReciboPagoDeposito.Tipo,
+                            IdBanco = pago.ReciboPagoDeposito.IdBanco,
                             Transaccion = pago.ReciboPagoDeposito.Transaccion,
                             Observacion = pago.ReciboPagoDeposito.Observacion
                         };

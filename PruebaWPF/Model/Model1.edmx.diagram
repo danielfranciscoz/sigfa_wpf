@@ -50,7 +50,6 @@
         <EntityTypeShape EntityType="SIFOPModel.ReciboDiferencias" Width="1.5" PointX="5.25" PointY="109.375" IsExpanded="true" />
         <EntityTypeShape EntityType="SIFOPModel.ReciboPago" Width="1.5" PointX="8.25" PointY="107.25" IsExpanded="true" />
         <EntityTypeShape EntityType="SIFOPModel.ReciboPagoBono" Width="1.5" PointX="10.5" PointY="111.625" IsExpanded="true" />
-        <EntityTypeShape EntityType="SIFOPModel.ReciboPagoCheque" Width="1.5" PointX="13.5" PointY="113" IsExpanded="true" />
         <EntityTypeShape EntityType="SIFOPModel.ReciboPagoDeposito" Width="1.5" PointX="10.5" PointY="114.25" IsExpanded="true" />
         <EntityTypeShape EntityType="SIFOPModel.ReciboPagoTarjeta" Width="1.5" PointX="13.5" PointY="103.125" IsExpanded="true" />
         <EntityTypeShape EntityType="SIFOPModel.ReciboSIRA" Width="1.5" PointX="18.75" PointY="112.25" IsExpanded="true" />
@@ -104,7 +103,6 @@
         <AssociationConnector Association="SIFOPModel.FK_MovimientoIngreso_FormaPago" ManuallyRouted="false" />
         <AssociationConnector Association="SIFOPModel.FK_MovimientoIngreso_Usuario" ManuallyRouted="false" />
         <AssociationConnector Association="SIFOPModel.FK_Banco_Usuario" ManuallyRouted="false" />
-        <AssociationConnector Association="SIFOPModel.FK_ReciboPagoCheque_Banco" ManuallyRouted="false" />
         <AssociationConnector Association="SIFOPModel.FK_CiaTarjetaCredito_Usuario" ManuallyRouted="false" />
         <AssociationConnector Association="SIFOPModel.FK_RecPagoTarjeta_CiaTarjetaCredito" ManuallyRouted="false" />
         <AssociationConnector Association="SIFOPModel.FK_Arancel_CuentaContable" ManuallyRouted="false" />
@@ -174,7 +172,6 @@
         <AssociationConnector Association="SIFOPModel.FK_ReciboDatos_TipoDeposito" ManuallyRouted="false" />
         <AssociationConnector Association="SIFOPModel.FK_ReciboPago_ReciboPago" ManuallyRouted="false" />
         <AssociationConnector Association="SIFOPModel.FK_ReciboPagoBono_ReciboPago" ManuallyRouted="false" />
-        <AssociationConnector Association="SIFOPModel.FK_ReciboPagoCheque_ReciboPago" ManuallyRouted="false" />
         <AssociationConnector Association="SIFOPModel.FK_ReciboPagoDeposito_ReciboPago" ManuallyRouted="false" />
         <AssociationConnector Association="SIFOPModel.FK_RecPagoTarjeta_ReciboPago" ManuallyRouted="false" />
         <AssociationConnector Association="SIFOPModel.FK_ReciboPagoTarjeta_VoucherBanco" ManuallyRouted="false" />
@@ -192,6 +189,9 @@
         <AssociationConnector Association="SIFOPModel.FK_OrdenPago_TipoDeposito" />
         <AssociationConnector Association="SIFOPModel.FK_Recibo_OrdenPago" />
         <AssociationConnector Association="SIFOPModel.FK_ReciboAnulado_OrdenPago" />
+        <EntityTypeShape EntityType="SIFOPModel.ReciboPagoCheque" Width="1.5" PointX="13.5" PointY="113.125" />
+        <AssociationConnector Association="SIFOPModel.FK_ReciboPagoCheque_Banco" />
+        <AssociationConnector Association="SIFOPModel.FK_ReciboPagoCheque_ReciboPago" />
         </Diagram>
       <Diagram DiagramId="44da687063094205980781e5a20206ec" Name="Diagram2" ZoomLevel="100" >
         <EntityTypeShape EntityType="SIFOPModel.AreaEquivalencia" Width="1.5" PointX="0.75" PointY="1.375" />
@@ -261,8 +261,6 @@
         <AssociationConnector Association="SIFOPModel.FK_ReciboPago_ReciboPago" />
         <EntityTypeShape EntityType="SIFOPModel.ReciboPagoBono" Width="1.5" PointX="2.875" PointY="9.875" />
         <AssociationConnector Association="SIFOPModel.FK_ReciboPagoBono_ReciboPago" />
-        <EntityTypeShape EntityType="SIFOPModel.ReciboPagoCheque" Width="1.5" PointX="2.875" PointY="12.375" />
-        <AssociationConnector Association="SIFOPModel.FK_ReciboPagoCheque_ReciboPago" />
         <EntityTypeShape EntityType="SIFOPModel.ReciboPagoDeposito" Width="1.5" PointX="5.25" PointY="11.75" />
         <AssociationConnector Association="SIFOPModel.FK_ReciboPagoDeposito_ReciboPago" />
         <EntityTypeShape EntityType="SIFOPModel.ReciboPagoTarjeta" Width="1.5" PointX="5.25" PointY="18.5" />

@@ -22,9 +22,14 @@ namespace PruebaWPF.ViewModel
             clsSessionHelper.MACMemory = clsUtilidades.FindMacActual();
         }
 
+        public void AsignarServer()
+        {
+            clsSessionHelper.serverName=db.Database.Connection.DataSource;
+        }
+
         public List<UsuarioPerfil> ObtenerPerfilesUsuario(String Usuario)
         {
-         //   var t = new SIFOP_TESTEntities().UsuarioPerfil.ToList();
+            //   var t = new SIFOP_TESTEntities().UsuarioPerfil.ToList();
             return db.UsuarioPerfil.Where(w => (w.Login == Usuario || w.Usuario.LoginEmail == Usuario) && w.Perfil.isWeb == false && w.RegAnulado == false && w.Usuario.RegAnulado == false && w.Perfil.RegAnulado == false).ToList();
         }
 
@@ -78,19 +83,25 @@ namespace PruebaWPF.ViewModel
             }
         }
 
-        /// <summary>
-        /// Este procedimiento valida que el usuario tenga asociado el perfil de cajero entre todos sus perfiles, 
-        /// En caso de que se necesite validar que solo posea perfil cajero (es decir puede tener muchos perfiles pero solo pueden ser de cajero, esto ocurre cuando se es cajero en varios recintos) se deberá hacer uso del parametro validarOnlyCajero
-        /// </summary>
-        /// <param name="Usuario"></param>
-        /// <param name="db_Context"></param>
-        /// <param name="validarOnlyCajero"></param>
-        /// <returns>Si el usuario es un cajero o no</returns>
-        public bool isCajero(String Usuario, SIFOPEntities db_Context, bool validarOnlyCajero = false)
+        public Usuario isCajero(String Usuario, bool validarOnlyCajero = false)
+        {
+                return db.Usuario.FirstOrDefault(f => f.Login == Usuario || f.LoginEmail == Usuario);
+           
+        }
+
+            /// <summary>
+            /// Este procedimiento valida que el usuario tenga asociado el perfil de cajero entre todos sus perfiles, 
+            /// En caso de que se necesite validar que solo posea perfil cajero (es decir puede tener muchos perfiles pero solo pueden ser de cajero, esto ocurre cuando se es cajero en varios recintos) se deberá hacer uso del parametro validarOnlyCajero
+            /// </summary>
+            /// <param name="Usuario"></param>
+            /// <param name="db_Context"></param>
+            /// <param name="validarOnlyCajero"></param>
+            /// <returns>Si el usuario es un cajero o no</returns>
+            public bool isCajero(String Usuario, SIFOPEntities db_Context, bool validarOnlyCajero = false)
         {
             if (db_Context == null)
             {
-                return db.Usuario.Find(Usuario).UsuarioPerfil.Any(w => w.IdPerfil == clsReferencias.PerfilCajero);
+                return db.Usuario.FirstOrDefault(f => f.Login == Usuario || f.LoginEmail == Usuario).UsuarioPerfil.Any(w => w.IdPerfil == clsReferencias.PerfilCajero);
             }
             else
             {

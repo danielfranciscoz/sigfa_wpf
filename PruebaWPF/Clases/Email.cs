@@ -71,8 +71,6 @@ namespace PruebaWPF.Clases
 
         private void SendMail(string archivoHtml, List<string> datos, string mailTo, string mailCC, string Asunto, string EmailKey)
         {
-
-       
                 try
                 {
                     Object[] conf = CredencialesSMTP(EmailKey);
@@ -80,10 +78,11 @@ namespace PruebaWPF.Clases
                     String userMail = conf[1].ToString();
                     String MailNotify = conf[2].ToString();
 
-
                     MailMessage message = new MailMessage();
 
                     message.From = new MailAddress(userMail);
+
+                mailTo = eliminarPuntoComa(mailTo);
                     message.To.Add(mailTo);
 
                     if (!string.IsNullOrEmpty(mailCC))
@@ -118,6 +117,17 @@ namespace PruebaWPF.Clases
        
         }
 
+        private string eliminarPuntoComa(string mailTo)
+        {
+            if (mailTo.StartsWith(";"))
+            {
+                return eliminarPuntoComa(mailTo.Substring(1));
+            }
+            else
+            {
+            return     mailTo;
+            }
+        }
 
         private async Task SendPDF(ReportViewer reportViewer, string tittle, string filename, string name, string mailTo, string mailCC, string Asunto, string EmailKey)
         {
@@ -145,6 +155,8 @@ namespace PruebaWPF.Clases
                     message.Attachments.Add(attachment);
 
                     message.From = new MailAddress(userMail);
+
+                    mailTo = eliminarPuntoComa(mailTo).Replace(";",",");
                     message.To.Add(mailTo);
 
                     if (!string.IsNullOrEmpty(mailCC))

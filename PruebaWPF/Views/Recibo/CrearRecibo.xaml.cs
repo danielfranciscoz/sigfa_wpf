@@ -156,7 +156,7 @@ namespace PruebaWPF.Views.Recibo
         {
             clsValidateInput.Validate(txtMontoPago, clsValidateInput.DecimalNumber);
             clsValidateInput.Validate(txtMonto, clsValidateInput.DecimalNumber);
-            clsValidateInput.Validate(txtNumeroCK, clsValidateInput.OnlyNumber);
+            //clsValidateInput.Validate(txtNumeroCK, clsValidateInput.OnlyNumber);
             clsValidateInput.Validate(txtAutorizacion, clsValidateInput.OnlyNumber);
             clsValidateInput.Validate(txtTarjeta, clsValidateInput.OnlyNumber);
 
@@ -247,7 +247,7 @@ namespace PruebaWPF.Views.Recibo
                 {
                     CargarTiposDeposito(orden);
 
-                    AsignarDatos(InformacionResult(orden.IdTipoDeposito, orden.Identificador, true));
+                    AsignarDatos(InformacionResult(orden.IdTipoDeposito, orden.Identificador, false));
 
                     var a = controller.getTipoArancelOrden(orden);
                     cboTipoArancel.SelectedValue = a; //Selecciono el primero TipoArancel debido a que todos los aranceles deberan en una orden de pago deben perternecer al mismo tipo de arancel
@@ -764,7 +764,7 @@ namespace PruebaWPF.Views.Recibo
                     {
                         Banco = (Banco)cboBanco.SelectedItem,
                         IdBanco = Byte.Parse(cboBanco.SelectedValue.ToString()),
-                        NumeroCK = int.Parse(txtNumeroCK.Text.ToString()),
+                        NumeroCK = txtNumeroCK.Text,
                         Cuenta = txtCuenta.Text
                     };
 
@@ -895,7 +895,7 @@ namespace PruebaWPF.Views.Recibo
             switch (formapago)
             {
                 case 2: //Cheque
-                    c.Add(txtNumeroCK, clsValidateInput.OnlyNumber);
+                    //c.Add(txtNumeroCK, clsValidateInput.OnlyNumber);
                     break;
                 case 3: //Tarjeta
                     if (!IsPOSActive)

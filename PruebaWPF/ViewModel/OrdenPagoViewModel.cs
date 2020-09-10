@@ -123,8 +123,8 @@ namespace PruebaWPF.ViewModel
             {
                 string[] busqueda = text.ToLower().Trim().Split(' ');
 
-                    return FindAllOrders(allRecintos).ToList().Where(
-                       w => busqueda.All(a => w.TextoIdentificador.ToLower().Contains(a)) || w.Identificador_Externo.ToLower().Contains(text))
+                    return FindAllOrders(allRecintos).Where(
+                       w => busqueda.All(a => w.TextoIdentificador.ToLower().Contains(a)) || w.Identificador.ToLower().Contains(text))
                     .ToList();
                 
             }

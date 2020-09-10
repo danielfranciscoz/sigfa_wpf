@@ -17,8 +17,8 @@ namespace PruebaWPF.Model
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public Banco()
         {
-            this.ReciboPagoCheque = new HashSet<ReciboPagoCheque>();
             this.ReciboPagoDeposito = new HashSet<ReciboPagoDeposito>();
+            this.ReciboPagoCheque = new HashSet<ReciboPagoCheque>();
         }
     
         public byte IdBanco { get; set; }
@@ -29,8 +29,8 @@ namespace PruebaWPF.Model
     
         public virtual Usuario Usuario { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<ReciboPagoCheque> ReciboPagoCheque { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<ReciboPagoDeposito> ReciboPagoDeposito { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<ReciboPagoCheque> ReciboPagoCheque { get; set; }
     }
 }

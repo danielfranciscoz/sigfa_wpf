@@ -15,12 +15,28 @@ namespace PruebaWPF.ViewModel
         }
 
         public IQueryable<UsuarioPerfil> perfiles() {
+
             return db.UsuarioPerfil.Where(w => (w.Login == clsSessionHelper.usuario.Login || w.Usuario.LoginEmail == clsSessionHelper.usuario.Login) && w.Perfil.isWeb == false && w.RegAnulado == false && w.Usuario.RegAnulado == false && w.Perfil.RegAnulado == false);
         }
 
         public List<UsuarioPerfil> perfilesUser()
         {
-            return perfiles().ToList();
+            return perfiles().Join(db.vw_RecintosRH,
+                            up =>up.IdRecinto,
+                            rec =>rec.IdRecinto,
+                            (usuario, recinto) => new {usuario,recinto}).ToList()
+                            .Select(s=>new UsuarioPerfil(){
+                                IdPerfil = s.usuario.IdPerfil,
+                                IdRecinto = s.usuario.IdRecinto,
+                                Login = s.usuario.Login,
+                                Perfil = s.usuario.Perfil,
+                                Usuario = s.usuario.Usuario,
+                                LoginCreacion = s.usuario.LoginCreacion,
+                                RegAnulado = s.usuario.RegAnulado,
+                                Recinto = s.recinto.Siglas
+                            }
+                            ).ToList();
+            //return perfiles().ToList();
         }
 
         /// <summary>

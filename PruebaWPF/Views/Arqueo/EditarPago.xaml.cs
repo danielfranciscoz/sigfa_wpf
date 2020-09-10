@@ -124,7 +124,7 @@ namespace PruebaWPF.Views.Arqueo
             switch (formaPago.IdFormaPago)
             {
                 case 2: //Cheque
-                    CargarBancos();
+                    CargarBancos(isDeposito: false);
                     OcultarVerAdicionales(Cheque, new Panel[] { Tarjeta, Bono, EspacioVacio, Deposito });
                     break;
                 case 3: //Tarjeta
@@ -135,6 +135,7 @@ namespace PruebaWPF.Views.Arqueo
                     OcultarVerAdicionales(Bono, new Panel[] { Tarjeta, Cheque, EspacioVacio, Deposito });
                     break;
                 case 5: //Deposito
+                    CargarBancos(isDeposito: true);
                     OcultarVerAdicionales(Deposito, new Panel[] { Tarjeta, Cheque, EspacioVacio, Bono });
                     break;
                 default:
@@ -144,12 +145,23 @@ namespace PruebaWPF.Views.Arqueo
             }
         }
 
-        private void CargarBancos()
+        private void CargarBancos(bool isDeposito)
         {
-            if (cboBanco.ItemsSource == null)
+            if (isDeposito)
             {
-                cboBanco.ItemsSource = controller.ObtenerBancos();
+                if (cboBancoDeposito.ItemsSource == null)
+                {
+                    cboBancoDeposito.ItemsSource = controller.ObtenerBancos();
 
+                }
+            }
+            else
+            {
+                if (cboBanco.ItemsSource == null)
+                {
+                    cboBanco.ItemsSource = controller.ObtenerBancos();
+
+                }
             }
         }
 
@@ -170,7 +182,7 @@ namespace PruebaWPF.Views.Arqueo
             }
             else if (reciboPago.ReciboPagoCheque != null)
             {
-                CargarBancos();
+                CargarBancos(isDeposito:false);
                 ReciboPagoCheque cheque = reciboPago.ReciboPagoCheque;
 
                 Cheque.DataContext = cheque;
@@ -192,7 +204,7 @@ namespace PruebaWPF.Views.Arqueo
             }
             else if (reciboPago.ReciboPagoDeposito != null)
             {
-
+                CargarBancos(isDeposito: true);
             }
         }
 
@@ -206,7 +218,7 @@ namespace PruebaWPF.Views.Arqueo
             switch (formapago)
             {
                 case 2: //Cheque
-                    c.Add(txtNumeroCK, clsValidateInput.OnlyNumber);
+                    //c.Add(txtNumeroCK, clsValidateInput.OnlyNumber);
                     break;
                 case 3: //Tarjeta
                     c.Add(txtTarjeta, clsValidateInput.OnlyNumber);
@@ -254,6 +266,7 @@ namespace PruebaWPF.Views.Arqueo
                 case 5: //Deposito
                     campos[1] = txtTransaccion;
                     campos[2] = cboTipo;
+                    campos[3] = cboBancoDeposito;
                     break;
                 default:
                     break;
@@ -281,7 +294,7 @@ namespace PruebaWPF.Views.Arqueo
                     {
                         Banco = (Banco)cboBanco.SelectedItem,
                         IdBanco = Byte.Parse(cboBanco.SelectedValue.ToString()),
-                        NumeroCK = int.Parse(txtNumeroCK.Text.ToString()),
+                        NumeroCK = txtNumeroCK.Text,
                         Cuenta = txtCuenta.Text
                     };
 
@@ -319,6 +332,7 @@ namespace PruebaWPF.Views.Arqueo
                     ReciboPagoDeposito rd = new ReciboPagoDeposito()
                     {
                         Tipo = cboTipo.SelectedIndex == 0 ? false : true,
+                        IdBanco = Byte.Parse(cboBancoDeposito.SelectedValue.ToString()),
                         Transaccion = txtTransaccion.Text,
                         Observacion = txtObservación.Text
                     };

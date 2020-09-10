@@ -150,7 +150,7 @@
           <Property Name="UsuarioCreacion" Type="nvarchar" MaxLength="20" Nullable="false" />
         </EntityType>
         <!--Errores durante la generación:
-advertencia 6002: La tabla o vista 'SIFOP_TEST.coin.FormulaConversion' no tiene definida ninguna clave principal. Se ha inferido la clave y la definición se creado como una vista o tabla de solo lectura.-->
+advertencia 6002: La tabla o vista 'SIFOP.coin.FormulaConversion' no tiene definida ninguna clave principal. Se ha inferido la clave y la definición se creado como una vista o tabla de solo lectura.-->
         <EntityType Name="FormulaConversion">
           <Key>
             <PropertyRef Name="IdFormulaConversion" />
@@ -179,7 +179,7 @@ advertencia 6002: La tabla o vista 'SIFOP_TEST.coin.FormulaConversion' no tiene 
           <Property Name="regAnulado" Type="bit" Nullable="false" />
         </EntityType>
         <!--Errores durante la generación:
-advertencia 6002: La tabla o vista 'SIFOP_TEST.coin.Parametro' no tiene definida ninguna clave principal. Se ha inferido la clave y la definición se creado como una vista o tabla de solo lectura.-->
+advertencia 6002: La tabla o vista 'SIFOP.coin.Parametro' no tiene definida ninguna clave principal. Se ha inferido la clave y la definición se creado como una vista o tabla de solo lectura.-->
         <EntityType Name="Parametro">
           <Key>
             <PropertyRef Name="IdParametroMoneda" />
@@ -389,6 +389,7 @@ advertencia 6002: La tabla o vista 'SIFOP_TEST.coin.Parametro' no tiene definida
           <Property Name="IdArancelArea" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="IdArancel" Type="int" Nullable="false" />
           <Property Name="IdArea" Type="varchar" MaxLength="4" Nullable="false" />
+          <Property Name="IdAreaDestino" Type="varchar" MaxLength="4" />
           <Property Name="FechaCreacion" Type="datetime" Nullable="false" />
           <Property Name="UsuarioCreacion" Type="nvarchar" MaxLength="20" Nullable="false" />
           <Property Name="regAnulado" Type="bit" Nullable="false" />
@@ -475,9 +476,9 @@ advertencia 6002: La tabla o vista 'SIFOP_TEST.coin.Parametro' no tiene definida
           <Property Name="IdRecinto" Type="int" Nullable="false" />
           <Property Name="IdTipoDeposito" Type="int" Nullable="false" />
           <Property Name="Identificador" Type="varchar" MaxLength="20" Nullable="false" />
-          <Property Name="TextoIdentificador" Type="varchar" MaxLength="80" Nullable="false" />
+          <Property Name="TextoIdentificador" Type="varchar" MaxLength="80" />
           <Property Name="UsuarioRemitente" Type="nvarchar" MaxLength="20" Nullable="false" />
-          <Property Name="EmailNotificacion" Type="varchar" MaxLength="100" />
+          <Property Name="EmailNotificacion" Type="varchar" MaxLength="150" />
           <Property Name="Sistema" Type="varchar" MaxLength="20" Nullable="false" />
           <Property Name="FechaEnvio" Type="datetime" Nullable="false" />
           <Property Name="CodRecibo" Type="varchar" MaxLength="25" />
@@ -603,7 +604,7 @@ advertencia 6002: La tabla o vista 'SIFOP_TEST.coin.Parametro' no tiene definida
           <Property Name="IdArea" Type="varchar" MaxLength="4" Nullable="false" />
           <Property Name="IdTipoDeposito" Type="int" Nullable="false" />
           <Property Name="Identificador" Type="varchar" MaxLength="20" Nullable="false" />
-          <Property Name="TextoIdentificador" Type="varchar" MaxLength="80" Nullable="false" />
+          <Property Name="TextoIdentificador" Type="varchar" MaxLength="80" />
           <Property Name="Obervacion" Type="varchar" MaxLength="150" />
         </EntityType>
         <EntityType Name="ReciboDet">
@@ -662,7 +663,7 @@ advertencia 6002: La tabla o vista 'SIFOP_TEST.coin.Parametro' no tiene definida
           <Property Name="IdReciboPago" Type="int" Nullable="false" />
           <Property Name="IdBanco" Type="tinyint" Nullable="false" />
           <Property Name="Cuenta" Type="varchar" MaxLength="30" Nullable="false" />
-          <Property Name="NumeroCK" Type="int" Nullable="false" />
+          <Property Name="NumeroCK" Type="varchar" MaxLength="20" Nullable="false" />
         </EntityType>
         <EntityType Name="ReciboPagoDeposito">
           <Key>
@@ -811,11 +812,10 @@ advertencia 6002: La tabla o vista 'SIFOP_TEST.coin.Parametro' no tiene definida
           <Property Name="FechaCreacion" Type="datetime" Nullable="false" />
         </EntityType>
         <!--Errores durante la generación:
-advertencia 6002: La tabla o vista 'SIFOP_TEST.cat.vw_Aranceles' no tiene definida ninguna clave principal. Se ha inferido la clave y la definición se creado como una vista o tabla de solo lectura.-->
+advertencia 6002: La tabla o vista 'SIFOP.cat.vw_Aranceles' no tiene definida ninguna clave principal. Se ha inferido la clave y la definición se creado como una vista o tabla de solo lectura.-->
         <EntityType Name="vw_Aranceles">
           <Key>
             <PropertyRef Name="IdArancel" />
-            <PropertyRef Name="Arancel" />
             <PropertyRef Name="IdTipo" />
             <PropertyRef Name="Tipo" />
             <PropertyRef Name="IdArancelPrecio" />
@@ -823,9 +823,10 @@ advertencia 6002: La tabla o vista 'SIFOP_TEST.cat.vw_Aranceles' no tiene defini
             <PropertyRef Name="IdMoneda" />
             <PropertyRef Name="Moneda" />
             <PropertyRef Name="IdArea" />
+            <PropertyRef Name="Arancel" />
           </Key>
           <Property Name="IdArancel" Type="int" Nullable="false" />
-          <Property Name="Arancel" Type="varchar" MaxLength="80" Nullable="false" />
+          <Property Name="Arancel" Type="nvarchar" MaxLength="150" Nullable="false" />
           <Property Name="IdTipo" Type="int" Nullable="false" />
           <Property Name="Tipo" Type="varchar" MaxLength="50" Nullable="false" />
           <Property Name="IdArancelPrecio" Type="int" Nullable="false" />
@@ -836,7 +837,7 @@ advertencia 6002: La tabla o vista 'SIFOP_TEST.cat.vw_Aranceles' no tiene defini
           <Property Name="Area" Type="varchar" MaxLength="200" />
         </EntityType>
         <!--Errores durante la generación:
-advertencia 6002: La tabla o vista 'SIFOP_TEST.cat.vw_AreaEquivalencia' no tiene definida ninguna clave principal. Se ha inferido la clave y la definición se creado como una vista o tabla de solo lectura.-->
+advertencia 6002: La tabla o vista 'SIFOP.cat.vw_AreaEquivalencia' no tiene definida ninguna clave principal. Se ha inferido la clave y la definición se creado como una vista o tabla de solo lectura.-->
         <EntityType Name="vw_AreaEquivalencia">
           <Key>
             <PropertyRef Name="CodRH" />
@@ -857,7 +858,7 @@ advertencia 6002: La tabla o vista 'SIFOP_TEST.cat.vw_AreaEquivalencia' no tiene
           <Property Name="FechaCreacion" Type="datetime" Nullable="false" />
         </EntityType>
         <!--Errores durante la generación:
-advertencia 6002: La tabla o vista 'SIFOP_TEST.cat.vw_Areas' no tiene definida ninguna clave principal. Se ha inferido la clave y la definición se creado como una vista o tabla de solo lectura.-->
+advertencia 6002: La tabla o vista 'SIFOP.cat.vw_Areas' no tiene definida ninguna clave principal. Se ha inferido la clave y la definición se creado como una vista o tabla de solo lectura.-->
         <EntityType Name="vw_Areas">
           <Key>
             <PropertyRef Name="codigo" />
@@ -872,7 +873,7 @@ advertencia 6002: La tabla o vista 'SIFOP_TEST.cat.vw_Areas' no tiene definida n
           <Property Name="strtipo_area" Type="varchar" MaxLength="14" Nullable="false" />
         </EntityType>
         <!--Errores durante la generación:
-advertencia 6002: La tabla o vista 'SIFOP_TEST.cat.vw_FuentesSIPPSI' no tiene definida ninguna clave principal. Se ha inferido la clave y la definición se creado como una vista o tabla de solo lectura.-->
+advertencia 6002: La tabla o vista 'SIFOP.cat.vw_FuentesSIPPSI' no tiene definida ninguna clave principal. Se ha inferido la clave y la definición se creado como una vista o tabla de solo lectura.-->
         <EntityType Name="vw_FuentesSIPPSI">
           <Key>
             <PropertyRef Name="IdFuenteFinanciamiento" />
@@ -885,7 +886,7 @@ advertencia 6002: La tabla o vista 'SIFOP_TEST.cat.vw_FuentesSIPPSI' no tiene de
           <Property Name="isActiva" Type="int" Nullable="false" />
         </EntityType>
         <!--Errores durante la generación:
-advertencia 6002: La tabla o vista 'SIFOP_TEST.cat.vw_Prematricula' no tiene definida ninguna clave principal. Se ha inferido la clave y la definición se creado como una vista o tabla de solo lectura.-->
+advertencia 6002: La tabla o vista 'SIFOP.cat.vw_Prematricula' no tiene definida ninguna clave principal. Se ha inferido la clave y la definición se creado como una vista o tabla de solo lectura.-->
         <EntityType Name="vw_Prematricula">
           <Key>
             <PropertyRef Name="AñoLectivo" />
@@ -911,7 +912,7 @@ advertencia 6002: La tabla o vista 'SIFOP_TEST.cat.vw_Prematricula' no tiene def
           <Property Name="Sede" Type="varchar" MaxLength="7" Nullable="false" />
         </EntityType>
         <!--Errores durante la generación:
-advertencia 6002: La tabla o vista 'SIFOP_TEST.cat.vw_ProveedoresSISCOM' no tiene definida ninguna clave principal. Se ha inferido la clave y la definición se creado como una vista o tabla de solo lectura.-->
+advertencia 6002: La tabla o vista 'SIFOP.cat.vw_ProveedoresSISCOM' no tiene definida ninguna clave principal. Se ha inferido la clave y la definición se creado como una vista o tabla de solo lectura.-->
         <EntityType Name="vw_ProveedoresSISCOM">
           <Key>
             <PropertyRef Name="RUC" />
@@ -933,7 +934,7 @@ advertencia 6002: La tabla o vista 'SIFOP_TEST.cat.vw_ProveedoresSISCOM' no tien
           <Property Name="EstadoProv" Type="bit" Nullable="false" />
         </EntityType>
         <!--Errores durante la generación:
-advertencia 6002: La tabla o vista 'SIFOP_TEST.cat.vw_RecintosRH' no tiene definida ninguna clave principal. Se ha inferido la clave y la definición se creado como una vista o tabla de solo lectura.-->
+advertencia 6002: La tabla o vista 'SIFOP.cat.vw_RecintosRH' no tiene definida ninguna clave principal. Se ha inferido la clave y la definición se creado como una vista o tabla de solo lectura.-->
         <EntityType Name="vw_RecintosRH">
           <Key>
             <PropertyRef Name="IdRecinto" />
@@ -943,7 +944,7 @@ advertencia 6002: La tabla o vista 'SIFOP_TEST.cat.vw_RecintosRH' no tiene defin
           <Property Name="Siglas" Type="varchar" MaxLength="20" Nullable="false" />
         </EntityType>
         <!--Errores durante la generación:
-advertencia 6002: La tabla o vista 'SIFOP_TEST.cat.vwCarrerasSIRA' no tiene definida ninguna clave principal. Se ha inferido la clave y la definición se creado como una vista o tabla de solo lectura.-->
+advertencia 6002: La tabla o vista 'SIFOP.cat.vwCarrerasSIRA' no tiene definida ninguna clave principal. Se ha inferido la clave y la definición se creado como una vista o tabla de solo lectura.-->
         <EntityType Name="vwCarrerasSIRA">
           <Key>
             <PropertyRef Name="CarreraCodigo" />
@@ -953,7 +954,7 @@ advertencia 6002: La tabla o vista 'SIFOP_TEST.cat.vwCarrerasSIRA' no tiene defi
           <Property Name="CarreraNombre" Type="nvarchar" MaxLength="100" Nullable="false" />
         </EntityType>
         <!--Errores durante la generación:
-advertencia 6002: La tabla o vista 'SIFOP_TEST.cat.vwEmpleadosRH' no tiene definida ninguna clave principal. Se ha inferido la clave y la definición se creado como una vista o tabla de solo lectura.-->
+advertencia 6002: La tabla o vista 'SIFOP.cat.vwEmpleadosRH' no tiene definida ninguna clave principal. Se ha inferido la clave y la definición se creado como una vista o tabla de solo lectura.-->
         <EntityType Name="vwEmpleadosRH">
           <Key>
             <PropertyRef Name="Cod_Interno" />
@@ -974,7 +975,7 @@ advertencia 6002: La tabla o vista 'SIFOP_TEST.cat.vwEmpleadosRH' no tiene defin
           <Property Name="Area" Type="varchar" MaxLength="200" />
         </EntityType>
         <!--Errores durante la generación:
-advertencia 6002: La tabla o vista 'SIFOP_TEST.cat.vwEstudiantesSIRA' no tiene definida ninguna clave principal. Se ha inferido la clave y la definición se creado como una vista o tabla de solo lectura.-->
+advertencia 6002: La tabla o vista 'SIFOP.cat.vwEstudiantesSIRA' no tiene definida ninguna clave principal. Se ha inferido la clave y la definición se creado como una vista o tabla de solo lectura.-->
         <EntityType Name="vwEstudiantesSIRA">
           <Key>
             <PropertyRef Name="Carnet" />
@@ -993,7 +994,7 @@ advertencia 6002: La tabla o vista 'SIFOP_TEST.cat.vwEstudiantesSIRA' no tiene d
           <Property Name="RegAnulado" Type="bit" Nullable="false" />
         </EntityType>
         <!--Errores durante la generación:
-advertencia 6002: La tabla o vista 'SIFOP_TEST.cat.vwSedesSIRA' no tiene definida ninguna clave principal. Se ha inferido la clave y la definición se creado como una vista o tabla de solo lectura.-->
+advertencia 6002: La tabla o vista 'SIFOP.cat.vwSedesSIRA' no tiene definida ninguna clave principal. Se ha inferido la clave y la definición se creado como una vista o tabla de solo lectura.-->
         <EntityType Name="vwSedesSIRA">
           <Key>
             <PropertyRef Name="Sede" />
@@ -1001,7 +1002,7 @@ advertencia 6002: La tabla o vista 'SIFOP_TEST.cat.vwSedesSIRA' no tiene definid
           <Property Name="Sede" Type="varchar" MaxLength="8" Nullable="false" />
         </EntityType>
         <!--Errores durante la generación:
-advertencia 6002: La tabla o vista 'SIFOP_TEST.dbo.vw_ObtenerPeriodosEspecificos' no tiene definida ninguna clave principal. Se ha inferido la clave y la definición se creado como una vista o tabla de solo lectura.-->
+advertencia 6002: La tabla o vista 'SIFOP.dbo.vw_ObtenerPeriodosEspecificos' no tiene definida ninguna clave principal. Se ha inferido la clave y la definición se creado como una vista o tabla de solo lectura.-->
         <EntityType Name="vw_ObtenerPeriodosEspecificos">
           <Key>
             <PropertyRef Name="IdPeriodoEspecifico" />
@@ -2607,6 +2608,7 @@ advertencia 6002: La tabla o vista 'SIFOP_TEST.dbo.vw_ObtenerPeriodosEspecificos
         </Function>
         <Function Name="sp_ArancelesSIRA" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="cat">
           <Parameter Name="carnet" Type="varchar" Mode="In" />
+          <Parameter Name="isMatricula" Type="bit" Mode="In" />
         </Function>
         <Function Name="sp_InsertarPagoSIRA" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="cat">
           <Parameter Name="carnet" Type="varchar" Mode="In" />
@@ -3706,8 +3708,8 @@ advertencia 6002: La tabla o vista 'SIFOP_TEST.dbo.vw_ObtenerPeriodosEspecificos
           <Property Name="LoginCreacion" Type="String" MaxLength="20" FixedLength="false" Unicode="true" Nullable="false" />
           <Property Name="RegAnulado" Type="Boolean" Nullable="false" />
           <NavigationProperty Name="Usuario" Relationship="Self.FK_Banco_Usuario" FromRole="Banco" ToRole="Usuario" />
-          <NavigationProperty Name="ReciboPagoCheque" Relationship="Self.FK_ReciboPagoCheque_Banco" FromRole="Banco" ToRole="ReciboPagoCheque" />
           <NavigationProperty Name="ReciboPagoDeposito" Relationship="SIFOPModel.FK_ReciboPagoDeposito_Banco" FromRole="Banco" ToRole="ReciboPagoDeposito" />
+          <NavigationProperty Name="ReciboPagoCheque" Relationship="SIFOPModel.FK_ReciboPagoCheque_Banco" FromRole="Banco" ToRole="ReciboPagoCheque" />
         </EntityType>
         <EntityType Name="CiaTarjetaCredito">
           <Key>
@@ -3914,6 +3916,7 @@ advertencia 6002: La tabla o vista 'SIFOP_TEST.dbo.vw_ObtenerPeriodosEspecificos
           <NavigationProperty Name="ArancelPrecio" Relationship="Self.FK_ArancelPrecio_ArancelArea" FromRole="ArancelArea" ToRole="ArancelPrecio" />
           <NavigationProperty Name="AreaPagoDelegado" Relationship="Self.FK_AreaPagoAutorizado_ArancelArea" FromRole="ArancelArea" ToRole="AreaPagoDelegado" />
           <NavigationProperty Name="UsuarioArancel" Relationship="Self.FK_UsuarioArancel_ArancelArea" FromRole="ArancelArea" ToRole="UsuarioArancel" />
+          <Property Name="IdAreaDestino" Type="String" MaxLength="4" FixedLength="false" Unicode="false" />
         </EntityType>
         <EntityType Name="ArancelPrecio">
           <Key>
@@ -4170,7 +4173,7 @@ advertencia 6002: La tabla o vista 'SIFOP_TEST.dbo.vw_ObtenerPeriodosEspecificos
           <Property Name="IdArea" Type="String" MaxLength="4" FixedLength="false" Unicode="false" Nullable="false" />
           <Property Name="IdTipoDeposito" Type="Int32" Nullable="false" />
           <Property Name="Identificador" Type="String" MaxLength="20" FixedLength="false" Unicode="false" Nullable="false" />
-          <Property Name="TextoIdentificador" Type="String" MaxLength="80" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="TextoIdentificador" Type="String" MaxLength="80" FixedLength="false" Unicode="false" />
           <NavigationProperty Name="Recibo" Relationship="Self.FK_ReciboDatos_Recibo" FromRole="ReciboDatos" ToRole="Recibo" />
           <NavigationProperty Name="TipoDeposito" Relationship="Self.FK_ReciboDatos_TipoDeposito" FromRole="ReciboDatos" ToRole="TipoDeposito" />
           <Property Name="Obervacion" Type="String" MaxLength="150" FixedLength="false" Unicode="false" />
@@ -4232,9 +4235,9 @@ advertencia 6002: La tabla o vista 'SIFOP_TEST.dbo.vw_ObtenerPeriodosEspecificos
           <NavigationProperty Name="ReciboPago1" Relationship="Self.FK_ReciboPago_ReciboPago" FromRole="ReciboPago" ToRole="ReciboPago1" />
           <NavigationProperty Name="ReciboPago2" Relationship="Self.FK_ReciboPago_ReciboPago" FromRole="ReciboPago1" ToRole="ReciboPago" />
           <NavigationProperty Name="ReciboPagoBono" Relationship="Self.FK_ReciboPagoBono_ReciboPago" FromRole="ReciboPago" ToRole="ReciboPagoBono" />
-          <NavigationProperty Name="ReciboPagoCheque" Relationship="Self.FK_ReciboPagoCheque_ReciboPago" FromRole="ReciboPago" ToRole="ReciboPagoCheque" />
           <NavigationProperty Name="ReciboPagoDeposito" Relationship="Self.FK_ReciboPagoDeposito_ReciboPago" FromRole="ReciboPago" ToRole="ReciboPagoDeposito" />
           <NavigationProperty Name="ReciboPagoTarjeta" Relationship="Self.FK_RecPagoTarjeta_ReciboPago" FromRole="ReciboPago" ToRole="ReciboPagoTarjeta" />
+          <NavigationProperty Name="ReciboPagoCheque" Relationship="SIFOPModel.FK_ReciboPagoCheque_ReciboPago" FromRole="ReciboPago" ToRole="ReciboPagoCheque" />
         </EntityType>
         <EntityType Name="ReciboPagoBono">
           <Key>
@@ -4244,17 +4247,6 @@ advertencia 6002: La tabla o vista 'SIFOP_TEST.dbo.vw_ObtenerPeriodosEspecificos
           <Property Name="Numero" Type="String" MaxLength="12" FixedLength="false" Unicode="false" Nullable="false" />
           <Property Name="Emisor" Type="String" MaxLength="25" FixedLength="false" Unicode="false" Nullable="false" />
           <NavigationProperty Name="ReciboPago" Relationship="Self.FK_ReciboPagoBono_ReciboPago" FromRole="ReciboPagoBono" ToRole="ReciboPago" />
-        </EntityType>
-        <EntityType Name="ReciboPagoCheque">
-          <Key>
-            <PropertyRef Name="IdReciboPago" />
-          </Key>
-          <Property Name="IdReciboPago" Type="Int32" Nullable="false" />
-          <Property Name="IdBanco" Type="Byte" Nullable="false" />
-          <Property Name="Cuenta" Type="String" MaxLength="30" FixedLength="false" Unicode="false" Nullable="false" />
-          <Property Name="NumeroCK" Type="Int32" Nullable="false" />
-          <NavigationProperty Name="Banco" Relationship="Self.FK_ReciboPagoCheque_Banco" FromRole="ReciboPagoCheque" ToRole="Banco" />
-          <NavigationProperty Name="ReciboPago" Relationship="Self.FK_ReciboPagoCheque_ReciboPago" FromRole="ReciboPagoCheque" ToRole="ReciboPago" />
         </EntityType>
         <EntityType Name="ReciboPagoDeposito">
           <Key>
@@ -4473,7 +4465,7 @@ advertencia 6002: La tabla o vista 'SIFOP_TEST.dbo.vw_ObtenerPeriodosEspecificos
             <PropertyRef Name="IdArea" />
           </Key>
           <Property Name="IdArancel" Type="Int32" Nullable="false" />
-          <Property Name="Arancel" Type="String" MaxLength="80" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Arancel" Type="String" MaxLength="150" FixedLength="false" Unicode="true" Nullable="false" />
           <Property Name="IdTipo" Type="Int32" Nullable="false" />
           <Property Name="Tipo" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
           <Property Name="IdArancelPrecio" Type="Int32" Nullable="false" />
@@ -5123,18 +5115,6 @@ advertencia 6002: La tabla o vista 'SIFOP_TEST.dbo.vw_ObtenerPeriodosEspecificos
             </Principal>
             <Dependent Role="Banco">
               <PropertyRef Name="LoginCreacion" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_ReciboPagoCheque_Banco">
-          <End Role="Banco" Type="Self.Banco" Multiplicity="1" />
-          <End Role="ReciboPagoCheque" Type="Self.ReciboPagoCheque" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Banco">
-              <PropertyRef Name="IdBanco" />
-            </Principal>
-            <Dependent Role="ReciboPagoCheque">
-              <PropertyRef Name="IdBanco" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -5978,18 +5958,6 @@ advertencia 6002: La tabla o vista 'SIFOP_TEST.dbo.vw_ObtenerPeriodosEspecificos
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_ReciboPagoCheque_ReciboPago">
-          <End Role="ReciboPago" Type="Self.ReciboPago" Multiplicity="1" />
-          <End Role="ReciboPagoCheque" Type="Self.ReciboPagoCheque" Multiplicity="0..1" />
-          <ReferentialConstraint>
-            <Principal Role="ReciboPago">
-              <PropertyRef Name="IdReciboPago" />
-            </Principal>
-            <Dependent Role="ReciboPagoCheque">
-              <PropertyRef Name="IdReciboPago" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <Association Name="FK_ReciboPagoDeposito_ReciboPago">
           <End Role="ReciboPago" Type="Self.ReciboPago" Multiplicity="1" />
           <End Role="ReciboPagoDeposito" Type="Self.ReciboPagoDeposito" Multiplicity="0..1" />
@@ -6121,7 +6089,6 @@ advertencia 6002: La tabla o vista 'SIFOP_TEST.dbo.vw_ObtenerPeriodosEspecificos
           <EntitySet Name="ReciboDiferencias" EntityType="Self.ReciboDiferencias" />
           <EntitySet Name="ReciboPago" EntityType="Self.ReciboPago" />
           <EntitySet Name="ReciboPagoBono" EntityType="Self.ReciboPagoBono" />
-          <EntitySet Name="ReciboPagoCheque" EntityType="Self.ReciboPagoCheque" />
           <EntitySet Name="ReciboPagoDeposito" EntityType="Self.ReciboPagoDeposito" />
           <EntitySet Name="ReciboPagoTarjeta" EntityType="Self.ReciboPagoTarjeta" />
           <EntitySet Name="ReciboSIRA" EntityType="Self.ReciboSIRA" />
@@ -6311,10 +6278,6 @@ advertencia 6002: La tabla o vista 'SIFOP_TEST.dbo.vw_ObtenerPeriodosEspecificos
           <AssociationSet Name="FK_Banco_Usuario" Association="Self.FK_Banco_Usuario">
             <End Role="Usuario" EntitySet="Usuario" />
             <End Role="Banco" EntitySet="Banco" />
-          </AssociationSet>
-          <AssociationSet Name="FK_ReciboPagoCheque_Banco" Association="Self.FK_ReciboPagoCheque_Banco">
-            <End Role="Banco" EntitySet="Banco" />
-            <End Role="ReciboPagoCheque" EntitySet="ReciboPagoCheque" />
           </AssociationSet>
           <AssociationSet Name="FK_CiaTarjetaCredito_Usuario" Association="Self.FK_CiaTarjetaCredito_Usuario">
             <End Role="Usuario" EntitySet="Usuario" />
@@ -6592,10 +6555,6 @@ advertencia 6002: La tabla o vista 'SIFOP_TEST.dbo.vw_ObtenerPeriodosEspecificos
             <End Role="ReciboPago" EntitySet="ReciboPago" />
             <End Role="ReciboPagoBono" EntitySet="ReciboPagoBono" />
           </AssociationSet>
-          <AssociationSet Name="FK_ReciboPagoCheque_ReciboPago" Association="Self.FK_ReciboPagoCheque_ReciboPago">
-            <End Role="ReciboPago" EntitySet="ReciboPago" />
-            <End Role="ReciboPagoCheque" EntitySet="ReciboPagoCheque" />
-          </AssociationSet>
           <AssociationSet Name="FK_ReciboPagoDeposito_ReciboPago" Association="Self.FK_ReciboPagoDeposito_ReciboPago">
             <End Role="ReciboPago" EntitySet="ReciboPago" />
             <End Role="ReciboPagoDeposito" EntitySet="ReciboPagoDeposito" />
@@ -6649,7 +6608,8 @@ advertencia 6002: La tabla o vista 'SIFOP_TEST.dbo.vw_ObtenerPeriodosEspecificos
           <Parameter Name="usuario" Mode="In" Type="String" />
           </FunctionImport>
           <FunctionImport Name="sp_ArancelesSIRA">
-          <Parameter Name="carnet" Mode="In" Type="String" />
+            <Parameter Name="carnet" Mode="In" Type="String" />
+            <Parameter Name="isMatricula" Mode="In" Type="Boolean" />
           </FunctionImport>
           <FunctionImport Name="sp_InsertarPagoSIRA">
             <Parameter Name="carnet" Mode="In" Type="String" />
@@ -6708,7 +6668,16 @@ advertencia 6002: La tabla o vista 'SIFOP_TEST.dbo.vw_ObtenerPeriodosEspecificos
             <End Role="OrdenPago" EntitySet="OrdenPago" />
             <End Role="ReciboAnulado" EntitySet="ReciboAnulado" />
           </AssociationSet>
-        </EntityContainer>
+          <EntitySet Name="ReciboPagoCheque" EntityType="SIFOPModel.ReciboPagoCheque" />
+          <AssociationSet Name="FK_ReciboPagoCheque_Banco" Association="SIFOPModel.FK_ReciboPagoCheque_Banco">
+            <End Role="Banco" EntitySet="Banco" />
+            <End Role="ReciboPagoCheque" EntitySet="ReciboPagoCheque" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ReciboPagoCheque_ReciboPago" Association="SIFOPModel.FK_ReciboPagoCheque_ReciboPago">
+            <End Role="ReciboPago" EntitySet="ReciboPago" />
+            <End Role="ReciboPagoCheque" EntitySet="ReciboPagoCheque" />
+          </AssociationSet>
+          </EntityContainer>
         <EntityType Name="TipoCuenta">
           <Key>
             <PropertyRef Name="IdTipoCuenta" />
@@ -6790,9 +6759,9 @@ advertencia 6002: La tabla o vista 'SIFOP_TEST.dbo.vw_ObtenerPeriodosEspecificos
           <Property Name="IdRecinto" Type="Int32" Nullable="false" />
           <Property Name="IdTipoDeposito" Type="Int32" Nullable="false" />
           <Property Name="Identificador" Type="String" Nullable="false" MaxLength="20" FixedLength="false" Unicode="false" />
-          <Property Name="TextoIdentificador" Type="String" Nullable="false" MaxLength="80" FixedLength="false" Unicode="false" />
+          <Property Name="TextoIdentificador" Type="String" MaxLength="80" FixedLength="false" Unicode="false" />
           <Property Name="UsuarioRemitente" Type="String" Nullable="false" MaxLength="20" FixedLength="false" Unicode="true" />
-          <Property Name="EmailNotificacion" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="EmailNotificacion" Type="String" MaxLength="150" FixedLength="false" Unicode="false" />
           <Property Name="Sistema" Type="String" Nullable="false" MaxLength="20" FixedLength="false" Unicode="false" />
           <Property Name="FechaEnvio" Type="DateTime" Nullable="false" Precision="3" />
           <Property Name="CodRecibo" Type="String" MaxLength="25" FixedLength="false" Unicode="false" />
@@ -6864,7 +6833,42 @@ advertencia 6002: La tabla o vista 'SIFOP_TEST.dbo.vw_ObtenerPeriodosEspecificos
             </Dependent>
           </ReferentialConstraint>
         </Association>
-      </Schema>
+        <EntityType Name="ReciboPagoCheque">
+          <Key>
+            <PropertyRef Name="IdReciboPago" />
+          </Key>
+          <Property Name="IdReciboPago" Type="Int32" Nullable="false" />
+          <Property Name="IdBanco" Type="Byte" Nullable="false" />
+          <Property Name="Cuenta" Type="String" Nullable="false" MaxLength="30" FixedLength="false" Unicode="false" />
+          <Property Name="NumeroCK" Type="String" Nullable="false" MaxLength="20" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="Banco" Relationship="SIFOPModel.FK_ReciboPagoCheque_Banco" FromRole="ReciboPagoCheque" ToRole="Banco" />
+          <NavigationProperty Name="ReciboPago" Relationship="SIFOPModel.FK_ReciboPagoCheque_ReciboPago" FromRole="ReciboPagoCheque" ToRole="ReciboPago" />
+        </EntityType>
+        <Association Name="FK_ReciboPagoCheque_Banco">
+          <End Type="SIFOPModel.Banco" Role="Banco" Multiplicity="1" />
+          <End Type="SIFOPModel.ReciboPagoCheque" Role="ReciboPagoCheque" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Banco">
+              <PropertyRef Name="IdBanco" />
+            </Principal>
+            <Dependent Role="ReciboPagoCheque">
+              <PropertyRef Name="IdBanco" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ReciboPagoCheque_ReciboPago">
+          <End Type="SIFOPModel.ReciboPago" Role="ReciboPago" Multiplicity="1" />
+          <End Type="SIFOPModel.ReciboPagoCheque" Role="ReciboPagoCheque" Multiplicity="0..1" />
+          <ReferentialConstraint>
+            <Principal Role="ReciboPago">
+              <PropertyRef Name="IdReciboPago" />
+            </Principal>
+            <Dependent Role="ReciboPagoCheque">
+              <PropertyRef Name="IdReciboPago" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
     <edmx:Mappings>
@@ -7222,6 +7226,7 @@ advertencia 6002: La tabla o vista 'SIFOP_TEST.dbo.vw_ObtenerPeriodosEspecificos
           <EntitySetMapping Name="ArancelArea">
             <EntityTypeMapping TypeName="SIFOPModel.ArancelArea">
               <MappingFragment StoreEntitySet="ArancelArea">
+                <ScalarProperty Name="IdAreaDestino" ColumnName="IdAreaDestino" />
                 <ScalarProperty Name="IdArancelArea" ColumnName="IdArancelArea" />
                 <ScalarProperty Name="IdArancel" ColumnName="IdArancel" />
                 <ScalarProperty Name="IdArea" ColumnName="IdArea" />
@@ -7486,16 +7491,6 @@ advertencia 6002: La tabla o vista 'SIFOP_TEST.dbo.vw_ObtenerPeriodosEspecificos
                 <ScalarProperty Name="IdReciboPago" ColumnName="IdReciboPago" />
                 <ScalarProperty Name="Numero" ColumnName="Numero" />
                 <ScalarProperty Name="Emisor" ColumnName="Emisor" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="ReciboPagoCheque">
-            <EntityTypeMapping TypeName="SIFOPModel.ReciboPagoCheque">
-              <MappingFragment StoreEntitySet="ReciboPagoCheque">
-                <ScalarProperty Name="IdReciboPago" ColumnName="IdReciboPago" />
-                <ScalarProperty Name="IdBanco" ColumnName="IdBanco" />
-                <ScalarProperty Name="Cuenta" ColumnName="Cuenta" />
-                <ScalarProperty Name="NumeroCK" ColumnName="NumeroCK" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -7946,6 +7941,16 @@ advertencia 6002: La tabla o vista 'SIFOP_TEST.dbo.vw_ObtenerPeriodosEspecificos
                 <ScalarProperty Name="IdArea" ColumnName="IdArea" />
                 <ScalarProperty Name="NoOrdenPago" ColumnName="NoOrdenPago" />
                 <ScalarProperty Name="IdOrdenPago" ColumnName="IdOrdenPago" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ReciboPagoCheque">
+            <EntityTypeMapping TypeName="SIFOPModel.ReciboPagoCheque">
+              <MappingFragment StoreEntitySet="ReciboPagoCheque">
+                <ScalarProperty Name="NumeroCK" ColumnName="NumeroCK" />
+                <ScalarProperty Name="Cuenta" ColumnName="Cuenta" />
+                <ScalarProperty Name="IdBanco" ColumnName="IdBanco" />
+                <ScalarProperty Name="IdReciboPago" ColumnName="IdReciboPago" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

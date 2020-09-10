@@ -17,7 +17,7 @@ namespace PruebaWPF.Model
         public int IdReciboPago { get; set; }
         public byte IdBanco { get; set; }
         public string Cuenta { get; set; }
-        public int NumeroCK { get; set; }
+        public string NumeroCK { get; set; }
     
         public virtual Banco Banco { get; set; }
         public virtual ReciboPago ReciboPago { get; set; }

@@ -17,6 +17,7 @@
 >
     <Page.Resources>
         <l:BoolToStringConverter x:Key="convertidor" />
+        <l:IsNullConverter x:Key="convertidorNull" />
     </Page.Resources>
     
     <Grid Background="White">
@@ -221,7 +222,18 @@
                                 
                                 <StackPanel Grid.Row="0" Orientation="Vertical">
                                     <DockPanel  Margin="10 0 0 0">
-                                        <TextBlock VerticalAlignment="Center" FontWeight="Bold">Detalle de pagos</TextBlock>
+                                        <TextBlock VerticalAlignment="Center" >
+                                            <TextBlock.Inlines>
+                                                <Run FontWeight="Bold">Detalle de pagos</Run>
+                                            </TextBlock.Inlines>
+                                        </TextBlock>
+                                        <TextBlock x:Name="lblRectificacionTex" VerticalAlignment="Center" Margin="5 0 0 0" Visibility="Hidden">
+                                            <TextBlock.Inlines>
+                                                <Run>(Los registros color</Run>
+                                                <Run Foreground="{StaticResource WarningMsj}">NARANJA</Run>
+                                                <Run>fueron rectificados en arqueo, revise el informe de cierre)</Run>
+                                            </TextBlock.Inlines>
+                                        </TextBlock>
                                         <TextBlock VerticalAlignment="Center" HorizontalAlignment="Right" Margin="20 0 10 0" Foreground="Gray">
                                             <TextBlock.Inlines>
                                                 <Run Text="{Binding ElementName=tblReciboPay,Path=Items.Count,Mode=OneWay}"></Run>
@@ -233,7 +245,18 @@
                                 </StackPanel>
                                 <DockPanel Grid.Row="1" x:Name="panelGridPay">
                                     <DataGrid Name="tblReciboPay" CanUserDeleteRows="False" CanUserAddRows="False" AutoGenerateColumns="False" SelectionUnit="FullRow" SelectionMode="Single" >
-                                    <DataGrid.Columns>
+                                        <DataGrid.RowStyle>
+
+                                            <Style TargetType="{x:Type DataGridRow}" BasedOn="{StaticResource MaterialDesignDataGridRow}">
+                                                <Style.Triggers>
+                                                    <DataTrigger Binding="{Binding IdRectificacion, Converter={StaticResource convertidorNull},ConverterParameter='true;false'}" Value="false">
+                                                        <Setter Property="Foreground" Value="{StaticResource WarningMsj}"/>
+                                                        <Setter Property="FontWeight" Value="SemiBold"/>
+                                                    </DataTrigger>
+                                                </Style.Triggers>
+                                            </Style>
+                                        </DataGrid.RowStyle>
+                                        <DataGrid.Columns>
                                         <DataGridTextColumn CanUserReorder="False" CanUserResize="True" IsReadOnly="True" Header="Forma de Pago" Width="auto" Binding="{Binding FormaPago.FormaPago1}"></DataGridTextColumn>
                                         <DataGridTextColumn CanUserReorder="False" CanUserResize="False" IsReadOnly="True" Header="" Width="auto" Binding="{Binding Moneda.Simbolo}"></DataGridTextColumn>
                                             <DataGridTextColumn CanUserReorder="False" CanUserResize="True" IsReadOnly="True" Header="Monto" Width="auto" Binding="{Binding Monto, StringFormat={}{0:n2}}"></DataGridTextColumn>

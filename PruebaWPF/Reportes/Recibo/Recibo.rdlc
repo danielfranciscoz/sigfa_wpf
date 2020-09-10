@@ -648,7 +648,6 @@
               </Paragraph>
             </Paragraphs>
             <rd:DefaultName>Encabezado</rd:DefaultName>
-            <Left>0cm</Left>
             <Height>0.6cm</Height>
             <Width>6.4cm</Width>
             <Style>
@@ -683,7 +682,6 @@
             </Paragraphs>
             <rd:DefaultName>Textbox8</rd:DefaultName>
             <Top>1.50495cm</Top>
-            <Left>0cm</Left>
             <Height>0.6cm</Height>
             <Width>6.4cm</Width>
             <ZIndex>1</ZIndex>
@@ -739,7 +737,6 @@
             </Paragraphs>
             <rd:DefaultName>Textbox1</rd:DefaultName>
             <Top>0.70583cm</Top>
-            <Left>0cm</Left>
             <Height>0.6994cm</Height>
             <Width>6.4cm</Width>
             <ZIndex>2</ZIndex>
@@ -783,7 +780,6 @@
             </Paragraphs>
             <rd:DefaultName>Textbox7</rd:DefaultName>
             <Top>3.37495cm</Top>
-            <Left>0cm</Left>
             <Height>0.6cm</Height>
             <Width>6.4cm</Width>
             <ZIndex>3</ZIndex>
@@ -817,7 +813,6 @@
             </Paragraphs>
             <rd:DefaultName>Textbox11</rd:DefaultName>
             <Top>4.89245cm</Top>
-            <Left>0cm</Left>
             <Height>0.6cm</Height>
             <Width>6.4cm</Width>
             <ZIndex>4</ZIndex>
@@ -1272,7 +1267,6 @@ IIF(string.IsNullOrEmpty(Fields!Concepto.Value),Fields!Arancel.Value,Fields!Conc
             </TablixRowHierarchy>
             <DataSetName>DetalleRecibo</DataSetName>
             <Top>5.56301cm</Top>
-            <Left>0cm</Left>
             <Height>2cm</Height>
             <Width>6.4cm</Width>
             <ZIndex>5</ZIndex>
@@ -1284,7 +1278,6 @@ IIF(string.IsNullOrEmpty(Fields!Concepto.Value),Fields!Arancel.Value,Fields!Conc
           </Tablix>
           <Line Name="Line3">
             <Top>4.76133cm</Top>
-            <Left>0cm</Left>
             <Height>0cm</Height>
             <Width>6.4cm</Width>
             <ZIndex>6</ZIndex>
@@ -1314,7 +1307,6 @@ IIF(string.IsNullOrEmpty(Fields!Concepto.Value),Fields!Arancel.Value,Fields!Conc
             </Paragraphs>
             <rd:DefaultName>Textbox11</rd:DefaultName>
             <Top>8.18911cm</Top>
-            <Left>0cm</Left>
             <Height>0.6cm</Height>
             <Width>6.4cm</Width>
             <ZIndex>7</ZIndex>
@@ -1330,7 +1322,6 @@ IIF(string.IsNullOrEmpty(Fields!Concepto.Value),Fields!Arancel.Value,Fields!Conc
           </Textbox>
           <Line Name="Line4">
             <Top>8.05799cm</Top>
-            <Left>0cm</Left>
             <Height>0cm</Height>
             <Width>6.4cm</Width>
             <ZIndex>8</ZIndex>
@@ -1786,7 +1777,6 @@ IIF(string.IsNullOrEmpty(Fields!Concepto.Value),Fields!Arancel.Value,Fields!Conc
             </TablixRowHierarchy>
             <DataSetName>FormaPago</DataSetName>
             <Top>8.78911cm</Top>
-            <Left>0cm</Left>
             <Height>2cm</Height>
             <Width>6.4cm</Width>
             <ZIndex>9</ZIndex>
@@ -1929,7 +1919,6 @@ IIF(string.IsNullOrEmpty(Fields!Concepto.Value),Fields!Arancel.Value,Fields!Conc
             </TablixRowHierarchy>
             <DataSetName>TipoCambio</DataSetName>
             <Top>12.07064cm</Top>
-            <Left>0cm</Left>
             <Height>0.6cm</Height>
             <Width>6.42882cm</Width>
             <ZIndex>10</ZIndex>
@@ -1959,7 +1948,6 @@ IIF(string.IsNullOrEmpty(Fields!Concepto.Value),Fields!Arancel.Value,Fields!Conc
             </Paragraphs>
             <rd:DefaultName>Textbox11</rd:DefaultName>
             <Top>11.47064cm</Top>
-            <Left>0cm</Left>
             <Height>0.6cm</Height>
             <Width>6.4cm</Width>
             <ZIndex>11</ZIndex>
@@ -1975,7 +1963,6 @@ IIF(string.IsNullOrEmpty(Fields!Concepto.Value),Fields!Arancel.Value,Fields!Conc
           </Textbox>
           <Line Name="Line5">
             <Top>11.29426cm</Top>
-            <Left>0cm</Left>
             <Height>0cm</Height>
             <Width>6.4cm</Width>
             <ZIndex>12</ZIndex>
@@ -1991,8 +1978,8 @@ IIF(string.IsNullOrEmpty(Fields!Concepto.Value),Fields!Arancel.Value,Fields!Conc
             <Sizing>FitProportional</Sizing>
             <Top>2.21662cm</Top>
             <Left>0.1cm</Left>
-            <Height>3.94639cm</Height>
-            <Width>1.50146cm</Width>
+            <Height>7.17249cm</Height>
+            <Width>6.05229cm</Width>
             <ZIndex>13</ZIndex>
             <Visibility>
               <Hidden>=First(Fields!regAnulado.Value, "Recibo")=False</Hidden>
@@ -2038,7 +2025,6 @@ IIF(string.IsNullOrEmpty(Fields!Concepto.Value),Fields!Arancel.Value,Fields!Conc
             </Paragraphs>
             <rd:DefaultName>Textbox1</rd:DefaultName>
             <Top>3.97495cm</Top>
-            <Left>0cm</Left>
             <Height>0.6cm</Height>
             <Width>6.4cm</Width>
             <ZIndex>14</ZIndex>

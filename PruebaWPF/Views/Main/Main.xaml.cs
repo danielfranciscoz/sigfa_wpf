@@ -160,20 +160,21 @@ namespace PruebaWPF.Views.Main
         {
             try
             {
+                int maxLength = 50;
                 String perfil = "";
                 List<UsuarioPerfil> perfiles = controller.FindPerfiles();
 
-                perfil = string.Join(",", perfiles.Select(s => s.Perfil.Perfil1));
+                perfil = string.Join(", ", perfiles.Select(s => perfil= (s.Perfil.Perfil1+" ("+s.Recinto+")")));
 
                 lblPerfil.ToolTip = perfil;
 
-                if (perfil.Length > 13)
+                if (perfil.Length > maxLength)
                 {
-                    perfil = perfil.Substring(0, 13) + "...";
+                    perfil = perfil.Substring(0, maxLength) + "...";
                 }
 
                 lblPerfil.Text = perfil;
-                //lblPeriodo.Text = clsSessionHelper.periodoEspecifico.FechaInicio.Month.ToString() + "/" + clsSessionHelper.periodoEspecifico.FechaInicio.Year.ToString() + " - " + clsSessionHelper.periodoEspecifico.Periodo;
+                lblPeriodo.Text = clsSessionHelper.serverName;
                 mnUsuario.Header = ObtenerBienvenida(clsSessionHelper.usuario.Nombre);
                 lblTipoCambio.Text = controller.ObtenerTipoCambio();
                 lblMac.Text = clsSessionHelper.MACMemory;

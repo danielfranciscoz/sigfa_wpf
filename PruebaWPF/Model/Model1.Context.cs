@@ -73,7 +73,6 @@ namespace PruebaWPF.Model
         public virtual DbSet<ReciboDiferencias> ReciboDiferencias { get; set; }
         public virtual DbSet<ReciboPago> ReciboPago { get; set; }
         public virtual DbSet<ReciboPagoBono> ReciboPagoBono { get; set; }
-        public virtual DbSet<ReciboPagoCheque> ReciboPagoCheque { get; set; }
         public virtual DbSet<ReciboPagoDeposito> ReciboPagoDeposito { get; set; }
         public virtual DbSet<ReciboPagoTarjeta> ReciboPagoTarjeta { get; set; }
         public virtual DbSet<ReciboSIRA> ReciboSIRA { get; set; }
@@ -104,6 +103,7 @@ namespace PruebaWPF.Model
         public virtual DbSet<Programa> Programa { get; set; }
         public virtual DbSet<vw_ObtenerPeriodosEspecificos> vw_ObtenerPeriodosEspecificos { get; set; }
         public virtual DbSet<OrdenPago> OrdenPago { get; set; }
+        public virtual DbSet<ReciboPagoCheque> ReciboPagoCheque { get; set; }
     
         [DbFunction("SIFOPEntities", "fn_TotalesArqueo")]
         public virtual IQueryable<fn_TotalesArqueo_Result> fn_TotalesArqueo(Nullable<int> idArqueo, Nullable<bool> isDoc)
@@ -191,13 +191,17 @@ namespace PruebaWPF.Model
             return ((IObjectContextAdapter)this).ObjectContext.CreateQuery<LoginInfo_Result>("[SIFOPEntities].[LoginInfo](@usuario)", usuarioParameter);
         }
     
-        public virtual int sp_ArancelesSIRA(string carnet)
+        public virtual int sp_ArancelesSIRA(string carnet, Nullable<bool> isMatricula)
         {
             var carnetParameter = carnet != null ?
                 new ObjectParameter("carnet", carnet) :
                 new ObjectParameter("carnet", typeof(string));
     
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("sp_ArancelesSIRA", carnetParameter);
+            var isMatriculaParameter = isMatricula.HasValue ?
+                new ObjectParameter("isMatricula", isMatricula) :
+                new ObjectParameter("isMatricula", typeof(bool));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("sp_ArancelesSIRA", carnetParameter, isMatriculaParameter);
         }
     
         public virtual int sp_InsertarPagoSIRA(string carnet, string detalleRecibo, Nullable<bool> isMatricula)

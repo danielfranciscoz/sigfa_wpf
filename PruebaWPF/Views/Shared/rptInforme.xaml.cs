@@ -200,6 +200,7 @@ namespace PruebaWPF.Views.Shared
             columnasFiltro.Recinto = columnasFiltro.Recinto != null ? columnasFiltro.Recinto : "TODOS LOS RECINTOS";
             columnasFiltro.Area = columnasFiltro.Area != null ? columnasFiltro.Area : "TODAS LAS ÁREAS";
             columnasFiltro.Caja = columnasFiltro.Caja != null ? columnasFiltro.Caja : "TODAS LAS CAJAS";
+            columnasFiltro.FuenteFinanciamiento= columnasFiltro.FuenteFinanciamiento != null ? columnasFiltro.FuenteFinanciamiento : "TODAS LAS FUENTES";
             columnas.Add(columnasFiltro);
 
             datasSource = new ReportDataSource[2];

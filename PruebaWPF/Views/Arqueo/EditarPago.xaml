@@ -83,7 +83,7 @@
                     </StackPanel>
 
                     <!--Tarjeta-->
-                    <StackPanel x:Name="Tarjeta" Orientation="Vertical" Visibility="Visible">
+                    <StackPanel x:Name="Tarjeta" Orientation="Vertical" Visibility="Collapsed">
 
                         <ComboBox SelectedValue="{Binding IdTarjeta}" x:Name="cboTarjeta" Margin="{Binding ElementName=cboBanco,Path=Margin}"  Width="{Binding ElementName=cboBanco,Path=Width}" DisplayMemberPath="Nombre" SelectedValuePath="IdCiaTarjetaCredito"  Grid.Row="0" Grid.Column="1" IsTextSearchEnabled="True"  materialDesign:HintAssist.Hint="* Tarjeta" materialDesign:HintAssist.IsFloating="True" VerticalAlignment="Center" HorizontalAlignment="Left"></ComboBox>
                         <TextBox Text="{Binding Autorizacion}" x:Name="txtAutorizacion" Margin="{Binding ElementName=cboBanco,Path=Margin}" Width="{Binding ElementName=cboBanco,Path=Width}"  TextAlignment="Right" HorizontalAlignment="Left" materialDesign:HintAssist.Hint="* Autorizado" materialDesign:HintAssist.IsFloating="True"></TextBox>
@@ -98,10 +98,13 @@
                     </StackPanel>
 
                     <!--Deposito-->
-                    <StackPanel x:Name="Deposito" Visibility="Collapsed" Orientation="Vertical">
+                    <StackPanel x:Name="Deposito" Visibility="Visible" Orientation="Vertical">
                         <ComboBox x:Name="cboTipo"  Grid.Row="0" Grid.Column="1" Width="{Binding ElementName=cboBanco,Path=Width}" Margin="{Binding ElementName=cboBanco,Path=Margin}" materialDesign:HintAssist.Hint="* Tipo de Transacción" materialDesign:HintAssist.IsFloating="True" VerticalAlignment="Center" HorizontalAlignment="Left">
                             <ComboBoxItem>Minuta</ComboBoxItem>
                             <ComboBoxItem>Transferencia</ComboBoxItem>
+                        </ComboBox>
+
+                        <ComboBox Width="{Binding ElementName=cboBanco,Path=Width}" x:Name="cboBancoDeposito" Margin="{Binding ElementName=cboBanco,Path=Margin}" DisplayMemberPath="Nombre" SelectedValuePath="IdBanco" materialDesign:HintAssist.Hint="* Banco" materialDesign:HintAssist.IsFloating="True" VerticalAlignment="Center" HorizontalAlignment="Left">
                         </ComboBox>
                         <TextBox x:Name="txtTransaccion" Width="{Binding ElementName=cboBanco,Path=Width}" Margin="{Binding ElementName=cboBanco,Path=Margin}" ToolTip="Número de Transacción" materialDesign:HintAssist.Hint="* No. de Transacción" materialDesign:HintAssist.IsFloating="True" VerticalAlignment="Center"  TextAlignment="Right" HorizontalAlignment="Left"></TextBox>
                         <TextBox x:Name="txtObservación" Width="{Binding ElementName=cboBanco,Path=Width}" Margin="{Binding ElementName=cboBanco,Path=Margin}" materialDesign:HintAssist.Hint="Observación" materialDesign:HintAssist.IsFloating="True"  VerticalAlignment="Center" HorizontalAlignment="Left"></TextBox>

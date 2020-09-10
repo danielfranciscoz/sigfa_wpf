@@ -47,7 +47,7 @@
 
                     <StackPanel  HorizontalAlignment="Right" Grid.Column="1" Orientation="Horizontal">
                         <CheckBox VerticalAlignment="Bottom" Margin="0 0 20 0" x:Name="chkAll" materialDesign:HintAssist.Hint="Búsqueda (No.Orden)" materialDesign:HintAssist.IsFloating="True" FontSize="13" KeyDown="TxtFindOrder_KeyDown">Incluir Ordenes de Otros recintos</CheckBox>
-                        <TextBox SpellCheck.IsEnabled="True" Language="es-419" Margin="0 0 20 0"  x:Name="txtFind" Width="250" materialDesign:HintAssist.Hint="Búsqueda (Recibiremos)" materialDesign:HintAssist.IsFloating="True" FontSize="13" KeyUp="txtFindText" KeyDown="TxtFindOrder_KeyDown" />
+                        <TextBox SpellCheck.IsEnabled="True" Language="es-419" Margin="0 0 20 0"  x:Name="txtFind" Width="250" materialDesign:HintAssist.Hint="Búsqueda (Identificación, Recibiremos)" materialDesign:HintAssist.IsFloating="True" FontSize="13" KeyUp="txtFindText" KeyDown="TxtFindOrder_KeyDown" />
                     </StackPanel>
                 </Grid>
 
@@ -61,7 +61,7 @@
                         <DataGridTextColumn CanUserReorder="False" CanUserResize="False" IsReadOnly="True" Header="Recinto" Width="auto" Binding="{Binding Recinto}"></DataGridTextColumn>
                         <DataGridTextColumn CanUserReorder="False" CanUserResize="False" IsReadOnly="True" Header="Area" Width="auto" Binding="{Binding Area}"></DataGridTextColumn>
                         <DataGridTextColumn CanUserReorder="False" CanUserResize="False" IsReadOnly="True" Header="Tipo Depósito" Width="auto" Binding="{Binding TipoDeposito.Nombre}"></DataGridTextColumn>
-                        <DataGridTextColumn CanUserReorder="False" CanUserResize="False" IsReadOnly="True" Header="Identificación" Width="auto" Binding="{Binding Identificador_Externo}"></DataGridTextColumn>
+                        <DataGridTextColumn CanUserReorder="False" CanUserResize="False" IsReadOnly="True" Header="Identificación" Width="auto" Binding="{Binding Identificador}"></DataGridTextColumn>
                         <DataGridTextColumn CanUserReorder="False" CanUserResize="False" IsReadOnly="True" Header="Por Cuenta" Width="auto" Binding="{Binding TextoIdentificador}"></DataGridTextColumn>
                         <DataGridTextColumn CanUserReorder="False" CanUserResize="False" IsReadOnly="True" Header="Aranceles" Width="auto" Binding="{Binding CantidadPagos}"></DataGridTextColumn>
                         <DataGridTextColumn CanUserReorder="False" CanUserResize="False" IsReadOnly="True" Header="Fecha de Envío" Width="auto" Binding="{Binding FechaEnvio,StringFormat={}{0:dd/MM/yyyy hh:mm:ss tt}}"></DataGridTextColumn>

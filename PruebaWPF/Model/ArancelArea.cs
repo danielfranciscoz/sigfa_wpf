@@ -28,6 +28,7 @@ namespace PruebaWPF.Model
         public System.DateTime FechaCreacion { get; set; }
         public string UsuarioCreacion { get; set; }
         public bool regAnulado { get; set; }
+        public string IdAreaDestino { get; set; }
     
         public virtual Usuario Usuario { get; set; }
         public virtual Arancel Arancel { get; set; }

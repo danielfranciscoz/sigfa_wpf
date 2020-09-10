@@ -24,6 +24,7 @@ namespace PruebaWPF.Views.Informe
         private Pantalla pantalla;
         ObjetoResumen recinto;
         ObjetoResumen caja;
+        ObjetoResumen fuente;
         ObjetoResumen area;
 
 
@@ -42,7 +43,7 @@ namespace PruebaWPF.Views.Informe
             starHeight = panelResumen.ActualHeight;
         }
 
-      
+
 
         private void LoadTitle()
         {
@@ -98,7 +99,7 @@ namespace PruebaWPF.Views.Informe
             ObtenerInformacion();
         }
 
-        private async void ObtenerInformacion(int? IdRecinto = null, string IdArea = null, int? IdCaja = null)
+        private async void ObtenerInformacion(int? IdRecinto = null, string IdArea = null, int? IdCaja = null,int? IdFuenteFinanciamiento = null)
         {
             btnGenerar.IsEnabled = false;
             progressbar.Visibility = Visibility.Visible;
@@ -112,7 +113,7 @@ namespace PruebaWPF.Views.Informe
                  List<ObjetoResumen>,
                  List<ObjetoResumen>,
                  Tuple<List<ReciboPago>>
-                 > datos = await FindAsync(start, end, IdRecinto, IdArea, IdCaja);
+                 > datos = await FindAsync(start, end, IdRecinto, IdArea, IdCaja,IdFuenteFinanciamiento);
 
             List<Model.Recibo> recibos = datos.Item1;
             List<ObjetoResumen> recintosCount = datos.Item2;
@@ -142,7 +143,7 @@ namespace PruebaWPF.Views.Informe
             CargarRecintos(recintosCount);
             CargarAreas(AreasCount);
             CargarCajas(recintosMoney);
-
+            CargarFuentes(recibos);
 
             this.pagos = pago;
             btnGenerar.IsEnabled = true;
@@ -152,16 +153,18 @@ namespace PruebaWPF.Views.Informe
         private Tuple<List<ObjetoResumen>, List<ObjetoResumen>> CalculateSummary(List<ObjetoResumen> recintosCount, List<ObjetoResumen> recintosMoney)
         {
 
-            var CountResumen = recintosCount.GroupBy(g => g.Name).Select(s => new ObjetoResumen
+            var CountResumen = recintosCount.GroupBy(g => new { g.Name, g.fuente }).Select(s => new ObjetoResumen
             {
-                Name = s.Key,
-                Count = s.Sum(s1 => s1.Count)
+                Name = s.Key.Name,
+                Count = s.Sum(s1 => s1.Count),
+                fuente = s.Key.fuente
             }).ToList();
 
 
-            var MoneyResumen = recintosMoney.GroupBy(g => g.Coin).Select(s => new ObjetoResumen
+            var MoneyResumen = recintosMoney.GroupBy(g => new { g.Coin,g.fuente }).Select(s => new ObjetoResumen
             {
-                Name = s.Key,
+                Name = s.Key.Coin,
+                fuente = s.Key.fuente,
                 Total = s.Sum(s1 => s1.Total)
             }).ToList();
 
@@ -230,6 +233,26 @@ namespace PruebaWPF.Views.Informe
             }
         }
 
+        private void CargarFuentes(List<Model.Recibo> recibo)
+        {
+            if (cboFuente.SelectedIndex == -1 || cboFuente.SelectedValue == null)
+            {
+                if (cboFuente.ItemsSource != null)
+                {
+                    cboFuente.ItemsSource = null;
+                }
+                cboFuente.ItemsSource = recibo.Select(s => new {IdInt= s.IdFuenteFinanciamiento, SecondName=s.FuenteFinanciamiento.Nombre }).Distinct().OrderBy(o => o.SecondName).Select(s => new ObjetoResumen() { IdInt = s.IdInt, Name = s.SecondName });
+            }
+            else
+            {
+                var items = (ObjetoResumen)cboFuente.SelectedItem;
+                List<ObjetoResumen> nuevo = new List<ObjetoResumen>();
+                nuevo.Add(items);
+                nuevo.Add(new ObjetoResumen() { Name = "Limpiar Filtro", IdInt = null });
+                cboFuente.ItemsSource = nuevo;
+            }
+        }
+
         private void Button_Click_1(object sender, RoutedEventArgs e)
         {
             rptInforme cierre = new rptInforme(pagos, new ColumnasFiltro()
@@ -238,7 +261,8 @@ namespace PruebaWPF.Views.Informe
                 Caja = ((ObjetoResumen)cboCaja.SelectedItem)?.Name.ToUpper(),
                 Recinto = ((ObjetoResumen)cboRecinto.SelectedItem)?.Name.ToUpper(),
                 startdate = dtInicio.SelectedDate,
-                enddate = dtFin.SelectedDate
+                enddate = dtFin.SelectedDate,
+                FuenteFinanciamiento = ((ObjetoResumen)cboFuente.SelectedItem)?.Name.ToUpper()
             });
             cierre.ShowDialog();
         }
@@ -275,13 +299,30 @@ namespace PruebaWPF.Views.Informe
             LoadTitle();
         }
 
-        private Task<Tuple<List<Model.Recibo>, List<ObjetoResumen>, List<ObjetoResumen>, List<ObjetoResumen>, List<ObjetoResumen>, List<ObjetoResumen>, Tuple<List<ReciboPago>>>> FindAsync(DateTime? start, DateTime? end, int? IdRecinto = null, string IdArea = null, int? IdCaja = null)
+        private Task<Tuple<List<Model.Recibo>, List<ObjetoResumen>, List<ObjetoResumen>, List<ObjetoResumen>, List<ObjetoResumen>, List<ObjetoResumen>, Tuple<List<ReciboPago>>>> FindAsync(DateTime? start, DateTime? end, int? IdRecinto = null, string IdArea = null, int? IdCaja = null,int? IdFuenteFinanciamiento = null)
         {
             return Task.Run(() =>
             {
-                return controller.InformeIngresos(start, end, IdRecinto, IdArea, IdCaja);
+                return controller.InformeIngresos(start, end, IdRecinto, IdArea, IdCaja,IdFuenteFinanciamiento);
             });
 
+        }
+
+        private void CboFuente_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            fuente = (ObjetoResumen)cboFuente.SelectedItem;
+            if (fuente != null)
+            {
+                ObtenerInformacion(IdCaja: caja?.IdInt, IdRecinto: recinto?.IdInt, IdArea: area?.IdString,IdFuenteFinanciamiento:fuente?.IdInt);
+            }
+        }
+
+        private void DtInicio_SelectedDateChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (btnVerInforme.IsEnabled)
+            {
+                btnVerInforme.IsEnabled = false;
+            }
         }
     }
 }

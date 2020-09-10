@@ -124,6 +124,49 @@ namespace PruebaWPF.ViewModel
 
         private List<ReciboSon> UnirRecibos(IQueryable<Recibo> recibo)
         {
+            var eciboCompleto = (from r in recibo
+                                 join recintos in db.vw_RecintosRH on r.InfoRecibo.IdRecinto equals recintos.IdRecinto into ReciboRecinto
+                                 from RecintoTable in ReciboRecinto
+                                 join recibodatos in db.ReciboDatos on new { r.IdRecibo, r.Serie } equals new { recibodatos.IdRecibo, recibodatos.Serie } into ReciboDatoRecibo
+                                 from ReciboDatoTable in ReciboDatoRecibo.DefaultIfEmpty()
+                                 join orden in db.OrdenPago on r.IdOrdenPago equals orden.IdOrdenPago into OrdenRecibo
+                                 from OrdenTable in OrdenRecibo.DefaultIfEmpty()
+                                 join reciboanulado in db.ReciboAnulado on new { r.IdRecibo, r.Serie } equals new { reciboanulado.IdRecibo, reciboanulado.Serie } into ReciboAnuladoRecibo
+                                 from ReciboAnuladoTable in ReciboAnuladoRecibo.DefaultIfEmpty()
+                                 join ordenanulada in db.OrdenPago on ReciboAnuladoTable.IdOrdenPago equals ordenanulada.IdOrdenPago into OrdenAnulada
+                                 from OrdenAnuladaTable in OrdenAnulada.DefaultIfEmpty()
+                                 join area in db.vw_Areas on (ReciboDatoTable != null ? ReciboDatoTable.IdArea : OrdenTable != null ? OrdenTable.IdArea : OrdenAnuladaTable.IdArea) equals area.codigo into Areas
+                                 from AreaTable in Areas
+                                 orderby r.Fecha descending
+                                 select new ReciboSon()
+                                 {
+                                     IdRecibo = r.IdRecibo,
+                                     Serie = r.Serie,
+                                     IdDetAperturaCaja = r.IdDetAperturaCaja,
+                                     IdArea = ReciboDatoTable != null ? ReciboDatoTable.IdArea : OrdenTable != null ? OrdenTable.IdArea : OrdenAnuladaTable.IdArea,
+                                     IdFuenteFinanciamiento = r.IdFuenteFinanciamiento,
+                                     IdTipoDeposito = ReciboDatoTable != null ? ReciboDatoTable.IdTipoDeposito : OrdenTable != null ? OrdenTable.IdTipoDeposito : OrdenAnuladaTable.IdTipoDeposito,
+                                     Identificador = ReciboDatoTable != null ? ReciboDatoTable.Identificador : OrdenTable != null ? OrdenTable.Identificador : OrdenAnuladaTable.Identificador,
+                                     TextoIdentificador = ReciboDatoTable != null ? ReciboDatoTable.TextoIdentificador : OrdenTable != null ? OrdenTable.TextoIdentificador : OrdenAnuladaTable.TextoIdentificador,
+                                     TipoDeposito = ReciboDatoTable != null ? ReciboDatoTable.TipoDeposito : OrdenTable != null ? OrdenTable.TipoDeposito : OrdenAnuladaTable.TipoDeposito,
+                                     Recibimos = r.Recibimos,
+                                     Fecha = r.Fecha,
+                                     IdOrdenPago = r.IdOrdenPago,
+                                     regAnulado = r.regAnulado,
+                                     IdInfoRecibo = r.IdInfoRecibo,
+                                     InfoRecibo = r.InfoRecibo,
+                                     DetAperturaCaja = r.DetAperturaCaja,
+                                     OrdenPago = r.regAnulado ? ReciboAnuladoTable.IdOrdenPago.HasValue ? OrdenAnuladaTable : null : r.OrdenPago,
+                                     FuenteFinanciamiento = r.FuenteFinanciamiento,
+                                     UsuarioCreacion = r.UsuarioCreacion,
+                                     Recinto = RecintoTable.Siglas,
+                                     Area = AreaTable.descripcion.ToUpper(),
+                                     ReciboAnulado = ReciboAnuladoTable,
+                                     ReciboDatos = ReciboDatoTable
+                                 }
+
+
+                        );
 
             List<ReciboSon> ReciboCompleto = (from r in recibo
                                               join recintos in db.vw_RecintosRH on r.InfoRecibo.IdRecinto equals recintos.IdRecinto into ReciboRecinto
@@ -1395,7 +1438,7 @@ namespace PruebaWPF.ViewModel
 
                 if (rc != null)
                 {
-                    info = string.Format("{0} No.{1}",FormaPago.FormaPago1, rc.NumeroCK);
+                    info = string.Format("{0}, {1} No.{2}",FormaPago.FormaPago1,rc.Banco.Nombre, rc.NumeroCK);
                 }
             }
             else if (ReciboPagoTarjeta != null)

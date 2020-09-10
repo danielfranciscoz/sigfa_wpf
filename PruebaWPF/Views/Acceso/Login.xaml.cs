@@ -239,7 +239,7 @@ namespace PruebaWPF.Views.Acceso
 
         private void IniciarMain()
         {
-            
+            controller.AsignarServer();
             controller.MacMemory(); //Cargo en memoria el MAC de la computadora en la que se incia sesion
             this.Hide();
 

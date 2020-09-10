@@ -49,8 +49,8 @@ namespace PruebaWPF.Model
         public virtual ICollection<ReciboPago> ReciboPago1 { get; set; }
         public virtual ReciboPago ReciboPago2 { get; set; }
         public virtual ReciboPagoBono ReciboPagoBono { get; set; }
-        public virtual ReciboPagoCheque ReciboPagoCheque { get; set; }
         public virtual ReciboPagoDeposito ReciboPagoDeposito { get; set; }
         public virtual ReciboPagoTarjeta ReciboPagoTarjeta { get; set; }
+        public virtual ReciboPagoCheque ReciboPagoCheque { get; set; }
     }
 }

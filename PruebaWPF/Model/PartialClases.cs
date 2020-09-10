@@ -14,7 +14,7 @@ namespace PruebaWPF.Model
     {
         public string NoOrdenPago => IdOrdenPago == null ? (regAnulado ? (ReciboAnulado.IdOrdenPago == null ? "" : ReciboAnulado.OrdenPago.NoOrdenPago) : "") : OrdenPago.NoOrdenPago;
         public string IdAreaUnion => IdOrdenPago == null ? ReciboDatos.IdArea : OrdenPago.IdArea;
-        
+
     }
 
     public partial class DiferenciasArqueo
@@ -85,6 +85,8 @@ namespace PruebaWPF.Model
     public partial class ReciboPago
     {
         public string r => Serie + " " + IdRecibo + " " + IdReciboPago;
+        public string Area { get; set; }
+        public string Fuente => Recibo?.FuenteFinanciamiento.Nombre;
         public string OrdenPago => Recibo?.IdOrdenPago != null ? Recibo.OrdenPago.NoOrdenPago : "";
         public string FechaROC => Recibo?.Fecha.ToString();
         public string porCuenta => Recibo?.Recibimos;
@@ -92,22 +94,27 @@ namespace PruebaWPF.Model
         public string Moneda1 => Moneda?.Moneda1;
     }
 
+    public partial class UsuarioPerfil
+    {
+        public string Recinto { get; set; }
+    }
+
     public partial class OrdenPago
     {
 
-        public string Identificador_Externo => ObtenerIdentificador();
+        //public string Identificador_Externo => ObtenerIdentificador();
 
-        private string ObtenerIdentificador()
-        {
-            if (new ReciboViewModel().isAgenteExterno(IdTipoDeposito))
-            {
-                return new AgenteExternoViewModel().FindById(int.Parse(Identificador)).Identificacion;
-            }
-            else
-            {
-                return Identificador;
-            }
+        //private string ObtenerIdentificador()
+        //{
+        //    if (new ReciboViewModel().isAgenteExterno(IdTipoDeposito))
+        //    {
+        //        return new AgenteExternoViewModel().FindById(int.Parse(Identificador)).Identificacion;
+        //    }
+        //    else
+        //    {
+        //        return Identificador;
+        //    }
 
-        }
+        //}
     }
 }

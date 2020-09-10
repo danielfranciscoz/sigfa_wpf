@@ -1991,7 +1991,7 @@
                                 <Paragraph>
                                   <TextRuns>
                                     <TextRun>
-                                      <Value>TOTAL DE INGRESOS EN </Value>
+                                      <Value>TOTAL DE INGRESOS POR DOCUMENTOS DE EFECTIVO EN </Value>
                                       <Style>
                                         <FontWeight>Bold</FontWeight>
                                       </Style>
@@ -5009,7 +5009,7 @@
                 <Paragraph>
                   <TextRuns>
                     <TextRun>
-                      <Value>INFORME DE ARQUEO DE CAJA</Value>
+                      <Value>REPORTE DE ARQUEO DE CAJA</Value>
                       <Style>
                         <FontSize>11pt</FontSize>
                         <FontWeight>Bold</FontWeight>
