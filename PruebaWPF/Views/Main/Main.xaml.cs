@@ -13,6 +13,7 @@ using System.Reflection;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Media;
 
 namespace PruebaWPF.Views.Main
 {
@@ -168,16 +169,21 @@ namespace PruebaWPF.Views.Main
 
                 lblPerfil.ToolTip = perfil;
 
-                if (perfil.Length > maxLength)
+                if (perfil.Length > maxLength) 
                 {
                     perfil = perfil.Substring(0, maxLength) + "...";
                 }
 
                 lblPerfil.Text = perfil;
-                lblPeriodo.Text = clsSessionHelper.serverName;
+                lblServidor.Text = clsSessionHelper.serverName;
                 mnUsuario.Header = ObtenerBienvenida(clsSessionHelper.usuario.Nombre);
                 lblTipoCambio.Text = controller.ObtenerTipoCambio();
                 lblMac.Text = clsSessionHelper.MACMemory;
+
+                if (clsSessionHelper.entorno == clsReferencias.Debug)
+                {
+                    barraEstado.Background =(Brush) new BrushConverter().ConvertFrom("#E65100");
+                }
 
             }
             catch (Exception ex)

@@ -1,6 +1,7 @@
 ﻿using PruebaWPF.Clases;
 using PruebaWPF.Helper;
 using PruebaWPF.Model;
+using PruebaWPF.Referencias;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -123,7 +124,7 @@ namespace PruebaWPF.ViewModel
 
         public Usuario SaveUser(Usuario user, List<UsuarioPerfilSon> perfiles)
         {
-            string perfilesText="";
+            string perfilesText = "";
             bool activarOP = false, activarTesoreria = false;
             using (var transaction = db.Database.BeginTransaction())
             {
@@ -162,11 +163,11 @@ namespace PruebaWPF.ViewModel
                 }
             }
 
-            if (user != null)
+            if (user != null && clsSessionHelper.entorno == clsReferencias.Release)
             {
                 Email e = new Email();
                 e.SendCreatedUser(
-                    user.Nombre,perfilesText, user.LoginEmail, clsSessionHelper.usuario.LoginEmail,activarOP,activarTesoreria);
+                    user.Nombre, perfilesText, user.LoginEmail, clsSessionHelper.usuario.LoginEmail, activarOP, activarTesoreria);
             }
             return user;
         }
@@ -198,19 +199,22 @@ namespace PruebaWPF.ViewModel
                 perfil.IdRecinto = item.IdRecinto;
                 perfil.LoginCreacion = clsSessionHelper.usuario.Login;
 
-                perfilesText += (perfilesText.Length == 0 ? string.Format("{0} ({1})", item.Perfil.Perfil1,item.Recinto) : ", " + string.Format("{0} ({1})", item.Perfil.Perfil1, item.Recinto));
-                
+                perfilesText += (perfilesText.Length == 0 ? string.Format("{0} ({1})", item.Perfil.Perfil1, item.Recinto) : ", " + string.Format("{0} ({1})", item.Perfil.Perfil1, item.Recinto));
+
                 db.UsuarioPerfil.Add(perfil);
             }
 
             db.SaveChanges();
 
-            var user = db.Usuario.FirstOrDefault(f => f.Login == login);
+            if (clsSessionHelper.entorno == clsReferencias.Release)
+            {
+                var user = db.Usuario.FirstOrDefault(f => f.Login == login);
 
                 Email e = new Email();
                 e.SendUpdatedUser(
                     user.Nombre, perfilesText, user.LoginEmail, clsSessionHelper.usuario.LoginEmail);
-            
+            }
+
 
         }
 

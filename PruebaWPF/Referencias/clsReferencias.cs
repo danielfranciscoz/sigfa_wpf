@@ -13,6 +13,9 @@
         public const string Finalizado = "Finalizado";
         public const string EnProceso = "En proceso...";
 
+        //Entornos
+        public const string Debug = "Desarrollo";
+        public const string Release = "Produccion";
 
         //Naturaleza de cuenta contable
         public const bool Debe = false;

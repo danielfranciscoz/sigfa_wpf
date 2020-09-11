@@ -76,9 +76,7 @@ namespace PruebaWPF.ViewModel
             }
 
             return new Object[] { noArqueadas.First() };
-
-
-
+            
         }
 
         public List<Arqueo> FindAll()

@@ -29,7 +29,8 @@ namespace PruebaWPF.Clases
                   );
         }
 
-        public async void SendCreatedUser(string name,string roles, string mailTo, string mailCC,Boolean ActivarOp,Boolean ActivarTesoreria) {
+        public async void SendCreatedUser(string name, string roles, string mailTo, string mailCC, Boolean ActivarOp, Boolean ActivarTesoreria)
+        {
 
             string textOp = "<p style=\"font-weight:bold; padding: 0; margin: 0; \">Para acceder al sitio de Ordenes de pago. Se tendrá que redirigir a su navegador web y transcribir la siguiente dirección URL: <a href=\"https://op.uni.edu.ni/\">https://op.uni.edu.ni/</a> Acá deberá seleccionar ir a Office365 y digitar su correo institucional y contraseña</p>";
             string textTesoreria = "<p style=\"font - weight:bold; padding: 0; margin: 0; \">Para acceder al sistema de tesorería deberá descargarlo desde la URL <a href=\"http://si.uni.edu.ni/tesoreria/SIGFA-Tesorer%C3%ADa.application\">Sistema de Tesorería</a>, a continuación debe instalar el archivo descargado e iniciar sesión con sus credenciales de Office365</p>";
@@ -43,14 +44,14 @@ namespace PruebaWPF.Clases
 
             await Task.Run(() =>
             {
-                SendMail(@"\\Resources\\html\\UsuarioCreado.html", 
-                    lista, 
-                    mailTo, 
-                    mailCC, 
+                SendMail(@"\\Resources\\html\\UsuarioCreado.html",
+                    lista,
+                    mailTo,
+                    mailCC,
                     "Confimación de cuenta UNI",
                     clsConfiguration.Llaves.Email_Sistemas.ToString());
             });
-            }
+        }
 
         public async void SendUpdatedUser(string name, string roles, string mailTo, string mailCC)
         {
@@ -71,62 +72,79 @@ namespace PruebaWPF.Clases
 
         private void SendMail(string archivoHtml, List<string> datos, string mailTo, string mailCC, string Asunto, string EmailKey)
         {
-                try
+            try
+            {
+                Object[] conf = CredencialesSMTP(EmailKey);
+                SmtpClient smtp = (SmtpClient)conf[0];
+                String userMail = conf[1].ToString();
+                String MailNotify = conf[2].ToString();
+
+                MailMessage message = new MailMessage();
+
+                message.From = new MailAddress(userMail);
+
+                mailTo = DepurarCadenas(mailTo);
+                message.To.Add(mailTo);
+
+                if (!string.IsNullOrEmpty(mailCC))
                 {
-                    Object[] conf = CredencialesSMTP(EmailKey);
-                    SmtpClient smtp = (SmtpClient)conf[0];
-                    String userMail = conf[1].ToString();
-                    String MailNotify = conf[2].ToString();
+                    message.CC.Add(mailCC);
+                }
 
-                    MailMessage message = new MailMessage();
-
-                    message.From = new MailAddress(userMail);
-
-                mailTo = eliminarPuntoComa(mailTo);
-                    message.To.Add(mailTo);
-
-                    if (!string.IsNullOrEmpty(mailCC))
-                    {
-                        message.CC.Add(mailCC);
-                    }
-
-                    message.Subject = Asunto;
-                    message.IsBodyHtml = true;
+                message.Subject = Asunto;
+                message.IsBodyHtml = true;
 
 
 
-                    string directory = AppDomain.CurrentDomain.BaseDirectory.Replace(@"\bin\Debug\", "");
-                    using (StreamReader reader = new StreamReader(directory + archivoHtml))
-                    {
+                string directory = AppDomain.CurrentDomain.BaseDirectory.Replace(@"\bin\Debug\", "");
+                using (StreamReader reader = new StreamReader(directory + archivoHtml))
+                {
 
                     datos.Add(MailNotify);
-                        StringBuilder html = new StringBuilder();
-                        html.AppendFormat(reader.ReadToEnd(), datos.ToArray());
+                    StringBuilder html = new StringBuilder();
+                    html.AppendFormat(reader.ReadToEnd(), datos.ToArray());
 
-                        message.Body = html.ToString();
+                    message.Body = html.ToString();
 
-                        smtp.Send(message);
+                    smtp.Send(message);
 
+                }
+
+            }
+            catch (Exception ex)
+            {
+                s.SaveError(ex);
+            }
+
+        }
+
+        private string DepurarCadenas(string mailTo)
+        {
+
+            string[] correos = mailTo.Split(';');
+            string cadena="";
+            for (int i = 0; i < correos.Length; i++)
+            {
+                if (!correos[i].Equals(""))
+                {
+                    if (clsValidateInput.ValidateEmail(correos[i]))
+                    {
+                        cadena = cadena.Length == 0 ? correos[i] : string.Format("{0},{1}", cadena, correos[i]);
                     }
 
                 }
-                catch (Exception ex)
-                {
-                    s.SaveError(ex);
-                }
-       
-        }
+            }
 
-        private string eliminarPuntoComa(string mailTo)
-        {
-            if (mailTo.StartsWith(";"))
-            {
-                return eliminarPuntoComa(mailTo.Substring(1));
-            }
-            else
-            {
-            return     mailTo;
-            }
+            //if (mailTo.StartsWith(";"))
+            //{
+            //    return depurarCadenas(mailTo.Substring(1));
+            //}
+            //else
+            //{
+            //    return mailTo;
+            //}
+
+            return cadena;
         }
 
         private async Task SendPDF(ReportViewer reportViewer, string tittle, string filename, string name, string mailTo, string mailCC, string Asunto, string EmailKey)
@@ -156,7 +174,7 @@ namespace PruebaWPF.Clases
 
                     message.From = new MailAddress(userMail);
 
-                    mailTo = eliminarPuntoComa(mailTo).Replace(";",",");
+                    mailTo = DepurarCadenas(mailTo);
                     message.To.Add(mailTo);
 
                     if (!string.IsNullOrEmpty(mailCC))

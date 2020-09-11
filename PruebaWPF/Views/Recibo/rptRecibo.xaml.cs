@@ -173,16 +173,14 @@ namespace PruebaWPF.Views.Recibo
                 if (ordenPago.Any())
                 {
                     Model.OrdenPago o = ordenPago.FirstOrDefault();
-                    if (o != null)
+                    if (o != null && clsSessionHelper.entorno == clsReferencias.Release)
                     {
                         string emailTo = o.EmailNotificacion;
                         if (!string.IsNullOrEmpty(emailTo))
                         {
                             Email e = new Email();
                             e.SendRecibo(informe, string.Format("{0}-{1}", recibo.IdRecibo, recibo.Serie), cuenta.First().Nombre, emailTo, o.Usuario.LoginEmail);
-
                         }
-
                     }
                 }
 

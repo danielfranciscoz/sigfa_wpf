@@ -57,7 +57,7 @@
             </StackPanel>
 
             <!--Barra de Estado-->
-            <StatusBar DockPanel.Dock="Bottom" Background="#01579B" Foreground="{StaticResource TextoBlanco}">
+            <StatusBar x:Name="barraEstado" DockPanel.Dock="Bottom" Background="#01579B" Foreground="{StaticResource TextoBlanco}">
                 <StatusBar.ItemsPanel>
                     <ItemsPanelTemplate>
                         <Grid>
@@ -88,7 +88,7 @@
                     <TextBlock>
                         <TextBlock.Inlines>
                             <Run Text="Entorno:"></Run>
-                            <Run Name="lblPeriodo"></Run>
+                            <Run Name="lblServidor"></Run>
                         </TextBlock.Inlines>
                     </TextBlock>
                 </StatusBarItem>

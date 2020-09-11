@@ -279,6 +279,30 @@ namespace PruebaWPF.Clases
             return flag;
         }
 
+        public static bool ValidateEmail(string campo)
+        {
+            bool flag = true;
+
+            String expresion = "\\w+([-+.']\\w+)*@\\w+([-.]\\w+)*\\.\\w+([-.]\\w+)*";
+            if (Regex.IsMatch(campo, expresion))
+            {
+                if (Regex.Replace(campo, expresion, String.Empty).Length == 0)
+                {
+                    flag = true;
+                }
+                else
+                {
+                    flag = false;
+                }
+            }
+            else
+            {
+                flag = false;
+            }
+
+            return flag;
+        }
+
         public static void CleanALL(Control[] campos)
         {
 

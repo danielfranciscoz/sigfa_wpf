@@ -8,6 +8,7 @@ using PruebaWPF.Views.Main;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
+using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
@@ -35,13 +36,16 @@ namespace PruebaWPF.Views.Acceso
             lblYear.Text = DateTime.Now.Year.ToString();
             CamposNormales();
             Ensamblados();
-     //       new Window1().Show();
+            //       new Window1().Show();
         }
 
         private void Ensamblados()
         {
             clsSessionHelper.SystemName = ((AssemblyTitleAttribute)Attribute.GetCustomAttribute(Assembly.GetExecutingAssembly(), typeof(AssemblyTitleAttribute), false)).Title;
-            clsSessionHelper.SystemVersion= Assembly.GetExecutingAssembly().GetName().Version.ToString();
+            clsSessionHelper.SystemVersion = Assembly.GetExecutingAssembly().GetName().Version.ToString();
+
+            TipoEntorno();
+
         }
 
         private void CamposNormales()
@@ -253,6 +257,25 @@ namespace PruebaWPF.Views.Acceso
         {
             panel_Credenciales.Visibility = Visibility.Visible;
             panel_Periodo.Visibility = Visibility.Hidden;
+        }
+
+
+        void TipoEntorno()
+        {
+            string BuildType;
+            object[] attributes = Assembly.GetExecutingAssembly().GetCustomAttributes(typeof(DebuggableAttribute), true);
+
+            if (attributes.Length > 0)
+            {
+                DebuggableAttribute debuggableAttribute = attributes[0] as DebuggableAttribute;
+                BuildType = debuggableAttribute.IsJITOptimizerDisabled ? clsReferencias.Debug : clsReferencias.Release;
+            }
+            else
+            {
+                BuildType = clsReferencias.Release;
+            }
+
+            clsSessionHelper.entorno = BuildType;
         }
 
     }

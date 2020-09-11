@@ -16,6 +16,7 @@ namespace PruebaWPF.Helper
         public static string MACMemory;
         public static string SystemName;
         public static string SystemVersion;
+        public static string entorno;
 
         public static int vigenciaOP;
 
