@@ -59,7 +59,8 @@ namespace PruebaWPF.Clases
             Email_Finanzas,
             Email_Sistemas,
             POS_Banpro,
-            dias_OP
+            dias_OP,
+            Perfil_Ingresos_Area
         };
 
         public void Save()

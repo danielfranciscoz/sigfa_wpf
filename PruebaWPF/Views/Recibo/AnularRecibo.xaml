@@ -57,6 +57,18 @@
                     <TextBlock TextWrapping="Wrap" VerticalAlignment="Center" FontSize="10" Text="Este registro no será eliminado de la base de datos, sin embargo no podrá ser impreso nuevamente." Foreground="{StaticResource DarkGray}"/>
                     <TextBlock TextWrapping="Wrap" VerticalAlignment="Center" FontSize="10" FontWeight="Bold" Text="RECUERDE ANULAR CADA VOUCHER BANCARIO EMITIDO DESDE EL POS" Foreground="{StaticResource DarkGray}"/>
 
+                    <DockPanel Margin="0 25 0 0">
+                    <TextBox DockPanel.Dock="Left" Margin="0 0 10 10" CharacterCasing="Upper" Width="120" x:Name="txtRecibo" materialDesign:HintAssist.Hint="* Recibo" materialDesign:HintAssist.IsFloating="True" FontSize="12" />
+                    <TextBox DockPanel.Dock="Right" Margin="0 0 0 10"  x:Name="txtIdentificacion" materialDesign:HintAssist.Hint="* Identificación" materialDesign:HintAssist.IsFloating="True" FontSize="12" />
+                    </DockPanel>
+                    
+                    <StackPanel  Orientation="Horizontal">
+                        <TextBlock VerticalAlignment="Center" FontSize="10" Text="Debe ingresar el número de recibo y la identificación del usuario que pagó para confirmar la anulación." TextWrapping="Wrap" Foreground="{StaticResource DarkGray}" Width="360"/>
+                    </StackPanel>
+                    <StackPanel x:Name="panelMensaje" Margin="0 10 0 0" Background="{StaticResource ErrorAlert}" Visibility="Collapsed">
+                        <TextBlock x:Name="lblErrorMesaje" Padding="10" Foreground="{StaticResource ErrorMsj}" FontWeight="Bold" TextWrapping="Wrap" Text="La información no concuerda con lo que se ha seleccionado, debe ingresar [No.Recibo]-[Serie] y la identificación del usuario que aparecen en el recibo físico."></TextBlock>
+                    </StackPanel>
+
                 </StackPanel>
 
                 <StackPanel Grid.Row="2" Height="auto" Margin="20 0 20 10">

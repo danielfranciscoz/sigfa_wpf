@@ -15,6 +15,7 @@ namespace PruebaWPF.Model
         public string NoOrdenPago => IdOrdenPago == null ? (regAnulado ? (ReciboAnulado.IdOrdenPago == null ? "" : ReciboAnulado.OrdenPago.NoOrdenPago) : "") : OrdenPago.NoOrdenPago;
         public string IdAreaUnion => IdOrdenPago == null ? ReciboDatos.IdArea : OrdenPago.IdArea;
 
+
     }
 
     public partial class DiferenciasArqueo
@@ -82,6 +83,13 @@ namespace PruebaWPF.Model
         public string Area { get; set; }
     }
 
+
+    public partial class ReciboRango
+    {
+        public List<Recibo> Recibos { get; set; }
+        public string Rangos { get; set; }
+    }
+
     public partial class ReciboPago
     {
         public string r => Serie + " " + IdRecibo + " " + IdReciboPago;
@@ -92,6 +100,8 @@ namespace PruebaWPF.Model
         public string porCuenta => Recibo?.Recibimos;
         public string FormaPago1 => FormaPago?.FormaPago1;
         public string Moneda1 => Moneda?.Moneda1;
+        public string Aranceles => string.Join(", ", (Recibo.IdOrdenPago == null ? Recibo.ReciboDet.Select((s,i) => (i+1)+"."+s.ArancelPrecio.ArancelArea.Arancel.Nombre).ToArray() : Recibo.OrdenPago.DetOrdenPagoArancel.Select((s, i) => (i + 1) + "." + s.ArancelPrecio.ArancelArea.Arancel.Nombre).ToArray()));
+
     }
 
     public partial class UsuarioPerfil
@@ -116,5 +126,10 @@ namespace PruebaWPF.Model
         //    }
 
         //}
+    }
+
+    public partial class Usuario
+    {
+        public vwEmpleadosRH empleado { get; set; }
     }
 }

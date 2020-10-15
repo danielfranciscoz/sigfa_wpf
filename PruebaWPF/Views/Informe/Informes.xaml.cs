@@ -19,6 +19,7 @@ namespace PruebaWPF.Views.Informe
         double starHeight = 0;
         double endHeight = 0;
         private List<ReciboPago> pagos;
+        private string serie;
 
         private InformesViewModel controller;
         private Pantalla pantalla;
@@ -106,7 +107,7 @@ namespace PruebaWPF.Views.Informe
             DateTime? start = dtInicio.SelectedDate;
             DateTime? end = dtFin.SelectedDate;
 
-            Tuple<List<Model.Recibo>,
+            Tuple<ReciboRango,
                  List<ObjetoResumen>,
                  List<ObjetoResumen>,
                  List<ObjetoResumen>,
@@ -115,7 +116,8 @@ namespace PruebaWPF.Views.Informe
                  Tuple<List<ReciboPago>>
                  > datos = await FindAsync(start, end, IdRecinto, IdArea, IdCaja,IdFuenteFinanciamiento);
 
-            List<Model.Recibo> recibos = datos.Item1;
+            List<Model.Recibo> recibos = datos.Item1.Recibos;
+            serie = datos.Item1.Rangos;
             List<ObjetoResumen> recintosCount = datos.Item2;
             List<ObjetoResumen> AreasCount = datos.Item3;
 
@@ -148,6 +150,15 @@ namespace PruebaWPF.Views.Informe
             this.pagos = pago;
             btnGenerar.IsEnabled = true;
             progressbar.Visibility = Visibility.Hidden;
+
+            if (tblRecintosResumen.HasItems)
+            {
+                btnVerInforme.IsEnabled = true;
+            }
+            else
+            {
+                btnVerInforme.IsEnabled = false;
+            }
         }
 
         private Tuple<List<ObjetoResumen>, List<ObjetoResumen>> CalculateSummary(List<ObjetoResumen> recintosCount, List<ObjetoResumen> recintosMoney)
@@ -262,7 +273,9 @@ namespace PruebaWPF.Views.Informe
                 Recinto = ((ObjetoResumen)cboRecinto.SelectedItem)?.Name.ToUpper(),
                 startdate = dtInicio.SelectedDate,
                 enddate = dtFin.SelectedDate,
-                FuenteFinanciamiento = ((ObjetoResumen)cboFuente.SelectedItem)?.Name.ToUpper()
+                FuenteFinanciamiento = ((ObjetoResumen)cboFuente.SelectedItem)?.Name.ToUpper(),
+                Serie = serie,
+                Observaciones = txtObservaciones.Text
             });
             cierre.ShowDialog();
         }
@@ -299,7 +312,7 @@ namespace PruebaWPF.Views.Informe
             LoadTitle();
         }
 
-        private Task<Tuple<List<Model.Recibo>, List<ObjetoResumen>, List<ObjetoResumen>, List<ObjetoResumen>, List<ObjetoResumen>, List<ObjetoResumen>, Tuple<List<ReciboPago>>>> FindAsync(DateTime? start, DateTime? end, int? IdRecinto = null, string IdArea = null, int? IdCaja = null,int? IdFuenteFinanciamiento = null)
+        private Task<Tuple<ReciboRango, List<ObjetoResumen>, List<ObjetoResumen>, List<ObjetoResumen>, List<ObjetoResumen>, List<ObjetoResumen>, Tuple<List<ReciboPago>>>> FindAsync(DateTime? start, DateTime? end, int? IdRecinto = null, string IdArea = null, int? IdCaja = null,int? IdFuenteFinanciamiento = null)
         {
             return Task.Run(() =>
             {

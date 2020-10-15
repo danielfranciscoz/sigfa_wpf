@@ -1367,7 +1367,7 @@
               <Paragraph>
                 <TextRuns>
                   <TextRun>
-                    <Value>="1. " &amp; iIf(CountRows("Recibos")=0,"NO SE ENCONTRARON RECIBOS OFICIALES","SE CONTABILIZARON RECIBOS OFICIALES DE CAJA (" &amp; Count(CSTR(Fields!IdRecibo.Value),"Recibos") &amp; ")")</Value>
+                    <Value>="1. " &amp; iIf(CountRows("Recibos")=0,"NO SE ENCONTRARON RECIBOS OFICIALES","RECIBOS OFICIALES DE CAJA (" &amp; Count(CSTR(Fields!IdRecibo.Value),"Recibos") &amp; ")")</Value>
                     <Style>
                       <FontWeight>Bold</FontWeight>
                     </Style>
@@ -5009,7 +5009,7 @@
                 <Paragraph>
                   <TextRuns>
                     <TextRun>
-                      <Value>REPORTE DE ARQUEO DE CAJA</Value>
+                      <Value>ARQUEO DE CAJA</Value>
                       <Style>
                         <FontSize>11pt</FontSize>
                         <FontWeight>Bold</FontWeight>

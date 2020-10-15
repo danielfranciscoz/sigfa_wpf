@@ -11,6 +11,7 @@ using System.Configuration;
 using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
+using System.ServiceModel;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
@@ -37,6 +38,7 @@ namespace PruebaWPF.Views.Acceso
             CamposNormales();
             Ensamblados();
             //       new Window1().Show();
+            var a = GetDateTime();
         }
 
         private void Ensamblados()
@@ -110,7 +112,30 @@ namespace PruebaWPF.Views.Acceso
             {
                 progressbar.Visibility = Visibility.Visible;
                 btnAceptar.IsEnabled = false;
-                bool result = await ValidarCredenciales(txtUsuario.Text, txtPassword.Password);
+                bool result = false;
+                try
+                {
+                    result = await ValidarCredenciales(txtUsuario.Text, txtPassword.Password);
+
+                }
+                catch (Exception ex)
+                {
+                    if (ex.GetType() == typeof(EndpointNotFoundException))
+                    {
+                        WrongUserPass("No se ha podido establecer comunicación con el servidor de autenticación de credenciales, es posible que no haya conexión a internet o que exista un bloqueo interno, en caso de tener internet porfavor contacte al administrador del sistema para solicitar asistencia.");
+
+                    }
+                    else
+                    {
+                        WrongUserPass("Ha ocurrido un error al intentar comunicarnos con el servicio de autenticación de la UNI, revise su conexión a internet o contacte al administrador del sistema.");
+
+                    }
+
+                    btnAceptar.IsEnabled = true;
+                    progressbar.Visibility = Visibility.Hidden;
+                    return;
+                }
+
 
                 if (result)
                 {
@@ -201,6 +226,28 @@ namespace PruebaWPF.Views.Acceso
         //    cboPeriodo.SelectedValuePath = "IdPeriodoEspecifico";
         //}
 
+        public static DateTime GetDateTime()
+        {
+            DateTime dateTime = DateTime.MinValue;
+            System.Net.HttpWebRequest request = (System.Net.HttpWebRequest)System.Net.WebRequest.Create("http://www.microsoft.com");
+            request.Method = "GET";
+            request.Accept = "text/html, application/xhtml+xml, */*";
+            request.UserAgent = "Mozilla/5.0 (compatible; MSIE 10.0; Windows NT 6.1; Trident/6.0)";
+            request.ContentType = "application/x-www-form-urlencoded";
+            request.CachePolicy = new System.Net.Cache.RequestCachePolicy(System.Net.Cache.RequestCacheLevel.NoCacheNoStore);
+            System.Net.HttpWebResponse response = (System.Net.HttpWebResponse)request.GetResponse();
+
+            if (response.StatusCode == System.Net.HttpStatusCode.OK)
+            {
+                string todaysDates = response.Headers["date"];
+
+                dateTime = DateTime.ParseExact(todaysDates, "ddd, dd MMM yyyy HH:mm:ss 'GMT'",
+                    System.Globalization.CultureInfo.InvariantCulture.DateTimeFormat, System.Globalization.DateTimeStyles.AssumeUniversal);
+            }
+
+            return dateTime;
+        }
+
         private bool verficarProgramaPeriodo()
         {
             if (ValidarCombos())
@@ -217,9 +264,9 @@ namespace PruebaWPF.Views.Acceso
             }
         }
 
-        private void WrongUserPass()
+        private void WrongUserPass(string mensaje = null)
         {
-            OpenDialog(clsReferencias.MESSAGE_Wrong_User);
+            OpenDialog(mensaje ?? clsReferencias.MESSAGE_Wrong_User);
         }
 
         private void NoAccess()

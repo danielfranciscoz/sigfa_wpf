@@ -11,5 +11,8 @@ namespace PruebaWPF.Model
         public string Recinto { get; set; }
         public string Area { get; set; }
         public string Caja { get; set; }
+
+        public string Serie { get; set; }
+        public string Observaciones { get; set; }
     }
 }

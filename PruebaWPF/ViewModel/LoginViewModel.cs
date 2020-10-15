@@ -33,6 +33,12 @@ namespace PruebaWPF.ViewModel
             return db.UsuarioPerfil.Where(w => (w.Login == Usuario || w.Usuario.LoginEmail == Usuario) && w.Perfil.isWeb == false && w.RegAnulado == false && w.Usuario.RegAnulado == false && w.Perfil.RegAnulado == false).ToList();
         }
 
+        public bool ExistePerfilEspecificoUsuario(String Usuario,SIFOPEntities context,int idperfil)
+        {
+            //   var t = new SIFOP_TESTEntities().UsuarioPerfil.ToList();
+            return context.UsuarioPerfil.Any(w =>w.IdPerfil == idperfil && (w.Login == Usuario || w.Usuario.LoginEmail == Usuario) && w.Perfil.isWeb == false && w.RegAnulado == false && w.Usuario.RegAnulado == false && w.Perfil.RegAnulado == false);
+        }
+
 
         //public List<UsuarioPrograma> ObtenerProgramas(String Usuario)
         //{
@@ -64,7 +70,19 @@ namespace PruebaWPF.ViewModel
         internal void SeleccionarPerfilUsuario(List<UsuarioPerfil> perfiles)
         {
             //clsSessionHelper.perfiles = perfiles;
-            clsSessionHelper.usuario = perfiles.FirstOrDefault().Usuario;
+
+            Usuario user = perfiles.FirstOrDefault().Usuario;
+            ObtenerEmpleado(user);//obteniendo la información del empleado
+            clsSessionHelper.usuario = user;
+        }
+
+        internal void ObtenerEmpleado(Usuario usuario) {
+            vwEmpleadosRH emp = db.vwEmpleadosRH.FirstOrDefault(w=>w.Cod_Interno == usuario.noInterno);
+            if (emp != null)
+            {
+                usuario.empleado = emp;
+            }
+
         }
 
         public bool ValidarCredenciales(String Usuario, String Password)

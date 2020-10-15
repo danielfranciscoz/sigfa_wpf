@@ -2216,7 +2216,7 @@ IIF(string.IsNullOrEmpty(First(Fields!Info1.Value, "CuentaDe")),true,false)</Hid
                   <Paragraph>
                     <TextRuns>
                       <TextRun>
-                        <Value>Ingresos acreditados a </Value>
+                        <Value>Area gestora del Ingreso </Value>
                         <Style>
                           <FontWeight>Bold</FontWeight>
                         </Style>

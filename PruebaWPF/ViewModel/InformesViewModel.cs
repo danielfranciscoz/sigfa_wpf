@@ -1,4 +1,6 @@
-﻿using PruebaWPF.Model;
+﻿using PruebaWPF.Clases;
+using PruebaWPF.Helper;
+using PruebaWPF.Model;
 using System;
 using System.Collections.Generic;
 using System.Data.Entity;
@@ -12,8 +14,24 @@ namespace PruebaWPF.ViewModel
 
         public InformesViewModel() { }
 
-        public Tuple<List<Recibo>, List<ObjetoResumen>, List<ObjetoResumen>, List<ObjetoResumen>, List<ObjetoResumen>, List<ObjetoResumen>, Tuple<List<ReciboPago>>> InformeIngresos(DateTime? startTime, DateTime? endTime, int? IdRecinto, string IdArea, int? IdCaja,int?IdfuenteFinanciamiento)
+        public Tuple<ReciboRango, List<ObjetoResumen>, List<ObjetoResumen>, List<ObjetoResumen>, List<ObjetoResumen>, List<ObjetoResumen>, Tuple<List<ReciboPago>>> InformeIngresos(DateTime? startTime, DateTime? endTime, int? IdRecinto, string IdArea, int? IdCaja, int? IdfuenteFinanciamiento)
         {
+            if (clsSessionHelper.usuario.empleado != null)
+            {
+                int IdPerfilIngresosArea = int.Parse(db.Configuracion.First(f => f.Llave == clsConfiguration.Llaves.Perfil_Ingresos_Area.ToString()).Valor);
+
+                bool existePerfil= new LoginViewModel().ExistePerfilEspecificoUsuario(clsSessionHelper.usuario.Login, db, IdPerfilIngresosArea);
+
+                if (existePerfil)
+                {
+                    IdArea = clsSessionHelper.usuario.empleado.IdArea;
+                }
+
+            }
+
+
+
+
             var recibos = db.Recibo
                 .Where(w =>
 
@@ -28,9 +46,15 @@ namespace PruebaWPF.ViewModel
                         w.IdOrdenPago != null ? w.OrdenPago.IdArea == IdArea : w.ReciboDatos.IdArea == IdArea) ||
                         IdArea == null
                 ) &&
-                (w.IdFuenteFinanciamiento ==IdfuenteFinanciamiento || IdfuenteFinanciamiento == null) &&
+                (w.IdFuenteFinanciamiento == IdfuenteFinanciamiento || IdfuenteFinanciamiento == null) &&
                 !w.regAnulado
                 );
+
+            string series = string.Join(", ", recibos
+                                .Select(s => new { s.IdRecibo, s.Serie })
+                                .GroupBy(g => g.Serie)
+                                .Select(s => "desde " + s.Min(m => m.IdRecibo) + "-" + s.Key + " hasta " + s.Max(m => m.IdRecibo) + "-" + s.Key
+                                                ).ToList());
 
             var recintosCount = recibos.Select(s => new { s.InfoRecibo, s.DetAperturaCaja.Caja.Nombre, fuente = s.FuenteFinanciamiento.Nombre })
                 .Join(db.vw_RecintosRH,
@@ -78,7 +102,7 @@ namespace PruebaWPF.ViewModel
                     Count = pay.Total,
                     fuente = pay.fuente
                 }).ToList();
-           
+
 
             var pago = db.ReciboPago.Where(w =>
                          (
@@ -100,11 +124,11 @@ namespace PruebaWPF.ViewModel
                                area => area.codigo,
                                (rec, area) => new
                                {
-                                    rec.Recibo,
-                                    rec.Moneda,
-                                    rec.Monto,
-                                    rec.FormaPago,
-                                    rec.regAnulado,
+                                   rec.Recibo,
+                                   rec.Moneda,
+                                   rec.Monto,
+                                   rec.FormaPago,
+                                   rec.regAnulado,
                                    Area = area.descripcion.ToUpper(),
                                    rec.IdRecibo,
                                    rec.Serie
@@ -117,8 +141,8 @@ namespace PruebaWPF.ViewModel
                                    FormaPago = s.FormaPago,
                                    regAnulado = s.regAnulado,
                                    Area = s.Area,
-                                   IdRecibo=s.IdRecibo,
-                                   Serie=s.Serie
+                                   IdRecibo = s.IdRecibo,
+                                   Serie = s.Serie
                                });
 
             var recintosMoney = pago
@@ -130,9 +154,9 @@ namespace PruebaWPF.ViewModel
                     s.Moneda.IdMoneda,
                     s.Moneda.Moneda1,
                     s.Monto,
-                    fuente=s.Recibo.FuenteFinanciamiento.Nombre
+                    fuente = s.Recibo.FuenteFinanciamiento.Nombre
                 })
-                .GroupBy(g => new { g.IdRecinto, g.Nombre, g.IdCaja, g.Moneda1, g.IdMoneda,g.fuente })
+                .GroupBy(g => new { g.IdRecinto, g.Nombre, g.IdCaja, g.Moneda1, g.IdMoneda, g.fuente })
                 .Select(s => new
                 {
                     s.Key.Nombre,
@@ -157,7 +181,7 @@ namespace PruebaWPF.ViewModel
                     SecondName = s.recibo.Nombre,
                     Coin = s.recibo.Moneda1,
                     Total = s.recibo.Monto,
-                    fuente=s.recibo.fuente
+                    fuente = s.recibo.fuente
                 })
                 .ToList();
 
@@ -170,9 +194,9 @@ namespace PruebaWPF.ViewModel
                     s.Monto,
                     IdArea = s.Recibo.ReciboDatos?.IdArea ?? s.Recibo.OrdenPago.IdArea,
                     OPAnulada = s.Recibo.OrdenPago != null ? s.Recibo.OrdenPago.regAnulado : false,
-                    fuente=s.Recibo.FuenteFinanciamiento.Nombre
+                    fuente = s.Recibo.FuenteFinanciamiento.Nombre
                 })).Where(w => !w.OPAnulada)
-                .GroupBy(g => new { g.IdArea, g.Moneda1,g.fuente })
+                .GroupBy(g => new { g.IdArea, g.Moneda1, g.fuente })
                 .Select(s => new
                 {
                     s.Key.Moneda1,
@@ -194,8 +218,8 @@ namespace PruebaWPF.ViewModel
                 ;
 
 
-            var FormaPagoMoney = pago.Select(s => new { s.FormaPago.FormaPago1, s.Moneda.Moneda1, s.Monto,fuente=s.Recibo.FuenteFinanciamiento.Nombre })
-                .GroupBy(g => new { g.FormaPago1, g.Moneda1,g.fuente })
+            var FormaPagoMoney = pago.Select(s => new { s.FormaPago.FormaPago1, s.Moneda.Moneda1, s.Monto, fuente = s.Recibo.FuenteFinanciamiento.Nombre })
+                .GroupBy(g => new { g.FormaPago1, g.Moneda1, g.fuente })
                 .OrderBy(o => o.Key.Moneda1).ThenByDescending(o => o.Sum(s1 => s1.Monto)).ThenBy(o => o.Key.FormaPago1)
                 .Select(s => new ObjetoResumen
                 {
@@ -207,9 +231,13 @@ namespace PruebaWPF.ViewModel
                 })
                 .ToList();
 
+            ReciboRango recibosRangos = new ReciboRango()
+            {
+                Recibos = recibos.OrderByDescending(o => o.Serie).ThenBy(o => o.IdRecibo).ToList(),
+                Rangos = series
+            };
 
-
-            return new Tuple<List<Recibo>, List<ObjetoResumen>, List<ObjetoResumen>, List<ObjetoResumen>, List<ObjetoResumen>, List<ObjetoResumen>, Tuple<List<ReciboPago>>>(recibos.OrderByDescending(o => o.Serie).ThenBy(o => o.IdRecibo).ToList(), recintosCount, areasCount, recintosMoney, areasMoney, FormaPagoMoney, new Tuple<List<ReciboPago>>(pago.ToList()));
+            return new Tuple<ReciboRango, List<ObjetoResumen>, List<ObjetoResumen>, List<ObjetoResumen>, List<ObjetoResumen>, List<ObjetoResumen>, Tuple<List<ReciboPago>>>(recibosRangos, recintosCount, areasCount, recintosMoney, areasMoney, FormaPagoMoney, new Tuple<List<ReciboPago>>(pago.ToList()));
         }
 
         private static Tuple<int, int> IntegerDivide(int dividend, int divisor)

@@ -40,7 +40,8 @@
                 <TextBlock VerticalAlignment="Center" Margin=" 10 0 0 0" FontWeight="Bold">Hasta:</TextBlock>
                 <DatePicker x:Name="dtFin" Margin=" 10 0 0 0" Width="{Binding ElementName=dtInicio,Path=Width}" SelectedDateChanged="DtInicio_SelectedDateChanged"></DatePicker>
                 <Button x:Name="btnGenerar" Margin=" 10 0 0 0" BorderBrush="Transparent" Background="{StaticResource Print_Button}" Content="{StaticResource Text_Generate_Button}" Click="Button_Click"></Button>
-                <Button x:Name="btnVerInforme" Margin=" 10 0 0 0" BorderBrush="Transparent" Background="{StaticResource Print_Button_Second}" Content="{StaticResource Text_SeeReport_Button}" IsEnabled="{Binding ElementName=tblRecintosResumen,Path=Items.IsEmpty,Converter={StaticResource convertidor},ConverterParameter='False;True'}" Click="Button_Click_1"></Button>
+                <Button x:Name="btnVerInforme" Margin=" 10 0 0 0" BorderBrush="Transparent" Background="{StaticResource Print_Button_Second}" Content="{StaticResource Text_SeeReport_Button}" Click="Button_Click_1" IsEnabled="False"></Button>
+                <!--IsEnabled="{Binding ElementName=tblRecintosResumen,Path=Items.IsEmpty,Converter={StaticResource convertidor},ConverterParameter='False;True'}"-->
             </StackPanel>
 
         </StackPanel>
@@ -51,6 +52,7 @@
             <Grid>
                 
             <Grid.RowDefinitions>
+                <RowDefinition Height="auto"/>
                 <RowDefinition Height="auto"/>
                 <RowDefinition Height="auto"/>
                 <RowDefinition Height="*"/>
@@ -98,8 +100,13 @@
                 </ToggleButton>
             </StackPanel>
         </Grid>
-        <Separator Grid.Row="1"/>
-        <DockPanel Grid.Row="2"  HorizontalAlignment="Stretch" VerticalAlignment="Stretch" x:Name="panelResumen" >
+                <!--{Binding ElementName=tblRecintosResumen,Path=Items.IsEmpty,Converter={StaticResource convertidor},ConverterParameter='Visible;Hidden'}-->
+                <StackPanel Grid.Row="1" Orientation="Vertical" VerticalAlignment="top" Margin="5 0 5 10">
+                    <TextBox FontSize="14" x:Name="txtObservaciones" Language="es-419" SpellCheck.IsEnabled="True" materialDesign:HintAssist.Hint="Observaciones" materialDesign:HintAssist.IsFloating="True" materialDesign:HintAssist.FloatingScale="1" AcceptsReturn="True" MaxLines="11"></TextBox>
+                    <TextBlock Foreground="{StaticResource DarkGray}" TextWrapping="Wrap">Las observaciones se incluyen en el reporte, sin embargo, no se almacenan en la base de datos, por lo tanto, debe ser escrito siempre para ser visualizado</TextBlock>
+                </StackPanel>
+                <Separator Grid.Row="2"/>
+        <DockPanel Grid.Row="3"  HorizontalAlignment="Stretch" VerticalAlignment="Stretch" x:Name="panelResumen" >
             <ScrollViewer Height="{Binding ElementName=panelResumen,Path=ActualHeight}" VerticalScrollBarVisibility="auto" >
                 <Grid >
                     <Grid.ColumnDefinitions>
@@ -238,7 +245,7 @@
         </DockPanel>
         </Grid>
             
-            <DockPanel x:Name="panelInfoEmpty" Visibility="{Binding ElementName=tblRecintosResumen,Path=Items.IsEmpty,Converter={StaticResource convertidor},ConverterParameter='Visible;Hidden'}" Background="{StaticResource Bar_BackgroundColor}">
+            <DockPanel x:Name="panelInfoEmpty" Visibility="Hidden" Background="{StaticResource Bar_BackgroundColor}">
             
                 <StackPanel Orientation="Vertical" VerticalAlignment="Center" HorizontalAlignment="Center">
                 <TextBlock FontSize="18" HorizontalAlignment="Center" Foreground="{StaticResource DarkGray}">
